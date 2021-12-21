@@ -1,0 +1,42 @@
+
+NET "fpga_to_cpld_clk"            LOC =  "S:PIN1";
+NET "tmoen"            LOC =  "S:PIN23";
+NET "fpga_to_cpld_signal"            LOC =  "S:PIN39";
+NET "fpga_to_cpld_signal_2"            LOC =  "S:PIN40";
+
+NET "rqst_n_5v" LOC = "S:PIN43";
+NET "rqst_n_3v3" LOC = "S:PIN36";
+
+#PINLOCK_BEGIN
+
+#Fri Dec 17 09:49:34 2021
+
+NET "arb"            LOC =  "S:PIN28";
+NET "clk_n_5v"       LOC =  "S:PIN44";
+NET "id_n_5v<0>"     LOC =  "S:PIN5";
+NET "id_n_5v<1>"     LOC =  "S:PIN6";
+NET "id_n_5v<2>"     LOC =  "S:PIN7";
+NET "id_n_5v<3>"     LOC =  "S:PIN8";
+NET "nubus_master_dir"  LOC =  "S:PIN22";
+NET "nubus_oe"       LOC =  "S:PIN19";
+NET "reset_n_5v"     LOC =  "S:PIN18";
+NET "arb_n_5v<3>"    LOC =  "S:PIN16";
+NET "arb_n_5v<2>"    LOC =  "S:PIN14";
+NET "arb_n_5v<1>"    LOC =  "S:PIN13";
+NET "arb_n_5v<0>"    LOC =  "S:PIN12";
+NET "ack_n_3v3"      LOC =  "S:PIN42";
+NET "ack_n_5v"       LOC =  "S:PIN3";
+NET "clk_n_3v3"      LOC =  "S:PIN20";
+NET "grant"          LOC =  "S:PIN27";
+NET "id_n_3v3<0>"    LOC =  "S:PIN29";
+NET "id_n_3v3<1>"    LOC =  "S:PIN30";
+NET "id_n_3v3<2>"    LOC =  "S:PIN31";
+NET "id_n_3v3<3>"    LOC =  "S:PIN32";
+NET "reset_n_3v3"    LOC =  "S:PIN21";
+NET "start_n_3v3"    LOC =  "S:PIN41";
+NET "start_n_5v"     LOC =  "S:PIN2";
+NET "tm0_n_3v3"      LOC =  "S:PIN33";
+NET "tm0_n_5v"       LOC =  "S:PIN37";
+NET "tm1_n_3v3"      LOC =  "S:PIN34";
+NET "tm1_n_5v"       LOC =  "S:PIN38";
+#PINLOCK_END

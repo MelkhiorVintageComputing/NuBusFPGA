@@ -1,0 +1,7 @@
+(fp_lib_table
+  (lib (name 74CB3T16211)(type KiCad)(uri ${KIPRJMOD}/74CB3T16211.pretty)(options "")(descr ""))
+  (lib (name For_SeeedStudio)(type KiCad)(uri ${KIPRJMOD}/For_SeeedStudio.pretty)(options "")(descr ""))
+  (lib (name Molex2x32)(type KiCad)(uri ${KIPRJMOD}/Molex2x32.pretty)(options "")(descr ""))
+  (lib (name XilinxJtag)(type KiCad)(uri ${KIPRJMOD}/XilinxJtag.pretty)(options "")(descr ""))
+  (lib (name MOLEX_47219-2001)(type KiCad)(uri ${KIPRJMOD}/NuBus/MOLEX_47219-2001.pretty)(options "")(descr ""))
+)

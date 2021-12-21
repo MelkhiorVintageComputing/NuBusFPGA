@@ -1,0 +1,121 @@
+
+(rules PCB nubus-to-ztex
+  (snap_angle 
+    fortyfive_degree
+  )
+  (autoroute_settings
+    (fanout on)
+    (autoroute on)
+    (postroute on)
+    (vias on)
+    (via_costs 50)
+    (plane_via_costs 5)
+    (start_ripup_costs 100)
+    (start_pass_no 2771)
+    (layer_rule F.Cu
+      (active on)
+      (preferred_direction horizontal)
+      (preferred_direction_trace_costs 1.0)
+      (against_preferred_direction_trace_costs 1.0)
+    )
+    (layer_rule In1.Cu
+      (active on)
+      (preferred_direction vertical)
+      (preferred_direction_trace_costs 1.1)
+      (against_preferred_direction_trace_costs 1.1)
+    )
+    (layer_rule In2.Cu
+      (active on)
+      (preferred_direction horizontal)
+      (preferred_direction_trace_costs 1.1)
+      (against_preferred_direction_trace_costs 1.1)
+    )
+    (layer_rule B.Cu
+      (active on)
+      (preferred_direction vertical)
+      (preferred_direction_trace_costs 1.0)
+      (against_preferred_direction_trace_costs 1.0)
+    )
+  )
+  (rule
+    (width 152.4)
+    (clear 152.6)
+    (clear 76.2 (type smd_to_turn_gap))
+    (clear 38.2 (type smd_smd))
+  )
+  (padstack "Via[0-3]_800:400_um"
+    (shape
+      (circle F.Cu 800.0 0.0 0.0)
+    )
+    (shape
+      (circle In1.Cu 800.0 0.0 0.0)
+    )
+    (shape
+      (circle In2.Cu 800.0 0.0 0.0)
+    )
+    (shape
+      (circle B.Cu 800.0 0.0 0.0)
+    )
+    (attach off)
+  )
+  (via 
+    "Via[0-3]_800:400_um" "Via[0-3]_800:400_um" default
+  )
+  (via 
+    "Via[0-3]_800:400_um-kicad_default" "Via[0-3]_800:400_um" "kicad_default"
+  )
+  (via_rule
+    default "Via[0-3]_800:400_um"
+  )
+  (via_rule
+    "kicad_default" "Via[0-3]_800:400_um-kicad_default"
+  )
+  (class default
+    (clearance_class default)
+    (via_rule default)
+    (rule
+      (width 152.4)
+    )
+    (circuit 
+      (use_layer F.Cu In1.Cu In2.Cu B.Cu)
+    )
+  )
+  (class "kicad_default"
+    GND +3V3 "/B2B/JTAG_VIO" "/B2B/JTAG_TCK" "/B2B/JTAG_TDI" +5V "Net-(JCD1-Pad1)" "Net-(JCD1-Pad2)"
+    /B2B/RX /B2B/TX "/B2B/JTAG_TDO" "/B2B/JTAG_TMS" "Net-(J1-Pad14)" "Net-(J1-Pad12)" "Net-(J2-Pad6)" "Net-(J2-Pad3)"
+    "Net-(J2-Pad2)" "Net-(U1-Pad1)" "Net-(U2-Pad1)" "NUBUS_OE" "Net-(U2-Pad47)" "Net-(U2-Pad46)" "Net-(U2-Pad10)" "Net-(U2-Pad9)"
+    "-12V" "SB0_5V" "~RESET_5V" "~SPV_5V" "~SP_5V" "~TM1_5V" "~AD1_5V" "~AD3_5V"
+    "~AD5_5V" "~AD7_5V" "~AD9_5V" "~AD11_5V" "~AD13_5V" "~AD15_5V" "~AD17_5V" "~AD19_5V"
+    "~AD21_5V" "~AD23_5V" "~AD25_5V" "~AD27_5V" "~AD29_5V" "~AD31_5V" "~ARB1_5V" "~ARB3_5V"
+    "~ID1_5V" "~ID3_5V" "~ACK_5V" "~RQST_5V" "~NMRQ_5V" +12V "~TM2_5V" "~CM0_5V"
+    "~CM1_5V" "~CM2_5V" STDBYPWR "~CLK2XEN_5V" "~CBUSY_5V" "SB1_5V" "~TM0_5V" "~AD0_5V"
+    "~AD2_5V" "~AD4_5V" "~AD6_5V" "~AD8_5V" "~AD10_5V" "~AD12_5V" "~AD14_5V" "~AD16_5V"
+    "~AD18_5V" "~AD20_5V" "~AD22_5V" "~AD24_5V" "~AD26_5V" "~AD28_5V" "~AD30_5V" "~PFW_5V"
+    "~ARB0_5V" "~ARB2_5V" "~ID0_5V" "~ID2_5V" "~START_5V" "~CLK_5V" "~ID3_3V3" "~ID2_3V3"
+    "~ID1_3V3" "~ID0_3V3" "~CLK_3V3" "~NMRQ_3V3" "~RQST_3V3" "~CLK2X_3V3" "~CLK2X_5V" "~START_3V3"
+    "~ACK_3V3" "~ARB2_3V3" "~ARB3_3V3" "~ARB0_3V3" "~ARB1_3V3" "~AD31_3V3" "~AD30_3V3" "~AD29_3V3"
+    "~AD28_3V3" "~AD27_3V3" "~AD26_3V3" "~AD25_3V3" "~AD24_3V3" "~AD23_3V3" "~AD22_3V3" "~AD21_3V3"
+    "~AD20_3V3" "~RESET_3V3" "~TM0_3V3" "~TM1_3V3" "~TM2_3V3" "~AD0_3V3" "~AD1_3V3" "~AD2_3V3"
+    "~AD3_3V3" "~AD4_3V3" "~AD5_3V3" "~AD6_3V3" "~AD7_3V3" "~AD9_3V3" "~AD8_3V3" "~AD11_3V3"
+    "~AD10_3V3" "~AD13_3V3" "~AD12_3V3" "~AD15_3V3" "~AD14_3V3" "~AD17_3V3" "~AD16_3V3" "~AD19_3V3"
+    "~AD18_3V3" "FPGA_VGA_HS" "/vga/VGA_HS" "Net-(R3-Pad1)" "FPGA_VGA_VS" "/vga/VGA_VS" "FPGA_G0" "FPGA_G1"
+    "FPGA_G2" "FPGA_G3" "FPGA_G4" "FPGA_G5" "FPGA_G6" "FPGA_G7" "FPGA_B0" "FPGA_B1"
+    "FPGA_B2" "FPGA_B3" "FPGA_B4" "FPGA_B5" "FPGA_B6" "FPGA_B7" "FPGA_VGA_CLK" "Net-(U4-Pad27)"
+    "/vga/VGA_B" "Net-(U4-Pad31)" "/vga/VGA_G" "Net-(U4-Pad33)" "/vga/VGA_R" "Net-(C7-Pad1)" "Net-(C10-Pad1)" "FPGA_R0"
+    "FPGA_R1" "FPGA_R2" "FPGA_R3" "FPGA_R4" "FPGA_R5" "FPGA_R6" "FPGA_R7" "Net-(J4-Pad15)"
+    "Net-(J4-Pad12)" "Net-(J4-Pad11)" "Net-(J4-Pad9)" "Net-(J4-Pad4)" "/usb/USB_FLT" "/usb/USB_D-" "/usb/USB_EN" "/usb/USB_D+"
+    "USBH0_D-" "USBH0_D+" LED0 "Net-(D1-Pad2)" "Net-(U5-Pad1)" "Net-(U5-Pad3)" /usb/VBus "/usb/VBus_USB0"
+    SHIELD "SD_D2" "SD_D3" "SD_CMD" "SD_CLK" "SD_D0" "SD_D1" LED2
+    "Net-(D7-Pad2)" LED8 "Net-(D9-Pad2)" LED1 "Net-(D8-Pad2)" "Net-(D6-Pad2)" LED3 LED4
+    "Net-(D5-Pad2)" "Net-(D4-Pad2)" LED5 LED6 "Net-(D3-Pad2)" "Net-(D2-Pad2)" LED7 "Net-(JCD1-Pad27)"
+    "I2C0_SCL" "I2C0_SDA" "Net-(U7-Pad3)" "Net-(U7-Pad5)" "Net-(U7-Pad6)" "Net-(U8-Pad5)" "Net-(U8-Pad3)"
+    (clearance_class "kicad_default")
+    (via_rule kicad_default)
+    (rule
+      (width 152.4)
+    )
+    (circuit 
+      (use_layer F.Cu In1.Cu In2.Cu B.Cu)
+    )
+  )
+)
