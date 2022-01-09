@@ -2,7 +2,6 @@ module nubus_cpld
   (
    input fpga_to_cpld_clk, // unused (extra line from FPGA to CPLD, pin is a clk input)
 	input fpga_to_cpld_signal, // unused (extra line from FPGA to CPLD)
-   input fpga_to_cpld_signal_2, // unused (extra line from FPGA to CPLD)
    input tmoen,
    input [3:0] id_n_5v,    // ID of this card
    inout [3:0] arb_n_5v,   // NuBus arbiter's lines
@@ -23,8 +22,9 @@ module nubus_cpld
    inout ack_n_3v3, // ack from/to FPGA
    inout start_n_5v, // start from/to NuBus
    inout ack_n_5v, // ack to/from NuBus
-	inout rqst_n_5v,
-	inout rqst_n_3v3
+	input rqst_n_5v,
+	inout rqst_n_3v3,
+	output rqst_o
    );
 
    // clock and pure in -> out pass_through are always on
@@ -36,7 +36,8 @@ module nubus_cpld
    assign start_n_5v = nubus_oe ? 'bZ : ( nubus_master_dir ? start_n_3v3 : 'bZ); // master out
    assign start_n_3v3 = nubus_oe ? 'bZ : (~nubus_master_dir ? start_n_5v : 'bZ); // master in
 	
-   assign rqst_n_5v = nubus_oe ? 'bZ : ( nubus_master_dir ? rqst_n_3v3 : 'bZ); // master out
+	// rqst_o is always driven and is active high
+   assign rqst_o = nubus_oe ? 'b0 : ( nubus_master_dir ? ~rqst_n_3v3 : 'b0); // master out
    assign rqst_n_3v3 = nubus_oe ? 'bZ : (~nubus_master_dir ? rqst_n_5v : 'bZ); // master in
 	
    assign ack_n_5v   = nubus_oe ? 'bZ : ((nubus_master_dir ^ ~tmoen) ? ack_n_3v3  : 'bZ); // slave out/in

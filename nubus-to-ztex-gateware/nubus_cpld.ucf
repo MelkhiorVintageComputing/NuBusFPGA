@@ -2,9 +2,9 @@
 NET "fpga_to_cpld_clk"            LOC =  "S:PIN1";
 NET "tmoen"            LOC =  "S:PIN23";
 NET "fpga_to_cpld_signal"            LOC =  "S:PIN39";
-NET "fpga_to_cpld_signal_2"            LOC =  "S:PIN40";
+NET "rqst_o"            LOC =  "S:PIN43";
 
-NET "rqst_n_5v" LOC = "S:PIN43";
+NET "rqst_n_5v" LOC = "S:PIN40";
 NET "rqst_n_3v3" LOC = "S:PIN36";
 
 #PINLOCK_BEGIN

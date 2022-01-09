@@ -107,46 +107,6 @@ $EndComp
 Wire Wire Line
 	3900 1050 3650 1050
 $Comp
-L Device:C C4
-U 1 1 612BD908
-P 5850 1300
-F 0 "C4" H 5875 1400 50  0000 L CNN
-F 1 "100nF" H 5875 1200 50  0000 L CNN
-F 2 "Capacitor_SMD:C_0603_1608Metric" H 5888 1150 50  0001 C CNN
-F 3 "" H 5850 1300 50  0000 C CNN
-F 4 "www.yageo.com" H 5850 1300 50  0001 C CNN "MNF1_URL"
-F 5 "CC0603KRX7R8BB104" H 5850 1300 50  0001 C CNN "MPN"
-F 6 "603-CC603KRX7R8BB104" H 5850 1300 50  0001 C CNN "Mouser"
-F 7 "?" H 5850 1300 50  0001 C CNN "Digikey"
-F 8 "?" H 5850 1300 50  0001 C CNN "LCSC"
-F 9 "?" H 5850 1300 50  0001 C CNN "Koncar"
-F 10 "TB" H 5850 1300 50  0001 C CNN "Side"
-	1    5850 1300
-	1    0    0    -1  
-$EndComp
-$Comp
-L power:GND #PWR0132
-U 1 1 612BD90F
-P 5850 1450
-F 0 "#PWR0132" H 5850 1200 50  0001 C CNN
-F 1 "GND" H 5855 1277 50  0000 C CNN
-F 2 "" H 5850 1450 50  0001 C CNN
-F 3 "" H 5850 1450 50  0001 C CNN
-	1    5850 1450
-	1    0    0    -1  
-$EndComp
-$Comp
-L power:+3.3V #PWR0133
-U 1 1 612C0425
-P 5850 1150
-F 0 "#PWR0133" H 5850 1000 50  0001 C CNN
-F 1 "+3.3V" H 5865 1323 50  0000 C CNN
-F 2 "" H 5850 1150 50  0001 C CNN
-F 3 "" H 5850 1150 50  0001 C CNN
-	1    5850 1150
-	1    0    0    -1  
-$EndComp
-$Comp
 L C96ABC:C96ABC_NUBUS J3
 U 1 1 61912527
 P 22250 5750
@@ -793,15 +753,11 @@ NoConn ~ 20250 2350
 NoConn ~ 20250 2450
 Text GLabel 13500 7350 2    50   Input ~ 0
 ~RQST_3V3
-Text GLabel 1550 1100 0    50   Input ~ 0
-~NMRQ_3V3
 Text Notes 20350 2800 0    50   ~ 0
 Parity\n(unused)
 Text GLabel 13500 8650 2    50   Input ~ 0
 ~CLK_3V3
-Text GLabel 2100 1100 2    50   Input ~ 0
-~NMRQ_5V
-Text GLabel 11900 7350 0    50   Input ~ 0
+Text GLabel 11900 7150 0    50   Input ~ 0
 ~RQST_5V
 Text GLabel 11900 7250 0    50   Input ~ 0
 ~START_3V3
@@ -1004,10 +960,11 @@ F 0 "U8" H 12700 9428 50  0000 C CNN
 F 1 "XC9536XL-VQ44" H 12700 9337 50  0000 C CNN
 F 2 "For_SeeedStudio:TQFP-44_10x10mm_P0.8mm_Xilinx" H 11700 9250 50  0001 C CNN
 F 3 "https://www.mouser.fr/datasheet/2/903/ds058-1595624.pdf" H 12700 7550 50  0001 C CNN
-F 4 "https://www2.mouser.com/ProductDetail/?qs=rrS6PyfT74dzgfwydI2z8g%3D%3D" H 12700 8050 50  0001 C CNN "URL"
-F 5 "XC9536XL-10VQ44C" H 12700 8050 50  0001 C CNN "MPN"
+F 4 "https://www.mouser.fr/ProductDetail/Xilinx/XC9572XL-5VQ44C?qs=rrS6PyfT74dsfCIFWnnuFQ%3D%3D" H 12700 8050 50  0001 C CNN "URL"
+F 5 "XC9572XL-5VQ44C" H 12700 8050 50  0001 C CNN "MPN"
 F 6 "https://www.xilinx.com/support/documentation/package_specs/vq44.pdf" H 12700 8050 50  0001 C CNN "Drawings"
 F 7 "https://www.xilinx.com/support/documentation/user_guides/ug112.pdf" H 12700 8050 50  0001 C CNN "Drawings2"
+F 8 "XC9536XL-*VQ44C (*=delay, 5/7/10) or XC9572XL-*VQ44C, they are pin compatible" H 12700 8050 50  0001 C CNN "NOTES"
 	1    12700 8050
 	1    0    0    -1  
 $EndComp
@@ -1072,16 +1029,13 @@ U 1 1 61BC9B90
 P 17350 3450
 F 0 "U12" H 17350 4428 50  0000 C CNN
 F 1 "74FCT245ATQG" H 17350 4337 50  0000 C CNN
-F 2 "Package_SO:QSOP-20_3.9x8.7mm_P0.635mm" H 17350 3450 50  0001 C CNN
+F 2 "For_SeeedStudio:QSOP-20_3.9x8.7mm_P0.635mm_Renesas" H 17350 3450 50  0001 C CNN
 F 3 "http://www.ti.com/lit/gpn/sn74LS245" H 17350 3450 50  0001 C CNN
 F 4 "https://www.mouser.fr/ProductDetail/Renesas-IDT/74FCT245ATQG?qs=JcGQCygHkIZJMVzrAcertA%3D%3D" H 17350 3450 50  0001 C CNN "URL"
 F 5 "74FCT245ATQG" H 17350 3450 50  0001 C CNN "MPN"
 	1    17350 3450
 	-1   0    0    -1  
 $EndComp
-Wire Wire Line
-	17600 2350 17550 2350
-Connection ~ 17550 2350
 Wire Wire Line
 	17550 2350 17350 2350
 Wire Wire Line
@@ -1146,16 +1100,13 @@ U 1 1 61BCFF5A
 P 15350 3450
 F 0 "U11" H 15350 4428 50  0000 C CNN
 F 1 "74FCT245ATQG" H 15350 4337 50  0000 C CNN
-F 2 "Package_SO:QSOP-20_3.9x8.7mm_P0.635mm" H 15350 3450 50  0001 C CNN
+F 2 "For_SeeedStudio:QSOP-20_3.9x8.7mm_P0.635mm_Renesas" H 15350 3450 50  0001 C CNN
 F 3 "http://www.ti.com/lit/gpn/sn74LS245" H 15350 3450 50  0001 C CNN
 F 4 "74FCT245ATQG" H 15350 3450 50  0001 C CNN "MPN"
 F 5 "https://www.mouser.fr/ProductDetail/Renesas-IDT/74FCT245ATQG?qs=JcGQCygHkIZJMVzrAcertA%3D%3D" H 15350 3450 50  0001 C CNN "URL"
 	1    15350 3450
 	-1   0    0    -1  
 $EndComp
-Wire Wire Line
-	15600 2350 15550 2350
-Connection ~ 15550 2350
 Wire Wire Line
 	15550 2350 15350 2350
 Wire Wire Line
@@ -1220,16 +1171,13 @@ U 1 1 61BD1F0E
 P 13300 3450
 F 0 "U10" H 13300 4428 50  0000 C CNN
 F 1 "74FCT245ATQG" H 13300 4337 50  0000 C CNN
-F 2 "Package_SO:QSOP-20_3.9x8.7mm_P0.635mm" H 13300 3450 50  0001 C CNN
+F 2 "For_SeeedStudio:QSOP-20_3.9x8.7mm_P0.635mm_Renesas" H 13300 3450 50  0001 C CNN
 F 3 "http://www.ti.com/lit/gpn/sn74LS245" H 13300 3450 50  0001 C CNN
 F 4 "74FCT245ATQG" H 13300 3450 50  0001 C CNN "MPN"
 F 5 "https://www.mouser.fr/ProductDetail/Renesas-IDT/74FCT245ATQG?qs=JcGQCygHkIZJMVzrAcertA%3D%3D" H 13300 3450 50  0001 C CNN "URL"
 	1    13300 3450
 	-1   0    0    -1  
 $EndComp
-Wire Wire Line
-	13550 2350 13500 2350
-Connection ~ 13500 2350
 Wire Wire Line
 	13500 2350 13300 2350
 Wire Wire Line
@@ -1294,17 +1242,15 @@ U 1 1 61BD1F3B
 P 11250 3450
 F 0 "U9" H 11250 4428 50  0000 C CNN
 F 1 "74FCT245ATQG" H 11250 4337 50  0000 C CNN
-F 2 "Package_SO:QSOP-20_3.9x8.7mm_P0.635mm" H 11250 3450 50  0001 C CNN
+F 2 "For_SeeedStudio:QSOP-20_3.9x8.7mm_P0.635mm_Renesas" H 11250 3450 50  0001 C CNN
 F 3 "http://www.ti.com/lit/gpn/sn74LS245" H 11250 3450 50  0001 C CNN
 F 4 "74FCT245ATQG" H 11250 3450 50  0001 C CNN "MPN"
 F 5 "https://www.mouser.fr/ProductDetail/Renesas-IDT/74FCT245ATQG?qs=JcGQCygHkIZJMVzrAcertA%3D%3D" H 11250 3450 50  0001 C CNN "URL"
 F 6 "https://www.renesas.com/us/en/package/pcg20" H 11250 3450 50  0001 C CNN "Drawings"
+F 7 "https://www.renesas.com/document/psc/pcpcg-package-outline-150-body-width-qsop-025-pitch?language=en" H 11250 3450 50  0001 C CNN "Datasheet - Packaging"
 	1    11250 3450
 	-1   0    0    -1  
 $EndComp
-Wire Wire Line
-	11500 2350 11450 2350
-Connection ~ 11450 2350
 Wire Wire Line
 	11450 2350 11250 2350
 Wire Wire Line
@@ -1343,84 +1289,9 @@ Text GLabel 13500 8750 2    39   Input ~ 8
 NUBUS_OE
 Text GLabel 13500 8450 2    39   Input ~ 8
 NUBUS_MASTER_DIR
-$Comp
-L 74xGxx:74LVC1G07 U1
-U 1 1 61C1A60B
-P 1850 1100
-F 0 "U1" H 1825 1367 50  0000 C CNN
-F 1 "74LVC1G07" H 1825 1276 50  0000 C CNN
-F 2 "Package_TO_SOT_SMD:SOT-23-5" H 1850 1100 50  0001 C CNN
-F 3 "https://www.ti.com/lit/ds/symlink/sn74lvc1g07.pdf?ts=1639816558742" H 1850 1100 50  0001 C CNN
-F 4 "SN74LVC1G07DBVR" H 1850 1100 50  0001 C CNN "MPN"
-F 5 "https://www.mouser.fr/ProductDetail/Texas-Instruments/SN74LVC1G07DBVR?qs=FM6NhYOeeBXhZlYg%2Fa2W9g%3D%3D" H 1850 1100 50  0001 C CNN "URL"
-	1    1850 1100
-	1    0    0    -1  
-$EndComp
-$Comp
-L Device:R R?
-U 1 1 61C22B0F
-P 1550 1250
-AR Path="/5F6B165A/61C22B0F" Ref="R?"  Part="1" 
-AR Path="/5F679B53/61C22B0F" Ref="R?"  Part="1" 
-AR Path="/618F532C/61C22B0F" Ref="R17"  Part="1" 
-F 0 "R17" V 1630 1250 50  0000 C CNN
-F 1 "10k" V 1550 1250 50  0000 C CNN
-F 2 "Resistor_SMD:R_0603_1608Metric" V 1480 1250 50  0001 C CNN
-F 3 "" H 1550 1250 50  0000 C CNN
-F 4 "0603WAF1002T5E" V 1550 650 50  0001 C CNN "MPN"
-	1    1550 1250
-	-1   0    0    1   
-$EndComp
 Connection ~ 14000 6850
-$Comp
-L Device:C C26
-U 1 1 61C25CBE
-P 900 1550
-F 0 "C26" H 925 1650 50  0000 L CNN
-F 1 "100nF" H 925 1450 50  0000 L CNN
-F 2 "Capacitor_SMD:C_0603_1608Metric" H 938 1400 50  0001 C CNN
-F 3 "" H 900 1550 50  0000 C CNN
-F 4 "www.yageo.com" H 900 1550 50  0001 C CNN "MNF1_URL"
-F 5 "CC0603KRX7R8BB104" H 900 1550 50  0001 C CNN "MPN"
-F 6 "603-CC603KRX7R8BB104" H 900 1550 50  0001 C CNN "Mouser"
-F 7 "?" H 900 1550 50  0001 C CNN "Digikey"
-F 8 "?" H 900 1550 50  0001 C CNN "LCSC"
-F 9 "?" H 900 1550 50  0001 C CNN "Koncar"
-F 10 "TB" H 900 1550 50  0001 C CNN "Side"
-	1    900  1550
-	1    0    0    -1  
-$EndComp
-Wire Wire Line
-	1550 1400 900  1400
-$Comp
-L power:+3V3 #PWR0206
-U 1 1 61C27361
-P 900 1400
-F 0 "#PWR0206" H 900 1250 50  0001 C CNN
-F 1 "+3V3" H 915 1573 50  0000 C CNN
-F 2 "" H 900 1400 50  0001 C CNN
-F 3 "" H 900 1400 50  0001 C CNN
-	1    900  1400
-	1    0    0    -1  
-$EndComp
-Connection ~ 900  1400
-$Comp
-L power:GND #PWR0207
-U 1 1 61C273DD
-P 900 1700
-F 0 "#PWR0207" H 900 1450 50  0001 C CNN
-F 1 "GND" H 905 1527 50  0000 C CNN
-F 2 "" H 900 1700 50  0001 C CNN
-F 3 "" H 900 1700 50  0001 C CNN
-	1    900  1700
-	1    0    0    -1  
-$EndComp
-Text Notes 800  900  0    50   ~ 0
-Open Collector Output\n(/nmrq)
 Text Notes 14150 2350 0    50   ~ 0
 input/output\n(ad*)\n
-Text Notes 5600 1800 0    50   ~ 0
-shuold be on B2B
 Text GLabel 13500 7250 2    50   Input ~ 0
 ~TM1_5V
 Text GLabel 13500 7450 2    50   Input ~ 0
@@ -1552,23 +1423,835 @@ Wire Wire Line
 Connection ~ 15000 7150
 Text GLabel 13500 8350 2    50   Input ~ 10
 tmoen
-Text GLabel 11900 7150 0    39   Input ~ 8
-fpga_to_cpld_signal_2
 Text GLabel 13500 7150 2    39   Input ~ 8
 fpga_to_cpld_signal
-$Comp
-L power:VCC #PWR0201
-U 1 1 61C459F4
-P 900 1400
-F 0 "#PWR0201" H 900 1250 50  0001 C CNN
-F 1 "VCC" V 918 1527 50  0000 L CNN
-F 2 "" H 900 1400 50  0001 C CNN
-F 3 "" H 900 1400 50  0001 C CNN
-	1    900  1400
-	0    -1   -1   0   
-$EndComp
 NoConn ~ 20250 3150
 NoConn ~ 20250 3300
 NoConn ~ 20250 2800
 NoConn ~ 20250 2700
+Wire Wire Line
+	15900 7850 15750 7850
+Wire Wire Line
+	16200 7850 16600 7850
+$Comp
+L Device:R R?
+U 1 1 61D85DF0
+P 16750 7850
+AR Path="/5F6B165A/61D85DF0" Ref="R?"  Part="1" 
+AR Path="/5F67E4B9/61D85DF0" Ref="R?"  Part="1" 
+AR Path="/618E8C75/61D85DF0" Ref="R?"  Part="1" 
+AR Path="/618F532C/61D85DF0" Ref="R21"  Part="1" 
+F 0 "R21" V 16830 7850 50  0000 C CNN
+F 1 "549" V 16750 7850 50  0000 C CNN
+F 2 "Resistor_SMD:R_0603_1608Metric" V 16680 7850 50  0001 C CNN
+F 3 "" H 16750 7850 50  0000 C CNN
+F 4 "0603WAF5490T5E" V 16750 7850 50  0001 C CNN "MPN"
+F 5 "https://lcsc.com/product-detail/Chip-Resistor-Surface-Mount_UNI-ROYAL-Uniroyal-Elec-0603WAF5490T5E_C23079.html" V 16750 7850 50  0001 C CNN "URL"
+	1    16750 7850
+	0    1    1    0   
+$EndComp
+$Comp
+L Device:LED_ALT D?
+U 1 1 61D85DFA
+P 16050 7850
+AR Path="/5F6B165A/61D85DFA" Ref="D?"  Part="1" 
+AR Path="/5F67E4B9/61D85DFA" Ref="D?"  Part="1" 
+AR Path="/618E8C75/61D85DFA" Ref="D?"  Part="1" 
+AR Path="/618F532C/61D85DFA" Ref="D1"  Part="1" 
+F 0 "D1" H 16050 7950 50  0000 C CNN
+F 1 "GREEN" H 16100 7700 50  0000 R CNN
+F 2 "LED_SMD:LED_0805_2012Metric" H 16050 7850 50  0001 C CNN
+F 3 "https://www.lcsc.com/product-detail/Light-Emitting-Diodes-LED_Lite-On-LTST-C170KGKT_C98221.html" H 16050 7850 50  0001 C CNN
+F 4 "www.liteon.com" H 16050 7850 60  0001 C CNN "MNF1_URL"
+F 5 "LTST-C170KGKT" H 16050 7850 60  0001 C CNN "MPN"
+F 6 "https://www.lcsc.com/product-detail/Light-Emitting-Diodes-LED_Lite-On-LTST-C170KGKT_C98221.html" H 16050 7850 50  0001 C CNN "URL"
+	1    16050 7850
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	15900 8350 15750 8350
+Wire Wire Line
+	16200 8350 16600 8350
+$Comp
+L Device:R R?
+U 1 1 61D85E0D
+P 16750 8350
+AR Path="/5F6B165A/61D85E0D" Ref="R?"  Part="1" 
+AR Path="/5F67E4B9/61D85E0D" Ref="R?"  Part="1" 
+AR Path="/618E8C75/61D85E0D" Ref="R?"  Part="1" 
+AR Path="/618F532C/61D85E0D" Ref="R22"  Part="1" 
+F 0 "R22" V 16830 8350 50  0000 C CNN
+F 1 "549" V 16750 8350 50  0000 C CNN
+F 2 "Resistor_SMD:R_0603_1608Metric" V 16680 8350 50  0001 C CNN
+F 3 "" H 16750 8350 50  0000 C CNN
+F 4 "0603WAF5490T5E" V 16750 8350 50  0001 C CNN "MPN"
+F 5 "https://lcsc.com/product-detail/Chip-Resistor-Surface-Mount_UNI-ROYAL-Uniroyal-Elec-0603WAF5490T5E_C23079.html" V 16750 8350 50  0001 C CNN "URL"
+	1    16750 8350
+	0    1    1    0   
+$EndComp
+$Comp
+L Device:LED_ALT D?
+U 1 1 61D85E17
+P 16050 8350
+AR Path="/5F6B165A/61D85E17" Ref="D?"  Part="1" 
+AR Path="/5F67E4B9/61D85E17" Ref="D?"  Part="1" 
+AR Path="/618E8C75/61D85E17" Ref="D?"  Part="1" 
+AR Path="/618F532C/61D85E17" Ref="D6"  Part="1" 
+F 0 "D6" H 16050 8450 50  0000 C CNN
+F 1 "GREEN" H 16100 8200 50  0000 R CNN
+F 2 "LED_SMD:LED_0805_2012Metric" H 16050 8350 50  0001 C CNN
+F 3 "https://www.lcsc.com/product-detail/Light-Emitting-Diodes-LED_Lite-On-LTST-C170KGKT_C98221.html" H 16050 8350 50  0001 C CNN
+F 4 "www.liteon.com" H 16050 8350 60  0001 C CNN "MNF1_URL"
+F 5 "LTST-C170KGKT" H 16050 8350 60  0001 C CNN "MPN"
+F 6 "https://www.lcsc.com/product-detail/Light-Emitting-Diodes-LED_Lite-On-LTST-C170KGKT_C98221.html" H 16050 8350 50  0001 C CNN "URL"
+	1    16050 8350
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	15900 8850 15750 8850
+Wire Wire Line
+	16200 8850 16600 8850
+$Comp
+L Device:R R?
+U 1 1 61D85E2A
+P 16750 8850
+AR Path="/5F6B165A/61D85E2A" Ref="R?"  Part="1" 
+AR Path="/5F67E4B9/61D85E2A" Ref="R?"  Part="1" 
+AR Path="/618E8C75/61D85E2A" Ref="R?"  Part="1" 
+AR Path="/618F532C/61D85E2A" Ref="R27"  Part="1" 
+F 0 "R27" V 16830 8850 50  0000 C CNN
+F 1 "549" V 16750 8850 50  0000 C CNN
+F 2 "Resistor_SMD:R_0603_1608Metric" V 16680 8850 50  0001 C CNN
+F 3 "" H 16750 8850 50  0000 C CNN
+F 4 "0603WAF5490T5E" V 16750 8850 50  0001 C CNN "MPN"
+F 5 "https://lcsc.com/product-detail/Chip-Resistor-Surface-Mount_UNI-ROYAL-Uniroyal-Elec-0603WAF5490T5E_C23079.html" V 16750 8850 50  0001 C CNN "URL"
+	1    16750 8850
+	0    1    1    0   
+$EndComp
+$Comp
+L Device:LED_ALT D?
+U 1 1 61D85E34
+P 16050 8850
+AR Path="/5F6B165A/61D85E34" Ref="D?"  Part="1" 
+AR Path="/5F67E4B9/61D85E34" Ref="D?"  Part="1" 
+AR Path="/618E8C75/61D85E34" Ref="D?"  Part="1" 
+AR Path="/618F532C/61D85E34" Ref="D7"  Part="1" 
+F 0 "D7" H 16050 8950 50  0000 C CNN
+F 1 "GREEN" H 16100 8700 50  0000 R CNN
+F 2 "LED_SMD:LED_0805_2012Metric" H 16050 8850 50  0001 C CNN
+F 3 "https://www.lcsc.com/product-detail/Light-Emitting-Diodes-LED_Lite-On-LTST-C170KGKT_C98221.html" H 16050 8850 50  0001 C CNN
+F 4 "www.liteon.com" H 16050 8850 60  0001 C CNN "MNF1_URL"
+F 5 "LTST-C170KGKT" H 16050 8850 60  0001 C CNN "MPN"
+F 6 "https://www.lcsc.com/product-detail/Light-Emitting-Diodes-LED_Lite-On-LTST-C170KGKT_C98221.html" H 16050 8850 50  0001 C CNN "URL"
+	1    16050 8850
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	15900 9350 15750 9350
+Wire Wire Line
+	16200 9350 16600 9350
+$Comp
+L Device:R R?
+U 1 1 61D85E47
+P 16750 9350
+AR Path="/5F6B165A/61D85E47" Ref="R?"  Part="1" 
+AR Path="/5F67E4B9/61D85E47" Ref="R?"  Part="1" 
+AR Path="/618E8C75/61D85E47" Ref="R?"  Part="1" 
+AR Path="/618F532C/61D85E47" Ref="R28"  Part="1" 
+F 0 "R28" V 16830 9350 50  0000 C CNN
+F 1 "549" V 16750 9350 50  0000 C CNN
+F 2 "Resistor_SMD:R_0603_1608Metric" V 16680 9350 50  0001 C CNN
+F 3 "" H 16750 9350 50  0000 C CNN
+F 4 "0603WAF5490T5E" V 16750 9350 50  0001 C CNN "MPN"
+F 5 "https://lcsc.com/product-detail/Chip-Resistor-Surface-Mount_UNI-ROYAL-Uniroyal-Elec-0603WAF5490T5E_C23079.html" V 16750 9350 50  0001 C CNN "URL"
+	1    16750 9350
+	0    1    1    0   
+$EndComp
+$Comp
+L Device:LED_ALT D?
+U 1 1 61D85E51
+P 16050 9350
+AR Path="/5F6B165A/61D85E51" Ref="D?"  Part="1" 
+AR Path="/5F67E4B9/61D85E51" Ref="D?"  Part="1" 
+AR Path="/618E8C75/61D85E51" Ref="D?"  Part="1" 
+AR Path="/618F532C/61D85E51" Ref="D8"  Part="1" 
+F 0 "D8" H 16050 9450 50  0000 C CNN
+F 1 "GREEN" H 16100 9200 50  0000 R CNN
+F 2 "LED_SMD:LED_0805_2012Metric" H 16050 9350 50  0001 C CNN
+F 3 "https://www.lcsc.com/product-detail/Light-Emitting-Diodes-LED_Lite-On-LTST-C170KGKT_C98221.html" H 16050 9350 50  0001 C CNN
+F 4 "www.liteon.com" H 16050 9350 60  0001 C CNN "MNF1_URL"
+F 5 "LTST-C170KGKT" H 16050 9350 60  0001 C CNN "MPN"
+F 6 "https://www.lcsc.com/product-detail/Light-Emitting-Diodes-LED_Lite-On-LTST-C170KGKT_C98221.html" H 16050 9350 50  0001 C CNN "URL"
+	1    16050 9350
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	16900 8850 16900 9350
+Wire Wire Line
+	16900 8850 16900 8350
+Connection ~ 16900 8850
+Wire Wire Line
+	16900 8350 16900 7850
+Connection ~ 16900 8350
+$Comp
+L power:+3V3 #PWR0212
+U 1 1 61D8C4B9
+P 16900 7850
+F 0 "#PWR0212" H 16900 7700 50  0001 C CNN
+F 1 "+3V3" H 16915 8023 50  0000 C CNN
+F 2 "" H 16900 7850 50  0001 C CNN
+F 3 "" H 16900 7850 50  0001 C CNN
+	1    16900 7850
+	1    0    0    -1  
+$EndComp
+Connection ~ 16900 7850
+Text GLabel 15750 8350 0    50   Input ~ 0
+~ID1_3V3
+Text GLabel 15750 7850 0    50   Input ~ 0
+~ID0_3V3
+Text GLabel 15750 9350 0    50   Input ~ 0
+~ID3_3V3
+Text GLabel 15750 8850 0    50   Input ~ 0
+~ID2_3V3
+Text Notes 15950 7600 0    50   ~ 0
+Slot ID Leds
+Wire Wire Line
+	12900 10300 12750 10300
+Wire Wire Line
+	13200 10300 13600 10300
+$Comp
+L Device:R R?
+U 1 1 61D9E5C8
+P 13750 10300
+AR Path="/5F6B165A/61D9E5C8" Ref="R?"  Part="1" 
+AR Path="/5F67E4B9/61D9E5C8" Ref="R?"  Part="1" 
+AR Path="/618E8C75/61D9E5C8" Ref="R?"  Part="1" 
+AR Path="/618F532C/61D9E5C8" Ref="R29"  Part="1" 
+F 0 "R29" V 13830 10300 50  0000 C CNN
+F 1 "549" V 13750 10300 50  0000 C CNN
+F 2 "Resistor_SMD:R_0603_1608Metric" V 13680 10300 50  0001 C CNN
+F 3 "" H 13750 10300 50  0000 C CNN
+F 4 "0603WAF5490T5E" V 13750 10300 50  0001 C CNN "MPN"
+F 5 "https://lcsc.com/product-detail/Chip-Resistor-Surface-Mount_UNI-ROYAL-Uniroyal-Elec-0603WAF5490T5E_C23079.html" V 13750 10300 50  0001 C CNN "URL"
+	1    13750 10300
+	0    1    1    0   
+$EndComp
+$Comp
+L power:+3V3 #PWR0213
+U 1 1 61D9F40B
+P 13900 10300
+F 0 "#PWR0213" H 13900 10150 50  0001 C CNN
+F 1 "+3V3" H 13915 10473 50  0000 C CNN
+F 2 "" H 13900 10300 50  0001 C CNN
+F 3 "" H 13900 10300 50  0001 C CNN
+	1    13900 10300
+	1    0    0    -1  
+$EndComp
+Text GLabel 12750 10300 0    39   Input ~ 8
+NUBUS_OE
+Wire Wire Line
+	15800 10750 15650 10750
+Wire Wire Line
+	16100 10750 16500 10750
+$Comp
+L Device:R R?
+U 1 1 61DA4E68
+P 16650 10750
+AR Path="/5F6B165A/61DA4E68" Ref="R?"  Part="1" 
+AR Path="/5F67E4B9/61DA4E68" Ref="R?"  Part="1" 
+AR Path="/618E8C75/61DA4E68" Ref="R?"  Part="1" 
+AR Path="/618F532C/61DA4E68" Ref="R30"  Part="1" 
+F 0 "R30" V 16730 10750 50  0000 C CNN
+F 1 "549" V 16650 10750 50  0000 C CNN
+F 2 "Resistor_SMD:R_0603_1608Metric" V 16580 10750 50  0001 C CNN
+F 3 "" H 16650 10750 50  0000 C CNN
+F 4 "0603WAF5490T5E" V 16650 10750 50  0001 C CNN "MPN"
+F 5 "https://lcsc.com/product-detail/Chip-Resistor-Surface-Mount_UNI-ROYAL-Uniroyal-Elec-0603WAF5490T5E_C23079.html" V 16650 10750 50  0001 C CNN "URL"
+	1    16650 10750
+	0    1    1    0   
+$EndComp
+$Comp
+L Device:LED_ALT D?
+U 1 1 61DA4E72
+P 15950 10750
+AR Path="/5F6B165A/61DA4E72" Ref="D?"  Part="1" 
+AR Path="/5F67E4B9/61DA4E72" Ref="D?"  Part="1" 
+AR Path="/618E8C75/61DA4E72" Ref="D?"  Part="1" 
+AR Path="/618F532C/61DA4E72" Ref="D10"  Part="1" 
+F 0 "D10" H 15950 10850 50  0000 C CNN
+F 1 "YELLOW" H 16000 10600 50  0000 R CNN
+F 2 "LED_SMD:LED_0805_2012Metric" H 15950 10750 50  0001 C CNN
+F 3 "https://lcsc.com/product-detail/Light-Emitting-Diodes-LED_Lite-On-LTST-C170KSKT_C125091.html" H 15950 10750 50  0001 C CNN
+F 4 "www.liteon.com" H 15950 10750 60  0001 C CNN "MNF1_URL"
+F 5 "LTST-C170KSKT" H 15950 10750 60  0001 C CNN "MPN"
+F 6 "https://lcsc.com/product-detail/Light-Emitting-Diodes-LED_Lite-On-LTST-C170KSKT_C125091.html" H 15950 10750 50  0001 C CNN "URL"
+	1    15950 10750
+	1    0    0    -1  
+$EndComp
+$Comp
+L power:+3V3 #PWR0214
+U 1 1 61DA4E79
+P 16800 10750
+F 0 "#PWR0214" H 16800 10600 50  0001 C CNN
+F 1 "+3V3" H 16815 10923 50  0000 C CNN
+F 2 "" H 16800 10750 50  0001 C CNN
+F 3 "" H 16800 10750 50  0001 C CNN
+	1    16800 10750
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	15800 11050 15650 11050
+Wire Wire Line
+	16100 11050 16500 11050
+$Comp
+L Device:R R?
+U 1 1 61DA5DAA
+P 16650 11050
+AR Path="/5F6B165A/61DA5DAA" Ref="R?"  Part="1" 
+AR Path="/5F67E4B9/61DA5DAA" Ref="R?"  Part="1" 
+AR Path="/618E8C75/61DA5DAA" Ref="R?"  Part="1" 
+AR Path="/618F532C/61DA5DAA" Ref="R31"  Part="1" 
+F 0 "R31" V 16730 11050 50  0000 C CNN
+F 1 "549" V 16650 11050 50  0000 C CNN
+F 2 "Resistor_SMD:R_0603_1608Metric" V 16580 11050 50  0001 C CNN
+F 3 "" H 16650 11050 50  0000 C CNN
+F 4 "0603WAF5490T5E" V 16650 11050 50  0001 C CNN "MPN"
+F 5 "https://lcsc.com/product-detail/Chip-Resistor-Surface-Mount_UNI-ROYAL-Uniroyal-Elec-0603WAF5490T5E_C23079.html" V 16650 11050 50  0001 C CNN "URL"
+	1    16650 11050
+	0    1    1    0   
+$EndComp
+$Comp
+L Device:LED_ALT D?
+U 1 1 61DA5DB4
+P 15950 11050
+AR Path="/5F6B165A/61DA5DB4" Ref="D?"  Part="1" 
+AR Path="/5F67E4B9/61DA5DB4" Ref="D?"  Part="1" 
+AR Path="/618E8C75/61DA5DB4" Ref="D?"  Part="1" 
+AR Path="/618F532C/61DA5DB4" Ref="D11"  Part="1" 
+F 0 "D11" H 15950 11150 50  0000 C CNN
+F 1 "YELLOW" H 16000 10900 50  0000 R CNN
+F 2 "LED_SMD:LED_0805_2012Metric" H 15950 11050 50  0001 C CNN
+F 3 "https://lcsc.com/product-detail/Light-Emitting-Diodes-LED_Lite-On-LTST-C170KSKT_C125091.html" H 15950 11050 50  0001 C CNN
+F 4 "www.liteon.com" H 15950 11050 60  0001 C CNN "MNF1_URL"
+F 5 "LTST-C170KSKT" H 15950 11050 60  0001 C CNN "MPN"
+F 6 "https://lcsc.com/product-detail/Light-Emitting-Diodes-LED_Lite-On-LTST-C170KSKT_C125091.html" H 15950 11050 50  0001 C CNN "URL"
+	1    15950 11050
+	1    0    0    -1  
+$EndComp
+$Comp
+L power:+3V3 #PWR0215
+U 1 1 61DA5DBB
+P 16800 11050
+F 0 "#PWR0215" H 16800 10900 50  0001 C CNN
+F 1 "+3V3" H 16815 11223 50  0000 C CNN
+F 2 "" H 16800 11050 50  0001 C CNN
+F 3 "" H 16800 11050 50  0001 C CNN
+	1    16800 11050
+	1    0    0    -1  
+$EndComp
+Text GLabel 15650 10750 0    50   Input ~ 0
+~TM1_3V3
+Text GLabel 15650 11050 0    50   Input ~ 0
+~TM0_3V3
+Text Notes 16900 10300 0    50   ~ 0
+Signals Tap Leds
+Wire Wire Line
+	15800 11550 15650 11550
+Wire Wire Line
+	16100 11550 16500 11550
+$Comp
+L Device:R R?
+U 1 1 61DABC59
+P 16650 11550
+AR Path="/5F6B165A/61DABC59" Ref="R?"  Part="1" 
+AR Path="/5F67E4B9/61DABC59" Ref="R?"  Part="1" 
+AR Path="/618E8C75/61DABC59" Ref="R?"  Part="1" 
+AR Path="/618F532C/61DABC59" Ref="R32"  Part="1" 
+F 0 "R32" V 16730 11550 50  0000 C CNN
+F 1 "549" V 16650 11550 50  0000 C CNN
+F 2 "Resistor_SMD:R_0603_1608Metric" V 16580 11550 50  0001 C CNN
+F 3 "" H 16650 11550 50  0000 C CNN
+F 4 "0603WAF5490T5E" V 16650 11550 50  0001 C CNN "MPN"
+F 5 "https://lcsc.com/product-detail/Chip-Resistor-Surface-Mount_UNI-ROYAL-Uniroyal-Elec-0603WAF5490T5E_C23079.html" V 16650 11550 50  0001 C CNN "URL"
+	1    16650 11550
+	0    1    1    0   
+$EndComp
+$Comp
+L Device:LED_ALT D?
+U 1 1 61DABC63
+P 15950 11550
+AR Path="/5F6B165A/61DABC63" Ref="D?"  Part="1" 
+AR Path="/5F67E4B9/61DABC63" Ref="D?"  Part="1" 
+AR Path="/618E8C75/61DABC63" Ref="D?"  Part="1" 
+AR Path="/618F532C/61DABC63" Ref="D12"  Part="1" 
+F 0 "D12" H 15950 11650 50  0000 C CNN
+F 1 "YELLOW" H 16000 11400 50  0000 R CNN
+F 2 "LED_SMD:LED_0805_2012Metric" H 15950 11550 50  0001 C CNN
+F 3 "https://lcsc.com/product-detail/Light-Emitting-Diodes-LED_Lite-On-LTST-C170KSKT_C125091.html" H 15950 11550 50  0001 C CNN
+F 4 "www.liteon.com" H 15950 11550 60  0001 C CNN "MNF1_URL"
+F 5 "LTST-C170KSKT" H 15950 11550 60  0001 C CNN "MPN"
+F 6 "https://lcsc.com/product-detail/Light-Emitting-Diodes-LED_Lite-On-LTST-C170KSKT_C125091.html" H 15950 11550 50  0001 C CNN "URL"
+	1    15950 11550
+	1    0    0    -1  
+$EndComp
+$Comp
+L power:+3V3 #PWR0216
+U 1 1 61DABC6A
+P 16800 11550
+F 0 "#PWR0216" H 16800 11400 50  0001 C CNN
+F 1 "+3V3" H 16815 11723 50  0000 C CNN
+F 2 "" H 16800 11550 50  0001 C CNN
+F 3 "" H 16800 11550 50  0001 C CNN
+	1    16800 11550
+	1    0    0    -1  
+$EndComp
+Text GLabel 15650 11550 0    50   Input ~ 0
+~ACK_3V3
+Wire Wire Line
+	15800 12150 15650 12150
+Wire Wire Line
+	16100 12150 16500 12150
+$Comp
+L Device:R R?
+U 1 1 61DB5BFB
+P 16650 12150
+AR Path="/5F6B165A/61DB5BFB" Ref="R?"  Part="1" 
+AR Path="/5F67E4B9/61DB5BFB" Ref="R?"  Part="1" 
+AR Path="/618E8C75/61DB5BFB" Ref="R?"  Part="1" 
+AR Path="/618F532C/61DB5BFB" Ref="R33"  Part="1" 
+F 0 "R33" V 16730 12150 50  0000 C CNN
+F 1 "549" V 16650 12150 50  0000 C CNN
+F 2 "Resistor_SMD:R_0603_1608Metric" V 16580 12150 50  0001 C CNN
+F 3 "" H 16650 12150 50  0000 C CNN
+F 4 "0603WAF5490T5E" V 16650 12150 50  0001 C CNN "MPN"
+F 5 "https://lcsc.com/product-detail/Chip-Resistor-Surface-Mount_UNI-ROYAL-Uniroyal-Elec-0603WAF5490T5E_C23079.html" V 16650 12150 50  0001 C CNN "URL"
+	1    16650 12150
+	0    1    1    0   
+$EndComp
+$Comp
+L Device:LED_ALT D?
+U 1 1 61DB5C05
+P 15950 12150
+AR Path="/5F6B165A/61DB5C05" Ref="D?"  Part="1" 
+AR Path="/5F67E4B9/61DB5C05" Ref="D?"  Part="1" 
+AR Path="/618E8C75/61DB5C05" Ref="D?"  Part="1" 
+AR Path="/618F532C/61DB5C05" Ref="D13"  Part="1" 
+F 0 "D13" H 15950 12250 50  0000 C CNN
+F 1 "YELLOW" H 16000 12000 50  0000 R CNN
+F 2 "LED_SMD:LED_0805_2012Metric" H 15950 12150 50  0001 C CNN
+F 3 "https://lcsc.com/product-detail/Light-Emitting-Diodes-LED_Lite-On-LTST-C170KSKT_C125091.html" H 15950 12150 50  0001 C CNN
+F 4 "www.liteon.com" H 15950 12150 60  0001 C CNN "MNF1_URL"
+F 5 "LTST-C170KSKT" H 15950 12150 60  0001 C CNN "MPN"
+F 6 "https://lcsc.com/product-detail/Light-Emitting-Diodes-LED_Lite-On-LTST-C170KSKT_C125091.html" H 15950 12150 50  0001 C CNN "URL"
+	1    15950 12150
+	1    0    0    -1  
+$EndComp
+$Comp
+L power:+3V3 #PWR0217
+U 1 1 61DB5C0C
+P 16800 12150
+F 0 "#PWR0217" H 16800 12000 50  0001 C CNN
+F 1 "+3V3" H 16815 12323 50  0000 C CNN
+F 2 "" H 16800 12150 50  0001 C CNN
+F 3 "" H 16800 12150 50  0001 C CNN
+	1    16800 12150
+	1    0    0    -1  
+$EndComp
+Text GLabel 15650 12150 0    50   Input ~ 0
+~START_3V3
+Wire Wire Line
+	18000 10750 17850 10750
+Wire Wire Line
+	18300 10750 18700 10750
+$Comp
+L Device:R R?
+U 1 1 61DC5CFD
+P 18850 10750
+AR Path="/5F6B165A/61DC5CFD" Ref="R?"  Part="1" 
+AR Path="/5F67E4B9/61DC5CFD" Ref="R?"  Part="1" 
+AR Path="/618E8C75/61DC5CFD" Ref="R?"  Part="1" 
+AR Path="/618F532C/61DC5CFD" Ref="R34"  Part="1" 
+F 0 "R34" V 18930 10750 50  0000 C CNN
+F 1 "549" V 18850 10750 50  0000 C CNN
+F 2 "Resistor_SMD:R_0603_1608Metric" V 18780 10750 50  0001 C CNN
+F 3 "" H 18850 10750 50  0000 C CNN
+F 4 "0603WAF5490T5E" V 18850 10750 50  0001 C CNN "MPN"
+F 5 "https://lcsc.com/product-detail/Chip-Resistor-Surface-Mount_UNI-ROYAL-Uniroyal-Elec-0603WAF5490T5E_C23079.html" V 18850 10750 50  0001 C CNN "URL"
+	1    18850 10750
+	0    1    1    0   
+$EndComp
+$Comp
+L Device:LED_ALT D?
+U 1 1 61DC5D07
+P 18150 10750
+AR Path="/5F6B165A/61DC5D07" Ref="D?"  Part="1" 
+AR Path="/5F67E4B9/61DC5D07" Ref="D?"  Part="1" 
+AR Path="/618E8C75/61DC5D07" Ref="D?"  Part="1" 
+AR Path="/618F532C/61DC5D07" Ref="D14"  Part="1" 
+F 0 "D14" H 18150 10850 50  0000 C CNN
+F 1 "YELLOW" H 18200 10600 50  0000 R CNN
+F 2 "LED_SMD:LED_0805_2012Metric" H 18150 10750 50  0001 C CNN
+F 3 "https://lcsc.com/product-detail/Light-Emitting-Diodes-LED_Lite-On-LTST-C170KSKT_C125091.html" H 18150 10750 50  0001 C CNN
+F 4 "www.liteon.com" H 18150 10750 60  0001 C CNN "MNF1_URL"
+F 5 "LTST-C170KSKT" H 18150 10750 60  0001 C CNN "MPN"
+F 6 "https://lcsc.com/product-detail/Light-Emitting-Diodes-LED_Lite-On-LTST-C170KSKT_C125091.html" H 18150 10750 50  0001 C CNN "URL"
+	1    18150 10750
+	1    0    0    -1  
+$EndComp
+$Comp
+L power:+3V3 #PWR0218
+U 1 1 61DC5D0E
+P 19000 10750
+F 0 "#PWR0218" H 19000 10600 50  0001 C CNN
+F 1 "+3V3" H 19015 10923 50  0000 C CNN
+F 2 "" H 19000 10750 50  0001 C CNN
+F 3 "" H 19000 10750 50  0001 C CNN
+	1    19000 10750
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	18000 11050 17850 11050
+Wire Wire Line
+	18300 11050 18700 11050
+$Comp
+L Device:R R?
+U 1 1 61DC5D18
+P 18850 11050
+AR Path="/5F6B165A/61DC5D18" Ref="R?"  Part="1" 
+AR Path="/5F67E4B9/61DC5D18" Ref="R?"  Part="1" 
+AR Path="/618E8C75/61DC5D18" Ref="R?"  Part="1" 
+AR Path="/618F532C/61DC5D18" Ref="R35"  Part="1" 
+F 0 "R35" V 18930 11050 50  0000 C CNN
+F 1 "549" V 18850 11050 50  0000 C CNN
+F 2 "Resistor_SMD:R_0603_1608Metric" V 18780 11050 50  0001 C CNN
+F 3 "" H 18850 11050 50  0000 C CNN
+F 4 "0603WAF5490T5E" V 18850 11050 50  0001 C CNN "MPN"
+F 5 "https://lcsc.com/product-detail/Chip-Resistor-Surface-Mount_UNI-ROYAL-Uniroyal-Elec-0603WAF5490T5E_C23079.html" V 18850 11050 50  0001 C CNN "URL"
+	1    18850 11050
+	0    1    1    0   
+$EndComp
+$Comp
+L Device:LED_ALT D?
+U 1 1 61DC5D22
+P 18150 11050
+AR Path="/5F6B165A/61DC5D22" Ref="D?"  Part="1" 
+AR Path="/5F67E4B9/61DC5D22" Ref="D?"  Part="1" 
+AR Path="/618E8C75/61DC5D22" Ref="D?"  Part="1" 
+AR Path="/618F532C/61DC5D22" Ref="D15"  Part="1" 
+F 0 "D15" H 18150 11150 50  0000 C CNN
+F 1 "YELLOW" H 18200 10900 50  0000 R CNN
+F 2 "LED_SMD:LED_0805_2012Metric" H 18150 11050 50  0001 C CNN
+F 3 "https://lcsc.com/product-detail/Light-Emitting-Diodes-LED_Lite-On-LTST-C170KSKT_C125091.html" H 18150 11050 50  0001 C CNN
+F 4 "www.liteon.com" H 18150 11050 60  0001 C CNN "MNF1_URL"
+F 5 "LTST-C170KSKT" H 18150 11050 60  0001 C CNN "MPN"
+F 6 "https://lcsc.com/product-detail/Light-Emitting-Diodes-LED_Lite-On-LTST-C170KSKT_C125091.html" H 18150 11050 50  0001 C CNN "URL"
+	1    18150 11050
+	1    0    0    -1  
+$EndComp
+$Comp
+L power:+3V3 #PWR0219
+U 1 1 61DC5D29
+P 19000 11050
+F 0 "#PWR0219" H 19000 10900 50  0001 C CNN
+F 1 "+3V3" H 19015 11223 50  0000 C CNN
+F 2 "" H 19000 11050 50  0001 C CNN
+F 3 "" H 19000 11050 50  0001 C CNN
+	1    19000 11050
+	1    0    0    -1  
+$EndComp
+Text GLabel 17850 10750 0    50   Input ~ 0
+~AD1_3V3
+Text GLabel 17850 11050 0    50   Input ~ 0
+~AD0_3V3
+Wire Wire Line
+	12900 10750 12750 10750
+Wire Wire Line
+	13200 10750 13600 10750
+$Comp
+L Device:R R?
+U 1 1 61DE9DA5
+P 13750 10750
+AR Path="/5F6B165A/61DE9DA5" Ref="R?"  Part="1" 
+AR Path="/5F67E4B9/61DE9DA5" Ref="R?"  Part="1" 
+AR Path="/618E8C75/61DE9DA5" Ref="R?"  Part="1" 
+AR Path="/618F532C/61DE9DA5" Ref="R36"  Part="1" 
+F 0 "R36" V 13830 10750 50  0000 C CNN
+F 1 "549" V 13750 10750 50  0000 C CNN
+F 2 "Resistor_SMD:R_0603_1608Metric" V 13680 10750 50  0001 C CNN
+F 3 "" H 13750 10750 50  0000 C CNN
+F 4 "0603WAF5490T5E" V 13750 10750 50  0001 C CNN "MPN"
+F 5 "https://lcsc.com/product-detail/Chip-Resistor-Surface-Mount_UNI-ROYAL-Uniroyal-Elec-0603WAF5490T5E_C23079.html" V 13750 10750 50  0001 C CNN "URL"
+	1    13750 10750
+	0    1    1    0   
+$EndComp
+$Comp
+L Device:LED_ALT D?
+U 1 1 61DE9DAF
+P 13050 10750
+AR Path="/5F6B165A/61DE9DAF" Ref="D?"  Part="1" 
+AR Path="/5F67E4B9/61DE9DAF" Ref="D?"  Part="1" 
+AR Path="/618E8C75/61DE9DAF" Ref="D?"  Part="1" 
+AR Path="/618F532C/61DE9DAF" Ref="D16"  Part="1" 
+F 0 "D16" H 13050 10850 50  0000 C CNN
+F 1 "ORANGE" H 13100 10600 50  0000 R CNN
+F 2 "LED_SMD:LED_0805_2012Metric" H 13050 10750 50  0001 C CNN
+F 3 "https://www.lcsc.com/product-detail/Light-Emitting-Diodes-LED_Lite-On-LTST-C170KFKT_C284931.html" H 13050 10750 50  0001 C CNN
+F 4 "www.liteon.com" H 13050 10750 60  0001 C CNN "MNF1_URL"
+F 5 "LTST-C170KFKT" H 13050 10750 60  0001 C CNN "MPN"
+F 6 "https://www.lcsc.com/product-detail/Light-Emitting-Diodes-LED_Lite-On-LTST-C170KFKT_C284931.html" H 13050 10750 50  0001 C CNN "URL"
+	1    13050 10750
+	1    0    0    -1  
+$EndComp
+$Comp
+L power:+3V3 #PWR0220
+U 1 1 61DE9DB6
+P 13900 10750
+F 0 "#PWR0220" H 13900 10600 50  0001 C CNN
+F 1 "+3V3" H 13915 10923 50  0000 C CNN
+F 2 "" H 13900 10750 50  0001 C CNN
+F 3 "" H 13900 10750 50  0001 C CNN
+	1    13900 10750
+	1    0    0    -1  
+$EndComp
+Text GLabel 12750 10750 0    39   Input ~ 8
+ARB
+Wire Wire Line
+	12900 11150 12750 11150
+Wire Wire Line
+	13200 11150 13600 11150
+$Comp
+L Device:R R?
+U 1 1 61DEBB52
+P 13750 11150
+AR Path="/5F6B165A/61DEBB52" Ref="R?"  Part="1" 
+AR Path="/5F67E4B9/61DEBB52" Ref="R?"  Part="1" 
+AR Path="/618E8C75/61DEBB52" Ref="R?"  Part="1" 
+AR Path="/618F532C/61DEBB52" Ref="R37"  Part="1" 
+F 0 "R37" V 13830 11150 50  0000 C CNN
+F 1 "549" V 13750 11150 50  0000 C CNN
+F 2 "Resistor_SMD:R_0603_1608Metric" V 13680 11150 50  0001 C CNN
+F 3 "" H 13750 11150 50  0000 C CNN
+F 4 "0603WAF5490T5E" V 13750 11150 50  0001 C CNN "MPN"
+F 5 "https://lcsc.com/product-detail/Chip-Resistor-Surface-Mount_UNI-ROYAL-Uniroyal-Elec-0603WAF5490T5E_C23079.html" V 13750 11150 50  0001 C CNN "URL"
+	1    13750 11150
+	0    1    1    0   
+$EndComp
+$Comp
+L Device:LED_ALT D?
+U 1 1 61DEBB5C
+P 13050 11150
+AR Path="/5F6B165A/61DEBB5C" Ref="D?"  Part="1" 
+AR Path="/5F67E4B9/61DEBB5C" Ref="D?"  Part="1" 
+AR Path="/618E8C75/61DEBB5C" Ref="D?"  Part="1" 
+AR Path="/618F532C/61DEBB5C" Ref="D17"  Part="1" 
+F 0 "D17" H 13050 11250 50  0000 C CNN
+F 1 "ORANGE" H 13100 11000 50  0000 R CNN
+F 2 "LED_SMD:LED_0805_2012Metric" H 13050 11150 50  0001 C CNN
+F 3 "https://www.lcsc.com/product-detail/Light-Emitting-Diodes-LED_Lite-On-LTST-C170KFKT_C284931.html" H 13050 11150 50  0001 C CNN
+F 4 "www.liteon.com" H 13050 11150 60  0001 C CNN "MNF1_URL"
+F 5 "LTST-C170KFKT" H 13050 11150 60  0001 C CNN "MPN"
+F 6 "https://www.lcsc.com/product-detail/Light-Emitting-Diodes-LED_Lite-On-LTST-C170KFKT_C284931.html" H 13050 11150 50  0001 C CNN "URL"
+	1    13050 11150
+	1    0    0    -1  
+$EndComp
+$Comp
+L power:+3V3 #PWR0221
+U 1 1 61DEBB63
+P 13900 11150
+F 0 "#PWR0221" H 13900 11000 50  0001 C CNN
+F 1 "+3V3" H 13915 11323 50  0000 C CNN
+F 2 "" H 13900 11150 50  0001 C CNN
+F 3 "" H 13900 11150 50  0001 C CNN
+	1    13900 11150
+	1    0    0    -1  
+$EndComp
+Text GLabel 12750 11150 0    39   Input ~ 8
+GRANT
+$Comp
+L Device:LED_ALT D?
+U 1 1 61DF2B67
+P 13050 10300
+AR Path="/5F6B165A/61DF2B67" Ref="D?"  Part="1" 
+AR Path="/5F67E4B9/61DF2B67" Ref="D?"  Part="1" 
+AR Path="/618E8C75/61DF2B67" Ref="D?"  Part="1" 
+AR Path="/618F532C/61DF2B67" Ref="D9"  Part="1" 
+F 0 "D9" H 13050 10400 50  0000 C CNN
+F 1 "ORANGE" H 13100 10150 50  0000 R CNN
+F 2 "LED_SMD:LED_0805_2012Metric" H 13050 10300 50  0001 C CNN
+F 3 "https://www.lcsc.com/product-detail/Light-Emitting-Diodes-LED_Lite-On-LTST-C170KFKT_C284931.html" H 13050 10300 50  0001 C CNN
+F 4 "www.liteon.com" H 13050 10300 60  0001 C CNN "MNF1_URL"
+F 5 "LTST-C170KFKT" H 13050 10300 60  0001 C CNN "MPN"
+F 6 "https://www.lcsc.com/product-detail/Light-Emitting-Diodes-LED_Lite-On-LTST-C170KFKT_C284931.html" H 13050 10300 50  0001 C CNN "URL"
+	1    13050 10300
+	1    0    0    -1  
+$EndComp
+Text Notes 12650 10050 0    50   ~ 0
+Internal signal tap leds
+$Comp
+L Transistor_BJT:MMBT3904 Q1
+U 1 1 61E03DF2
+P 1900 2450
+F 0 "Q1" H 2091 2496 50  0000 L CNN
+F 1 "MMBT3904" H 2091 2405 50  0000 L CNN
+F 2 "Package_TO_SOT_SMD:SOT-23" H 2100 2375 50  0001 L CIN
+F 3 "https://www.fairchildsemi.com/datasheets/2N/2N3904.pdf" H 1900 2450 50  0001 L CNN
+F 4 "MMBT3904" H 1900 2450 50  0001 C CNN "MPN"
+	1    1900 2450
+	1    0    0    -1  
+$EndComp
+$Comp
+L Device:R R?
+U 1 1 61E08344
+P 1550 2450
+AR Path="/5F6B165A/61E08344" Ref="R?"  Part="1" 
+AR Path="/5F679B53/61E08344" Ref="R?"  Part="1" 
+AR Path="/5F69F4EF/61E08344" Ref="R?"  Part="1" 
+AR Path="/60D72F2C/61E08344" Ref="R?"  Part="1" 
+AR Path="/619A5A47/61E08344" Ref="R?"  Part="1" 
+AR Path="/61B604DE/61E08344" Ref="R?"  Part="1" 
+AR Path="/618F532C/61E08344" Ref="R17"  Part="1" 
+F 0 "R17" V 1630 2450 50  0000 C CNN
+F 1 "27" V 1550 2450 50  0000 C CNN
+F 2 "Resistor_SMD:R_0603_1608Metric" V 1480 2450 50  0001 C CNN
+F 3 "" H 1550 2450 50  0000 C CNN
+F 4 "0603WAF270JT5E" V 1550 2450 50  0001 C CNN "MPN"
+F 5 "ERJ-3EKF27R0V" V 1550 1850 50  0001 C CNN "MPN-ALT"
+F 6 "https://lcsc.com/product-detail/Chip-Resistor-Surface-Mount_UNI-ROYAL-Uniroyal-Elec-0603WAF270JT5E_C25190.html" V 1550 2450 50  0001 C CNN "URL"
+	1    1550 2450
+	0    1    1    0   
+$EndComp
+Text GLabel 2000 2250 2    50   Input ~ 0
+~NMRQ_5V
+$Comp
+L power:GND #PWR0201
+U 1 1 61E09FB0
+P 2000 2650
+F 0 "#PWR0201" H 2000 2400 50  0001 C CNN
+F 1 "GND" H 2005 2477 50  0000 C CNN
+F 2 "" H 2000 2650 50  0001 C CNN
+F 3 "" H 2000 2650 50  0001 C CNN
+	1    2000 2650
+	1    0    0    -1  
+$EndComp
+Text GLabel 1400 2450 0    50   Input ~ 0
+NMRQ
+$Comp
+L Device:R R?
+U 1 1 61E0C6B2
+P 1850 2650
+AR Path="/6193AB43/61E0C6B2" Ref="R?"  Part="1" 
+AR Path="/618F532C/61E0C6B2" Ref="R38"  Part="1" 
+F 0 "R38" H 1920 2696 50  0000 L CNN
+F 1 "1k" H 1920 2605 50  0000 L CNN
+F 2 "Resistor_SMD:R_0603_1608Metric" V 1780 2650 50  0001 C CNN
+F 3 "~" H 1850 2650 50  0001 C CNN
+F 4 "0603WAF1001T5E" H 1850 2650 50  0001 C CNN "MPN"
+F 5 "https://lcsc.com/product-detail/Chip-Resistor-Surface-Mount_UNI-ROYAL-Uniroyal-Elec-0603WAF1001T5E_C21190.html" H 1850 2650 50  0001 C CNN "URL"
+	1    1850 2650
+	0    1    1    0   
+$EndComp
+Connection ~ 2000 2650
+Wire Wire Line
+	1700 2650 1700 2450
+Connection ~ 1700 2450
+Text Notes 950  2150 0    50   ~ 0
+BEWARE: NMRQ from FPGA is active high!
+Text GLabel 11900 7350 0    50   Input ~ 0
+RQST_o
+$Comp
+L Transistor_BJT:MMBT3904 Q2
+U 1 1 61E1E3D6
+P 1900 3500
+F 0 "Q2" H 2091 3546 50  0000 L CNN
+F 1 "MMBT3904" H 2091 3455 50  0000 L CNN
+F 2 "Package_TO_SOT_SMD:SOT-23" H 2100 3425 50  0001 L CIN
+F 3 "https://www.fairchildsemi.com/datasheets/2N/2N3904.pdf" H 1900 3500 50  0001 L CNN
+F 4 "MMBT3904" H 1900 3500 50  0001 C CNN "MPN"
+	1    1900 3500
+	1    0    0    -1  
+$EndComp
+$Comp
+L Device:R R?
+U 1 1 61E1E3E0
+P 1550 3500
+AR Path="/5F6B165A/61E1E3E0" Ref="R?"  Part="1" 
+AR Path="/5F679B53/61E1E3E0" Ref="R?"  Part="1" 
+AR Path="/5F69F4EF/61E1E3E0" Ref="R?"  Part="1" 
+AR Path="/60D72F2C/61E1E3E0" Ref="R?"  Part="1" 
+AR Path="/619A5A47/61E1E3E0" Ref="R?"  Part="1" 
+AR Path="/61B604DE/61E1E3E0" Ref="R?"  Part="1" 
+AR Path="/618F532C/61E1E3E0" Ref="R39"  Part="1" 
+F 0 "R39" V 1630 3500 50  0000 C CNN
+F 1 "27" V 1550 3500 50  0000 C CNN
+F 2 "Resistor_SMD:R_0603_1608Metric" V 1480 3500 50  0001 C CNN
+F 3 "" H 1550 3500 50  0000 C CNN
+F 4 "0603WAF270JT5E" V 1550 3500 50  0001 C CNN "MPN"
+F 5 "ERJ-3EKF27R0V" V 1550 2900 50  0001 C CNN "MPN-ALT"
+F 6 "https://lcsc.com/product-detail/Chip-Resistor-Surface-Mount_UNI-ROYAL-Uniroyal-Elec-0603WAF270JT5E_C25190.html" V 1550 3500 50  0001 C CNN "URL"
+	1    1550 3500
+	0    1    1    0   
+$EndComp
+$Comp
+L power:GND #PWR0206
+U 1 1 61E1E3E8
+P 2000 3700
+F 0 "#PWR0206" H 2000 3450 50  0001 C CNN
+F 1 "GND" H 2005 3527 50  0000 C CNN
+F 2 "" H 2000 3700 50  0001 C CNN
+F 3 "" H 2000 3700 50  0001 C CNN
+	1    2000 3700
+	1    0    0    -1  
+$EndComp
+Text GLabel 1400 3500 0    50   Input ~ 0
+RQST_o
+$Comp
+L Device:R R?
+U 1 1 61E1E3F1
+P 1850 3700
+AR Path="/6193AB43/61E1E3F1" Ref="R?"  Part="1" 
+AR Path="/618F532C/61E1E3F1" Ref="R40"  Part="1" 
+F 0 "R40" H 1920 3746 50  0000 L CNN
+F 1 "1k" H 1920 3655 50  0000 L CNN
+F 2 "Resistor_SMD:R_0603_1608Metric" V 1780 3700 50  0001 C CNN
+F 3 "~" H 1850 3700 50  0001 C CNN
+F 4 "0603WAF1001T5E" H 1850 3700 50  0001 C CNN "MPN"
+F 5 "https://lcsc.com/product-detail/Chip-Resistor-Surface-Mount_UNI-ROYAL-Uniroyal-Elec-0603WAF1001T5E_C21190.html" H 1850 3700 50  0001 C CNN "URL"
+	1    1850 3700
+	0    1    1    0   
+$EndComp
+Connection ~ 2000 3700
+Wire Wire Line
+	1700 3700 1700 3500
+Connection ~ 1700 3500
+Text Notes 950  3200 0    50   ~ 0
+BEWARE: RQST_o from CPLD is active high!
+Text GLabel 2000 3300 2    50   Input ~ 0
+~RQST_5V
+$Comp
+L Device:C C26
+U 1 1 61E28221
+P 15600 7000
+AR Path="/618F532C/61E28221" Ref="C26"  Part="1" 
+AR Path="/6193AB43/61E28221" Ref="C?"  Part="1" 
+F 0 "C26" H 15625 7100 50  0000 L CNN
+F 1 "1uF" H 15625 6900 50  0000 L CNN
+F 2 "Capacitor_SMD:C_0603_1608Metric" H 15638 6850 50  0001 C CNN
+F 3 "" H 15600 7000 50  0000 C CNN
+F 4 "www.yageo.com" H 15600 7000 50  0001 C CNN "MNF1_URL"
+F 5 "CC0603KRX7R8BB105" H 15600 7000 50  0001 C CNN "MPN"
+F 6 "603-CC603KRX7R8BB105" H 15600 7000 50  0001 C CNN "Mouser"
+F 7 "?" H 15600 7000 50  0001 C CNN "Digikey"
+F 8 "?" H 15600 7000 50  0001 C CNN "LCSC"
+F 9 "?" H 15600 7000 50  0001 C CNN "Koncar"
+F 10 "TB" H 15600 7000 50  0001 C CNN "Side"
+F 11 "https://lcsc.com/product-detail/Multilayer-Ceramic-Capacitors-MLCC-SMD-SMT_YAGEO-CC0603KRX7R8BB105_C106858.html" H 15600 7000 50  0001 C CNN "URL"
+	1    15600 7000
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	15600 6850 15250 6850
+Connection ~ 15250 6850
+Wire Wire Line
+	15600 7150 15250 7150
+Connection ~ 15250 7150
 $EndSCHEMATC

@@ -4,7 +4,7 @@ EELAYER 26 0
 EELAYER END
 $Descr A4 11693 8268
 encoding utf-8
-Sheet 5 7
+Sheet 4 7
 Title "sbus-to-ztex blinkey stuff"
 Date ""
 Rev ""
@@ -27,6 +27,7 @@ F 5 "Texas Instruments" H 3300 2700 50  0001 L BNN "MANUFACTURER"
 F 6 "F" H 3300 2700 50  0001 L BNN "PARTREV"
 F 7 "IPC 7351B" H 3300 2700 50  0001 L BNN "STANDARD"
 F 8 "TPD12S016PWR" H 3300 2700 50  0001 C CNN "MPN"
+F 9 "https://lcsc.com/product-detail/Interface-Specialized_Texas-Instruments-TPD12S016PWR_C201665.html" H 3300 2700 50  0001 C CNN "URL"
 	1    3300 2700
 	1    0    0    -1  
 $EndComp

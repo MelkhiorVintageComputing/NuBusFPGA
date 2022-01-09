@@ -26,7 +26,7 @@ from migen.genlib.cdc import BusSynchronizer
 from migen.genlib.resetsync import AsyncResetSynchronizer
 
 from litex.soc.cores.video import VideoVGAPHY
-import cg3_fb
+import toby_fb
 
 # Wishbone stuff
 from sbus_wb import WishboneDomainCrossingMaster
@@ -36,7 +36,7 @@ from nubus_mem_wb import NuBus2Wishbone
 
 class _CRG(Module):
     def __init__(self, platform, sys_clk_freq,
-                 cg3=False,
+                 toby=False,
                  hdmi=False,
                  pix_clk=0):
         self.clock_domains.cd_sys       = ClockDomain() # 100 MHz PLL, reset'ed by NuBus (via pll), SoC/Wishbone main clock
@@ -46,7 +46,7 @@ class _CRG(Module):
         self.clock_domains.cd_native    = ClockDomain(reset_less=True) # 48MHz native, non-reset'ed (for power-on long delay, never reset, we don't want the delay after a warm reset)
         self.clock_domains.cd_nubus      = ClockDomain() # 10 MHz NuBus, reset'ed by NuBus, native NuBus clock domain (25% duty cycle)
         self.clock_domains.cd_nubus90    = ClockDomain() # 20 MHz NuBus90, reset'ed by NuBus, native NuBus90 clock domain (25% duty cycle)
-        if (cg3):
+        if (toby):
             if (not hdmi):
                 self.clock_domains.cd_vga       = ClockDomain(reset_less=True)
             else:
@@ -121,7 +121,7 @@ class _CRG(Module):
         num_adv = num_adv + 1
         num_clk = 0
         
-        if (cg3):
+        if (toby):
             self.submodules.video_pll = video_pll = S7MMCM(speedgrade=platform.speedgrade)
             video_pll.register_clkin(self.clk48_bufg, 48e6)
             if (not hdmi):
@@ -144,7 +144,7 @@ class _CRG(Module):
             
         
 class NuBusFPGA(SoCCore):
-    def __init__(self, variant, version, sys_clk_freq, cg3, hdmi, cg3_res, **kwargs):
+    def __init__(self, variant, version, sys_clk_freq, toby, hdmi, toby_res, **kwargs):
         print(f"Building NuBusFPGA for board version {version}")
         
         kwargs["cpu_type"] = "None"
@@ -156,16 +156,16 @@ class NuBusFPGA(SoCCore):
     
         self.platform = platform = ztex213_nubus.Platform(variant = variant, version = version)
 
-        if (cg3):
-            hres = int(cg3_res.split("@")[0].split("x")[0])
-            vres = int(cg3_res.split("@")[0].split("x")[1])
-            cg3_fb_size = cg3_fb.cg3_rounded_size(hres, vres)
-            print(f"Reserving {cg3_fb_size} bytes ({cg3_fb_size//1048576} MiB) for the CG3/CG6")
+        if (toby):
+            hres = int(toby_res.split("@")[0].split("x")[0])
+            vres = int(toby_res.split("@")[0].split("x")[1])
+            toby_fb_size = toby_fb.toby_rounded_size(hres, vres)
+            print(f"Reserving {toby_fb_size} bytes ({toby_fb_size//1048576} MiB) for the toby")
         else:
             hres = 0
             vres = 0
-            cg3_fb_size = 0
-        litex.soc.cores.video.video_timings.update(cg3_fb.cg3_timings)
+            toby_fb_size = 0
+            # litex.soc.cores.video.video_timings.update(toby_fb.toby_timings)
         
         SoCCore.__init__(self,
                          platform=platform,
@@ -186,18 +186,33 @@ class NuBusFPGA(SoCCore):
         # in 24 bits it's only one megabyte,  $s0 0000 through $sF FFFF
         # they are translated: '$s0 0000-$sF FFFF' to '$Fs00 0000-$Fs0F FFFF' (for s in range $9 through $E)
         self.wb_mem_map = wb_mem_map = {
-            "cg3_mem_short":     0x00000000, # up to 832 KiB of FB memory
-            "csr" :              0x000D0000, # CSR in the middle of the first MB
-            "cg3_bt" :           0x000E0000, # BT for CG3 just before the ROM
+            "toby_mem":          0x00000000, # up to 512 KiB of FB memory
+            "csr" :              0x000D0000, # CSR in the middle of the first MB, oups
+            "toby_bt" :          0x00080000, # BT for toby just before the ROM, 0x70000 long
             "rom":               0x000FF000, # ROM at the end of the first MB (4 KiB of it ATM)
             "END OF FIRST MB" :  0x000FFFFF,
-            "cg3_mem":           0x00100000, # full FB mem, up to 15 MiB
+            "rom1":              0x001FF000, # ROM mirrored
+            "rom2":              0x002FF000, # ROM mirrored
+            "rom3":              0x003FF000, # ROM mirrored
+            "rom4":              0x004FF000, # ROM mirrored
+            "rom5":              0x005FF000, # ROM mirrored
+            "rom6":              0x006FF000, # ROM mirrored
+            "rom7":              0x007FF000, # ROM mirrored
+            "rom8":              0x008FF000, # ROM mirrored
+            "toby_mem_dupl" :    0x00900000, # replicated FB memory
+            "rom9":              0x009FF000, # ROM mirrored
+            "roma":              0x00AFF000, # ROM mirrored
+            "romb":              0x00BFF000, # ROM mirrored
+            "romc":              0x00CFF000, # ROM mirrored
+            "romd":              0x00DFF000, # ROM mirrored
+            "rome":              0x00EFF000, # ROM mirrored
+            "romf":              0x00FFF000, # ROM mirrored
             "END OF SLOT SPACE": 0x00FFFFFF,
             "main_ram":          0x80000000, # not directly reachable from NuBus
-            "video_framebuffer": 0x80000000 + 0x10000000 - cg3_fb_size, # Updated later
+            "video_framebuffer": 0x80000000 + 0x10000000 - toby_fb_size, # Updated later
         }
         self.mem_map.update(wb_mem_map)
-        self.submodules.crg = _CRG(platform=platform, sys_clk_freq=sys_clk_freq, cg3=cg3, pix_clk=litex.soc.cores.video.video_timings[cg3_res]["pix_clk"])
+        self.submodules.crg = _CRG(platform=platform, sys_clk_freq=sys_clk_freq, toby=toby, pix_clk=litex.soc.cores.video.video_timings[toby_res]["pix_clk"])
 
         ## add our custom timings after the clocks have been defined
         xdc_timings_filename = None;
@@ -221,6 +236,8 @@ class NuBusFPGA(SoCCore):
         #    print(hex(rom[i]))
         #print("\n****************************************\n")
         self.add_ram("rom", origin=self.mem_map["rom"], size=2**12, contents=rom_data, mode="r") ### FIXME: round up the prom_data size & check for <= 2**12!
+        # do we need to mirror the rom in *all* 16 mb ?
+        self.bus.add_slave("romf", self.rom.bus, SoCRegion(origin=self.mem_map["romf"], size=2**12, mode="r"))
         #getattr(self,"rom").mem.init = rom_data
         #getattr(self,"rom").mem.depth = 2**16
 
@@ -235,6 +252,7 @@ class NuBusFPGA(SoCCore):
         #               l2_cache_size = 0,
         #)
         #avail_sdram = self.bus.regions["main_ram"].size
+        avail_sdram = 256 * 1024 * 1024
 
         self.submodules.leds = LedChaser(
             pads         = platform.request_all("user_led"),
@@ -242,9 +260,9 @@ class NuBusFPGA(SoCCore):
         self.add_csr("leds")
 
         base_fb = self.wb_mem_map["main_ram"] + avail_sdram - 1048576 # placeholder
-        if (cg3):
-            if (avail_sdram >= cg3_fb_size):
-                avail_sdram = avail_sdram - cg3_fb_size
+        if (toby):
+            if (avail_sdram >= toby_fb_size):
+                avail_sdram = avail_sdram - toby_fb_size
                 base_fb = self.wb_mem_map["main_ram"] + avail_sdram
                 self.wb_mem_map["video_framebuffer"] = base_fb
             else:
@@ -274,16 +292,16 @@ class NuBusFPGA(SoCCore):
         self.submodules.nubus = nubus.NuBus(platform=platform, cd_nubus="nubus")
         self.submodules.nubus2wishbone = ClockDomainsRenamer("nubus")(NuBus2Wishbone(nubus=self.nubus,wb=self.wishbone_master_nubus))
 
-        self.add_ram("ram", origin=self.mem_map["cg3_mem_short"], size=2**16, mode="rw")
+        self.add_ram("ram", origin=self.mem_map["toby_mem"], size=2**16, mode="rw")
 
-        if (cg3):
+        if (toby):
             if (not hdmi):
                 self.submodules.videophy = VideoVGAPHY(platform.request("vga"), clock_domain="vga")
-                self.submodules.cg3 = cg3_fb.cg3(soc=self, phy=self.videophy, timings=cg3_res, clock_domain="vga") # clock_domain for the VGA side, cg3 is running in cd_sys
+                self.submodules.toby = toby_fb.toby(soc=self, phy=self.videophy, timings=toby_res, clock_domain="vga") # clock_domain for the VGA side, toby is running in cd_sys
             else:
                 self.submodules.videophy = VideoS7HDMIPHY(platform.request("hdmi"), clock_domain="hdmi")
-                self.submodules.cg3 = cg3_fb.cg3(soc=self, phy=self.videophy, timings=cg3_res, clock_domain="hdmi") # clock_domain for the VGA side, cg3 is running in cd_sys
-            self.bus.add_slave("cg3_bt", self.cg3.bus, SoCRegion(origin=self.mem_map.get("cg3_bt", None), size=0x1000, cached=False))
+                self.submodules.toby = toby_fb.toby(soc=self, phy=self.videophy, timings=toby_res, clock_domain="hdmi") # clock_domain for the VGA side, toby is running in cd_sys
+            self.bus.add_slave("toby_bt", self.toby.bus, SoCRegion(origin=self.mem_map.get("toby_bt", None), size=0x70000, cached=False))
 
         
 def main():
@@ -292,9 +310,9 @@ def main():
     parser.add_argument("--variant", default="ztex2.13a", help="ZTex board variant (default ztex2.13a)")
     parser.add_argument("--version", default="V1.0", help="NuBusFPGA board version (default V1.0)")
     parser.add_argument("--sys-clk-freq", default=100e6, help="NuBusFPGA system clock (default 100e6 = 100 MHz)")
-    parser.add_argument("--cg3", action="store_true", help="add a CG3 framebuffer")
+    parser.add_argument("--toby", action="store_true", help="add a toby framebuffer")
     parser.add_argument("--hdmi", action="store_true", help="The framebuffer uses HDMI (default to VGA)")
-    parser.add_argument("--cg3-res", default="1152x900@76Hz", help="Specify the CG3resolution")
+    parser.add_argument("--toby-res", default="640x480@60Hz", help="Specify the toby resolution")
     builder_args(parser)
     vivado_build_args(parser)
     args = parser.parse_args()
@@ -303,9 +321,9 @@ def main():
                     variant=args.variant,
                     version=args.version,
                     sys_clk_freq=int(float(args.sys_clk_freq)),
-                    cg3=args.cg3,
+                    toby=args.toby,
                     hdmi=args.hdmi,
-                    cg3_res=args.cg3_res)
+                    toby_res=args.toby_res)
 
     version_for_filename = args.version.replace(".", "_")
 

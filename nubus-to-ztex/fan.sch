@@ -4,7 +4,7 @@ EELAYER 26 0
 EELAYER END
 $Descr A4 11693 8268
 encoding utf-8
-Sheet 7 7
+Sheet 6 7
 Title "sbus-to-ztex blinkey stuff"
 Date ""
 Rev ""
@@ -151,86 +151,8 @@ Wire Wire Line
 Wire Wire Line
 	6600 4500 6200 4500
 Connection ~ 6600 4400
-$Comp
-L Connector:Conn_01x03_Male J10
-U 1 1 61C52A59
-P 4400 5800
-F 0 "J10" H 4506 6078 50  0000 C CNN
-F 1 "Conn_01x03_Male" H 4506 5987 50  0000 C CNN
-F 2 "Connector_Molex:Molex_KK-254_AE-6410-03A_1x03_P2.54mm_Vertical" H 4400 5800 50  0001 C CNN
-F 3 "~" H 4400 5800 50  0001 C CNN
-F 4 "22-27-2031" H 4400 5800 50  0001 C CNN "MPN-ALT"
-F 5 "Molex" H 4400 5800 50  0001 C CNN "Manufacturer-ALT"
-F 6 "https://www.mouser.fr/ProductDetail/Molex/22-27-2031?qs=%2Fha2pyFadugXOaGYK9vaczm7nZ04txhJn3OGcnGWT3U=" H 4400 5800 50  0001 C CNN "URL-ALT"
-F 7 "640456-3" H 4400 5800 50  0001 C CNN "MPN"
-F 8 "TE Connectivity" H 4400 5800 50  0001 C CNN "Manufacturer"
-F 9 "https://www.lcsc.com/product-detail/Wire-To-Board-Wire-To-Wire-Connector_TE-Connectivity-640456-3_C86503.html" H 4400 5800 50  0001 C CNN "URL"
-	1    4400 5800
-	1    0    0    -1  
-$EndComp
-$Comp
-L power:GND #PWR0208
-U 1 1 61C52A60
-P 4600 5700
-F 0 "#PWR0208" H 4600 5450 50  0001 C CNN
-F 1 "GND" V 4605 5572 50  0000 R CNN
-F 2 "" H 4600 5700 50  0001 C CNN
-F 3 "" H 4600 5700 50  0001 C CNN
-	1    4600 5700
-	0    -1   -1   0   
-$EndComp
-$Comp
-L power:GND #PWR0209
-U 1 1 61C52A6C
-P 4600 5900
-F 0 "#PWR0209" H 4600 5650 50  0001 C CNN
-F 1 "GND" V 4605 5772 50  0000 R CNN
-F 2 "" H 4600 5900 50  0001 C CNN
-F 3 "" H 4600 5900 50  0001 C CNN
-	1    4600 5900
-	0    -1   -1   0   
-$EndComp
-$Comp
-L Device:C C?
-U 1 1 61C52A73
-P 5150 5850
-AR Path="/5F69F4EF/61C52A73" Ref="C?"  Part="1" 
-AR Path="/5F6B165A/61C52A73" Ref="C?"  Part="1" 
-AR Path="/61B99D2C/61C52A73" Ref="C33"  Part="1" 
-F 0 "C33" H 5175 5950 50  0000 L CNN
-F 1 "10uF" H 5175 5750 50  0000 L CNN
-F 2 "Capacitor_SMD:C_0805_2012Metric" H 5188 5700 50  0001 C CNN
-F 3 "" H 5150 5850 50  0000 C CNN
-F 4 "GRM21BR61E106MA73L" H 5150 5850 50  0001 C CNN "MPN"
-F 5 "https://lcsc.com/product-detail/Multilayer-Ceramic-Capacitors-MLCC-SMD-SMT_Murata-Electronics-GRM21BR61E106MA73L_C391262.html" H 5150 5850 50  0001 C CNN "URL"
-	1    5150 5850
-	1    0    0    -1  
-$EndComp
-Wire Wire Line
-	4600 5800 5150 5800
-Wire Wire Line
-	5150 5800 5150 5700
-Wire Wire Line
-	4600 5900 5150 5900
-Wire Wire Line
-	5150 5900 5150 6000
-Connection ~ 4600 5900
-$Comp
-L power:+12V #PWR0210
-U 1 1 61C52B88
-P 4600 5800
-F 0 "#PWR0210" H 4600 5650 50  0001 C CNN
-F 1 "+12V" V 4615 5928 50  0000 L CNN
-F 2 "" H 4600 5800 50  0001 C CNN
-F 3 "" H 4600 5800 50  0001 C CNN
-	1    4600 5800
-	0    1    1    0   
-$EndComp
-Connection ~ 4600 5800
 Text Notes 3950 4750 0    50   ~ 0
 5V Fan
-Text Notes 4000 5850 0    50   ~ 0
-12V Fan
 Text Notes 6800 4600 0    50   ~ 0
 3.3V access
 $EndSCHEMATC

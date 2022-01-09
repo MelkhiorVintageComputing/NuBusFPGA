@@ -4,7 +4,7 @@ EELAYER 26 0
 EELAYER END
 $Descr A4 11693 8268
 encoding utf-8
-Sheet 6 7
+Sheet 5 7
 Title ""
 Date ""
 Rev ""
@@ -24,7 +24,8 @@ F 2 "Connector_USB:USB_Micro-B_Molex-105017-0001" H 5150 2750 50  0001 C CNN
 F 3 "https://www.molex.com/pdm_docs/sd/1050170001_sd.pdf" H 5150 2750 50  0001 C CNN
 F 4 "105017-0001" H 5000 2800 50  0001 C CNN "MPN"
 F 5 "Molex" H 5000 2800 50  0001 C CNN "Manufacturer"
-F 6 "https://www.mouser.fr/ProductDetail/Molex/105017-0001?qs=hlXxxvYE36k7QcsR97GUKA%3D%3D" H 5000 2800 50  0001 C CNN "URL"
+F 6 "https://lcsc.com/product-detail/USB-Connectors_MOLEX-1050170001_C136000.html" H 5000 2800 50  0001 C CNN "URL"
+F 7 "https://www.mouser.fr/ProductDetail/Molex/105017-0001?qs=hlXxxvYE36k7QcsR97GUKA%3D%3D" H 5000 2800 50  0001 C CNN "URL-ALT"
 	1    5000 2800
 	-1   0    0    -1  
 $EndComp
@@ -151,7 +152,8 @@ F 1 "SN65220" V 4205 2937 50  0000 L CNN
 F 2 "Package_TO_SOT_SMD:SOT-23-6" H 4600 2700 50  0001 L CNN
 F 3 "http://www.ti.com/lit/ds/symlink/sn65220.pdf" H 4250 3000 50  0001 C CNN
 F 4 "SN65220DBVR" V 4250 2850 50  0001 C CNN "MPN"
-F 5 "https://www2.mouser.com/ProductDetail/Texas-Instruments/SN65220DBVR?qs=5nGYs9Do7G0gEpYxbYqyeA%3D%3D" V 4250 2850 50  0001 C CNN "URL"
+F 5 "https://www2.mouser.com/ProductDetail/Texas-Instruments/SN65220DBVR?qs=5nGYs9Do7G0gEpYxbYqyeA%3D%3D" V 4250 2850 50  0001 C CNN "URL-ALT"
+F 6 "https://lcsc.com/product-detail/TVS_Texas-Instruments-SN65220DBVR_C21787.html" V 4250 2850 50  0001 C CNN "URL"
 	1    4250 2850
 	0    1    -1   0   
 $EndComp

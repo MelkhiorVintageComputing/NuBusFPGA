@@ -4,7 +4,7 @@ EELAYER 26 0
 EELAYER END
 $Descr A4 11693 8268
 encoding utf-8
-Sheet 4 7
+Sheet 7 7
 Title ""
 Date ""
 Rev ""
@@ -242,10 +242,12 @@ F 0 "J4" H 7800 4217 50  0000 C CNN
 F 1 "DB15_Female_HighDensity_MountingHoles" H 7800 4126 50  0000 C CNN
 F 2 "For_SeeedStudio:L77HDE15SD1CH4RHNVGA" H 6850 3750 50  0001 C CNN
 F 3 " ~" H 6850 3750 50  0001 C CNN
-F 4 "L77HDE15SD1CH4F" H 7800 3350 50  0001 C CNN "MPN"
-F 5 "https://www.mouser.fr/ProductDetail/Amphenol/L77HDE15SD1CH4F?qs=mq7kV%2Fq8lk6plQnZOUKCHg%3D%3D" H 7800 3350 50  0001 C CNN "URL"
+F 4 "L77HDE15SD1CH4F" H 7800 3350 50  0001 C CNN "MPN-STD"
+F 5 "https://www.mouser.fr/ProductDetail/Amphenol/L77HDE15SD1CH4F?qs=mq7kV%2Fq8lk6plQnZOUKCHg%3D%3D" H 7800 3350 50  0001 C CNN "URL-STD"
 F 6 "https://www.mouser.com/datasheet/2/18/1/HD_high_density-1501066.pdf" H 7800 3350 50  0001 C CNN "Amphenol Catalog"
 F 7 "4F, 4R, 3R, 3F: variations on the screw bits" H 7800 3350 50  0001 C CNN "Notes"
+F 8 "L77HDE15SD1CH4FVGA" H 7800 3350 50  0001 C CNN "MPN"
+F 9 "https://www.mouser.fr/ProductDetail/Amphenol-Commercial-Products/L77HDE15SD1CH4FVGA?qs=ToP8pWlZ0bNtQSp9f8k5Rw%3D%3D" H 7800 3350 50  0001 C CNN "URL"
 	1    7800 3350
 	1    0    0    -1  
 $EndComp
@@ -585,7 +587,7 @@ F 1 "ADV7125-lqfp48" H 4450 6487 50  0000 C CNN
 F 2 "For_SeeedStudio:ADV7125KSTZ140" H 4450 3850 50  0001 C CNN
 F 3 "https://www.mouser.fr/datasheet/2/609/ADV7125-1503638.pdf" H 4450 3850 50  0001 C CNN
 F 4 "ADV7125JSTZ240" H 4450 3850 50  0001 C CNN "MPN"
-F 5 "https://lcsc.com/product-detail/Digital-To-Analog-Converters-DACs_Analog-Devices-ADV7125KSTZ50_C514374.html" H 4450 3850 50  0001 C CNN "URL"
+F 5 "https://lcsc.com/product-detail/Digital-To-Analog-Converters-DACs_Analog-Devices-ADV7125JSTZ240_C514373.html" H 4450 3850 50  0001 C CNN "URL"
 	1    4450 3850
 	1    0    0    -1  
 $EndComp
@@ -680,8 +682,10 @@ F 0 "U2" H 5950 2725 50  0000 C CNN
 F 1 "AD1580" H 5950 2634 50  0000 C CNN
 F 2 "Package_TO_SOT_SMD:SOT-23" H 5950 2500 50  0001 C CNN
 F 3 "" H 5950 2500 50  0001 C CNN
-F 4 "AD1580ARTZ" H 5950 2500 50  0001 C CNN "MPN"
-F 5 "https://www.mouser.fr/ProductDetail/Analog-Devices/AD1580ARTZ-REEL7?qs=NmRFExCfTkENN3U3%252BacLbA%3D%3D" H 5950 2500 50  0001 C CNN "URL"
+F 4 "AD1580ARTZ" H 5950 2500 50  0001 C CNN "MPN-STD"
+F 5 "https://www.mouser.fr/ProductDetail/Analog-Devices/AD1580ARTZ-REEL7?qs=NmRFExCfTkENN3U3%252BacLbA%3D%3D" H 5950 2500 50  0001 C CNN "URL-STD"
+F 6 "AD1580BRTZ" H 5950 2500 50  0001 C CNN "MPN"
+F 7 "https://www.mouser.fr/ProductDetail/Analog-Devices/AD1580BRTZ-REEL7?qs=NmRFExCfTkFZVi9%2F1ZfkXg%3D%3D" H 5950 2500 50  0001 C CNN "URL"
 	1    5950 2500
 	1    0    0    -1  
 $EndComp

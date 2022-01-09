@@ -114,6 +114,8 @@ F 5 "A2005WR-N-2X7P-B" H 3150 7250 50  0001 C CNN "MPN-ALT Right Angle"
 F 6 "https://www2.mouser.com/ProductDetail/Molex/87833-1420?qs=%2Fha2pyFadujYFYCIYI1IvFCvLi7no9WQYzIL%2FpYxKhg%3D" H 3150 7250 50  0001 C CNN "URL Rihgt Angle"
 F 7 "87831-1420" H 3150 7250 50  0001 C CNN "MPN"
 F 8 "https://www2.mouser.com/ProductDetail/Molex/87831-1420?qs=QtQX4uD3c2VDCL534TqpVg%3D%3D" H 3150 7250 50  0001 C CNN "URL"
+F 9 "https://datasheet.lcsc.com/lcsc/1811051309_MOLEX-878311420_C240854.pdf" H 3150 7250 50  0001 C CNN "Datasheet-ALT"
+F 10 "87831-1419, 87831-1420, 87831-1421, 87831-1436 only change plating" H 3150 7250 50  0001 C CNN "Notes"
 	1    3150 7250
 	1    0    0    -1  
 $EndComp
@@ -329,7 +331,7 @@ Text GLabel 4100 2050 2    50   Input Italic 0
 ~CLK_3V3
 Text GLabel 1600 1350 0    50   Input ~ 0
 ~RQST_3V3
-Text GLabel 4100 1350 2    50   Input ~ 0
+Text GLabel 4750 650  2    50   Input ~ 0
 ~NMRQ_3V3
 Text GLabel 1600 1550 0    50   Input ~ 0
 ~START_3V3
@@ -524,7 +526,7 @@ AR Path="/5F6B165A/61B5DFCC" Ref="D?"  Part="1"
 AR Path="/5F67E4B9/61B5DFCC" Ref="D?"  Part="1" 
 AR Path="/618E8C75/61B5DFCC" Ref="D2"  Part="1" 
 F 0 "D2" H 1000 6000 50  0000 C CNN
-F 1 "RED" H 650 5900 50  0000 R CNN
+F 1 "RED" H 1050 5750 50  0000 R CNN
 F 2 "LED_SMD:LED_0805_2012Metric" H 1000 5900 50  0001 C CNN
 F 3 "https://optoelectronics.liteon.com/upload/download/DS-22-99-0150/LTST-C170KRKT.pdf" H 1000 5900 50  0001 C CNN
 F 4 "www.liteon.com" H 1000 5900 60  0001 C CNN "MNF1_URL"
@@ -576,7 +578,7 @@ AR Path="/5F6B165A/61B5F405" Ref="D?"  Part="1"
 AR Path="/5F67E4B9/61B5F405" Ref="D?"  Part="1" 
 AR Path="/618E8C75/61B5F405" Ref="D3"  Part="1" 
 F 0 "D3" H 1000 6500 50  0000 C CNN
-F 1 "RED" H 650 6400 50  0000 R CNN
+F 1 "RED" H 1050 6250 50  0000 R CNN
 F 2 "LED_SMD:LED_0805_2012Metric" H 1000 6400 50  0001 C CNN
 F 3 "https://optoelectronics.liteon.com/upload/download/DS-22-99-0150/LTST-C170KRKT.pdf" H 1000 6400 50  0001 C CNN
 F 4 "www.liteon.com" H 1000 6400 60  0001 C CNN "MNF1_URL"
@@ -628,7 +630,7 @@ AR Path="/5F6B165A/61B60A6F" Ref="D?"  Part="1"
 AR Path="/5F67E4B9/61B60A6F" Ref="D?"  Part="1" 
 AR Path="/618E8C75/61B60A6F" Ref="D4"  Part="1" 
 F 0 "D4" H 1000 7000 50  0000 C CNN
-F 1 "RED" H 650 6900 50  0000 R CNN
+F 1 "RED" H 1050 6750 50  0000 R CNN
 F 2 "LED_SMD:LED_0805_2012Metric" H 1000 6900 50  0001 C CNN
 F 3 "https://optoelectronics.liteon.com/upload/download/DS-22-99-0150/LTST-C170KRKT.pdf" H 1000 6900 50  0001 C CNN
 F 4 "www.liteon.com" H 1000 6900 60  0001 C CNN "MNF1_URL"
@@ -680,7 +682,7 @@ AR Path="/5F6B165A/61B62362" Ref="D?"  Part="1"
 AR Path="/5F67E4B9/61B62362" Ref="D?"  Part="1" 
 AR Path="/618E8C75/61B62362" Ref="D5"  Part="1" 
 F 0 "D5" H 1000 7500 50  0000 C CNN
-F 1 "RED" H 650 7400 50  0000 R CNN
+F 1 "RED" H 1050 7250 50  0000 R CNN
 F 2 "LED_SMD:LED_0805_2012Metric" H 1000 7400 50  0001 C CNN
 F 3 "https://optoelectronics.liteon.com/upload/download/DS-22-99-0150/LTST-C170KRKT.pdf" H 1000 7400 50  0001 C CNN
 F 4 "www.liteon.com" H 1000 7400 60  0001 C CNN "MNF1_URL"
@@ -864,8 +866,55 @@ F 3 "" H 4750 6950 50  0001 C CNN
 $EndComp
 Text GLabel 7400 1650 0    39   Input ~ 8
 tmoen
-Text GLabel 4100 1850 2    39   Input ~ 8
-fpga_to_cpld_signal_2
 Text GLabel 1600 1750 0    39   Input ~ 8
 fpga_to_cpld_signal
+$Comp
+L Device:C C?
+U 1 1 61F08531
+P 2750 6050
+AR Path="/618F532C/61F08531" Ref="C?"  Part="1" 
+AR Path="/618E8C75/61F08531" Ref="C4"  Part="1" 
+F 0 "C4" H 2775 6150 50  0000 L CNN
+F 1 "100nF" H 2775 5950 50  0000 L CNN
+F 2 "Capacitor_SMD:C_0603_1608Metric" H 2788 5900 50  0001 C CNN
+F 3 "" H 2750 6050 50  0000 C CNN
+F 4 "www.yageo.com" H 2750 6050 50  0001 C CNN "MNF1_URL"
+F 5 "CC0603KRX7R8BB104" H 2750 6050 50  0001 C CNN "MPN"
+F 6 "603-CC603KRX7R8BB104" H 2750 6050 50  0001 C CNN "Mouser"
+F 7 "?" H 2750 6050 50  0001 C CNN "Digikey"
+F 8 "?" H 2750 6050 50  0001 C CNN "LCSC"
+F 9 "?" H 2750 6050 50  0001 C CNN "Koncar"
+F 10 "TB" H 2750 6050 50  0001 C CNN "Side"
+	1    2750 6050
+	1    0    0    -1  
+$EndComp
+$Comp
+L power:GND #PWR0132
+U 1 1 61F08538
+P 2750 6200
+F 0 "#PWR0132" H 2750 5950 50  0001 C CNN
+F 1 "GND" H 2755 6027 50  0000 C CNN
+F 2 "" H 2750 6200 50  0001 C CNN
+F 3 "" H 2750 6200 50  0001 C CNN
+	1    2750 6200
+	1    0    0    -1  
+$EndComp
+$Comp
+L power:+3.3V #PWR0133
+U 1 1 61F0853E
+P 2750 5900
+F 0 "#PWR0133" H 2750 5750 50  0001 C CNN
+F 1 "+3.3V" H 2765 6073 50  0000 C CNN
+F 2 "" H 2750 5900 50  0001 C CNN
+F 3 "" H 2750 5900 50  0001 C CNN
+	1    2750 5900
+	1    0    0    -1  
+$EndComp
+Text Notes 1200 5650 0    50   ~ 0
+User LEDS
+Text GLabel 4100 1350 2    50   Input ~ 0
+NMRQ
+Text Notes 5700 550  2    50   ~ 0
+design use NMRQ (active high) instead
+NoConn ~ 4750 650 
 $EndSCHEMATC
