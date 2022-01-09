@@ -2,7 +2,7 @@
 <export version="D">
   <design>
     <source>/home/dolbeau/MAC/NuBusFPGA/nubus-to-ztex/nubus-to-ztex.sch</source>
-    <date>Sun Jan  9 17:55:32 2022</date>
+    <date>Sun Jan  9 18:16:19 2022</date>
     <tool>Eeschema 5.0.2+dfsg1-1~bpo9+1</tool>
     <sheet number="1" name="/" tstamps="/">
       <title_block>
@@ -334,12 +334,12 @@
       <tstamp>61B12074</tstamp>
     </comp>
     <comp ref="U12">
-      <value>74FCT245ATQG</value>
-      <footprint>For_SeeedStudio:QSOP-20_3.9x8.7mm_P0.635mm_Renesas</footprint>
+      <value>74LVT245PW,118</value>
+      <footprint>For_SeeedStudio:TSSOP-20_4.4x6.5mm_P0.65mm_ForSeeedStudio</footprint>
       <datasheet>http://www.ti.com/lit/gpn/sn74LS245</datasheet>
       <fields>
-        <field name="MPN">74FCT245ATQG</field>
-        <field name="URL">https://www.mouser.fr/ProductDetail/Renesas-IDT/74FCT245ATQG?qs=JcGQCygHkIZJMVzrAcertA%3D%3D</field>
+        <field name="MPN">74LVT245PW,118</field>
+        <field name="URL">https://eu.mouser.com/ProductDetail/Nexperia/74LVT245PW118?qs=me8TqzrmIYWNf3DjNNs5mQ%3D%3D</field>
       </fields>
       <libsource lib="74xx" part="74LS245" description="Octal BUS Transceivers, 3-State outputs"/>
       <sheetpath names="/nubus/" tstamps="/618F532C/"/>
@@ -362,12 +362,12 @@
       <tstamp>61BCFF40</tstamp>
     </comp>
     <comp ref="U11">
-      <value>74FCT245ATQG</value>
-      <footprint>For_SeeedStudio:QSOP-20_3.9x8.7mm_P0.635mm_Renesas</footprint>
+      <value>74LVT245PW,118</value>
+      <footprint>For_SeeedStudio:TSSOP-20_4.4x6.5mm_P0.65mm_ForSeeedStudio</footprint>
       <datasheet>http://www.ti.com/lit/gpn/sn74LS245</datasheet>
       <fields>
-        <field name="MPN">74FCT245ATQG</field>
-        <field name="URL">https://www.mouser.fr/ProductDetail/Renesas-IDT/74FCT245ATQG?qs=JcGQCygHkIZJMVzrAcertA%3D%3D</field>
+        <field name="MPN">74LVT245PW,118</field>
+        <field name="URL">https://eu.mouser.com/ProductDetail/Nexperia/74LVT245PW118?qs=me8TqzrmIYWNf3DjNNs5mQ%3D%3D</field>
       </fields>
       <libsource lib="74xx" part="74LS245" description="Octal BUS Transceivers, 3-State outputs"/>
       <sheetpath names="/nubus/" tstamps="/618F532C/"/>
@@ -390,12 +390,12 @@
       <tstamp>61BD1EF4</tstamp>
     </comp>
     <comp ref="U10">
-      <value>74FCT245ATQG</value>
-      <footprint>For_SeeedStudio:QSOP-20_3.9x8.7mm_P0.635mm_Renesas</footprint>
+      <value>74LVT245PW,118</value>
+      <footprint>For_SeeedStudio:TSSOP-20_4.4x6.5mm_P0.65mm_ForSeeedStudio</footprint>
       <datasheet>http://www.ti.com/lit/gpn/sn74LS245</datasheet>
       <fields>
-        <field name="MPN">74FCT245ATQG</field>
-        <field name="URL">https://www.mouser.fr/ProductDetail/Renesas-IDT/74FCT245ATQG?qs=JcGQCygHkIZJMVzrAcertA%3D%3D</field>
+        <field name="MPN">74LVT245PW,118</field>
+        <field name="URL">https://eu.mouser.com/ProductDetail/Nexperia/74LVT245PW118?qs=me8TqzrmIYWNf3DjNNs5mQ%3D%3D</field>
       </fields>
       <libsource lib="74xx" part="74LS245" description="Octal BUS Transceivers, 3-State outputs"/>
       <sheetpath names="/nubus/" tstamps="/618F532C/"/>
@@ -418,14 +418,14 @@
       <tstamp>61BD1F21</tstamp>
     </comp>
     <comp ref="U9">
-      <value>74FCT245ATQG</value>
-      <footprint>For_SeeedStudio:QSOP-20_3.9x8.7mm_P0.635mm_Renesas</footprint>
+      <value>74LVT245PW,118</value>
+      <footprint>For_SeeedStudio:TSSOP-20_4.4x6.5mm_P0.65mm_ForSeeedStudio</footprint>
       <datasheet>http://www.ti.com/lit/gpn/sn74LS245</datasheet>
       <fields>
         <field name="Datasheet - Packaging">https://www.renesas.com/document/psc/pcpcg-package-outline-150-body-width-qsop-025-pitch?language=en</field>
         <field name="Drawings">https://www.renesas.com/us/en/package/pcg20</field>
-        <field name="MPN">74FCT245ATQG</field>
-        <field name="URL">https://www.mouser.fr/ProductDetail/Renesas-IDT/74FCT245ATQG?qs=JcGQCygHkIZJMVzrAcertA%3D%3D</field>
+        <field name="MPN">74LVT245PW,118</field>
+        <field name="URL">https://eu.mouser.com/ProductDetail/Nexperia/74LVT245PW118?qs=me8TqzrmIYWNf3DjNNs5mQ%3D%3D</field>
       </fields>
       <libsource lib="74xx" part="74LS245" description="Octal BUS Transceivers, 3-State outputs"/>
       <sheetpath names="/nubus/" tstamps="/618F532C/"/>

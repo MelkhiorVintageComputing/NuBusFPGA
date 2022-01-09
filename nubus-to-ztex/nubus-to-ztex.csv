@@ -12,8 +12,8 @@ J5,10029449-111,1,https://www2.mouser.com/ProductDetail/Amphenol-FCI/10029449-11
 J6,105017-0001,1,https://lcsc.com/product-detail/USB-Connectors_MOLEX-1050170001_C136000.html
 R4,1210W2F1004T5E,1,https://www.lcsc.com/product-detail/Chip-Resistor-Surface-Mount_UNI-ROYAL-Uniroyal-Elec-1210W2F1004T5E_C620664.html
 J7,640456-3,1,https://www.lcsc.com/product-detail/Wire-To-Board-Wire-To-Wire-Connector_TE-Connectivity-640456-3_C86503.html
-"U9,U10,U11,U12",74FCT245ATQG,4,https://www.mouser.fr/ProductDetail/Renesas-IDT/74FCT245ATQG?qs=JcGQCygHkIZJMVzrAcertA%3D%3D
 "U3,U8",74LVT125PW,2,
+"U9,U10,U11,U12","74LVT245PW,118",4,https://eu.mouser.com/ProductDetail/Nexperia/74LVT245PW118?qs=me8TqzrmIYWNf3DjNNs5mQ%3D%3D
 J3,85003-0567,1,https://www.mouser.fr/ProductDetail/Molex/85003-0567?qs=U4pz39agNJB6P1oBpJ4bJA%3D%3D
 "J1,J8",87831-1420,2,https://www2.mouser.com/ProductDetail/Molex/87831-1420?qs=QtQX4uD3c2VDCL534TqpVg%3D%3D
 U2,AD1580BRTZ,1,https://www.mouser.fr/ProductDetail/Analog-Devices/AD1580BRTZ-REEL7?qs=NmRFExCfTkFZVi9%2F1ZfkXg%3D%3D
