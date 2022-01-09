@@ -1,10 +1,12 @@
 module nubus_cpld
   (
    input fpga_to_cpld_clk, // unused (extra line from FPGA to CPLD, pin is a clk input)
-	input fpga_to_cpld_signal, // unused (extra line from FPGA to CPLD)
+	inout fpga_to_cpld_signal, // unused (extra line from FPGA to CPLD)
+	inout fpga_to_cpld_signal_2, // unused (extra line from FPGA to CPLD)
    input tmoen,
    input [3:0] id_n_5v,    // ID of this card
-   inout [3:0] arb_n_5v,   // NuBus arbiter's lines
+   input [3:0] arb_n_5v,   // NuBus arbiter's lines
+   output [3:0] arb_o_n,   // NuBus arbiter's control lines
    input       arb, // enable arbitter
    output      grant,   // Grant access
    input reset_n_5v, // reset from NuBus, forwarded
@@ -12,20 +14,30 @@ module nubus_cpld
    output reset_n_3v3, // nubus reset to FPGA
    input nubus_master_dir, // direction of signals, i.e. are we in master mode
    output clk_n_3v3, // nubus clk to FPGA
+   output clk2x_n_3v3, // nubus90 clk to FPGA
    output [3:0] id_n_3v3, // nubus ID of this card to FPGA
    inout tm0_n_3v3, // nubus tm0 to/from FPGA
    inout tm1_n_3v3, // nubus tm1 to/from FPGA
+   inout tm2_n_3v3, // nubus tm2 to/from FPGA
    inout tm0_n_5v, // tm0 from/to NuBus
    inout tm1_n_5v, // tm1 from/to NuBus
+   inout tm2_n_5v, // tm2 from/to NuBus
    input clk_n_5v, // clk from NuBus
+   input clk2x_n_5v, // clk from NuBus90
    inout start_n_3v3, // start to/from FPGA
    inout ack_n_3v3, // ack from/to FPGA
    inout start_n_5v, // start from/to NuBus
    inout ack_n_5v, // ack to/from NuBus
 	input rqst_n_5v,
 	inout rqst_n_3v3,
-	output rqst_o
+	output rqst_o_n
    );
+	
+	// placeholder to make pretend we use the signals
+	assign fpga_to_cpld_signal_2 = fpga_to_cpld_signal ^ fpga_to_cpld_clk;
+	// placeholders
+	assign clk2x_n_3v3 = clk2x_n_5v;
+	assign tm2_n_3v3 = tm2_n_5v;
 
    // clock and pure in -> out pass_through are always on
    assign clk_n_3v3 = clk_n_5v;
@@ -37,7 +49,7 @@ module nubus_cpld
    assign start_n_3v3 = nubus_oe ? 'bZ : (~nubus_master_dir ? start_n_5v : 'bZ); // master in
 	
 	// rqst_o is always driven and is active high
-   assign rqst_o = nubus_oe ? 'b0 : ( nubus_master_dir ? ~rqst_n_3v3 : 'b0); // master out
+   assign rqst_o_n = nubus_oe ? 'b1 : ( nubus_master_dir ? rqst_n_3v3 : 'b1); // master out
    assign rqst_n_3v3 = nubus_oe ? 'bZ : (~nubus_master_dir ? rqst_n_5v : 'bZ); // master in
 	
    assign ack_n_5v   = nubus_oe ? 'bZ : ((nubus_master_dir ^ ~tmoen) ? ack_n_3v3  : 'bZ); // slave out/in
@@ -51,6 +63,7 @@ module nubus_cpld
      (
       .idn(id_n_5v),
       .arbn(arb_n_5v),
+      .arbon(arb_o_n),
       .arbcyn(arb),
       .grant(grant)
       );

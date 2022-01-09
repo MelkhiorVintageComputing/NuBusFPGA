@@ -1,4 +1,4 @@
-## Footprint report - date Sun Jan  9 11:10:59 2022
+## Footprint report - date Sun Jan  9 17:55:10 2022
 ## Created by Pcbnew version kicad 5.0.2+dfsg1-1~bpo9+1
 ## Unit = mm, Angle = deg.
 
@@ -8,6 +8,711 @@ $BOARD
 upper_left_corner -50.005001 -35.064286
 lower_right_corner 400.005001 148.435001
 $EndBOARD
+
+$MODULE "C36"
+reference "C36"
+value "100nF"
+footprint "Capacitor_SMD:C_0603_1608Metric"
+attribut smd
+position 118.500000 85.500000  orientation 180.00
+layer front
+$PAD "1"
+Shape Roundrect Layer front
+position -0.787500  0.000000  size  0.875000  0.950000  orientation 0.00
+drill  0.000000
+shape_offset  0.000000  0.000000
+$EndPAD
+$PAD "2"
+Shape Roundrect Layer front
+position  0.787500  0.000000  size  0.875000  0.950000  orientation 0.00
+drill  0.000000
+shape_offset  0.000000  0.000000
+$EndPAD
+$EndMODULE  C36
+
+$MODULE "U8"
+reference "U8"
+value "74LVC125"
+footprint "Package_SO:TSSOP-14_4.4x5mm_P0.65mm"
+attribut smd
+position 116.000000 89.500000  orientation 0.00
+layer front
+$PAD "1"
+Shape Rect Layer front
+position -2.950000 -1.950000  size  1.450000  0.450000  orientation 0.00
+drill  0.000000
+shape_offset  0.000000  0.000000
+$EndPAD
+$PAD "2"
+Shape Rect Layer front
+position -2.950000 -1.300000  size  1.450000  0.450000  orientation 0.00
+drill  0.000000
+shape_offset  0.000000  0.000000
+$EndPAD
+$PAD "3"
+Shape Rect Layer front
+position -2.950000 -0.650000  size  1.450000  0.450000  orientation 0.00
+drill  0.000000
+shape_offset  0.000000  0.000000
+$EndPAD
+$PAD "4"
+Shape Rect Layer front
+position -2.950000  0.000000  size  1.450000  0.450000  orientation 0.00
+drill  0.000000
+shape_offset  0.000000  0.000000
+$EndPAD
+$PAD "5"
+Shape Rect Layer front
+position -2.950000  0.650000  size  1.450000  0.450000  orientation 0.00
+drill  0.000000
+shape_offset  0.000000  0.000000
+$EndPAD
+$PAD "6"
+Shape Rect Layer front
+position -2.950000  1.300000  size  1.450000  0.450000  orientation 0.00
+drill  0.000000
+shape_offset  0.000000  0.000000
+$EndPAD
+$PAD "7"
+Shape Rect Layer front
+position -2.950000  1.950000  size  1.450000  0.450000  orientation 0.00
+drill  0.000000
+shape_offset  0.000000  0.000000
+$EndPAD
+$PAD "8"
+Shape Rect Layer front
+position  2.950000  1.950000  size  1.450000  0.450000  orientation 0.00
+drill  0.000000
+shape_offset  0.000000  0.000000
+$EndPAD
+$PAD "9"
+Shape Rect Layer front
+position  2.950000  1.300000  size  1.450000  0.450000  orientation 0.00
+drill  0.000000
+shape_offset  0.000000  0.000000
+$EndPAD
+$PAD "10"
+Shape Rect Layer front
+position  2.950000  0.650000  size  1.450000  0.450000  orientation 0.00
+drill  0.000000
+shape_offset  0.000000  0.000000
+$EndPAD
+$PAD "11"
+Shape Rect Layer front
+position  2.950000  0.000000  size  1.450000  0.450000  orientation 0.00
+drill  0.000000
+shape_offset  0.000000  0.000000
+$EndPAD
+$PAD "12"
+Shape Rect Layer front
+position  2.950000 -0.650000  size  1.450000  0.450000  orientation 0.00
+drill  0.000000
+shape_offset  0.000000  0.000000
+$EndPAD
+$PAD "13"
+Shape Rect Layer front
+position  2.950000 -1.300000  size  1.450000  0.450000  orientation 0.00
+drill  0.000000
+shape_offset  0.000000  0.000000
+$EndPAD
+$PAD "14"
+Shape Rect Layer front
+position  2.950000 -1.950000  size  1.450000  0.450000  orientation 0.00
+drill  0.000000
+shape_offset  0.000000  0.000000
+$EndPAD
+$EndMODULE  U8
+
+$MODULE "C35"
+reference "C35"
+value "100nF"
+footprint "Capacitor_SMD:C_0603_1608Metric"
+attribut smd
+position 138.700000 90.100000  orientation 90.00
+layer front
+$PAD "2"
+Shape Roundrect Layer front
+position  0.787500  0.000000  size  0.875000  0.950000  orientation 0.00
+drill  0.000000
+shape_offset  0.000000  0.000000
+$EndPAD
+$PAD "1"
+Shape Roundrect Layer front
+position -0.787500  0.000000  size  0.875000  0.950000  orientation 0.00
+drill  0.000000
+shape_offset  0.000000  0.000000
+$EndPAD
+$EndMODULE  C35
+
+$MODULE "U3"
+reference "U3"
+value "74LVC125"
+footprint "Package_SO:TSSOP-14_4.4x5mm_P0.65mm"
+attribut smd
+position 143.750000 88.750000  orientation 180.00
+layer front
+$PAD "1"
+Shape Rect Layer front
+position -2.950000 -1.950000  size  1.450000  0.450000  orientation 0.00
+drill  0.000000
+shape_offset  0.000000  0.000000
+$EndPAD
+$PAD "2"
+Shape Rect Layer front
+position -2.950000 -1.300000  size  1.450000  0.450000  orientation 0.00
+drill  0.000000
+shape_offset  0.000000  0.000000
+$EndPAD
+$PAD "3"
+Shape Rect Layer front
+position -2.950000 -0.650000  size  1.450000  0.450000  orientation 0.00
+drill  0.000000
+shape_offset  0.000000  0.000000
+$EndPAD
+$PAD "4"
+Shape Rect Layer front
+position -2.950000  0.000000  size  1.450000  0.450000  orientation 0.00
+drill  0.000000
+shape_offset  0.000000  0.000000
+$EndPAD
+$PAD "5"
+Shape Rect Layer front
+position -2.950000  0.650000  size  1.450000  0.450000  orientation 0.00
+drill  0.000000
+shape_offset  0.000000  0.000000
+$EndPAD
+$PAD "6"
+Shape Rect Layer front
+position -2.950000  1.300000  size  1.450000  0.450000  orientation 0.00
+drill  0.000000
+shape_offset  0.000000  0.000000
+$EndPAD
+$PAD "7"
+Shape Rect Layer front
+position -2.950000  1.950000  size  1.450000  0.450000  orientation 0.00
+drill  0.000000
+shape_offset  0.000000  0.000000
+$EndPAD
+$PAD "8"
+Shape Rect Layer front
+position  2.950000  1.950000  size  1.450000  0.450000  orientation 0.00
+drill  0.000000
+shape_offset  0.000000  0.000000
+$EndPAD
+$PAD "9"
+Shape Rect Layer front
+position  2.950000  1.300000  size  1.450000  0.450000  orientation 0.00
+drill  0.000000
+shape_offset  0.000000  0.000000
+$EndPAD
+$PAD "10"
+Shape Rect Layer front
+position  2.950000  0.650000  size  1.450000  0.450000  orientation 0.00
+drill  0.000000
+shape_offset  0.000000  0.000000
+$EndPAD
+$PAD "11"
+Shape Rect Layer front
+position  2.950000  0.000000  size  1.450000  0.450000  orientation 0.00
+drill  0.000000
+shape_offset  0.000000  0.000000
+$EndPAD
+$PAD "12"
+Shape Rect Layer front
+position  2.950000 -0.650000  size  1.450000  0.450000  orientation 0.00
+drill  0.000000
+shape_offset  0.000000  0.000000
+$EndPAD
+$PAD "13"
+Shape Rect Layer front
+position  2.950000 -1.300000  size  1.450000  0.450000  orientation 0.00
+drill  0.000000
+shape_offset  0.000000  0.000000
+$EndPAD
+$PAD "14"
+Shape Rect Layer front
+position  2.950000 -1.950000  size  1.450000  0.450000  orientation 0.00
+drill  0.000000
+shape_offset  0.000000  0.000000
+$EndPAD
+$EndMODULE  U3
+
+$MODULE "C3"
+reference "C3"
+value "10nF"
+footprint "Capacitor_SMD:C_0603_1608Metric"
+attribut smd
+position 144.700000 78.740000  orientation 270.00
+layer front
+$PAD "1"
+Shape Roundrect Layer front
+position -0.787500  0.000000  size  0.875000  0.950000  orientation 0.00
+drill  0.000000
+shape_offset  0.000000  0.000000
+$EndPAD
+$PAD "2"
+Shape Roundrect Layer front
+position  0.787500  0.000000  size  0.875000  0.950000  orientation 0.00
+drill  0.000000
+shape_offset  0.000000  0.000000
+$EndPAD
+$EndMODULE  C3
+
+$MODULE "C28"
+reference "C28"
+value "10nF"
+footprint "Capacitor_SMD:C_0603_1608Metric"
+attribut smd
+position 128.500000 71.000000  orientation 90.00
+layer front
+$PAD "1"
+Shape Roundrect Layer front
+position -0.787500  0.000000  size  0.875000  0.950000  orientation 0.00
+drill  0.000000
+shape_offset  0.000000  0.000000
+$EndPAD
+$PAD "2"
+Shape Roundrect Layer front
+position  0.787500  0.000000  size  0.875000  0.950000  orientation 0.00
+drill  0.000000
+shape_offset  0.000000  0.000000
+$EndPAD
+$EndMODULE  C28
+
+$MODULE "C33"
+reference "C33"
+value "10nF"
+footprint "Capacitor_SMD:C_0603_1608Metric"
+attribut smd
+position 135.940023 86.845517  orientation 180.00
+layer front
+$PAD "2"
+Shape Roundrect Layer front
+position  0.787500  0.000000  size  0.875000  0.950000  orientation 0.00
+drill  0.000000
+shape_offset  0.000000  0.000000
+$EndPAD
+$PAD "1"
+Shape Roundrect Layer front
+position -0.787500  0.000000  size  0.875000  0.950000  orientation 0.00
+drill  0.000000
+shape_offset  0.000000  0.000000
+$EndPAD
+$EndMODULE  C33
+
+$MODULE "C34"
+reference "C34"
+value "100nF"
+footprint "Capacitor_SMD:C_0603_1608Metric"
+attribut smd
+position 135.940023 85.095517  orientation 180.00
+layer front
+$PAD "1"
+Shape Roundrect Layer front
+position -0.787500  0.000000  size  0.875000  0.950000  orientation 0.00
+drill  0.000000
+shape_offset  0.000000  0.000000
+$EndPAD
+$PAD "2"
+Shape Roundrect Layer front
+position  0.787500  0.000000  size  0.875000  0.950000  orientation 0.00
+drill  0.000000
+shape_offset  0.000000  0.000000
+$EndPAD
+$EndMODULE  C34
+
+$MODULE "U1"
+reference "U1"
+value "XC9572XL-VQ64"
+footprint "For_SeeedStudio:TQFP-64_10x10mm_P0.5mm_Xlinx"
+attribut smd
+position 136.200000 76.200000  orientation 0.00
+layer front
+$PAD "1"
+Shape Roundrect Layer front
+position -5.700000 -3.750000  size  1.600000  0.300000  orientation 0.00
+drill  0.000000
+shape_offset  0.000000  0.000000
+$EndPAD
+$PAD "2"
+Shape Roundrect Layer front
+position -5.700000 -3.250000  size  1.600000  0.300000  orientation 0.00
+drill  0.000000
+shape_offset  0.000000  0.000000
+$EndPAD
+$PAD "3"
+Shape Roundrect Layer front
+position -5.700000 -2.750000  size  1.600000  0.300000  orientation 0.00
+drill  0.000000
+shape_offset  0.000000  0.000000
+$EndPAD
+$PAD "4"
+Shape Roundrect Layer front
+position -5.700000 -2.250000  size  1.600000  0.300000  orientation 0.00
+drill  0.000000
+shape_offset  0.000000  0.000000
+$EndPAD
+$PAD "5"
+Shape Roundrect Layer front
+position -5.700000 -1.750000  size  1.600000  0.300000  orientation 0.00
+drill  0.000000
+shape_offset  0.000000  0.000000
+$EndPAD
+$PAD "6"
+Shape Roundrect Layer front
+position -5.700000 -1.250000  size  1.600000  0.300000  orientation 0.00
+drill  0.000000
+shape_offset  0.000000  0.000000
+$EndPAD
+$PAD "7"
+Shape Roundrect Layer front
+position -5.700000 -0.750000  size  1.600000  0.300000  orientation 0.00
+drill  0.000000
+shape_offset  0.000000  0.000000
+$EndPAD
+$PAD "8"
+Shape Roundrect Layer front
+position -5.700000 -0.250000  size  1.600000  0.300000  orientation 0.00
+drill  0.000000
+shape_offset  0.000000  0.000000
+$EndPAD
+$PAD "9"
+Shape Roundrect Layer front
+position -5.700000  0.250000  size  1.600000  0.300000  orientation 0.00
+drill  0.000000
+shape_offset  0.000000  0.000000
+$EndPAD
+$PAD "10"
+Shape Roundrect Layer front
+position -5.700000  0.750000  size  1.600000  0.300000  orientation 0.00
+drill  0.000000
+shape_offset  0.000000  0.000000
+$EndPAD
+$PAD "11"
+Shape Roundrect Layer front
+position -5.700000  1.250000  size  1.600000  0.300000  orientation 0.00
+drill  0.000000
+shape_offset  0.000000  0.000000
+$EndPAD
+$PAD "12"
+Shape Roundrect Layer front
+position -5.700000  1.750000  size  1.600000  0.300000  orientation 0.00
+drill  0.000000
+shape_offset  0.000000  0.000000
+$EndPAD
+$PAD "13"
+Shape Roundrect Layer front
+position -5.700000  2.250000  size  1.600000  0.300000  orientation 0.00
+drill  0.000000
+shape_offset  0.000000  0.000000
+$EndPAD
+$PAD "14"
+Shape Roundrect Layer front
+position -5.700000  2.750000  size  1.600000  0.300000  orientation 0.00
+drill  0.000000
+shape_offset  0.000000  0.000000
+$EndPAD
+$PAD "15"
+Shape Roundrect Layer front
+position -5.700000  3.250000  size  1.600000  0.300000  orientation 0.00
+drill  0.000000
+shape_offset  0.000000  0.000000
+$EndPAD
+$PAD "16"
+Shape Roundrect Layer front
+position -5.700000  3.750000  size  1.600000  0.300000  orientation 0.00
+drill  0.000000
+shape_offset  0.000000  0.000000
+$EndPAD
+$PAD "17"
+Shape Roundrect Layer front
+position -3.750000  5.700000  size  0.300000  1.600000  orientation 0.00
+drill  0.000000
+shape_offset  0.000000  0.000000
+$EndPAD
+$PAD "18"
+Shape Roundrect Layer front
+position -3.250000  5.700000  size  0.300000  1.600000  orientation 0.00
+drill  0.000000
+shape_offset  0.000000  0.000000
+$EndPAD
+$PAD "19"
+Shape Roundrect Layer front
+position -2.750000  5.700000  size  0.300000  1.600000  orientation 0.00
+drill  0.000000
+shape_offset  0.000000  0.000000
+$EndPAD
+$PAD "20"
+Shape Roundrect Layer front
+position -2.250000  5.700000  size  0.300000  1.600000  orientation 0.00
+drill  0.000000
+shape_offset  0.000000  0.000000
+$EndPAD
+$PAD "21"
+Shape Roundrect Layer front
+position -1.750000  5.700000  size  0.300000  1.600000  orientation 0.00
+drill  0.000000
+shape_offset  0.000000  0.000000
+$EndPAD
+$PAD "22"
+Shape Roundrect Layer front
+position -1.250000  5.700000  size  0.300000  1.600000  orientation 0.00
+drill  0.000000
+shape_offset  0.000000  0.000000
+$EndPAD
+$PAD "23"
+Shape Roundrect Layer front
+position -0.750000  5.700000  size  0.300000  1.600000  orientation 0.00
+drill  0.000000
+shape_offset  0.000000  0.000000
+$EndPAD
+$PAD "24"
+Shape Roundrect Layer front
+position -0.250000  5.700000  size  0.300000  1.600000  orientation 0.00
+drill  0.000000
+shape_offset  0.000000  0.000000
+$EndPAD
+$PAD "25"
+Shape Roundrect Layer front
+position  0.250000  5.700000  size  0.300000  1.600000  orientation 0.00
+drill  0.000000
+shape_offset  0.000000  0.000000
+$EndPAD
+$PAD "26"
+Shape Roundrect Layer front
+position  0.750000  5.700000  size  0.300000  1.600000  orientation 0.00
+drill  0.000000
+shape_offset  0.000000  0.000000
+$EndPAD
+$PAD "27"
+Shape Roundrect Layer front
+position  1.250000  5.700000  size  0.300000  1.600000  orientation 0.00
+drill  0.000000
+shape_offset  0.000000  0.000000
+$EndPAD
+$PAD "28"
+Shape Roundrect Layer front
+position  1.750000  5.700000  size  0.300000  1.600000  orientation 0.00
+drill  0.000000
+shape_offset  0.000000  0.000000
+$EndPAD
+$PAD "29"
+Shape Roundrect Layer front
+position  2.250000  5.700000  size  0.300000  1.600000  orientation 0.00
+drill  0.000000
+shape_offset  0.000000  0.000000
+$EndPAD
+$PAD "30"
+Shape Roundrect Layer front
+position  2.750000  5.700000  size  0.300000  1.600000  orientation 0.00
+drill  0.000000
+shape_offset  0.000000  0.000000
+$EndPAD
+$PAD "31"
+Shape Roundrect Layer front
+position  3.250000  5.700000  size  0.300000  1.600000  orientation 0.00
+drill  0.000000
+shape_offset  0.000000  0.000000
+$EndPAD
+$PAD "32"
+Shape Roundrect Layer front
+position  3.750000  5.700000  size  0.300000  1.600000  orientation 0.00
+drill  0.000000
+shape_offset  0.000000  0.000000
+$EndPAD
+$PAD "33"
+Shape Roundrect Layer front
+position  5.700000  3.750000  size  1.600000  0.300000  orientation 0.00
+drill  0.000000
+shape_offset  0.000000  0.000000
+$EndPAD
+$PAD "34"
+Shape Roundrect Layer front
+position  5.700000  3.250000  size  1.600000  0.300000  orientation 0.00
+drill  0.000000
+shape_offset  0.000000  0.000000
+$EndPAD
+$PAD "35"
+Shape Roundrect Layer front
+position  5.700000  2.750000  size  1.600000  0.300000  orientation 0.00
+drill  0.000000
+shape_offset  0.000000  0.000000
+$EndPAD
+$PAD "36"
+Shape Roundrect Layer front
+position  5.700000  2.250000  size  1.600000  0.300000  orientation 0.00
+drill  0.000000
+shape_offset  0.000000  0.000000
+$EndPAD
+$PAD "37"
+Shape Roundrect Layer front
+position  5.700000  1.750000  size  1.600000  0.300000  orientation 0.00
+drill  0.000000
+shape_offset  0.000000  0.000000
+$EndPAD
+$PAD "38"
+Shape Roundrect Layer front
+position  5.700000  1.250000  size  1.600000  0.300000  orientation 0.00
+drill  0.000000
+shape_offset  0.000000  0.000000
+$EndPAD
+$PAD "39"
+Shape Roundrect Layer front
+position  5.700000  0.750000  size  1.600000  0.300000  orientation 0.00
+drill  0.000000
+shape_offset  0.000000  0.000000
+$EndPAD
+$PAD "40"
+Shape Roundrect Layer front
+position  5.700000  0.250000  size  1.600000  0.300000  orientation 0.00
+drill  0.000000
+shape_offset  0.000000  0.000000
+$EndPAD
+$PAD "41"
+Shape Roundrect Layer front
+position  5.700000 -0.250000  size  1.600000  0.300000  orientation 0.00
+drill  0.000000
+shape_offset  0.000000  0.000000
+$EndPAD
+$PAD "42"
+Shape Roundrect Layer front
+position  5.700000 -0.750000  size  1.600000  0.300000  orientation 0.00
+drill  0.000000
+shape_offset  0.000000  0.000000
+$EndPAD
+$PAD "43"
+Shape Roundrect Layer front
+position  5.700000 -1.250000  size  1.600000  0.300000  orientation 0.00
+drill  0.000000
+shape_offset  0.000000  0.000000
+$EndPAD
+$PAD "44"
+Shape Roundrect Layer front
+position  5.700000 -1.750000  size  1.600000  0.300000  orientation 0.00
+drill  0.000000
+shape_offset  0.000000  0.000000
+$EndPAD
+$PAD "45"
+Shape Roundrect Layer front
+position  5.700000 -2.250000  size  1.600000  0.300000  orientation 0.00
+drill  0.000000
+shape_offset  0.000000  0.000000
+$EndPAD
+$PAD "46"
+Shape Roundrect Layer front
+position  5.700000 -2.750000  size  1.600000  0.300000  orientation 0.00
+drill  0.000000
+shape_offset  0.000000  0.000000
+$EndPAD
+$PAD "47"
+Shape Roundrect Layer front
+position  5.700000 -3.250000  size  1.600000  0.300000  orientation 0.00
+drill  0.000000
+shape_offset  0.000000  0.000000
+$EndPAD
+$PAD "48"
+Shape Roundrect Layer front
+position  5.700000 -3.750000  size  1.600000  0.300000  orientation 0.00
+drill  0.000000
+shape_offset  0.000000  0.000000
+$EndPAD
+$PAD "49"
+Shape Roundrect Layer front
+position  3.750000 -5.700000  size  0.300000  1.600000  orientation 0.00
+drill  0.000000
+shape_offset  0.000000  0.000000
+$EndPAD
+$PAD "50"
+Shape Roundrect Layer front
+position  3.250000 -5.700000  size  0.300000  1.600000  orientation 0.00
+drill  0.000000
+shape_offset  0.000000  0.000000
+$EndPAD
+$PAD "51"
+Shape Roundrect Layer front
+position  2.750000 -5.700000  size  0.300000  1.600000  orientation 0.00
+drill  0.000000
+shape_offset  0.000000  0.000000
+$EndPAD
+$PAD "52"
+Shape Roundrect Layer front
+position  2.250000 -5.700000  size  0.300000  1.600000  orientation 0.00
+drill  0.000000
+shape_offset  0.000000  0.000000
+$EndPAD
+$PAD "53"
+Shape Roundrect Layer front
+position  1.750000 -5.700000  size  0.300000  1.600000  orientation 0.00
+drill  0.000000
+shape_offset  0.000000  0.000000
+$EndPAD
+$PAD "54"
+Shape Roundrect Layer front
+position  1.250000 -5.700000  size  0.300000  1.600000  orientation 0.00
+drill  0.000000
+shape_offset  0.000000  0.000000
+$EndPAD
+$PAD "55"
+Shape Roundrect Layer front
+position  0.750000 -5.700000  size  0.300000  1.600000  orientation 0.00
+drill  0.000000
+shape_offset  0.000000  0.000000
+$EndPAD
+$PAD "56"
+Shape Roundrect Layer front
+position  0.250000 -5.700000  size  0.300000  1.600000  orientation 0.00
+drill  0.000000
+shape_offset  0.000000  0.000000
+$EndPAD
+$PAD "57"
+Shape Roundrect Layer front
+position -0.250000 -5.700000  size  0.300000  1.600000  orientation 0.00
+drill  0.000000
+shape_offset  0.000000  0.000000
+$EndPAD
+$PAD "58"
+Shape Roundrect Layer front
+position -0.750000 -5.700000  size  0.300000  1.600000  orientation 0.00
+drill  0.000000
+shape_offset  0.000000  0.000000
+$EndPAD
+$PAD "59"
+Shape Roundrect Layer front
+position -1.250000 -5.700000  size  0.300000  1.600000  orientation 0.00
+drill  0.000000
+shape_offset  0.000000  0.000000
+$EndPAD
+$PAD "60"
+Shape Roundrect Layer front
+position -1.750000 -5.700000  size  0.300000  1.600000  orientation 0.00
+drill  0.000000
+shape_offset  0.000000  0.000000
+$EndPAD
+$PAD "61"
+Shape Roundrect Layer front
+position -2.250000 -5.700000  size  0.300000  1.600000  orientation 0.00
+drill  0.000000
+shape_offset  0.000000  0.000000
+$EndPAD
+$PAD "62"
+Shape Roundrect Layer front
+position -2.750000 -5.700000  size  0.300000  1.600000  orientation 0.00
+drill  0.000000
+shape_offset  0.000000  0.000000
+$EndPAD
+$PAD "63"
+Shape Roundrect Layer front
+position -3.250000 -5.700000  size  0.300000  1.600000  orientation 0.00
+drill  0.000000
+shape_offset  0.000000  0.000000
+$EndPAD
+$PAD "64"
+Shape Roundrect Layer front
+position -3.750000 -5.700000  size  0.300000  1.600000  orientation 0.00
+drill  0.000000
+shape_offset  0.000000  0.000000
+$EndPAD
+$EndMODULE  U1
 
 $MODULE "C26"
 reference "C26"
@@ -29,417 +734,6 @@ drill  0.000000
 shape_offset  0.000000  0.000000
 $EndPAD
 $EndMODULE  C26
-
-$MODULE "Q2"
-reference "Q2"
-value "MMBT3904"
-footprint "Package_TO_SOT_SMD:SOT-23"
-attribut smd
-position 118.250000 89.750000  orientation 0.00
-layer front
-$PAD "1"
-Shape Rect Layer front
-position -1.000000 -0.950000  size  0.900000  0.800000  orientation 0.00
-drill  0.000000
-shape_offset  0.000000  0.000000
-$EndPAD
-$PAD "2"
-Shape Rect Layer front
-position -1.000000  0.950000  size  0.900000  0.800000  orientation 0.00
-drill  0.000000
-shape_offset  0.000000  0.000000
-$EndPAD
-$PAD "3"
-Shape Rect Layer front
-position  1.000000  0.000000  size  0.900000  0.800000  orientation 0.00
-drill  0.000000
-shape_offset  0.000000  0.000000
-$EndPAD
-$EndMODULE  Q2
-
-$MODULE "R39"
-reference "R39"
-value "27"
-footprint "Resistor_SMD:R_0603_1608Metric"
-attribut smd
-position 119.000000 86.250000  orientation 90.00
-layer front
-$PAD "2"
-Shape Roundrect Layer front
-position  0.787500  0.000000  size  0.875000  0.950000  orientation 0.00
-drill  0.000000
-shape_offset  0.000000  0.000000
-$EndPAD
-$PAD "1"
-Shape Roundrect Layer front
-position -0.787500  0.000000  size  0.875000  0.950000  orientation 0.00
-drill  0.000000
-shape_offset  0.000000  0.000000
-$EndPAD
-$EndMODULE  R39
-
-$MODULE "R40"
-reference "R40"
-value "1k"
-footprint "Resistor_SMD:R_0603_1608Metric"
-attribut smd
-position 117.250000 86.250000  orientation 270.00
-layer front
-$PAD "1"
-Shape Roundrect Layer front
-position -0.787500  0.000000  size  0.875000  0.950000  orientation 0.00
-drill  0.000000
-shape_offset  0.000000  0.000000
-$EndPAD
-$PAD "2"
-Shape Roundrect Layer front
-position  0.787500  0.000000  size  0.875000  0.950000  orientation 0.00
-drill  0.000000
-shape_offset  0.000000  0.000000
-$EndPAD
-$EndMODULE  R40
-
-$MODULE "R38"
-reference "R38"
-value "1k"
-footprint "Resistor_SMD:R_0603_1608Metric"
-attribut smd
-position 113.500000 93.500000  orientation 270.00
-layer front
-$PAD "1"
-Shape Roundrect Layer front
-position -0.787500  0.000000  size  0.875000  0.950000  orientation 0.00
-drill  0.000000
-shape_offset  0.000000  0.000000
-$EndPAD
-$PAD "2"
-Shape Roundrect Layer front
-position  0.787500  0.000000  size  0.875000  0.950000  orientation 0.00
-drill  0.000000
-shape_offset  0.000000  0.000000
-$EndPAD
-$EndMODULE  R38
-
-$MODULE "R17"
-reference "R17"
-value "27"
-footprint "Resistor_SMD:R_0603_1608Metric"
-attribut smd
-position 115.250000 93.500000  orientation 90.00
-layer front
-$PAD "2"
-Shape Roundrect Layer front
-position  0.787500  0.000000  size  0.875000  0.950000  orientation 0.00
-drill  0.000000
-shape_offset  0.000000  0.000000
-$EndPAD
-$PAD "1"
-Shape Roundrect Layer front
-position -0.787500  0.000000  size  0.875000  0.950000  orientation 0.00
-drill  0.000000
-shape_offset  0.000000  0.000000
-$EndPAD
-$EndMODULE  R17
-
-$MODULE "Q1"
-reference "Q1"
-value "MMBT3904"
-footprint "Package_TO_SOT_SMD:SOT-23"
-attribut smd
-position 114.500000 97.000000  orientation 0.00
-layer front
-$PAD "1"
-Shape Rect Layer front
-position -1.000000 -0.950000  size  0.900000  0.800000  orientation 0.00
-drill  0.000000
-shape_offset  0.000000  0.000000
-$EndPAD
-$PAD "2"
-Shape Rect Layer front
-position -1.000000  0.950000  size  0.900000  0.800000  orientation 0.00
-drill  0.000000
-shape_offset  0.000000  0.000000
-$EndPAD
-$PAD "3"
-Shape Rect Layer front
-position  1.000000  0.000000  size  0.900000  0.800000  orientation 0.00
-drill  0.000000
-shape_offset  0.000000  0.000000
-$EndPAD
-$EndMODULE  Q1
-
-$MODULE "U8"
-reference "U8"
-value "XC9536XL-VQ44"
-footprint "For_SeeedStudio:TQFP-44_10x10mm_P0.8mm_Xilinx"
-attribut smd
-position 136.200000 76.200000  orientation 90.00
-layer front
-$PAD "44"
-Shape Rect Layer front
-position -4.000000 -5.700000  size  1.600000  0.550000  orientation 90.00
-drill  0.000000
-shape_offset  0.000000  0.000000
-$EndPAD
-$PAD "43"
-Shape Rect Layer front
-position -3.200000 -5.700000  size  1.600000  0.550000  orientation 90.00
-drill  0.000000
-shape_offset  0.000000  0.000000
-$EndPAD
-$PAD "42"
-Shape Rect Layer front
-position -2.400000 -5.700000  size  1.600000  0.550000  orientation 90.00
-drill  0.000000
-shape_offset  0.000000  0.000000
-$EndPAD
-$PAD "41"
-Shape Rect Layer front
-position -1.600000 -5.700000  size  1.600000  0.550000  orientation 90.00
-drill  0.000000
-shape_offset  0.000000  0.000000
-$EndPAD
-$PAD "40"
-Shape Rect Layer front
-position -0.800000 -5.700000  size  1.600000  0.550000  orientation 90.00
-drill  0.000000
-shape_offset  0.000000  0.000000
-$EndPAD
-$PAD "39"
-Shape Rect Layer front
-position  0.000000 -5.700000  size  1.600000  0.550000  orientation 90.00
-drill  0.000000
-shape_offset  0.000000  0.000000
-$EndPAD
-$PAD "38"
-Shape Rect Layer front
-position  0.800000 -5.700000  size  1.600000  0.550000  orientation 90.00
-drill  0.000000
-shape_offset  0.000000  0.000000
-$EndPAD
-$PAD "37"
-Shape Rect Layer front
-position  1.600000 -5.700000  size  1.600000  0.550000  orientation 90.00
-drill  0.000000
-shape_offset  0.000000  0.000000
-$EndPAD
-$PAD "36"
-Shape Rect Layer front
-position  2.400000 -5.700000  size  1.600000  0.550000  orientation 90.00
-drill  0.000000
-shape_offset  0.000000  0.000000
-$EndPAD
-$PAD "35"
-Shape Rect Layer front
-position  3.200000 -5.700000  size  1.600000  0.550000  orientation 90.00
-drill  0.000000
-shape_offset  0.000000  0.000000
-$EndPAD
-$PAD "34"
-Shape Rect Layer front
-position  4.000000 -5.700000  size  1.600000  0.550000  orientation 90.00
-drill  0.000000
-shape_offset  0.000000  0.000000
-$EndPAD
-$PAD "33"
-Shape Rect Layer front
-position  5.700000 -4.000000  size  1.600000  0.550000  orientation 0.00
-drill  0.000000
-shape_offset  0.000000  0.000000
-$EndPAD
-$PAD "32"
-Shape Rect Layer front
-position  5.700000 -3.200000  size  1.600000  0.550000  orientation 0.00
-drill  0.000000
-shape_offset  0.000000  0.000000
-$EndPAD
-$PAD "31"
-Shape Rect Layer front
-position  5.700000 -2.400000  size  1.600000  0.550000  orientation 0.00
-drill  0.000000
-shape_offset  0.000000  0.000000
-$EndPAD
-$PAD "30"
-Shape Rect Layer front
-position  5.700000 -1.600000  size  1.600000  0.550000  orientation 0.00
-drill  0.000000
-shape_offset  0.000000  0.000000
-$EndPAD
-$PAD "29"
-Shape Rect Layer front
-position  5.700000 -0.800000  size  1.600000  0.550000  orientation 0.00
-drill  0.000000
-shape_offset  0.000000  0.000000
-$EndPAD
-$PAD "28"
-Shape Rect Layer front
-position  5.700000  0.000000  size  1.600000  0.550000  orientation 0.00
-drill  0.000000
-shape_offset  0.000000  0.000000
-$EndPAD
-$PAD "27"
-Shape Rect Layer front
-position  5.700000  0.800000  size  1.600000  0.550000  orientation 0.00
-drill  0.000000
-shape_offset  0.000000  0.000000
-$EndPAD
-$PAD "26"
-Shape Rect Layer front
-position  5.700000  1.600000  size  1.600000  0.550000  orientation 0.00
-drill  0.000000
-shape_offset  0.000000  0.000000
-$EndPAD
-$PAD "25"
-Shape Rect Layer front
-position  5.700000  2.400000  size  1.600000  0.550000  orientation 0.00
-drill  0.000000
-shape_offset  0.000000  0.000000
-$EndPAD
-$PAD "24"
-Shape Rect Layer front
-position  5.700000  3.200000  size  1.600000  0.550000  orientation 0.00
-drill  0.000000
-shape_offset  0.000000  0.000000
-$EndPAD
-$PAD "23"
-Shape Rect Layer front
-position  5.700000  4.000000  size  1.600000  0.550000  orientation 0.00
-drill  0.000000
-shape_offset  0.000000  0.000000
-$EndPAD
-$PAD "22"
-Shape Rect Layer front
-position  4.000000  5.700000  size  1.600000  0.550000  orientation 90.00
-drill  0.000000
-shape_offset  0.000000  0.000000
-$EndPAD
-$PAD "21"
-Shape Rect Layer front
-position  3.200000  5.700000  size  1.600000  0.550000  orientation 90.00
-drill  0.000000
-shape_offset  0.000000  0.000000
-$EndPAD
-$PAD "20"
-Shape Rect Layer front
-position  2.400000  5.700000  size  1.600000  0.550000  orientation 90.00
-drill  0.000000
-shape_offset  0.000000  0.000000
-$EndPAD
-$PAD "19"
-Shape Rect Layer front
-position  1.600000  5.700000  size  1.600000  0.550000  orientation 90.00
-drill  0.000000
-shape_offset  0.000000  0.000000
-$EndPAD
-$PAD "18"
-Shape Rect Layer front
-position  0.800000  5.700000  size  1.600000  0.550000  orientation 90.00
-drill  0.000000
-shape_offset  0.000000  0.000000
-$EndPAD
-$PAD "17"
-Shape Rect Layer front
-position  0.000000  5.700000  size  1.600000  0.550000  orientation 90.00
-drill  0.000000
-shape_offset  0.000000  0.000000
-$EndPAD
-$PAD "16"
-Shape Rect Layer front
-position -0.800000  5.700000  size  1.600000  0.550000  orientation 90.00
-drill  0.000000
-shape_offset  0.000000  0.000000
-$EndPAD
-$PAD "15"
-Shape Rect Layer front
-position -1.600000  5.700000  size  1.600000  0.550000  orientation 90.00
-drill  0.000000
-shape_offset  0.000000  0.000000
-$EndPAD
-$PAD "14"
-Shape Rect Layer front
-position -2.400000  5.700000  size  1.600000  0.550000  orientation 90.00
-drill  0.000000
-shape_offset  0.000000  0.000000
-$EndPAD
-$PAD "13"
-Shape Rect Layer front
-position -3.200000  5.700000  size  1.600000  0.550000  orientation 90.00
-drill  0.000000
-shape_offset  0.000000  0.000000
-$EndPAD
-$PAD "12"
-Shape Rect Layer front
-position -4.000000  5.700000  size  1.600000  0.550000  orientation 90.00
-drill  0.000000
-shape_offset  0.000000  0.000000
-$EndPAD
-$PAD "11"
-Shape Rect Layer front
-position -5.700000  4.000000  size  1.600000  0.550000  orientation 0.00
-drill  0.000000
-shape_offset  0.000000  0.000000
-$EndPAD
-$PAD "10"
-Shape Rect Layer front
-position -5.700000  3.200000  size  1.600000  0.550000  orientation 0.00
-drill  0.000000
-shape_offset  0.000000  0.000000
-$EndPAD
-$PAD "9"
-Shape Rect Layer front
-position -5.700000  2.400000  size  1.600000  0.550000  orientation 0.00
-drill  0.000000
-shape_offset  0.000000  0.000000
-$EndPAD
-$PAD "8"
-Shape Rect Layer front
-position -5.700000  1.600000  size  1.600000  0.550000  orientation 0.00
-drill  0.000000
-shape_offset  0.000000  0.000000
-$EndPAD
-$PAD "7"
-Shape Rect Layer front
-position -5.700000  0.800000  size  1.600000  0.550000  orientation 0.00
-drill  0.000000
-shape_offset  0.000000  0.000000
-$EndPAD
-$PAD "6"
-Shape Rect Layer front
-position -5.700000  0.000000  size  1.600000  0.550000  orientation 0.00
-drill  0.000000
-shape_offset  0.000000  0.000000
-$EndPAD
-$PAD "5"
-Shape Rect Layer front
-position -5.700000 -0.800000  size  1.600000  0.550000  orientation 0.00
-drill  0.000000
-shape_offset  0.000000  0.000000
-$EndPAD
-$PAD "4"
-Shape Rect Layer front
-position -5.700000 -1.600000  size  1.600000  0.550000  orientation 0.00
-drill  0.000000
-shape_offset  0.000000  0.000000
-$EndPAD
-$PAD "3"
-Shape Rect Layer front
-position -5.700000 -2.400000  size  1.600000  0.550000  orientation 0.00
-drill  0.000000
-shape_offset  0.000000  0.000000
-$EndPAD
-$PAD "2"
-Shape Rect Layer front
-position -5.700000 -3.200000  size  1.600000  0.550000  orientation 0.00
-drill  0.000000
-shape_offset  0.000000  0.000000
-$EndPAD
-$PAD "1"
-Shape Rect Layer front
-position -5.700000 -4.000000  size  1.600000  0.550000  orientation 0.00
-drill  0.000000
-shape_offset  0.000000  0.000000
-$EndPAD
-$EndMODULE  U8
 
 $MODULE "U9"
 reference "U9"
@@ -1283,7 +1577,7 @@ reference "D13"
 value "YELLOW"
 footprint "LED_SMD:LED_0805_2012Metric"
 attribut smd
-position 126.100000 77.800000  orientation 180.00
+position 127.500000 75.500000  orientation 180.00
 layer front
 $PAD "1"
 Shape Roundrect Layer front
@@ -1304,7 +1598,7 @@ reference "R33"
 value "549"
 footprint "Resistor_SMD:R_0603_1608Metric"
 attribut smd
-position 125.100000 74.900000  orientation 270.00
+position 124.000000 75.500000  orientation 0.00
 layer front
 $PAD "1"
 Shape Roundrect Layer front
@@ -1325,7 +1619,7 @@ reference "D11"
 value "YELLOW"
 footprint "LED_SMD:LED_0805_2012Metric"
 attribut smd
-position 121.560000 53.930000  orientation 180.00
+position 123.760000 57.330000  orientation 180.00
 layer front
 $PAD "1"
 Shape Roundrect Layer front
@@ -1346,7 +1640,7 @@ reference "R30"
 value "549"
 footprint "Resistor_SMD:R_0603_1608Metric"
 attribut smd
-position 117.810000 56.680000  orientation 0.00
+position 120.010000 60.080000  orientation 0.00
 layer front
 $PAD "2"
 Shape Roundrect Layer front
@@ -1367,7 +1661,7 @@ reference "R31"
 value "549"
 footprint "Resistor_SMD:R_0603_1608Metric"
 attribut smd
-position 117.810000 53.930000  orientation 0.00
+position 120.010000 57.330000  orientation 0.00
 layer front
 $PAD "1"
 Shape Roundrect Layer front
@@ -1388,7 +1682,7 @@ reference "D10"
 value "YELLOW"
 footprint "LED_SMD:LED_0805_2012Metric"
 attribut smd
-position 121.560000 56.680000  orientation 180.00
+position 123.760000 60.080000  orientation 180.00
 layer front
 $PAD "2"
 Shape Roundrect Layer front
@@ -1409,7 +1703,7 @@ reference "D12"
 value "YELLOW"
 footprint "LED_SMD:LED_0805_2012Metric"
 attribut smd
-position 122.470779 60.144020  orientation 180.00
+position 123.470779 52.344020  orientation 180.00
 layer front
 $PAD "1"
 Shape Roundrect Layer front
@@ -1430,7 +1724,7 @@ reference "R32"
 value "549"
 footprint "Resistor_SMD:R_0603_1608Metric"
 attribut smd
-position 118.670779 60.164021  orientation 0.00
+position 119.670779 52.364021  orientation 0.00
 layer front
 $PAD "1"
 Shape Roundrect Layer front
@@ -2240,7 +2534,7 @@ reference "C30"
 value "100nF"
 footprint "Capacitor_SMD:C_0603_1608Metric"
 attribut smd
-position 141.650000 66.000000  orientation 0.00
+position 139.890000 66.660000  orientation 0.00
 layer front
 $PAD "1"
 Shape Roundrect Layer front
@@ -2370,33 +2664,12 @@ shape_offset  0.000000  0.000000
 $EndPAD
 $EndMODULE  J8
 
-$MODULE "C28"
-reference "C28"
-value "10nF"
-footprint "Capacitor_SMD:C_0603_1608Metric"
-attribut smd
-position 128.400000 71.000000  orientation 90.00
-layer front
-$PAD "1"
-Shape Roundrect Layer front
-position -0.787500  0.000000  size  0.875000  0.950000  orientation 0.00
-drill  0.000000
-shape_offset  0.000000  0.000000
-$EndPAD
-$PAD "2"
-Shape Roundrect Layer front
-position  0.787500  0.000000  size  0.875000  0.950000  orientation 0.00
-drill  0.000000
-shape_offset  0.000000  0.000000
-$EndPAD
-$EndMODULE  C28
-
 $MODULE "C27"
 reference "C27"
 value "100nF"
 footprint "Capacitor_SMD:C_0603_1608Metric"
 attribut smd
-position 145.800000 78.600000  orientation 270.00
+position 146.500000 78.740000  orientation 270.00
 layer front
 $PAD "1"
 Shape Roundrect Layer front
@@ -2417,7 +2690,7 @@ reference "C1"
 value "100nF"
 footprint "Capacitor_SMD:C_0603_1608Metric"
 attribut smd
-position 128.400000 75.100000  orientation 270.00
+position 127.750000 73.500000  orientation 180.00
 layer front
 $PAD "1"
 Shape Roundrect Layer front
@@ -2480,7 +2753,7 @@ reference "C22"
 value "10nF"
 footprint "Capacitor_SMD:C_0603_1608Metric"
 attribut smd
-position 139.800000 67.700000  orientation 0.00
+position 138.130000 68.370000  orientation 0.00
 layer front
 $PAD "2"
 Shape Roundrect Layer front
@@ -2516,27 +2789,6 @@ drill  0.000000
 shape_offset  0.000000  0.000000
 $EndPAD
 $EndMODULE  C23
-
-$MODULE "C3"
-reference "C3"
-value "10nF"
-footprint "Capacitor_SMD:C_0603_1608Metric"
-attribut smd
-position 144.000000 78.600000  orientation 270.00
-layer front
-$PAD "1"
-Shape Roundrect Layer front
-position -0.787500  0.000000  size  0.875000  0.950000  orientation 0.00
-drill  0.000000
-shape_offset  0.000000  0.000000
-$EndPAD
-$PAD "2"
-Shape Roundrect Layer front
-position  0.787500  0.000000  size  0.875000  0.950000  orientation 0.00
-drill  0.000000
-shape_offset  0.000000  0.000000
-$EndPAD
-$EndMODULE  C3
 
 $MODULE "C20"
 reference "C20"
@@ -2591,7 +2843,7 @@ reference "R24"
 value "10k"
 footprint "Resistor_SMD:R_0603_1608Metric"
 attribut smd
-position 137.447842 86.007091  orientation 90.00
+position 131.697842 86.007091  orientation 90.00
 layer front
 $PAD "2"
 Shape Roundrect Layer front
@@ -2612,7 +2864,7 @@ reference "R25"
 value "10k"
 footprint "Resistor_SMD:R_0603_1608Metric"
 attribut smd
-position 135.647842 86.007091  orientation 90.00
+position 129.897842 86.007091  orientation 90.00
 layer front
 $PAD "1"
 Shape Roundrect Layer front
@@ -2633,7 +2885,7 @@ reference "R26"
 value "10k"
 footprint "Resistor_SMD:R_0603_1608Metric"
 attribut smd
-position 133.847842 86.007091  orientation 90.00
+position 128.097842 86.007091  orientation 90.00
 layer front
 $PAD "2"
 Shape Roundrect Layer front
@@ -2654,7 +2906,7 @@ reference "R23"
 value "10k"
 footprint "Resistor_SMD:R_0603_1608Metric"
 attribut smd
-position 139.247842 86.007091  orientation 90.00
+position 133.497842 86.007091  orientation 90.00
 layer front
 $PAD "1"
 Shape Roundrect Layer front
@@ -3534,48 +3786,6 @@ shape_offset  0.000000  0.000000
 $EndPAD
 $EndMODULE  D2
 
-$MODULE "D4"
-reference "D4"
-value "RED"
-footprint "LED_SMD:LED_0805_2012Metric"
-attribut smd
-position 147.713332 15.290000  orientation 270.00
-layer front
-$PAD "2"
-Shape Roundrect Layer front
-position  0.937500  0.000000  size  0.975000  1.400000  orientation 0.00
-drill  0.000000
-shape_offset  0.000000  0.000000
-$EndPAD
-$PAD "1"
-Shape Roundrect Layer front
-position -0.937500  0.000000  size  0.975000  1.400000  orientation 0.00
-drill  0.000000
-shape_offset  0.000000  0.000000
-$EndPAD
-$EndMODULE  D4
-
-$MODULE "D5"
-reference "D5"
-value "RED"
-footprint "LED_SMD:LED_0805_2012Metric"
-attribut smd
-position 149.960000 15.290000  orientation 270.00
-layer front
-$PAD "1"
-Shape Roundrect Layer front
-position -0.937500  0.000000  size  0.975000  1.400000  orientation 0.00
-drill  0.000000
-shape_offset  0.000000  0.000000
-$EndPAD
-$PAD "2"
-Shape Roundrect Layer front
-position  0.937500  0.000000  size  0.975000  1.400000  orientation 0.00
-drill  0.000000
-shape_offset  0.000000  0.000000
-$EndPAD
-$EndMODULE  D5
-
 $MODULE "R8"
 reference "R8"
 value "549"
@@ -3617,48 +3827,6 @@ drill  0.000000
 shape_offset  0.000000  0.000000
 $EndPAD
 $EndMODULE  R7
-
-$MODULE "R9"
-reference "R9"
-value "549"
-footprint "Resistor_SMD:R_0603_1608Metric"
-attribut smd
-position 147.713332 18.880000  orientation 90.00
-layer front
-$PAD "2"
-Shape Roundrect Layer front
-position  0.787500  0.000000  size  0.875000  0.950000  orientation 0.00
-drill  0.000000
-shape_offset  0.000000  0.000000
-$EndPAD
-$PAD "1"
-Shape Roundrect Layer front
-position -0.787500  0.000000  size  0.875000  0.950000  orientation 0.00
-drill  0.000000
-shape_offset  0.000000  0.000000
-$EndPAD
-$EndMODULE  R9
-
-$MODULE "R10"
-reference "R10"
-value "549"
-footprint "Resistor_SMD:R_0603_1608Metric"
-attribut smd
-position 149.960000 18.880000  orientation 90.00
-layer front
-$PAD "1"
-Shape Roundrect Layer front
-position -0.787500  0.000000  size  0.875000  0.950000  orientation 0.00
-drill  0.000000
-shape_offset  0.000000  0.000000
-$EndPAD
-$PAD "2"
-Shape Roundrect Layer front
-position  0.787500  0.000000  size  0.875000  0.950000  orientation 0.00
-drill  0.000000
-shape_offset  0.000000  0.000000
-$EndPAD
-$EndMODULE  R10
 
 $MODULE "C15"
 reference "C15"

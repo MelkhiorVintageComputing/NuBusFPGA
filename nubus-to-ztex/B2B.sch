@@ -600,118 +600,10 @@ F 3 "" H 700 6600 50  0001 C CNN
 $EndComp
 Text GLabel 1850 6400 2    60   Input ~ 12
 LED1
-Wire Wire Line
-	850  6900 700  6900
-Wire Wire Line
-	700  6900 700  7100
-Wire Wire Line
-	1150 6900 1550 6900
-$Comp
-L Device:R R?
-U 1 1 61B60A5F
-P 1700 6900
-AR Path="/5F6B165A/61B60A5F" Ref="R?"  Part="1" 
-AR Path="/5F67E4B9/61B60A5F" Ref="R?"  Part="1" 
-AR Path="/618E8C75/61B60A5F" Ref="R9"  Part="1" 
-F 0 "R9" V 1780 6900 50  0000 C CNN
-F 1 "549" V 1700 6900 50  0000 C CNN
-F 2 "Resistor_SMD:R_0603_1608Metric" V 1630 6900 50  0001 C CNN
-F 3 "" H 1700 6900 50  0000 C CNN
-F 4 "0603WAF5490T5E" V 1700 6900 50  0001 C CNN "MPN"
-F 5 "https://lcsc.com/product-detail/Chip-Resistor-Surface-Mount_UNI-ROYAL-Uniroyal-Elec-0603WAF5490T5E_C23079.html" V 1700 6900 50  0001 C CNN "URL"
-	1    1700 6900
-	0    1    1    0   
-$EndComp
-$Comp
-L Device:LED_ALT D?
-U 1 1 61B60A6F
-P 1000 6900
-AR Path="/5F6B165A/61B60A6F" Ref="D?"  Part="1" 
-AR Path="/5F67E4B9/61B60A6F" Ref="D?"  Part="1" 
-AR Path="/618E8C75/61B60A6F" Ref="D4"  Part="1" 
-F 0 "D4" H 1000 7000 50  0000 C CNN
-F 1 "RED" H 1050 6750 50  0000 R CNN
-F 2 "LED_SMD:LED_0805_2012Metric" H 1000 6900 50  0001 C CNN
-F 3 "https://optoelectronics.liteon.com/upload/download/DS-22-99-0150/LTST-C170KRKT.pdf" H 1000 6900 50  0001 C CNN
-F 4 "www.liteon.com" H 1000 6900 60  0001 C CNN "MNF1_URL"
-F 5 "LTST-C170KRKT" H 1000 6900 60  0001 C CNN "MPN"
-F 6 "https://www.lcsc.com/product-detail/Light-Emitting-Diodes-LED_Lite-On-LTST-C170KRKT_C94868.html" H 1000 6900 50  0001 C CNN "URL"
-	1    1000 6900
-	1    0    0    -1  
-$EndComp
-$Comp
-L power:GND #PWR0177
-U 1 1 61B60A76
-P 700 7100
-F 0 "#PWR0177" H 700 6850 50  0001 C CNN
-F 1 "GND" H 705 6927 50  0000 C CNN
-F 2 "" H 700 7100 50  0001 C CNN
-F 3 "" H 700 7100 50  0001 C CNN
-	1    700  7100
-	1    0    0    -1  
-$EndComp
-Text GLabel 1850 6900 2    60   Input ~ 12
-LED2
-Wire Wire Line
-	850  7400 700  7400
-Wire Wire Line
-	700  7400 700  7600
-Wire Wire Line
-	1150 7400 1550 7400
-$Comp
-L Device:R R?
-U 1 1 61B62352
-P 1700 7400
-AR Path="/5F6B165A/61B62352" Ref="R?"  Part="1" 
-AR Path="/5F67E4B9/61B62352" Ref="R?"  Part="1" 
-AR Path="/618E8C75/61B62352" Ref="R10"  Part="1" 
-F 0 "R10" V 1780 7400 50  0000 C CNN
-F 1 "549" V 1700 7400 50  0000 C CNN
-F 2 "Resistor_SMD:R_0603_1608Metric" V 1630 7400 50  0001 C CNN
-F 3 "" H 1700 7400 50  0000 C CNN
-F 4 "0603WAF5490T5E" V 1700 7400 50  0001 C CNN "MPN"
-F 5 "https://lcsc.com/product-detail/Chip-Resistor-Surface-Mount_UNI-ROYAL-Uniroyal-Elec-0603WAF5490T5E_C23079.html" V 1700 7400 50  0001 C CNN "URL"
-	1    1700 7400
-	0    1    1    0   
-$EndComp
-$Comp
-L Device:LED_ALT D?
-U 1 1 61B62362
-P 1000 7400
-AR Path="/5F6B165A/61B62362" Ref="D?"  Part="1" 
-AR Path="/5F67E4B9/61B62362" Ref="D?"  Part="1" 
-AR Path="/618E8C75/61B62362" Ref="D5"  Part="1" 
-F 0 "D5" H 1000 7500 50  0000 C CNN
-F 1 "RED" H 1050 7250 50  0000 R CNN
-F 2 "LED_SMD:LED_0805_2012Metric" H 1000 7400 50  0001 C CNN
-F 3 "https://optoelectronics.liteon.com/upload/download/DS-22-99-0150/LTST-C170KRKT.pdf" H 1000 7400 50  0001 C CNN
-F 4 "www.liteon.com" H 1000 7400 60  0001 C CNN "MNF1_URL"
-F 5 "LTST-C170KRKT" H 1000 7400 60  0001 C CNN "MPN"
-F 6 "https://www.lcsc.com/product-detail/Light-Emitting-Diodes-LED_Lite-On-LTST-C170KRKT_C94868.html" H 1000 7400 50  0001 C CNN "URL"
-	1    1000 7400
-	1    0    0    -1  
-$EndComp
-$Comp
-L power:GND #PWR0178
-U 1 1 61B62369
-P 700 7600
-F 0 "#PWR0178" H 700 7350 50  0001 C CNN
-F 1 "GND" H 705 7427 50  0000 C CNN
-F 2 "" H 700 7600 50  0001 C CNN
-F 3 "" H 700 7600 50  0001 C CNN
-	1    700  7600
-	1    0    0    -1  
-$EndComp
-Text GLabel 1850 7400 2    60   Input ~ 12
-LED3
 Text GLabel 9900 1650 2    60   Input ~ 12
 LED0
 Text GLabel 9900 1750 2    60   Input ~ 12
 LED1
-Text GLabel 9900 1850 2    60   Input ~ 12
-LED2
-Text GLabel 9900 1950 2    60   Input ~ 12
-LED3
 Text GLabel 1600 4050 0    50   Input ~ 0
 USBH0_D+
 Text GLabel 4100 4050 2    50   Input ~ 0
@@ -913,8 +805,18 @@ $EndComp
 Text Notes 1200 5650 0    50   ~ 0
 User LEDS
 Text GLabel 4100 1350 2    50   Input ~ 0
-NMRQ
+~NMRQ_3V3
 Text Notes 5700 550  2    50   ~ 0
 design use NMRQ (active high) instead
 NoConn ~ 4750 650 
+Text GLabel 4100 1850 2    39   Input ~ 8
+fpga_to_cpld_signal_2
+Text GLabel 12450 1800 2    60   Input ~ 12
+LED3
+Text GLabel 12450 1700 2    60   Input ~ 12
+LED2
+Text GLabel 9900 1950 2    50   Input ~ 0
+~TM2_3V3
+Text GLabel 9900 1850 2    50   Input ~ 0
+~CLK2X_3V3
 $EndSCHEMATC
