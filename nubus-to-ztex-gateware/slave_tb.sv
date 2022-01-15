@@ -9,7 +9,7 @@ module nubus_slave_tb ();
    parameter TEST_DATA = 'h87654321;
    parameter [1:0]  MEMORY_WAIT_CLOCKS = 1;   
    parameter DEBUG_NUBUS_START = 0;
-   parameter ROM_ADDR = 'hF00FF000;
+   parameter ROM_ADDR = 'hF0FFF000;
    
    // Clock (rising is driving edge, faling is sampling) 
    tri1                bd_clk48; 
@@ -45,14 +45,25 @@ module nubus_slave_tb ();
    // System Parity Valid [Address/Data]
    //tri1                nub_spvn;
 
-   tri1 [4:0] 		   leds;
+   tri1 [1:0] 		   leds;
    
    tri 			   unused0, tmoen, unused1, unused2;
    tri 			   arb, grant;
    tri 			   nubus_oe, nubus_master_dir, nubus_ad_dir;
    tri			   reset_n_3v3, clk_n_3v3, tm0_n_3v3, tm1_n_3v3, start_n_3v3, ack_n_3v3;
    tri1 [3:0] 		   id_n_3v3;
-   tri [31:0] 		   ad_n_3v3;		   
+   tri [31:0] 		   ad_n_3v3;
+   tri [3:0] 		   arb_o_n;
+   tri 				   tm0_o_n, tm1_o_n, tmx_oe_n;
+   tri 				   start_o_n, start_oe_n;
+   tri 				   ack_o_n, ack_oe_n;
+   tri 				   rqst_o_n;
+   
+   
+   tri 				   nub_clk2xn, clk2x_n_3v3;
+   tri 				   tm2_n_3v3, nub_tm2n, tm2_o_n, tm2_oe_n;
+   
+  
 
    assign nub_idn = ~ TEST_CARD_ID;
 
@@ -60,29 +71,56 @@ module nubus_slave_tb ();
    assign nub_arbn = 'b1111;
 
    nubus_cpld UCPLD (
-					 .fpga_to_cpld_clk(unused0),
+					 .nubus_oe(nubus_oe),
 					 .tmoen(tmoen),
+					 .nubus_master_dir(nubus_master_dir),
+
+					 .id_n_5v(nub_idn),
+					 .reset_n_5v(nub_resetn),
+					 .clk_n_5v(nub_clkn),
+					 .clk2x_n_5v(nub_clk2xn),
+					 
+					 .fpga_to_cpld_clk(unused0),
 					 .fpga_to_cpld_signal(unused1),
 					 .fpga_to_cpld_signal_2(unused2),
-					 .id_n_5v(nub_idn),
-					 .arb_n_5v(nub_arbn),
-					 .arb(arb),
-					 .grant(grant),
-					 .reset_n_5v(nub_resetn),
-					 .nubus_oe(nubus_oe),
-					 .reset_n_3v3(reset_n_3v3),
-					 .nubus_master_dir(nubus_master_dir),
-					 .clk_n_3v3(clk_n_3v3),
+					 
 					 .id_n_3v3(id_n_3v3),
+					 .reset_n_3v3(reset_n_3v3),
+					 .clk_n_3v3(clk_n_3v3),
+					 .clk2x_n_3v3(clk2x_n_3v3),
+					 
+					 .arb(arb),
+					 .arb_n_5v(nub_arbn),
+					 .arb_o_n(arb_o_n),
+					 .grant(grant),
+					 
 					 .tm0_n_3v3(tm0_n_3v3),
-					 .tm1_n_3v3(tm1_n_3v3),
 					 .tm0_n_5v(nub_tm0n),
+					 .tm0_o_n(tm0_o_n),
+					 
+					 .tm1_n_3v3(tm1_n_3v3),
 					 .tm1_n_5v(nub_tm1n),
-					 .clk_n_5v(nub_clkn),
+					 .tm1_o_n(tm1_o_n),
+					 .tmx_oe_n(tmx_oe_n),
+
+					 .tm2_n_3v3(tm2_n_3v3),
+					 .tm2_n_5v(nub_tm2n),
+					 .tm2_o_n(tm2_o_n),
+					 .tm2_oe_n(tm2_oe_n),
+					 
 					 .start_n_3v3(start_n_3v3),
-					 .ack_n_3v3(ack_n_3v3),
 					 .start_n_5v(nub_startn),
-					 .ack_n_5v(nub_ackn)
+					 .start_o_n(start_o_n),
+					 .start_oe_n(start_oe_n),
+					 
+					 .ack_n_3v3(ack_n_3v3),
+					 .ack_n_5v(nub_ackn),
+					 .ack_o_n(ack_o_n),
+					 .ack_oe_n(ack_oe_n),
+					 
+					 .rqst_n_3v3(rqst_n_3v3),
+					 .rqst_n_5v(nub_rqstn),
+					 .rqst_o_n(rqst_o_n)
 					 );
 
    sn74fct245 shifters_b0(.data_5v(nub_adn[ 7: 0]),
@@ -102,6 +140,45 @@ module nubus_slave_tb ();
 						  .nubus_oe(nubus_oe),
 						  .nubus_ad_dir(nubus_ad_dir));
 
+   tri1 				   nmrq_3v3_n;
+   
+   sn74lvt145_quarter driver_u1a(.oe_n(nmrq_3v3_n),
+								 .in(0),
+								 .out(nub_nmrqn));
+   sn74lvt145_quarter driver_u1b(.oe_n(rqst_o_n),
+								 .in(0),
+								 .out(nub_rqstn));
+   sn74lvt145_quarter driver_u1c(.oe_n(start_oe_n),
+								 .in(start_o_n),
+								 .out(nub_startn));
+   sn74lvt145_quarter driver_u1d(.oe_n(ack_oe_n),
+								 .in(ack_o_n),
+								 .out(nub_ackn));
+
+   sn74lvt145_quarter driver_u3a(.oe_n(arb_o_n[0]),
+								 .in(0),
+								 .out(nub_arbn[0]));
+   sn74lvt145_quarter driver_u3b(.oe_n(arb_o_n[1]),
+								 .in(0),
+								 .out(nub_arbn[1]));
+   sn74lvt145_quarter driver_u3c(.oe_n(arb_o_n[3]),
+								 .in(0),
+								 .out(nub_arbn[3]));
+   sn74lvt145_quarter driver_u3d(.oe_n(arb_o_n[2]),
+								 .in(0),
+								 .out(nub_arbn[2]));
+   
+   sn74lvt145_quarter driver_u2a(.oe_n(tmx_oe_n),
+								  .in(tm1_o_n),
+								  .out(nub_tm1n));
+   sn74lvt145_quarter driver_u2b(.oe_n(tmx_oe_n),
+								  .in(tm0_o_n),
+								  .out(nub_tm0n));
+   sn74lvt145_quarter driver_u2c(.oe_n(tm2_oe_n),
+								  .in(tm2_o_n),
+								  .out(nub_tm2n));
+   
+
    ztex213_nubus_V1_0 UNuBus (
 							  // NuBus lines only
 							  .clk48(bd_clk48),
@@ -118,14 +195,14 @@ module nubus_slave_tb ();
 							  .tm0_3v3_n(tm0_n_3v3),
 							  .tm1_3v3_n(tm1_n_3v3),
 							  .start_3v3_n(start_n_3v3),
-							  .rqst_3v3_n(nub_rqstn),
+							  .rqst_3v3_n(rqst_n_3v3),
 							  .ack_3v3_n(ack_n_3v3),
 							  // .nubus_arb_n(nub_arbn),
 							  .arb(arb),
 							  .grant(grant),
 							  .tmoen(tmoen),
 							  .nubus_ad_dir(nubus_ad_dir),
-							  .nmrq_3v3_n(nub_nmrqn),
+							  .nmrq_3v3_n(nmrq_3v3_n),
 							  .nubus_oe(nubus_oe)
 							  );
    
