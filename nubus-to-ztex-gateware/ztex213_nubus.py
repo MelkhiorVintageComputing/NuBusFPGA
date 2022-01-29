@@ -60,8 +60,6 @@ _nubus_io_v1_0 = [
     ## leds on the NuBus board
     ("user_led", 0, Pins("V5"),  IOStandard("lvcmos33")), #LED0
     ("user_led", 1, Pins("V4"),  IOStandard("lvcmos33")), #LED1
-    ("user_led", 2, Pins("T5"),  IOStandard("lvcmos33")), #LED2
-    ("user_led", 3, Pins("T4"),  IOStandard("lvcmos33")), #LED3
     ## serial header for console
     ("serial", 0,
      Subsignal("tx", Pins("V9")), # FIXME: might be the other way round
@@ -94,7 +92,7 @@ _nubus_io_v1_0 = [
         Subsignal("data1_n", Pins("V2"), IOStandard("TMDS_33")),
         Subsignal("data2_p", Pins("R3"), IOStandard("TMDS_33")),
         Subsignal("data2_n", Pins("T3"), IOStandard("TMDS_33")),
-        Subsignal("hdp",     Pins("T8"), IOStandard("LVCMOS33")),
+        Subsignal("hpd",     Pins("T8"), IOStandard("LVCMOS33")),
         Subsignal("sda",     Pins("R8"), IOStandard("LVCMOS33")),
         Subsignal("scl",     Pins("R7"), IOStandard("LVCMOS33")),
         Subsignal("cec",     Pins("T6"), IOStandard("LVCMOS33")),
@@ -103,7 +101,7 @@ _nubus_io_v1_0 = [
 
 _nubus_nubus_v1_0 = [
     ("clk_3v3_n",          0, Pins("H16"), IOStandard("lvttl")),
-    # ("nubus_clk2x_n",      0, Pins(""), IOStandard("lvttl")),
+    ("clk2x_3v3_n",        0, Pins("T5"),  IOStandard("lvttl")),
     ("ack_3v3_n",          0, Pins("K13"), IOStandard("lvttl")),
     ("nmrq_3v3_n",         0, Pins("J18"), IOStandard("lvttl")),
     ("reset_3v3_n",        0, Pins("G17"), IOStandard("lvttl")),
@@ -113,11 +111,11 @@ _nubus_nubus_v1_0 = [
                                    "D12 D13 D14 C14 B16 B17 D15 C15 "
                                    "B18 A18 C16 C17 E15 E16 F14 F13 "
                                    "D17 D18 E17 E18 F15 F18 F16 G18 "), IOStandard("lvttl")),
-    # ("nubus_arb_n",        0, Pins(""), IOStandard("lvttl")),
+    # ("nubus_arb_n",        0, Pins(""), IOStandard("lvttl")), # CPLD only, we have 'arb'/'grant' instead
     ("id_3v3_n",           0, Pins("U7 V6 V7 U8"), IOStandard("lvttl")),
     ("tm0_3v3_n",          0, Pins("K15"), IOStandard("lvttl")),
     ("tm1_3v3_n",          0, Pins("J17"), IOStandard("lvttl")),
-    # ("nubus_tm2_n",         0, Pins(""), IOStandard("lvttl")),
+    ("tm2_3v3_n",          0, Pins("T4"),  IOStandard("lvttl")),
     
     ("nubus_oe",           0, Pins("G13"), IOStandard("lvttl")),
     ("nubus_ad_dir",       0, Pins("G16"), IOStandard("lvttl")),
@@ -125,7 +123,7 @@ _nubus_nubus_v1_0 = [
     ("grant",              0, Pins("H15"), IOStandard("lvttl")),
     ("arb",                0, Pins("J13"), IOStandard("lvttl")),
     ("fpga_to_cpld_clk",   0, Pins("H14"), IOStandard("lvttl")),
-    ("tmoen",              0, Pins("U6"), IOStandard("lvttl")),
+    ("tmoen",              0, Pins("U6"),  IOStandard("lvttl")),
     ("fpga_to_cpld_signal",0, Pins("J14"), IOStandard("lvttl")),
     ("fpga_to_cpld_signal_2",0, Pins("G14"), IOStandard("lvttl")),
 ]

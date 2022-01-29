@@ -151,9 +151,10 @@ F 0 "U10" V 4296 2937 50  0000 L CNN
 F 1 "SN65220" V 4205 2937 50  0000 L CNN
 F 2 "Package_TO_SOT_SMD:SOT-23-6" H 4600 2700 50  0001 L CNN
 F 3 "http://www.ti.com/lit/ds/symlink/sn65220.pdf" H 4250 3000 50  0001 C CNN
-F 4 "SN65220DBVR" V 4250 2850 50  0001 C CNN "MPN"
+F 4 "SN65220DBVT" V 4250 2850 50  0001 C CNN "MPN"
 F 5 "https://www2.mouser.com/ProductDetail/Texas-Instruments/SN65220DBVR?qs=5nGYs9Do7G0gEpYxbYqyeA%3D%3D" V 4250 2850 50  0001 C CNN "URL-ALT"
-F 6 "https://lcsc.com/product-detail/TVS_Texas-Instruments-SN65220DBVR_C21787.html" V 4250 2850 50  0001 C CNN "URL"
+F 6 "https://www.lcsc.com/product-detail/Others_Texas-Instruments-TI-SN65220DBVT_C350555.html" V 4250 2850 50  0001 C CNN "URL"
+F 7 "SN65220DBVT or SN65220DBVR (Tape or Reel...)" V 4250 2850 50  0001 C CNN "Notes"
 	1    4250 2850
 	0    1    -1   0   
 $EndComp

@@ -14,6 +14,7 @@ from litex.soc.interconnect import wishbone
 from litex.soc.cores.clock import *
 from litex.soc.cores.led import LedChaser
 import ztex213_nubus
+import nubus_to_fpga_export
 
 import nubus
 
@@ -77,13 +78,13 @@ class _CRG(Module):
         self.comb += self.cd_nubus.rst.eq(~rst_nubus_n)
         platform.add_platform_command("create_clock -name nubus_clk -period 100.0 -waveform {{0.0 75.0}} [get_ports clk_3v3_n]")
         
-        #clk2x_nubus = platform.request("nubus_clk2x_n")
-        #if (clk2x_nubus is None):
-        #    print(" ***** ERROR ***** Can't find the NuBus90 Clock !!!!\n");
-        #    assert(false)
-        #self.cd_nubus90.clk = clk2x_nubus
-        #self.comb += self.cd_nubus90.rst.eq(~rst_nubus_n)
-        #platform.add_platform_command("create_clock -name nubus90_clk -period 50.0  -waveform {{0.0 37.5}} [get_ports nubus_clk2x_n]")
+        clk2x_nubus = platform.request("clk2x_3v3_n")
+        if (clk2x_nubus is None):
+            print(" ***** ERROR ***** Can't find the NuBus90 Clock !!!!\n");
+            assert(false)
+        self.cd_nubus90.clk = clk2x_nubus
+        self.comb += self.cd_nubus90.rst.eq(~rst_nubus_n)
+        platform.add_platform_command("create_clock -name nubus90_clk -period 50.0  -waveform {{0.0 37.5}} [get_ports clk2x_3v3_n]")
 
         num_adv = 0
         num_clk = 0
@@ -336,12 +337,12 @@ def main():
     # should be split per-device (and without base) to still work if we have identical devices in different configurations on multiple boards
     # now it is split
 
-    #csr_contents_dict = nubus_to_fpga_export.get_csr_header_split(
-    #    regions   = soc.csr_regions,
-    #    constants = soc.constants,
-    #    csr_base  = soc.mem_regions['csr'].origin)
-    #for name in csr_contents_dict.keys():
-    #    write_to_file(os.path.join("nubusfpga_csr_{}.h".format(name)), csr_contents_dict[name])
+    csr_contents_dict = nubus_to_fpga_export.get_csr_header_split(
+        regions   = soc.csr_regions,
+        constants = soc.constants,
+        csr_base  = soc.mem_regions['csr'].origin)
+    for name in csr_contents_dict.keys():
+        write_to_file(os.path.join("nubusfpga_csr_{}.h".format(name)), csr_contents_dict[name])
     
     
 if __name__ == "__main__":

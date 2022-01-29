@@ -1,4 +1,4 @@
-### Module positions - created on Sat Jan 15 11:37:08 2022 ###
+### Module positions - created on Sat Jan 29 10:58:25 2022 ###
 ### Printed by Pcbnew version kicad 5.0.2+dfsg1-1~bpo9+1
 ## Unit = mm, Angle = deg.
 ## Side : top
@@ -95,6 +95,16 @@ R32       75                  R_0603_1608Metric                           252.00
 R33       1M                  R_1210_3225Metric                           246.8200   -14.7700  270.0000  top
 R34       100                 R_0603_1608Metric                           253.9200   -35.1000    0.0000  top
 R35       100                 R_0603_1608Metric                           253.9100   -36.9000    0.0000  top
+R36       10k                 R_0603_1608Metric                           114.4000   -83.7000  180.0000  top
+R37       10k                 R_0603_1608Metric                           120.3000   -79.8000    0.0000  top
+R38       10k                 R_0603_1608Metric                           125.5000   -83.3000  180.0000  top
+R39       10k                 R_0603_1608Metric                           121.4000   -82.7000    0.0000  top
+R40       10k                 R_0603_1608Metric                           182.1000   -85.1000   90.0000  top
+R41       10k                 R_0603_1608Metric                           186.1000   -71.3000  180.0000  top
+R42       10k                 R_0603_1608Metric                           143.0000   -84.9000  180.0000  top
+R43       10k                 R_0603_1608Metric                           144.6000   -83.2000    0.0000  top
+R44       10k                 R_0603_1608Metric                           135.9000   -89.6000   90.0000  top
+R45       10k                 R_0603_1608Metric                           139.6000   -84.9000  180.0000  top
 U1        74LVT125            TSSOP-14_4.4x5mm_P0.65mm                    116.7000   -88.7800    0.0000  top
 U2        74LVT125            TSSOP-14_4.4x5mm_P0.65mm                    184.5000   -78.5000   90.0000  top
 U3        74LVT125            TSSOP-14_4.4x5mm_P0.65mm                    143.7500   -88.7500  180.0000  top

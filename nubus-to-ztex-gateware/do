@@ -4,10 +4,7 @@ export LD_LIBRARY_PATH=/opt/Xilinx/Vivado/2020.1/lib/lnx64.o/SuSE
 
 python3 nubus_to_fpga_soc.py --build --csr-csv csr.csv --csr-json csr.json --variant=ztex2.13a --version=V1.0 --sys-clk-freq 100e6 
 ) 2>&1 | tee build_V1_0.log
-# --trng
-# --sdram 
-# --sdcard
-# --usb
-# --cg3 --cg3-res 1280x1024@60Hz 
+# --toby --toby-res 1280x1024@60Hz
+# --hdmi
 
 grep -A10 'Design Timing Summary' build/ztex213_nubus_V1_0/gateware/ztex213_nubus_V1_0_timing.rpt

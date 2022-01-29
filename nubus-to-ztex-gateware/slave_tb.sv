@@ -19,7 +19,7 @@ module nubus_slave_tb ();
    // Clock (rising is driving edge, faling is sampling) 
    tri1                nub_clkn; 
    // Clock 90 (rising is driving edge, faling is sampling) 
-   //tri1                nub_clk2xn; 
+   tri1                nub_clk2xn; 
    // Reset [Open Collector]
    tri1                nub_resetn; 
    // Power Fail Warning [Control]
@@ -29,7 +29,7 @@ module nubus_slave_tb ();
    // Transfer Mode [Control]
    tri1                nub_tm0n;
    tri1                nub_tm1n;
-   //tri1                nub_tm2n;
+   tri1                nub_tm2n;
    // Start [Control]
    tri1                nub_startn;
    // Request [Open Collector]
@@ -50,7 +50,7 @@ module nubus_slave_tb ();
    tri 			   unused0, tmoen, unused1, unused2;
    tri 			   arb, grant;
    tri 			   nubus_oe, nubus_master_dir, nubus_ad_dir;
-   tri			   reset_n_3v3, clk_n_3v3, tm0_n_3v3, tm1_n_3v3, start_n_3v3, ack_n_3v3;
+   tri			   reset_n_3v3, clk_n_3v3, tm0_n_3v3, tm1_n_3v3, start_n_3v3, ack_n_3v3, rqst_n_3v3;
    tri1 [3:0] 		   id_n_3v3;
    tri [31:0] 		   ad_n_3v3;
    tri [3:0] 		   arb_o_n;
@@ -60,8 +60,8 @@ module nubus_slave_tb ();
    tri 				   rqst_o_n;
    
    
-   tri 				   nub_clk2xn, clk2x_n_3v3;
-   tri 				   tm2_n_3v3, nub_tm2n, tm2_o_n, tm2_oe_n;
+   tri 				   clk2x_n_3v3;
+   tri 				   tm2_n_3v3, tm2_o_n, tm2_oe_n;
    
   
 
@@ -187,8 +187,6 @@ module nubus_slave_tb ();
 							  // .nubus_clk2x_n(nub_clk2xn),
 							  .user_led0(leds[0]),
 							  .user_led1(leds[1]),
-							  .user_led2(leds[2]),
-							  .user_led3(leds[3]),
 							  //.nubus_tm2_n(nub_tm2n),
 							  .id_3v3_n(id_n_3v3),
 							  .ad_3v3_n(ad_n_3v3),
@@ -203,12 +201,15 @@ module nubus_slave_tb ();
 							  .tmoen(tmoen),
 							  .nubus_ad_dir(nubus_ad_dir),
 							  .nmrq_3v3_n(nmrq_3v3_n),
-							  .nubus_oe(nubus_oe)
+							  .nubus_oe(nubus_oe),
+							  .clk2x_3v3_n(clk2x_n_3v3),
+							  .tm2_3v3_n(tm2_n_3v3)
 							  );
    
 
    // State machine of test bench
    reg         tst_clkn;
+   reg         tst_clk2xn;
    reg         tst_clk48;
    reg         tst_resetn;
    reg         tst_startn;
@@ -221,6 +222,7 @@ module nubus_slave_tb ();
 
    // Drive NuBus signals
    assign nub_clkn     = tst_clkn;
+   assign nub_clk2xn   = tst_clk2xn;
    assign bd_clk48     = tst_clk48;
    assign nub_resetn   = tst_resetn;
    assign nub_startn   = tst_startn;   
@@ -443,6 +445,12 @@ module nubus_slave_tb ();
          if (~nub_startn) 
             $display ("%g  (NuBus Start) /ad: $%h {/tmadn}: %b%b%b%b", $time, nub_adn, nub_tm1n, nub_tm0n, nub_adn[1], nub_adn[0]);
       end
+      #25;
+   end
+   always begin
+      tst_clk2xn <= 0;
+      #25;
+      tst_clk2xn <= 1;
       #25;
    end
 

@@ -4,7 +4,7 @@ from migen.genlib.fifo import *
 import litex
 
 class NuBus(Module):
-    def __init__(self, platform, cd_nubus="nubus"):
+    def __init__(self, platform, cd_nubus="nubus", cd_nubus90="nubus90"):
         # unused & unconnected
         # self.nubus_pwf_n = Signal(reset = 1)
         # self.nubus_sp_n = Signal(reset = 1)
@@ -86,7 +86,11 @@ class NuBus(Module):
                                   #o_cpu_errors = self.cpu_errors,
                                   o_mem_stdslot = self.mem_stdslot,
                                   o_mem_super = self.mem_super,
-                                  o_mem_local = self.mem_local)
+                                  o_mem_local = self.mem_local,
+
+                                  i_nub_clk2xn = ClockSignal(cd_nubus90),
+                                  io_nub_tm2n = platform.request("tm2_3v3_n"),
+        )
                 
     def get_netlist_name(self):
         return "nubus"

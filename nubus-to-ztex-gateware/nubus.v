@@ -62,7 +62,11 @@ module nubus
     // Access to superslot area ($sXXXXXXX where <s> is card id)
     output 		  mem_super,
     // Access to local memory on the card
-    output 		  mem_local
+    output 		  mem_local,
+
+	// NuBus90 (unimplemented)
+	input         nub_clk2xn,
+ 	inout         nub_tm2n  
   );
 
   `include "nubus.svh"
