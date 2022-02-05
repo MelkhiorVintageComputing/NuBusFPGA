@@ -2,7 +2,7 @@
 <export version="D">
   <design>
     <source>/home/dolbeau/MAC/NuBusFPGA/nubus-to-ztex/nubus-to-ztex.sch</source>
-    <date>Sat Jan 29 10:58:45 2022</date>
+    <date>Sat Feb  5 15:10:52 2022</date>
     <tool>Eeschema 5.0.2+dfsg1-1~bpo9+1</tool>
     <sheet number="1" name="/" tstamps="/">
       <title_block>
@@ -376,7 +376,8 @@
       <datasheet>http://www.ti.com/lit/gpn/sn74LS245</datasheet>
       <fields>
         <field name="MPN">74LVT245BPW,118</field>
-        <field name="URL">https://eu.mouser.com/ProductDetail/?qs=me8TqzrmIYVnC5%252BK4SaiTg%3D%3D</field>
+        <field name="URL">https://www.digikey.fr/fr/products/detail/nexperia-usa-inc/74LVT245BPW-118/1231957</field>
+        <field name="URL-mouser">https://eu.mouser.com/ProductDetail/?qs=me8TqzrmIYVnC5%252BK4SaiTg%3D%3D</field>
       </fields>
       <libsource lib="74xx" part="74LS245" description="Octal BUS Transceivers, 3-State outputs"/>
       <sheetpath names="/nubus/" tstamps="/618F532C/"/>
@@ -404,7 +405,8 @@
       <datasheet>http://www.ti.com/lit/gpn/sn74LS245</datasheet>
       <fields>
         <field name="MPN">74LVT245BPW,118</field>
-        <field name="URL">https://eu.mouser.com/ProductDetail/?qs=me8TqzrmIYVnC5%252BK4SaiTg%3D%3D</field>
+        <field name="URL">https://www.digikey.fr/fr/products/detail/nexperia-usa-inc/74LVT245BPW-118/1231957</field>
+        <field name="URL-mouser">https://eu.mouser.com/ProductDetail/?qs=me8TqzrmIYVnC5%252BK4SaiTg%3D%3D</field>
       </fields>
       <libsource lib="74xx" part="74LS245" description="Octal BUS Transceivers, 3-State outputs"/>
       <sheetpath names="/nubus/" tstamps="/618F532C/"/>
@@ -432,7 +434,8 @@
       <datasheet>http://www.ti.com/lit/gpn/sn74LS245</datasheet>
       <fields>
         <field name="MPN">74LVT245BPW,118</field>
-        <field name="URL">https://eu.mouser.com/ProductDetail/?qs=me8TqzrmIYVnC5%252BK4SaiTg%3D%3D</field>
+        <field name="URL">https://www.digikey.fr/fr/products/detail/nexperia-usa-inc/74LVT245BPW-118/1231957</field>
+        <field name="URL-mouser">https://eu.mouser.com/ProductDetail/?qs=me8TqzrmIYVnC5%252BK4SaiTg%3D%3D</field>
       </fields>
       <libsource lib="74xx" part="74LS245" description="Octal BUS Transceivers, 3-State outputs"/>
       <sheetpath names="/nubus/" tstamps="/618F532C/"/>
@@ -463,7 +466,8 @@
         <field name="Drawings">https://www.renesas.com/us/en/package/pcg20</field>
         <field name="MPN">74LVT245BPW,118</field>
         <field name="Package Drawings">https://assets.nexperia.com/documents/package-information/SOT360-1.pdf</field>
-        <field name="URL">https://eu.mouser.com/ProductDetail/?qs=me8TqzrmIYVnC5%252BK4SaiTg%3D%3D</field>
+        <field name="URL">https://www.digikey.fr/fr/products/detail/nexperia-usa-inc/74LVT245BPW-118/1231957</field>
+        <field name="URL-mouser">https://eu.mouser.com/ProductDetail/?qs=me8TqzrmIYVnC5%252BK4SaiTg%3D%3D</field>
       </fields>
       <libsource lib="74xx" part="74LS245" description="Octal BUS Transceivers, 3-State outputs"/>
       <sheetpath names="/nubus/" tstamps="/618F532C/"/>
@@ -1192,7 +1196,8 @@
       <datasheet>https://en.wikipedia.org/wiki/HDMI</datasheet>
       <fields>
         <field name="MPN">10029449-111</field>
-        <field name="URL">https://www2.mouser.com/ProductDetail/Amphenol-FCI/10029449-111RLF?qs=fmpTyLOWOey0HPdD9%2F%2FaXA%3D%3D</field>
+        <field name="URL">https://lcsc.com/product-detail/D-Sub-DVI-HDMI-Connectors_Amphenol-ICC-10029449-111RLF_C427307.html</field>
+        <field name="URL-ALT">https://www2.mouser.com/ProductDetail/Amphenol-FCI/10029449-111RLF?qs=fmpTyLOWOey0HPdD9%2F%2FaXA%3D%3D</field>
       </fields>
       <libsource lib="Connector" part="HDMI_A" description="HDMI type A connector"/>
       <sheetpath names="/hdmi/" tstamps="/61B62C00/"/>
@@ -1709,10 +1714,11 @@
       <value>AD1580</value>
       <footprint>Package_TO_SOT_SMD:SOT-23</footprint>
       <fields>
-        <field name="MPN">AD1580ARTZ</field>
-        <field name="MPN-ALT">AD1580BRTZ</field>
-        <field name="URL">https://www.mouser.fr/ProductDetail/Analog-Devices/AD1580ARTZ-REEL7?qs=NmRFExCfTkENN3U3%252BacLbA%3D%3D</field>
+        <field name="MPN">AD1580BRTZ</field>
+        <field name="MPN-ALT">AD1580ARTZ</field>
+        <field name="URL">https://www.digikey.fr/fr/products/detail/analog-devices-inc/AD1580BRTZ-REEL7/936475</field>
         <field name="URL-ALT">https://www.mouser.fr/ProductDetail/Analog-Devices/AD1580BRTZ-REEL7?qs=NmRFExCfTkFZVi9%2F1ZfkXg%3D%3D</field>
+        <field name="URL-mouser">https://www.mouser.fr/ProductDetail/Analog-Devices/AD1580ARTZ-REEL7?qs=NmRFExCfTkENN3U3%252BacLbA%3D%3D</field>
       </fields>
       <libsource lib="ad1580" part="AD1580" description=""/>
       <sheetpath names="/vga/" tstamps="/6193AB43/"/>

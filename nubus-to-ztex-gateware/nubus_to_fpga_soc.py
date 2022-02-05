@@ -27,17 +27,66 @@ from migen.genlib.cdc import BusSynchronizer
 from migen.genlib.resetsync import AsyncResetSynchronizer
 
 from litex.soc.cores.video import VideoVGAPHY
-import toby_fb
+import goblin_fb
 
 # Wishbone stuff
 from sbus_wb import WishboneDomainCrossingMaster
 from nubus_mem_wb import NuBus2Wishbone
 
 # CRG ----------------------------------------------------------------------------------------------
+class _CRG_MINI_SIM(Module):
+    def __init__(self, platform, sys_clk_freq,
+                 goblin=False,
+                 hdmi=False,
+                 pix_clk=0):
+        self.clock_domains.cd_sys       = ClockDomain()
+        self.clock_domains.cd_native    = ClockDomain(reset_less=True) # 48MHz native, non-reset'ed (for power-on long delay, never reset, we don't want the delay after a warm reset)
+        self.clock_domains.cd_nubus      = ClockDomain() # 10 MHz NuBus, reset'ed by NuBus, native NuBus clock domain (25% duty cycle)
+        self.clock_domains.cd_nubus90    = ClockDomain() # 20 MHz NuBus90, reset'ed by NuBus, native NuBus90 clock domain (25% duty cycle)
 
+        # # #
+        clk48 = platform.request("clk48")
+        ###### explanations from betrusted-io/betrusted-soc/betrusted_soc.py
+        # Note: below feature cannot be used because Litex appends this *after* platform commands! This causes the generated
+        # clock derived constraints immediately below to fail, because .xdc file is parsed in-order, and the main clock needs
+        # to be created before the derived clocks. Instead, we use the line afterwards.
+        platform.add_platform_command("create_clock -name clk48 -period 20.8333 [get_nets clk48]")
+        # The above constraint must strictly proceed the below create_generated_clock constraints in the .XDC file
+        # This allows PLLs/MMCMEs to be placed anywhere and reference the input clock
+        self.clk48_bufg = Signal()
+        self.specials += Instance("BUFG", i_I=clk48, o_O=self.clk48_bufg)
+        self.comb += self.cd_native.clk.eq(self.clk48_bufg)                
+        #self.cd_native.clk = clk48
+        
+        clk_nubus = platform.request("clk_3v3_n")
+        if (clk_nubus is None):
+            print(" ***** ERROR ***** Can't find the NuBus Clock !!!!\n");
+            assert(false)
+        self.cd_nubus.clk = clk_nubus
+        rst_nubus_n = platform.request("reset_3v3_n")
+        self.comb += self.cd_nubus.rst.eq(~rst_nubus_n)
+        platform.add_platform_command("create_clock -name nubus_clk -period 100.0 -waveform {{0.0 75.0}} [get_ports clk_3v3_n]")
+        
+        clk2x_nubus = platform.request("clk2x_3v3_n")
+        if (clk2x_nubus is None):
+            print(" ***** ERROR ***** Can't find the NuBus90 Clock !!!!\n");
+            assert(false)
+        self.cd_nubus90.clk = clk2x_nubus
+        self.comb += self.cd_nubus90.rst.eq(~rst_nubus_n)
+        platform.add_platform_command("create_clock -name nubus90_clk -period 50.0  -waveform {{0.0 37.5}} [get_ports clk2x_3v3_n]")
+
+        num_adv = 0
+        num_clk = 0
+
+        platform.add_platform_command("create_clock -name sysclk -period 20.8333 [get_nets clk48]")
+        self.sys_bufg = Signal()
+        self.specials += Instance("BUFG", i_I=clk48, o_O=self.sys_bufg)
+        self.comb += self.cd_native.clk.eq(self.sys_bufg)
+
+            
 class _CRG(Module):
     def __init__(self, platform, sys_clk_freq,
-                 toby=False,
+                 goblin=False,
                  hdmi=False,
                  pix_clk=0):
         self.clock_domains.cd_sys       = ClockDomain() # 100 MHz PLL, reset'ed by NuBus (via pll), SoC/Wishbone main clock
@@ -47,7 +96,7 @@ class _CRG(Module):
         self.clock_domains.cd_native    = ClockDomain(reset_less=True) # 48MHz native, non-reset'ed (for power-on long delay, never reset, we don't want the delay after a warm reset)
         self.clock_domains.cd_nubus      = ClockDomain() # 10 MHz NuBus, reset'ed by NuBus, native NuBus clock domain (25% duty cycle)
         self.clock_domains.cd_nubus90    = ClockDomain() # 20 MHz NuBus90, reset'ed by NuBus, native NuBus90 clock domain (25% duty cycle)
-        if (toby):
+        if (goblin):
             if (not hdmi):
                 self.clock_domains.cd_vga       = ClockDomain(reset_less=True)
             else:
@@ -122,7 +171,7 @@ class _CRG(Module):
         num_adv = num_adv + 1
         num_clk = 0
         
-        if (toby):
+        if (goblin):
             self.submodules.video_pll = video_pll = S7MMCM(speedgrade=platform.speedgrade)
             video_pll.register_clkin(self.clk48_bufg, 48e6)
             if (not hdmi):
@@ -145,7 +194,7 @@ class _CRG(Module):
             
         
 class NuBusFPGA(SoCCore):
-    def __init__(self, variant, version, sys_clk_freq, toby, hdmi, toby_res, **kwargs):
+    def __init__(self, variant, version, sys_clk_freq, goblin, hdmi, goblin_res, **kwargs):
         print(f"Building NuBusFPGA for board version {version}")
         
         kwargs["cpu_type"] = "None"
@@ -157,16 +206,16 @@ class NuBusFPGA(SoCCore):
     
         self.platform = platform = ztex213_nubus.Platform(variant = variant, version = version)
 
-        if (toby):
-            hres = int(toby_res.split("@")[0].split("x")[0])
-            vres = int(toby_res.split("@")[0].split("x")[1])
-            toby_fb_size = toby_fb.toby_rounded_size(hres, vres)
-            print(f"Reserving {toby_fb_size} bytes ({toby_fb_size//1048576} MiB) for the toby")
+        if (goblin):
+            hres = int(goblin_res.split("@")[0].split("x")[0])
+            vres = int(goblin_res.split("@")[0].split("x")[1])
+            goblin_fb_size = goblin_fb.goblin_rounded_size(hres, vres)
+            print(f"Reserving {goblin_fb_size} bytes ({goblin_fb_size//1048576} MiB) for the goblin")
         else:
             hres = 0
             vres = 0
-            toby_fb_size = 0
-            # litex.soc.cores.video.video_timings.update(toby_fb.toby_timings)
+            goblin_fb_size = 0
+            # litex.soc.cores.video.video_timings.update(goblin_fb.goblin_timings)
         
         SoCCore.__init__(self,
                          platform=platform,
@@ -187,33 +236,17 @@ class NuBusFPGA(SoCCore):
         # in 24 bits it's only one megabyte,  $s0 0000 through $sF FFFF
         # they are translated: '$s0 0000-$sF FFFF' to '$Fs00 0000-$Fs0F FFFF' (for s in range $9 through $E)
         self.wb_mem_map = wb_mem_map = {
-            "toby_mem":          0x00000000, # up to 512 KiB of FB memory
-            "csr" :              0x000D0000, # CSR in the middle of the first MB, oups
-            "toby_bt" :          0x00080000, # BT for toby just before the ROM, 0x70000 long
-            "rom":               0x000FF000, # ROM at the end of the first MB (4 KiB of it ATM)
+            "goblin_mem":        0x00000000, # up to 8 MiB of FB memory
+            "goblin_bt" :        0x00900000, # BT for goblin
+            "csr" :              0x00a00000, # CSR
+            "rom":               0x00FF8000, # ROM at the end (32 KiB of it ATM)
             "END OF FIRST MB" :  0x000FFFFF,
-            "rom1":              0x001FF000, # ROM mirrored
-            "rom2":              0x002FF000, # ROM mirrored
-            "rom3":              0x003FF000, # ROM mirrored
-            "rom4":              0x004FF000, # ROM mirrored
-            "rom5":              0x005FF000, # ROM mirrored
-            "rom6":              0x006FF000, # ROM mirrored
-            "rom7":              0x007FF000, # ROM mirrored
-            "rom8":              0x008FF000, # ROM mirrored
-            "toby_mem_dupl" :    0x00900000, # replicated FB memory
-            "rom9":              0x009FF000, # ROM mirrored
-            "roma":              0x00AFF000, # ROM mirrored
-            "romb":              0x00BFF000, # ROM mirrored
-            "romc":              0x00CFF000, # ROM mirrored
-            "romd":              0x00DFF000, # ROM mirrored
-            "rome":              0x00EFF000, # ROM mirrored
-            "romf":              0x00FFF000, # ROM mirrored
             "END OF SLOT SPACE": 0x00FFFFFF,
             "main_ram":          0x80000000, # not directly reachable from NuBus
-            "video_framebuffer": 0x80000000 + 0x10000000 - toby_fb_size, # Updated later
+            "video_framebuffer": 0x80000000 + 0x10000000 - goblin_fb_size, # Updated later
         }
         self.mem_map.update(wb_mem_map)
-        self.submodules.crg = _CRG(platform=platform, sys_clk_freq=sys_clk_freq, toby=toby, pix_clk=litex.soc.cores.video.video_timings[toby_res]["pix_clk"])
+        self.submodules.crg = _CRG(platform=platform, sys_clk_freq=sys_clk_freq, goblin=goblin, pix_clk=litex.soc.cores.video.video_timings[goblin_res]["pix_clk"])
 
         ## add our custom timings after the clocks have been defined
         xdc_timings_filename = None;
@@ -236,24 +269,23 @@ class NuBusFPGA(SoCCore):
         #for i in range(len(rom)):
         #    print(hex(rom[i]))
         #print("\n****************************************\n")
-        self.add_ram("rom", origin=self.mem_map["rom"], size=2**12, contents=rom_data, mode="r") ### FIXME: round up the prom_data size & check for <= 2**12!
-        # do we need to mirror the rom in *all* 16 mb ?
-        self.bus.add_slave("romf", self.rom.bus, SoCRegion(origin=self.mem_map["romf"], size=2**12, mode="r"))
-        #getattr(self,"rom").mem.init = rom_data
-        #getattr(self,"rom").mem.depth = 2**16
+        self.add_ram("rom", origin=self.mem_map["rom"], size=2**15, contents=rom_data, mode="r") ## 32 KiB, must match mmap
 
         avail_sdram = 0
-        #self.submodules.ddrphy = s7ddrphy.A7DDRPHY(platform.request("ddram"),
-        #                                           memtype        = "DDR3",
-        #                                           nphases        = 4,
-        #                                           sys_clk_freq   = sys_clk_freq)
-        #self.add_sdram("sdram",
-        #               phy           = self.ddrphy,
-        #               module        = MT41J128M16(sys_clk_freq, "1:4"),
-        #               l2_cache_size = 0,
-        #)
-        #avail_sdram = self.bus.regions["main_ram"].size
-        avail_sdram = 256 * 1024 * 1024
+        self.submodules.ddrphy = s7ddrphy.A7DDRPHY(platform.request("ddram"),
+                                                   memtype        = "DDR3",
+                                                   nphases        = 4,
+                                                   sys_clk_freq   = sys_clk_freq)
+        self.add_sdram("sdram",
+                       phy           = self.ddrphy,
+                       module        = MT41J128M16(sys_clk_freq, "1:4"),
+                       l2_cache_size = 0,
+        )
+        avail_sdram = self.bus.regions["main_ram"].size
+        from sdram_init import DDR3FBInit
+        self.submodules.sdram_init = DDR3FBInit(sys_clk_freq=sys_clk_freq, bitslip=1, delay=25)
+        self.bus.add_master(name="DDR3Init", master=self.sdram_init.bus)
+        #avail_sdram = 256 * 1024 * 1024
 
         self.submodules.leds = LedChaser(
             pads         = platform.request_all("user_led"),
@@ -261,9 +293,9 @@ class NuBusFPGA(SoCCore):
         self.add_csr("leds")
 
         base_fb = self.wb_mem_map["main_ram"] + avail_sdram - 1048576 # placeholder
-        if (toby):
-            if (avail_sdram >= toby_fb_size):
-                avail_sdram = avail_sdram - toby_fb_size
+        if (goblin):
+            if (avail_sdram >= goblin_fb_size):
+                avail_sdram = avail_sdram - goblin_fb_size
                 base_fb = self.wb_mem_map["main_ram"] + avail_sdram
                 self.wb_mem_map["video_framebuffer"] = base_fb
             else:
@@ -293,16 +325,14 @@ class NuBusFPGA(SoCCore):
         self.submodules.nubus = nubus.NuBus(platform=platform, cd_nubus="nubus")
         self.submodules.nubus2wishbone = ClockDomainsRenamer("nubus")(NuBus2Wishbone(nubus=self.nubus,wb=self.wishbone_master_nubus))
 
-        self.add_ram("ram", origin=self.mem_map["toby_mem"], size=2**16, mode="rw")
-
-        if (toby):
+        if (goblin):
             if (not hdmi):
                 self.submodules.videophy = VideoVGAPHY(platform.request("vga"), clock_domain="vga")
-                self.submodules.toby = toby_fb.toby(soc=self, phy=self.videophy, timings=toby_res, clock_domain="vga") # clock_domain for the VGA side, toby is running in cd_sys
+                self.submodules.goblin = goblin_fb.goblin(soc=self, phy=self.videophy, timings=goblin_res, clock_domain="vga") # clock_domain for the VGA side, goblin is running in cd_sys
             else:
                 self.submodules.videophy = VideoS7HDMIPHY(platform.request("hdmi"), clock_domain="hdmi")
-                self.submodules.toby = toby_fb.toby(soc=self, phy=self.videophy, timings=toby_res, clock_domain="hdmi") # clock_domain for the VGA side, toby is running in cd_sys
-            self.bus.add_slave("toby_bt", self.toby.bus, SoCRegion(origin=self.mem_map.get("toby_bt", None), size=0x70000, cached=False))
+                self.submodules.goblin = goblin_fb.goblin(soc=self, phy=self.videophy, timings=goblin_res, clock_domain="hdmi") # clock_domain for the VGA side, goblin is running in cd_sys
+            self.bus.add_slave("goblin_bt", self.goblin.bus, SoCRegion(origin=self.mem_map.get("goblin_bt", None), size=0x1000, cached=False))
 
         
 def main():
@@ -311,9 +341,9 @@ def main():
     parser.add_argument("--variant", default="ztex2.13a", help="ZTex board variant (default ztex2.13a)")
     parser.add_argument("--version", default="V1.0", help="NuBusFPGA board version (default V1.0)")
     parser.add_argument("--sys-clk-freq", default=100e6, help="NuBusFPGA system clock (default 100e6 = 100 MHz)")
-    parser.add_argument("--toby", action="store_true", help="add a toby framebuffer")
+    parser.add_argument("--goblin", action="store_true", help="add a goblin framebuffer")
     parser.add_argument("--hdmi", action="store_true", help="The framebuffer uses HDMI (default to VGA)")
-    parser.add_argument("--toby-res", default="640x480@60Hz", help="Specify the toby resolution")
+    parser.add_argument("--goblin-res", default="640x480@60Hz", help="Specify the goblin resolution")
     builder_args(parser)
     vivado_build_args(parser)
     args = parser.parse_args()
@@ -322,9 +352,9 @@ def main():
                     variant=args.variant,
                     version=args.version,
                     sys_clk_freq=int(float(args.sys_clk_freq)),
-                    toby=args.toby,
+                    goblin=args.goblin,
                     hdmi=args.hdmi,
-                    toby_res=args.toby_res)
+                    goblin_res=args.goblin_res)
 
     version_for_filename = args.version.replace(".", "_")
 

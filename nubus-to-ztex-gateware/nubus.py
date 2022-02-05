@@ -64,7 +64,7 @@ class NuBus(Module):
                                   i_grant = platform.request("grant"),
                                   o_tmoen = platform.request("tmoen"),
                                   o_NUBUS_AD_DIR = platform.request("nubus_ad_dir"),
-                                  io_nub_nmrqn = platform.request("nmrq_3v3_n"),
+                                  # io_nub_nmrqn = platform.request("nmrq_3v3_n"),
                                   # io_nub_spn = self.nubus_sp_n,
                                   # io_nub_spvn = self.nubus_spv_n,
                                   o_mem_valid = self.mem_valid,

@@ -971,8 +971,9 @@ F 0 "U8" H 17350 4428 50  0000 C CNN
 F 1 "74LVT245BPW,118" H 17350 4337 50  0000 C CNN
 F 2 "For_SeeedStudio:TSSOP-20_4.4x6.5mm_P0.65mm_ForSeeedStudio" H 17350 3450 50  0001 C CNN
 F 3 "http://www.ti.com/lit/gpn/sn74LS245" H 17350 3450 50  0001 C CNN
-F 4 "https://eu.mouser.com/ProductDetail/?qs=me8TqzrmIYVnC5%252BK4SaiTg%3D%3D" H 17350 3450 50  0001 C CNN "URL"
+F 4 "https://eu.mouser.com/ProductDetail/?qs=me8TqzrmIYVnC5%252BK4SaiTg%3D%3D" H 17350 3450 50  0001 C CNN "URL-mouser"
 F 5 "74LVT245BPW,118" H 17350 3450 50  0001 C CNN "MPN"
+F 6 "https://www.digikey.fr/fr/products/detail/nexperia-usa-inc/74LVT245BPW-118/1231957" H 17350 3450 50  0001 C CNN "URL"
 	1    17350 3450
 	-1   0    0    -1  
 $EndComp
@@ -1043,7 +1044,8 @@ F 1 "74LVT245BPW,118" H 15350 4337 50  0000 C CNN
 F 2 "For_SeeedStudio:TSSOP-20_4.4x6.5mm_P0.65mm_ForSeeedStudio" H 15350 3450 50  0001 C CNN
 F 3 "http://www.ti.com/lit/gpn/sn74LS245" H 15350 3450 50  0001 C CNN
 F 4 "74LVT245BPW,118" H 15350 3450 50  0001 C CNN "MPN"
-F 5 "https://eu.mouser.com/ProductDetail/?qs=me8TqzrmIYVnC5%252BK4SaiTg%3D%3D" H 15350 3450 50  0001 C CNN "URL"
+F 5 "https://eu.mouser.com/ProductDetail/?qs=me8TqzrmIYVnC5%252BK4SaiTg%3D%3D" H 15350 3450 50  0001 C CNN "URL-mouser"
+F 6 "https://www.digikey.fr/fr/products/detail/nexperia-usa-inc/74LVT245BPW-118/1231957" H 15350 3450 50  0001 C CNN "URL"
 	1    15350 3450
 	-1   0    0    -1  
 $EndComp
@@ -1114,7 +1116,8 @@ F 1 "74LVT245BPW,118" H 13300 4337 50  0000 C CNN
 F 2 "For_SeeedStudio:TSSOP-20_4.4x6.5mm_P0.65mm_ForSeeedStudio" H 13300 3450 50  0001 C CNN
 F 3 "http://www.ti.com/lit/gpn/sn74LS245" H 13300 3450 50  0001 C CNN
 F 4 "74LVT245BPW,118" H 13300 3450 50  0001 C CNN "MPN"
-F 5 "https://eu.mouser.com/ProductDetail/?qs=me8TqzrmIYVnC5%252BK4SaiTg%3D%3D" H 13300 3450 50  0001 C CNN "URL"
+F 5 "https://eu.mouser.com/ProductDetail/?qs=me8TqzrmIYVnC5%252BK4SaiTg%3D%3D" H 13300 3450 50  0001 C CNN "URL-mouser"
+F 6 "https://www.digikey.fr/fr/products/detail/nexperia-usa-inc/74LVT245BPW-118/1231957" H 13300 3450 50  0001 C CNN "URL"
 	1    13300 3450
 	-1   0    0    -1  
 $EndComp
@@ -1185,10 +1188,11 @@ F 1 "74LVT245BPW,118" H 11250 4337 50  0000 C CNN
 F 2 "For_SeeedStudio:TSSOP-20_4.4x6.5mm_P0.65mm_ForSeeedStudio" H 11250 3450 50  0001 C CNN
 F 3 "http://www.ti.com/lit/gpn/sn74LS245" H 11250 3450 50  0001 C CNN
 F 4 "74LVT245BPW,118" H 11250 3450 50  0001 C CNN "MPN"
-F 5 "https://eu.mouser.com/ProductDetail/?qs=me8TqzrmIYVnC5%252BK4SaiTg%3D%3D" H 11250 3450 50  0001 C CNN "URL"
+F 5 "https://eu.mouser.com/ProductDetail/?qs=me8TqzrmIYVnC5%252BK4SaiTg%3D%3D" H 11250 3450 50  0001 C CNN "URL-mouser"
 F 6 "https://www.renesas.com/us/en/package/pcg20" H 11250 3450 50  0001 C CNN "Drawings"
 F 7 "https://www.renesas.com/document/psc/pcpcg-package-outline-150-body-width-qsop-025-pitch?language=en" H 11250 3450 50  0001 C CNN "Datasheet - Packaging"
 F 8 "https://assets.nexperia.com/documents/package-information/SOT360-1.pdf" H 11250 3450 50  0001 C CNN "Package Drawings"
+F 9 "https://www.digikey.fr/fr/products/detail/nexperia-usa-inc/74LVT245BPW-118/1231957" H 11250 3450 50  0001 C CNN "URL"
 	1    11250 3450
 	-1   0    0    -1  
 $EndComp

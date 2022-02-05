@@ -1,14 +1,19 @@
-NuBusFPGAID = 0xBEEF
+.include "res.inc"
+
+NuBusFPGAID = 0xC0
 
 defMinorBase = 0 /*  beginning */
-defMinorLength = 0xC0000 /*  768 KiB */
+defMinorLength = 0x200000 /* 2048 KiB */
 
 Pages8s = 1 /*  no idea */
 
-defmBounds_Ts = 0
 defmBounds_Ls = 0
-defmBounds_Bs = 480
-defmBounds_Rs = 640
+defmBounds_Ts = 0
+defmBounds_Rs = HRES
+defmBounds_Bs = VRES
+
+defScrnRow = HRES
+RB8s = HRES
 
 DrHwNuBusFPGA = 0xBEEF /*  placeholder */
 
@@ -24,8 +29,6 @@ defmDevType = 0 /* 0 = CLUTType */
 defmPlaneBytes	= 0 /* Offset from one plane to the next. */
 
 SGammaResID = 0
-
-RB8s = 640
 
 
 ChunkyIndexed = 0

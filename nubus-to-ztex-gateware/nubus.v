@@ -42,7 +42,8 @@ module nubus
 	output 		  tmoen,
 	output 		  NUBUS_AD_DIR, 
 
-    inout 		  nub_nmrqn, // Non-Master Request
+    //inout 		  nub_nmrqn, // Non-Master Request, handled in the Litex code
+	
     // inout 		  nub_spn, // System Parity
     // inout 		  nub_spvn, // System Parity Valid
 
@@ -65,8 +66,8 @@ module nubus
     output 		  mem_local,
 
 	// NuBus90 (unimplemented)
-	input         nub_clk2xn,
- 	inout         nub_tm2n  
+	input 		  nub_clk2xn,
+ 	inout 		  nub_tm2n  
   );
 
   `include "nubus.svh"
@@ -99,6 +100,13 @@ module nubus
    wire        nub_adoe  =   slv_slave  & slv_tm1n
                /*SLAVE read of card*/
                        ;
+
+   wire 	   rqst_n, rqst_oe_n;
+
+   assign rqst_n = 'b1; // no master yet
+   assign nub_rqstn = ~rqst_oe_n ? rqst_n : 'bZ;
+   
+   
    // Output to nubus the 
    assign nub_adn  = nub_adoe ? ~nub_ad : 'bZ;
 
@@ -177,7 +185,7 @@ module nubus
       .nub_ackn_o(nub_ackn), // Achnowlege
       .nub_startn_o(nub_startn), // Transfer start
       .nub_rqstn_o(nub_rqstn), // Bus request
-      .nub_rqstoen_o(nub_qstoen), // Bus request enable
+      .nub_rqstoen_o(rqst_oe_n), // Bus request enable
       .drv_tmoen_o(drv_tmoen), // Transfer mode enable
       .drv_mstdn_o(drv_mstdn) // Guess: Slave sends /ACK. Master responds with /MSTDN, which allows slave to clear /ACK and listen for next transaction.
       );
