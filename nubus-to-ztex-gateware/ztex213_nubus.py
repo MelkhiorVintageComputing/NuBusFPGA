@@ -111,7 +111,7 @@ _nubus_nubus_v1_0 = [
                                    "D12 D13 D14 C14 B16 B17 D15 C15 "
                                    "B18 A18 C16 C17 E15 E16 F14 F13 "
                                    "D17 D18 E17 E18 F15 F18 F16 G18 "), IOStandard("lvttl")),
-    # ("nubus_arb_n",        0, Pins(""), IOStandard("lvttl")), # CPLD only, we have 'arb'/'grant' instead
+    # ("nubus_arb_n",        0, Pins(""), IOStandard("lvttl")), # CPLD only, we have 'arbcy_n'/'grant' instead
     ("id_3v3_n",           0, Pins("U7 V6 V7 U8"), IOStandard("lvttl")),
     ("tm0_3v3_n",          0, Pins("K15"), IOStandard("lvttl")),
     ("tm1_3v3_n",          0, Pins("J17"), IOStandard("lvttl")),
@@ -121,7 +121,7 @@ _nubus_nubus_v1_0 = [
     ("nubus_ad_dir",       0, Pins("G16"), IOStandard("lvttl")),
     ("nubus_master_dir",   0, Pins("H17"), IOStandard("lvttl")),
     ("grant",              0, Pins("H15"), IOStandard("lvttl")),
-    ("arb",                0, Pins("J13"), IOStandard("lvttl")),
+    ("arbcy_n",            0, Pins("J13"), IOStandard("lvttl")), # arb in the schematics
     ("fpga_to_cpld_clk",   0, Pins("H14"), IOStandard("lvttl")),
     ("tmoen",              0, Pins("U6"),  IOStandard("lvttl")),
     ("fpga_to_cpld_signal",0, Pins("J14"), IOStandard("lvttl")),

@@ -12,12 +12,26 @@ from litex.build.io import SDROutput, DDROutput
 
 from litex.soc.cores.video import *
 
+video_timing_hwcursor_layout = [
+    # Synchronization signals.
+    ("hsync", 1),
+    ("vsync", 1),
+    ("de",    1),
+    ("hwcursor", 1),
+    ("hwcursorx", 5),
+    ("hwcursory", 5),
+    # Extended/Optional synchronization signals.
+    ("hres",   hbits),
+    ("vres",   vbits),
+    ("hcount", hbits),
+    ("vcount", vbits),
+]
 
 # FB Video Timing Generator ---------------------------------------------------------------------------
 # Same as the normal one except (a) _enable isn't a CSR
 
 class FBVideoTimingGenerator(Module, AutoCSR):
-    def __init__(self, default_video_timings="800x600@60Hz"):
+    def __init__(self, default_video_timings="800x600@60Hz", hwcursor=False):
         # Check / Get Video Timings (can be str or dict)
         if isinstance(default_video_timings, str):
             try:
@@ -31,7 +45,7 @@ class FBVideoTimingGenerator(Module, AutoCSR):
             self.video_timings = vt = default_video_timings
 
         # MMAP Control/Status Registers.
-        self._enable      = Signal(reset = 0)
+        self.enable      = Signal() # external control signal
 
         self._hres        = CSRStorage(hbits, vt["h_active"])
         self._hsync_start = CSRStorage(hbits, vt["h_active"] + vt["h_sync_offset"])
@@ -44,13 +58,18 @@ class FBVideoTimingGenerator(Module, AutoCSR):
         self._vscan       = CSRStorage(vbits, vt["v_active"] + vt["v_blanking"])
 
         # Video Timing Source
-        self.source = source = stream.Endpoint(video_timing_layout)
+        if (hwcursor):
+            self.source = source = stream.Endpoint(video_timing_hwcursor_layout)
+            _hwcursor_x = Signal(12) # 12 out of 16 is enough
+            _hwcursor_y = Signal(12) # 12 out of 16 is enough
+            self.hwcursor_x = Signal(12)
+            self.hwcursor_y = Signal(12)
+            self.specials += MultiReg(self.hwcursor_x, _hwcursor_x)
+            self.specials += MultiReg(self.hwcursor_y, _hwcursor_y)
+        else:
+            self.source = source = stream.Endpoint(video_timing_layout)
 
         # # #
-
-        # Resynchronize Enable to Video clock domain.
-        self.enable = enable = Signal()
-        self.specials += MultiReg(self._enable, enable)
 
         # Resynchronize Horizontal Timings to Video clock domain.
         self.hres        = hres        = Signal(hbits)
@@ -78,7 +97,7 @@ class FBVideoTimingGenerator(Module, AutoCSR):
         fsm = FSM(reset_state="IDLE")
         fsm = ResetInserter()(fsm)
         self.submodules.fsm = fsm
-        self.comb += fsm.reset.eq(~enable)
+        self.comb += fsm.reset.eq(~self.enable)
         fsm.act("IDLE",
             NextValue(hactive, 0),
             NextValue(vactive, 0),
@@ -120,3 +139,12 @@ class FBVideoTimingGenerator(Module, AutoCSR):
                 )
             )
         )
+
+
+        if (hwcursor):
+            self.sync += source.hwcursor.eq((source.hcount >= _hwcursor_x) &
+                                            (source.hcount < (_hwcursor_x+32)) &
+                                            (source.vcount >= _hwcursor_y) &
+                                            (source.vcount < (_hwcursor_y+32)))
+            self.sync += source.hwcursorx.eq(_hwcursor_x - source.hcount)
+            self.sync += source.hwcursory.eq(_hwcursor_y - source.vcount)

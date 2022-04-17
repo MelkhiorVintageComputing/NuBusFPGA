@@ -6,16 +6,18 @@
  * generation of lower ARB<3:0> bits.
  * The GRANT signal must be timed externally to determine proper
  * NuBus constraints.
- * This version uses a new technique to minimize skews .
+ * This version uses a new technique to minimize skews.
+ * 
+ * Modified from the XiBus version to support external drivers in the NuBusFPGA
  */
 
 module nubus_arbiter 
    (
-    input [3:0] idn,    // ID of this card
-    input [3:0] arbn,   // NuBus arbiter's lines (input)
-    output [3:0] arbon,   // NuBus arbiter's lines (control)
-    input       arbcyn, // enable arbitter
-    output      grant   // Grant access
+    input [3:0]  idn, // ID of this card
+    input [3:0]  arbn, // NuBus arbiter's lines (input)
+    output [3:0] arbon, // NuBus arbiter's lines (control)
+    input 		 arbcyn, // enable arbitter
+    output 		 grant   // Grant access
     );
 
    wire          arb2oen, arb1oen, arb0oen;

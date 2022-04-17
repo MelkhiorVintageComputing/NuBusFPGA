@@ -55,7 +55,7 @@ NET "reset_n_3v3"    LOC =  "S:PIN48";
 NET "nubus_master_dir"  LOC =  "S:PIN49";
 NET "fpga_to_cpld_signal_2"  LOC =  "S:PIN50";
 NET "tmoen"          LOC =  "S:PIN51";
-NET "arb"            LOC =  "S:PIN52";
+NET "arbcy_n"        LOC =  "S:PIN52";
 // PIN53: JTAG_TDO
 // PIN24: GND
 // PIN55: VCCIO

@@ -26,12 +26,15 @@ from litedram.frontend.dma import *
 from migen.genlib.cdc import BusSynchronizer
 from migen.genlib.resetsync import AsyncResetSynchronizer
 
+from litex.soc.cores.video import VideoS7HDMIPHY
 from litex.soc.cores.video import VideoVGAPHY
+from litex.soc.cores.video import video_timings
 import goblin_fb
 
 # Wishbone stuff
 from sbus_wb import WishboneDomainCrossingMaster
 from nubus_mem_wb import NuBus2Wishbone
+from nubus_cpu_wb import Wishbone2NuBus
 
 # CRG ----------------------------------------------------------------------------------------------
 class _CRG_MINI_SIM(Module):
@@ -78,10 +81,10 @@ class _CRG_MINI_SIM(Module):
         num_adv = 0
         num_clk = 0
 
-        platform.add_platform_command("create_clock -name sysclk -period 20.8333 [get_nets clk48]")
-        self.sys_bufg = Signal()
-        self.specials += Instance("BUFG", i_I=clk48, o_O=self.sys_bufg)
-        self.comb += self.cd_native.clk.eq(self.sys_bufg)
+        #platform.add_platform_command("create_clock -name sysclk -period 20.8333 [get_nets clk48]")
+        #self.sys_bufg = Signal()
+        #self.specials += Instance("BUFG", i_I=clk48, o_O=self.sys_bufg)
+        #self.comb += self.cd_native.clk.eq(self.sys_bufg)
 
             
 class _CRG(Module):
@@ -179,8 +182,8 @@ class _CRG(Module):
                 platform.add_platform_command("create_generated_clock -name vga_clk [get_pins {{{{MMCME2_ADV_{}/CLKOUT{}}}}}]".format(num_adv, num_clk))
                 num_clk = num_clk + 1
             else:
-                video_pll.create_clkout(self.cd_hdmi,   pix_clk, margin = 0.0005)
-                video_pll.create_clkout(self.cd_hdmi5x, 5*pix_clk, margin = 0.0005)
+                video_pll.create_clkout(self.cd_hdmi,   pix_clk, margin = 0.005)
+                video_pll.create_clkout(self.cd_hdmi5x, 5*pix_clk, margin = 0.005)
                 platform.add_platform_command("create_generated_clock -name hdmi_clk [get_pins {{{{MMCME2_ADV_{}/CLKOUT{}}}}}]".format(num_adv, num_clk))
                 num_clk = num_clk + 1
                 platform.add_platform_command("create_generated_clock -name hdmi5x_clk [get_pins {{{{MMCME2_ADV_{}/CLKOUT{}}}}}]".format(num_adv, num_clk))
@@ -232,29 +235,35 @@ class NuBusFPGA(SoCCore):
         # * $A through $E for the Macintosh Quadra 900; $9 through $B for the Macintosh IIcx;
         # * $C through $E for the Macintosh IIci; $D and $E for the Macintosh Quadra 700; and
         # * $9 for the Macintosh IIsi).
-        # So at best we get 16 MiB in 32-bits moden unless using "super slot space"
+        # the Q650 is $C through $E like the IIci, $E is the one with the PDS.
+        # So at best we get 16 MiB in 32-bits mode, unless using "super slot space"
         # in 24 bits it's only one megabyte,  $s0 0000 through $sF FFFF
         # they are translated: '$s0 0000-$sF FFFF' to '$Fs00 0000-$Fs0F FFFF' (for s in range $9 through $E)
+        # let's assume we have 32-bits mode, this can be requested in the DeclROM apparently
         self.wb_mem_map = wb_mem_map = {
             "goblin_mem":        0x00000000, # up to 8 MiB of FB memory
+            #"END OF FIRST MB" :  0x000FFFFF,
+            #"END OF 8 MB":       0x007FFFFF,
             "goblin_bt" :        0x00900000, # BT for goblin
             "csr" :              0x00a00000, # CSR
+            "pingmaster":        0x00b00000,
             "rom":               0x00FF8000, # ROM at the end (32 KiB of it ATM)
-            "END OF FIRST MB" :  0x000FFFFF,
-            "END OF SLOT SPACE": 0x00FFFFFF,
+            #"END OF SLOT SPACE": 0x00FFFFFF,
             "main_ram":          0x80000000, # not directly reachable from NuBus
             "video_framebuffer": 0x80000000 + 0x10000000 - goblin_fb_size, # Updated later
+            "fixme_master":      0xF0000000,
         }
         self.mem_map.update(wb_mem_map)
-        self.submodules.crg = _CRG(platform=platform, sys_clk_freq=sys_clk_freq, goblin=goblin, pix_clk=litex.soc.cores.video.video_timings[goblin_res]["pix_clk"])
+        self.submodules.crg = _CRG(platform=platform, sys_clk_freq=sys_clk_freq, goblin=goblin, hdmi=hdmi, pix_clk=litex.soc.cores.video.video_timings[goblin_res]["pix_clk"])
 
         ## add our custom timings after the clocks have been defined
         xdc_timings_filename = None;
-        #if (version == "V1.0"):
-        #    xdc_timings_filename = "/home/dolbeau/nubus-to-ztex-gateware/nubus-to-ztex-timings.xdc"
+        if (version == "V1.0"):
+            xdc_timings_filename = "/home/dolbeau/nubus-to-ztex-gateware/nubus_fpga_V1_0_timings.xdc"
 
         if (xdc_timings_filename != None):
             xdc_timings_file = open(xdc_timings_filename)
+            
             xdc_timings_lines = xdc_timings_file.readlines()
             for line in xdc_timings_lines:
                 if (line[0:3] == "set"):
@@ -263,7 +272,7 @@ class NuBusFPGA(SoCCore):
                     platform.add_platform_command(fix_line)
 
         rom_file = "rom_{}.bin".format(version.replace(".", "_"))
-        rom_data = soc_core.get_mem_data(rom_file, "big")
+        rom_data = soc_core.get_mem_data(rom_file, "little") # "big"
         # rom = Array(rom_data)
         #print("\n****************************************\n")
         #for i in range(len(rom)):
@@ -271,26 +280,34 @@ class NuBusFPGA(SoCCore):
         #print("\n****************************************\n")
         self.add_ram("rom", origin=self.mem_map["rom"], size=2**15, contents=rom_data, mode="r") ## 32 KiB, must match mmap
 
-        avail_sdram = 0
-        self.submodules.ddrphy = s7ddrphy.A7DDRPHY(platform.request("ddram"),
-                                                   memtype        = "DDR3",
-                                                   nphases        = 4,
-                                                   sys_clk_freq   = sys_clk_freq)
-        self.add_sdram("sdram",
-                       phy           = self.ddrphy,
-                       module        = MT41J128M16(sys_clk_freq, "1:4"),
-                       l2_cache_size = 0,
-        )
-        avail_sdram = self.bus.regions["main_ram"].size
-        from sdram_init import DDR3FBInit
-        self.submodules.sdram_init = DDR3FBInit(sys_clk_freq=sys_clk_freq, bitslip=1, delay=25)
-        self.bus.add_master(name="DDR3Init", master=self.sdram_init.bus)
-        #avail_sdram = 256 * 1024 * 1024
+        #from wb_test import WA2D
+        #self.submodules.wa2d = WA2D(self.platform)
+        #self.bus.add_slave("WA2D", self.wa2d.bus, SoCRegion(origin=0x00C00000, size=0x00400000, cached=False))
 
-        self.submodules.leds = LedChaser(
-            pads         = platform.request_all("user_led"),
-            sys_clk_freq = sys_clk_freq)
-        self.add_csr("leds")
+        notsimul = 1
+        if (notsimul):
+            avail_sdram = 0
+            self.submodules.ddrphy = s7ddrphy.A7DDRPHY(platform.request("ddram"),
+                                                       memtype        = "DDR3",
+                                                       nphases        = 4,
+                                                       sys_clk_freq   = sys_clk_freq)
+            self.add_sdram("sdram",
+                           phy           = self.ddrphy,
+                           module        = MT41J128M16(sys_clk_freq, "1:4"),
+                           l2_cache_size = 0,
+            )
+            avail_sdram = self.bus.regions["main_ram"].size
+            from sdram_init import DDR3FBInit
+            self.submodules.sdram_init = DDR3FBInit(sys_clk_freq=sys_clk_freq, bitslip=1, delay=25)
+            self.bus.add_master(name="DDR3Init", master=self.sdram_init.bus)
+        else:
+            avail_sdram = 256 * 1024 * 1024
+            self.add_ram("ram", origin=self.mem_map["goblin_mem"], size=2**16, mode="rw")
+
+        #self.submodules.leds = ClockDomainsRenamer("nubus")(LedChaser(
+        #    pads         = platform.request_all("user_led"),
+        #    sys_clk_freq = 10e6))
+        #self.add_csr("leds")
 
         base_fb = self.wb_mem_map["main_ram"] + avail_sdram - 1048576 # placeholder
         if (goblin):
@@ -298,6 +315,7 @@ class NuBusFPGA(SoCCore):
                 avail_sdram = avail_sdram - goblin_fb_size
                 base_fb = self.wb_mem_map["main_ram"] + avail_sdram
                 self.wb_mem_map["video_framebuffer"] = base_fb
+                print(f"FrameBuffer base_fb @ {base_fb:x}")
             else:
                 print("***** ERROR ***** Can't have a FrameBuffer without main ram\n")
                 assert(False)
@@ -307,13 +325,16 @@ class NuBusFPGA(SoCCore):
         # requires us to reset the Macintosh afterward so the FPGA board
         # is properly identified
         # This is in the 'native' ClockDomain that is never reset
+        # not needed, FPGA initializes fast enough, works on cold boots
         #hold_reset_ctr = Signal(30, reset=960000000)
         hold_reset_ctr = Signal(5, reset=31)
         self.sync.native += If(hold_reset_ctr>0, hold_reset_ctr.eq(hold_reset_ctr - 1))
-        hold_reset = Signal(reset=1)
+        hold_reset = Signal()
         self.comb += hold_reset.eq(~(hold_reset_ctr == 0))
         pad_nubus_oe = platform.request("nubus_oe")
         self.comb += pad_nubus_oe.eq(hold_reset)
+        #pad_user_led_0 = platform.request("user_led", 0)
+        #self.comb += pad_user_led_0.eq(~hold_reset)
 
         # Interface NuBus to wishbone
         # we need to cross clock domains
@@ -325,14 +346,30 @@ class NuBusFPGA(SoCCore):
         self.submodules.nubus = nubus.NuBus(platform=platform, cd_nubus="nubus")
         self.submodules.nubus2wishbone = ClockDomainsRenamer("nubus")(NuBus2Wishbone(nubus=self.nubus,wb=self.wishbone_master_nubus))
 
+        wishbone_slave_nubus = wishbone.Interface(data_width=self.bus.data_width)
+        self.submodules.wishbone2nubus = ClockDomainsRenamer("nubus")(Wishbone2NuBus(nubus=self.nubus,wb=wishbone_slave_nubus))
+        self.submodules.wishbone_slave_sys = WishboneDomainCrossingMaster(platform=self.platform, slave=wishbone_slave_nubus, cd_master="sys", cd_slave="nubus")
+        self.bus.add_slave("DMA", self.wishbone_slave_sys, SoCRegion(origin=self.mem_map.get("fixme_master", None), size=0x0fffffff, cached=False))
+        
+
         if (goblin):
             if (not hdmi):
                 self.submodules.videophy = VideoVGAPHY(platform.request("vga"), clock_domain="vga")
-                self.submodules.goblin = goblin_fb.goblin(soc=self, phy=self.videophy, timings=goblin_res, clock_domain="vga") # clock_domain for the VGA side, goblin is running in cd_sys
+                self.submodules.goblin = goblin_fb.goblin(soc=self, phy=self.videophy, timings=goblin_res, clock_domain="vga", irq_line=self.platform.request("nmrq_3v3_n"), endian="little", truecolor=False) # clock_domain for the VGA side, goblin is running in cd_sys
             else:
                 self.submodules.videophy = VideoS7HDMIPHY(platform.request("hdmi"), clock_domain="hdmi")
-                self.submodules.goblin = goblin_fb.goblin(soc=self, phy=self.videophy, timings=goblin_res, clock_domain="hdmi") # clock_domain for the VGA side, goblin is running in cd_sys
+                self.submodules.goblin = goblin_fb.goblin(soc=self, phy=self.videophy, timings=goblin_res, clock_domain="hdmi", irq_line=self.platform.request("nmrq_3v3_n"), endian="little", truecolor=False) # clock_domain for the HDMI side, goblin is running in cd_sys
             self.bus.add_slave("goblin_bt", self.goblin.bus, SoCRegion(origin=self.mem_map.get("goblin_bt", None), size=0x1000, cached=False))
+            pad_user_led_0 = platform.request("user_led", 0)
+            pad_user_led_1 = platform.request("user_led", 1)
+            self.comb += pad_user_led_0.eq(self.goblin.video_framebuffer.underflow)
+            self.comb += pad_user_led_1.eq(self.goblin.video_framebuffer.fb_dma.enable)
+
+        # for testing
+        #from nubus_master_tst import PingMaster
+        #self.submodules.pingmaster = PingMaster()
+        #self.bus.add_slave("pingmaster_slv", self.pingmaster.bus_slv, SoCRegion(origin=self.mem_map.get("pingmaster", None), size=0x010, cached=False))
+        #self.bus.add_master(name="pingmaster_mst", master=self.pingmaster.bus_mst)
 
         
 def main():

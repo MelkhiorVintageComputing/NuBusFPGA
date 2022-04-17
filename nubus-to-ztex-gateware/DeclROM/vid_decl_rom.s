@@ -20,7 +20,7 @@ _sRsrc_Board:
     DatLstEntry boardId,NuBusFPGAID         /*  board ID # (assigned by DTS) */
     OSLstEntry  primaryInit,_sPInitRec     /*  offset to PrimaryInit exec blk */
     OSLstEntry  vendorInfo,_VendorInfo     /*  offset to vendor info record */
-	/* OSLstEntry  SecondaryInit,_sSInitRec */  /* offset to SecondaryInit block	 */
+	OSLstEntry  secondaryInit,_sSInitRec  /* offset to SecondaryInit block	 */
 	OSLstEntry	sRsrcVidNames, _VModeName
 	.long EndOfList
 
@@ -40,14 +40,16 @@ _BoardName:
 _sPInitRec:	
     .long       _EndsPInitRec-_sPInitRec /*  physical block size */
 	.include  "NuBusFPGAPrimaryInit.s"			   /*  	the header/code */
+	.text	
     ALIGN 2
-_EndsPInitRec:	
+_EndsPInitRec:
 
-/* _sSInitRec */
-/*               .long    _EndsSInitRec-_sSInitRec ; physical block size */
-/*               INCLUDE "NuBusFPGASecondaryInit.a"  ; the header/code */
-/*               ALIGN 2 */
-								/* _EndsSInitRec */
+_sSInitRec:	
+    .long    _EndsSInitRec-_sSInitRec /* physical block size */
+    .include "NuBusFPGASecondaryInit.s"  /* the header/code */
+	.text
+    ALIGN 2
+_EndsSInitRec:
 	
 	ALIGN 2
 _VendorInfo:	
@@ -183,7 +185,8 @@ _EndEBVParms:
 DeclROMDir:
 	OSLstEntry 0, _sRsrcDir
 	.long DeclRomEnd-_sRsrcDir /* Length should be 0x824 */
-DeclROMCRC:	.long 0x0 /* TODO: calculate this */
+DeclROMCRC:
+	.long 0x0 /* TODO: calculate this */
 	.byte 1			 /* Revision Level */
 	.byte appleFormat			 /* Apple Format */
 	.long testPattern	 /* magic TestPattern */

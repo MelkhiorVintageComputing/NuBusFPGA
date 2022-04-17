@@ -4,12 +4,13 @@ module nubus_slave_tb ();
 
 `include "nubus_tb.svh"
 
-   parameter TEST_CARD_ID    = 'h0;
-   parameter TEST_ADDR = 'hF0000000;
+   parameter TEST_CARD_ID    = 'hc;
+   parameter TEST_ADDR = 'hFc000000;
    parameter TEST_DATA = 'h87654321;
    parameter [1:0]  MEMORY_WAIT_CLOCKS = 1;   
    parameter DEBUG_NUBUS_START = 0;
-   parameter ROM_ADDR = 'hF0FFF000;
+   parameter ROM_ADDR =  'hFcFFF000;
+   parameter PING_ADDR = 'hFcB00000;
    
    // Clock (rising is driving edge, faling is sampling) 
    tri1                bd_clk48; 
@@ -48,16 +49,18 @@ module nubus_slave_tb ();
    tri1 [1:0] 		   leds;
    
    tri 			   unused0, tmoen, unused1, unused2;
-   tri 			   arb, grant;
+   tri 			   arbcy_n;
+   tri 			   grant;
    tri 			   nubus_oe, nubus_master_dir, nubus_ad_dir;
    tri			   reset_n_3v3, clk_n_3v3, tm0_n_3v3, tm1_n_3v3, start_n_3v3, ack_n_3v3, rqst_n_3v3;
-   tri1 [3:0] 		   id_n_3v3;
+   tri [3:0] 		   id_n_3v3;
    tri [31:0] 		   ad_n_3v3;
    tri [3:0] 		   arb_o_n;
    tri 				   tm0_o_n, tm1_o_n, tmx_oe_n;
    tri 				   start_o_n, start_oe_n;
    tri 				   ack_o_n, ack_oe_n;
-   tri 				   rqst_o_n;
+   tri 			   rqst_o_n;
+   tri 			   fpga_to_cpld_signal;
    
    
    tri 				   clk2x_n_3v3;
@@ -66,9 +69,7 @@ module nubus_slave_tb ();
   
 
    assign nub_idn = ~ TEST_CARD_ID;
-
-   assign nubus_master_dir = 0;
-   assign nub_arbn = 'b1111;
+   //assign nub_arbn = 'b1111;
 
    nubus_cpld UCPLD (
 					 .nubus_oe(nubus_oe),
@@ -81,7 +82,7 @@ module nubus_slave_tb ();
 					 .clk2x_n_5v(nub_clk2xn),
 					 
 					 .fpga_to_cpld_clk(unused0),
-					 .fpga_to_cpld_signal(unused1),
+					 .fpga_to_cpld_signal(fpga_to_cpld_signal),
 					 .fpga_to_cpld_signal_2(unused2),
 					 
 					 .id_n_3v3(id_n_3v3),
@@ -89,7 +90,7 @@ module nubus_slave_tb ();
 					 .clk_n_3v3(clk_n_3v3),
 					 .clk2x_n_3v3(clk2x_n_3v3),
 					 
-					 .arb(arb),
+					 .arbcy_n(arbcy_n),
 					 .arb_n_5v(nub_arbn),
 					 .arb_o_n(arb_o_n),
 					 .grant(grant),
@@ -141,6 +142,8 @@ module nubus_slave_tb ();
 						  .nubus_ad_dir(nubus_ad_dir));
 
    tri1 				   nmrq_3v3_n;
+   assign nmrq_3v3_n = 1;
+   
    
    sn74lvt145_quarter driver_u1a(.oe_n(nmrq_3v3_n),
 								 .in(0),
@@ -196,14 +199,15 @@ module nubus_slave_tb ();
 							  .rqst_3v3_n(rqst_n_3v3),
 							  .ack_3v3_n(ack_n_3v3),
 							  // .nubus_arb_n(nub_arbn),
-							  .arb(arb),
+							  .arbcy_n(arbcy_n),
 							  .grant(grant),
 							  .tmoen(tmoen),
 							  .nubus_ad_dir(nubus_ad_dir),
-							  .nmrq_3v3_n(nmrq_3v3_n),
+							  .nubus_master_dir(nubus_master_dir),
 							  .nubus_oe(nubus_oe),
 							  .clk2x_3v3_n(clk2x_n_3v3),
-							  .tm2_3v3_n(tm2_n_3v3)
+							  .tm2_3v3_n(tm2_n_3v3),
+							  .fpga_to_cpld_signal(fpga_to_cpld_signal)
 							  );
    
 
@@ -220,19 +224,22 @@ module nubus_slave_tb ();
    reg [31:0]  tst_wdatan;
    reg [31:0]  tst_rdatan;
 
-   // Drive NuBus signals
+   reg 		   mastermode_start;
+   reg 		   mastermode_tmack;
+   
    assign nub_clkn     = tst_clkn;
    assign nub_clk2xn   = tst_clk2xn;
    assign bd_clk48     = tst_clk48;
    assign nub_resetn   = tst_resetn;
-   assign nub_startn   = tst_startn;   
-   assign nub_tm0n     = tst_startn ? 'bZ : tst_tmn[0];
-   assign nub_tm1n     = tst_startn ? 'bZ : tst_tmn[1];
-   assign nub_ackn     = tst_startn ? 'bZ : tst_ackn;
+   // Drive NuBus signals
+   assign nub_startn   =                mastermode_start  ? 'bZ: tst_startn;   
+   assign nub_tm0n     = (tst_startn & ~mastermode_tmack) ? 'bZ : tst_tmn[0];
+   assign nub_tm1n     = (tst_startn & ~mastermode_tmack) ? 'bZ : tst_tmn[1];
+   assign nub_ackn     = (tst_startn & ~mastermode_tmack) ? 'bZ : tst_ackn;
    
    // Drive NuBus address/data lines
    wire [31:0] tst_adn = tst_startn ? tst_wdatan : tst_addrn;
-   wire tst_nuboen     = tst_startn & tst_tmn[1];
+   wire tst_nuboen     = (tst_startn & tst_tmn[1]) | mastermode_start;
    assign nub_adn      = tst_nuboen ? 'bZ : tst_adn;
    
    // Inverted verions of registers 
@@ -243,6 +250,10 @@ module nubus_slave_tb ();
       $display ("Start virtual master (vm) writes and reads to/from NuBus slave memory module");
       $dumpfile("nubus_slave_tb.vcd");
       $dumpvars;
+	  #1;
+
+	  mastermode_start <= 0;
+	  mastermode_tmack <= 0;
 
       tst_clkn   <= 1;
       tst_resetn <= 0;
@@ -310,6 +321,40 @@ module nubus_slave_tb ();
       read_word (TMADN_RD_WORD,   ROM_ADDR+12);
 	  
       #1000;
+
+	  // check PingMaster
+      $display  ("PING ---------------------------");
+      write_word(TMADN_WR_WORD,   PING_ADDR+0, 'hC0FFEE00);
+	  read_word (TMADN_RD_WORD,   PING_ADDR+0);
+      write_word(TMADN_WR_WORD,   PING_ADDR+4, 'hF0F0F0F0);
+
+	  mastermode_start <= 1;
+	  mastermode_tmack <= 0;
+	  tst_ackn <= 1;
+	  
+	  @ (negedge nub_startn);
+	  #1
+      $display  ("GOT START ---------------------------");
+      $display ("%g  (received ) address: $%h", $time, ~nub_adn);
+	  @ (negedge nub_clkn);
+	  #1
+	  @ (negedge nub_clkn);
+	  #1
+	  @ (negedge nub_clkn);
+	  #1
+      $display ("%g  (received ) data: $%h", $time, ~nub_adn);
+	  @ (posedge nub_clkn);
+	  mastermode_tmack <= 1;
+	  tst_ackn <= 0;
+	  tst_tmn <= TMN_COMPLETE;
+	  
+	  @ (posedge nub_clkn);
+	  mastermode_start <= 0;
+	  mastermode_tmack <= 0;
+
+	  
+	  #2000;
+	  
 
       $finish;
    end

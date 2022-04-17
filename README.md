@@ -6,4 +6,4 @@ The goal of this repository is to be able to interface a modern (2021 era) [FPGA
 
 ## Current status
 
-Early draft version, this has not been built or tested.
+First prototype is working, implements a basic single-resolution, 8-bits only framebuffer over HDMI or VGA.

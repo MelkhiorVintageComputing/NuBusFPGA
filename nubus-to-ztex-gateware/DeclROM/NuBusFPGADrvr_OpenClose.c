@@ -3,8 +3,8 @@
 OSErr cNuBusFPGAOpen(IOParamPtr pb, /* DCtlPtr */ AuxDCEPtr dce)
 {
 	OSErr ret = noErr;
-	write_reg(dce, GOBOFB_DEBUG, 0xBEEF0000);
-	write_reg(dce, GOBOFB_DEBUG, (unsigned long)dce->dCtlDevBase);
+	/* write_reg(dce, GOBOFB_DEBUG, 0xBEEF0000); */
+	/* write_reg(dce, GOBOFB_DEBUG, (unsigned long)dce->dCtlDevBase); */
 	
 	if (dce->dCtlStorage == nil)
 		{
@@ -47,6 +47,10 @@ OSErr cNuBusFPGAOpen(IOParamPtr pb, /* DCtlPtr */ AuxDCEPtr dce)
 			
 			linearGamma(*dStoreHdl);
 			
+			write_reg(dce, GOBOFB_MODE, GOBOFB_MODE_8BIT);
+
+			write_reg(dce, GOBOFB_VIDEOCTRL, 1);
+			
 			ret = changeIRQ(dce, 1, openErr);
 		}
 	
@@ -62,7 +66,8 @@ OSErr cNuBusFPGAClose(IOParamPtr pb, /* DCtlPtr */ AuxDCEPtr dce)
    if (dce->dCtlStorage != nil)
    {
 	   ret = changeIRQ(dce, 0, openErr);
-	   DisposePtr((*(NuBusFPGADriverGlobalsHdl)dce->dCtlStorage)->siqel);
+	   write_reg(dce, GOBOFB_VIDEOCTRL, 0);
+	   DisposePtr((Ptr)(*(NuBusFPGADriverGlobalsHdl)dce->dCtlStorage)->siqel);
 	   DisposeHandle(dce->dCtlStorage);
 	   dce->dCtlStorage = nil;
    }

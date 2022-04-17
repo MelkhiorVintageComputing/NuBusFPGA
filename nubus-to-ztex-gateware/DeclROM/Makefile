@@ -8,15 +8,15 @@ PROCESS_ROM=${NS816DECLROMDIR}/process_rom
 
 APPLEINCS=${NS816DECLROMDIR}/atrap.inc ${NS816DECLROMDIR}/declrom.inc ${NS816DECLROMDIR}/globals.inc
 
-HRES=1152
-VRES=870
+HRES=1920
+VRES=1080
 
-CSRC=NuBusFPGADrvr_OpenClose.c NuBusFPGADrvr_Ctrl.c NuBusFPGADrvr_Status.c
+CSRC=NuBusFPGADrvr_OpenClose.c NuBusFPGADrvr_Ctrl.c NuBusFPGADrvr_Status.c NuBusFPGAPrimaryInit_Primary.c
 CSRC_ASM=${CSRC:.c=.s}
 
 all: vid_decl_rom.bin vid_decl_rom.srec
 
-vid_decl_rom.o: vid_decl_rom.s NuBusFPGAPrimaryInit.s NuBusFPGADrvr.s ${APPLEINCS} ${CSRC_ASM} DepVideo.inc
+vid_decl_rom.o: vid_decl_rom.s NuBusFPGAPrimaryInit.s NuBusFPGAPrimaryInit_Primary.s NuBusFPGASecondaryInit.s NuBusFPGADrvr.s ${APPLEINCS} ${CSRC_ASM} DepVideo.inc
 	rm -f res.inc
 	echo -e "HRES=${HRES}\nVRES=${VRES}\n" | tee res.inc
 	${AS} -march=68020 -mcpu=68020 -I${NS816DECLROMDIR} $< -o $@ -a > vid_decl_rom.l
@@ -35,6 +35,11 @@ NuBusFPGADrvr_Status.s: NuBusFPGADrvr_Status.c NuBusFPGADrvr.h
 	${CC} -march=68020 -mcpu=68020 -O2 $< -S -o $@ -DHRES=${HRES} -DVRES=${VRES}
 	sed -i -e 's/^\([^a-zA-Z0-9_]*\.globl.*\)/# --- \1/' $@
 	sed -i -e 's/\.\(L[0-9][0-9]*\)/.Status_\1/g' $@
+
+NuBusFPGAPrimaryInit_Primary.s: NuBusFPGAPrimaryInit_Primary.c NuBusFPGADrvr.h
+	${CC} -march=68020 -mcpu=68020 -O2 $< -S -o $@ -DHRES=${HRES} -DVRES=${VRES}
+	sed -i -e 's/^\([^a-zA-Z0-9_]*\.globl.*\)/# --- \1/' $@
+	sed -i -e 's/\.\(L[0-9][0-9]*\)/.PIPrimary_\1/g' $@
 
 vid_decl_rom.srec: vid_decl_rom.o
 	${OBJCOPY} $^ $@ --input-target=elf32-m68k --output-target=srec	

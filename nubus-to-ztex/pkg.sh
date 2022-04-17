@@ -1,8 +1,6 @@
 #!/bin/bash
 
-GERBER_FILES="nubus-to-ztex-B.Cu.gbr nubus-to-ztex-Edge.Cuts.gbr nubus-to-ztex-F.Cu.gbr nubus-to-ztex-F.Mask.gbr nubus-to-ztex-F.Paste.gbr nubus-to-ztex-F.SilkS.gbr  nubus-to-ztex-In1.Cu.gbr nubus-to-ztex-In2.Cu.gbr"
-
-# nubus-to-ztex-B.Mask.gbr nubus-to-ztex-B.Paste.gbr nubus-to-ztex-B.SilkS.gbr
+GERBER_FILES="nubus-to-ztex-B.Cu.gbr nubus-to-ztex-B.Mask.gbr nubus-to-ztex-B.Paste.gbr nubus-to-ztex-B.SilkS.gbr nubus-to-ztex-Edge.Cuts.gbr nubus-to-ztex-F.Cu.gbr nubus-to-ztex-F.Mask.gbr nubus-to-ztex-F.Paste.gbr nubus-to-ztex-F.SilkS.gbr  nubus-to-ztex-In1.Cu.gbr nubus-to-ztex-In2.Cu.gbr"
 
 POS_FILES="nubus-to-ztex-top.pos"
 # nubus-to-ztex-bottom.pos

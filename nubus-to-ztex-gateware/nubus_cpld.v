@@ -13,7 +13,7 @@ module nubus_cpld
 
    // Spares
    input  fpga_to_cpld_clk, // unused (extra line from FPGA to CPLD, pin is a clk input)
-   inout  fpga_to_cpld_signal, // unused (extra line from FPGA to CPLD)
+   input  fpga_to_cpld_signal, // unused (extra line from FPGA to CPLD)
    inout  fpga_to_cpld_signal_2, // unused (extra line from FPGA to CPLD)
 
    // NuBus (output to FPGA)
@@ -23,7 +23,7 @@ module nubus_cpld
    output clk2x_n_3v3, // nubus90 clk to FPGA
    
    // NuBus Arbiter
-   input  arb, // enable arbitter
+   input  arbcy_n, // enable arbitter
    input  [3:0] arb_n_5v,   // NuBus arbiter's lines
    output [3:0] arb_o_n,   // NuBus arbiter's control lines
    output grant,   // Grant access
@@ -56,12 +56,12 @@ module nubus_cpld
 
    // Master Request (OC)
    input  rqst_n_5v,  // rqst from NuBus; needs monitoring before driving
-   inout  rqst_n_3v3, // rqst from/to FPGA; needs monitoring before driving?; needed? or is arb enough?
+   inout  rqst_n_3v3, // rqst from/to FPGA
    output rqst_o_n // rqst to NuBus
    );
 	
    // placeholder to make pretend we use the signals
-   assign fpga_to_cpld_signal_2 = fpga_to_cpld_signal ^ fpga_to_cpld_clk;
+   assign fpga_to_cpld_signal_2 = fpga_to_cpld_clk;
    // placeholders
    assign clk2x_n_3v3 = clk2x_n_5v;
    assign tm2_n_3v3 = tm2_n_5v;
@@ -80,28 +80,28 @@ module nubus_cpld
    assign start_n_3v3 = nubus_oe ? 'bZ : (~nubus_master_dir ? start_n_5v  : 'bZ); // master in
    
    // rqst_o_n is always driven (the 74lvt125 wired as open collector will convert 1 to Z) and is active low
-   assign rqst_o_n   = nubus_oe ?   1 : ( nubus_master_dir ? rqst_n_3v3 :  1); // master out
-   assign rqst_n_3v3 = nubus_oe ? 'bZ : (~nubus_master_dir ? rqst_n_5v : 'bZ); // master in
+   assign rqst_o_n   = nubus_oe ?   1 : (~fpga_to_cpld_signal ? rqst_n_3v3 :  1); // master out
+   assign rqst_n_3v3 = nubus_oe ? 'bZ : ( fpga_to_cpld_signal ? rqst_n_5v : 'bZ); // master in
 	
    //assign ack_o_5v   = nubus_oe ? 'bZ : ((nubus_master_dir ^ ~tmoen) ? ack_n_3v3 : 'bZ); // slave out/in
-   assign ack_o_n    = nubus_oe ?   1 : ((nubus_master_dir ^ ~tmoen) ? ack_n_3v3 : 1); // slave out/in
-   assign ack_oe_n   = nubus_oe ?   1 : ((nubus_master_dir ^ ~tmoen) ? 0 : 1); // slave out/in
-   assign ack_n_3v3  = nubus_oe ? 'bZ : ((nubus_master_dir ^  tmoen) ? ack_n_5v  : 'bZ); // slave out/in
+   assign ack_o_n    = nubus_oe ?   1 : (( ~tmoen) ? ack_n_3v3 : 1); // slave out/in
+   assign ack_oe_n   = nubus_oe ?   1 : (( ~tmoen) ? 0 : 1); // slave out/in
+   assign ack_n_3v3  = nubus_oe ? 'bZ : ((  tmoen) ? ack_n_5v  : 'bZ); // slave out/in
    
    //assign tm0_n_5v   = nubus_oe ? 'bZ : ((nubus_master_dir ^ ~tmoen) ? tm0_n_3v3  : 'bZ); // slave out/in
    //assign tm1_n_5v   = nubus_oe ? 'bZ : ((nubus_master_dir ^ ~tmoen) ? tm1_n_3v3  : 'bZ); // slave out/in
-   assign tm0_o_n    = nubus_oe ?   1 : ((nubus_master_dir ^ ~tmoen) ? tm0_n_3v3 : 1); // slave out/in
-   assign tm1_o_n    = nubus_oe ?   1 : ((nubus_master_dir ^ ~tmoen) ? tm1_n_3v3 : 1); // slave out/in
-   assign tmx_oe_n   = nubus_oe ?   1 : ((nubus_master_dir ^ ~tmoen) ? 0 : 1); // slave out/in
-   assign tm0_n_3v3  = nubus_oe ? 'bZ : ((nubus_master_dir ^  tmoen) ? tm0_n_5v   : 'bZ); // slave in/out
-   assign tm1_n_3v3  = nubus_oe ? 'bZ : ((nubus_master_dir ^  tmoen) ? tm1_n_5v   : 'bZ); // slave in/out
+   assign tm0_o_n    = nubus_oe ?   1 : (( ~tmoen) ? tm0_n_3v3 : 1); // slave out/in
+   assign tm1_o_n    = nubus_oe ?   1 : (( ~tmoen) ? tm1_n_3v3 : 1); // slave out/in
+   assign tmx_oe_n   = nubus_oe ?   1 : (( ~tmoen) ? 0 : 1); // slave out/in
+   assign tm0_n_3v3  = nubus_oe ? 'bZ : ((  tmoen) ? tm0_n_5v   : 'bZ); // slave in/out
+   assign tm1_n_3v3  = nubus_oe ? 'bZ : ((  tmoen) ? tm1_n_5v   : 'bZ); // slave in/out
 
    nubus_arbiter UArbiter
      (
       .idn(id_n_5v),
       .arbn(arb_n_5v),
       .arbon(arb_o_n),
-      .arbcyn(arb),
+      .arbcyn(arbcy_n),
       .grant(grant)
       );
    

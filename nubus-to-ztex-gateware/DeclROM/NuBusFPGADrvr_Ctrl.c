@@ -104,8 +104,8 @@ OSErr cNuBusFPGACtl(CntrlParamPtr pb, /* DCtlPtr */ AuxDCEPtr dce)
    short ret = -1;
    char	busMode = 1;
 
-   write_reg(dce, GOBOFB_DEBUG, 0xBEEF0001);
-   write_reg(dce, GOBOFB_DEBUG, pb->csCode);
+   /* write_reg(dce, GOBOFB_DEBUG, 0xBEEF0001); */
+   /* write_reg(dce, GOBOFB_DEBUG, pb->csCode); */
 #if 1
   switch (pb->csCode)
   {
