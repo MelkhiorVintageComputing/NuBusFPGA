@@ -38,8 +38,10 @@ OSErr cNuBusFPGAStatus(CntrlParamPtr pb, /* DCtlPtr */ AuxDCEPtr dce)
    NuBusFPGADriverGlobalsHdl dStoreHdl = (NuBusFPGADriverGlobalsHdl)dce->dCtlStorage;
    NuBusFPGADriverGlobalsPtr dStore = *dStoreHdl;
    short ret = -1;
+   
    write_reg(dce, GOBOFB_DEBUG, 0xBEEF0002);
    write_reg(dce, GOBOFB_DEBUG, pb->csCode);
+   
 #if 1
    switch (pb->csCode)
    {
@@ -76,6 +78,8 @@ OSErr cNuBusFPGAStatus(CntrlParamPtr pb, /* DCtlPtr */ AuxDCEPtr dce)
 		   case thirdVidMode:
 		   	   break;
 		   case fourthVidMode:
+		   	   break;
+		   case fifthVidMode:
 		   	   break;
 		   default:
 			   return paramErr;
@@ -202,11 +206,11 @@ OSErr cNuBusFPGAStatus(CntrlParamPtr pb, /* DCtlPtr */ AuxDCEPtr dce)
 				  break;
 			  case kDisplayModeIDFindFirstResolution:
 				  vdres->csDisplayModeID = firstVidMode;
-				  vdres->csMaxDepthMode = kDepthMode4;
+				  vdres->csMaxDepthMode = kDepthMode5;
 				  break;
 			  case kDisplayModeIDCurrent:
 				  vdres->csDisplayModeID = firstVidMode;
-				  vdres->csMaxDepthMode = kDepthMode4;
+				  vdres->csMaxDepthMode = kDepthMode5;
 				  break;
 			  default:
 				  return paramErr;
@@ -225,14 +229,13 @@ OSErr cNuBusFPGAStatus(CntrlParamPtr pb, /* DCtlPtr */ AuxDCEPtr dce)
 		  if ((vdparam->csDepthMode != kDepthMode1) &&
 			  (vdparam->csDepthMode != kDepthMode2) &&
 			  (vdparam->csDepthMode != kDepthMode3) &&
-			  (vdparam->csDepthMode != kDepthMode4)) 
+			  (vdparam->csDepthMode != kDepthMode4) &&
+			  (vdparam->csDepthMode != kDepthMode5)) 
 			  return paramErr;
 		  VPBlock* vpblock = vdparam->csVPBlockPtr;
 		  /* basically the same as the EBVParms ? */
 		  vdparam->csPageCount = 0;
-		  vdparam->csDeviceType = clutType;
 		  vpblock->vpBaseOffset = 0;
-		  vpblock->vpRowBytes = HRES;
 		  vpblock->vpBounds.left = 0;
 		  vpblock->vpBounds.top = 0;
 		  vpblock->vpBounds.right = HRES;
@@ -242,23 +245,37 @@ OSErr cNuBusFPGAStatus(CntrlParamPtr pb, /* DCtlPtr */ AuxDCEPtr dce)
 		  vpblock->vpPackSize = 0;
 		  vpblock->vpHRes = 0x480000;
 		  vpblock->vpVRes = 0x480000;
-		  vpblock->vpPixelType = chunky;
+		  vpblock->vpPixelType = chunky; // checkme?
 		  if (vdparam->csDepthMode == kDepthMode1) {
+			  vpblock->vpRowBytes = HRES;
+			  vdparam->csDeviceType = clutType;
 			  vpblock->vpPixelSize = 8;
 			  vpblock->vpCmpCount = 1;
 			  vpblock->vpCmpSize = 8;
 		  } else if (vdparam->csDepthMode == kDepthMode2) {
+			  vpblock->vpRowBytes = HRES/2;
+			  vdparam->csDeviceType = clutType;
 			  vpblock->vpPixelSize = 4;
 			  vpblock->vpCmpCount = 1;
 			  vpblock->vpCmpSize = 4;
 		  } else if (vdparam->csDepthMode == kDepthMode3) {
+			  vpblock->vpRowBytes = HRES/4;
+			  vdparam->csDeviceType = clutType;
 			  vpblock->vpPixelSize = 2;
 			  vpblock->vpCmpCount = 1;
 			  vpblock->vpCmpSize = 2;
 		  } else if (vdparam->csDepthMode == kDepthMode4) {
+			  vpblock->vpRowBytes = HRES/8;
+			  vdparam->csDeviceType = clutType;
 			  vpblock->vpPixelSize = 1;
 			  vpblock->vpCmpCount = 1;
 			  vpblock->vpCmpSize = 1;
+		  } else if (vdparam->csDepthMode == kDepthMode5) {
+			  vpblock->vpRowBytes = HRES*4;
+			  vdparam->csDeviceType = directType;
+			  vpblock->vpPixelSize = 32;
+			  vpblock->vpCmpCount = 3;
+			  vpblock->vpCmpSize = 8;
 		  }
 		  vpblock->vpPlaneBytes = 0;
 		  ret = noErr;

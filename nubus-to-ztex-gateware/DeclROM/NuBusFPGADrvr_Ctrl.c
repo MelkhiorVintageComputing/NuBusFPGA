@@ -106,6 +106,7 @@ OSErr cNuBusFPGACtl(CntrlParamPtr pb, /* DCtlPtr */ AuxDCEPtr dce)
 
    write_reg(dce, GOBOFB_DEBUG, 0xBEEF0001);
    write_reg(dce, GOBOFB_DEBUG, pb->csCode);
+   
 #if 1
   switch (pb->csCode)
   {
@@ -146,15 +147,21 @@ OSErr cNuBusFPGACtl(CntrlParamPtr pb, /* DCtlPtr */ AuxDCEPtr dce)
 			   SwapMMUMode ( &busMode );
 		   	   break;
 		   case thirdVidMode:
-			   dStore->curMode = secondVidMode;
+			   dStore->curMode = thirdVidMode;
 			   SwapMMUMode ( &busMode );
 			   write_reg(dce, GOBOFB_MODE, GOBOFB_MODE_2BIT);
 			   SwapMMUMode ( &busMode );
 		   	   break;
 		   case fourthVidMode:
-			   dStore->curMode = secondVidMode;
+			   dStore->curMode = fourthVidMode;
 			   SwapMMUMode ( &busMode );
 			   write_reg(dce, GOBOFB_MODE, GOBOFB_MODE_1BIT);
+			   SwapMMUMode ( &busMode );
+		   	   break;
+		   case fifthVidMode:
+			   dStore->curMode = fifthVidMode;
+			   SwapMMUMode ( &busMode );
+			   write_reg(dce, GOBOFB_MODE, GOBOFB_MODE_24BIT);
 			   SwapMMUMode ( &busMode );
 		   	   break;
 		   default:
@@ -267,20 +274,38 @@ OSErr cNuBusFPGACtl(CntrlParamPtr pb, /* DCtlPtr */ AuxDCEPtr dce)
 			   return paramErr;
 		   
 		   SwapMMUMode ( &busMode );
-		   /* grey the screen */
-		   a32_l0 = a32;
-		   a32_l1 = a32 + wb;
-		   for (j = 0 ; j < VRES ; j+= 2) {
-			   a32_4p0 = a32_l0;
-			   a32_4p1 = a32_l1;
-			   for (i = 0 ; i < wb ; i += 4) {
-				   *((UInt32*)a32_4p0) = 0xFF00FF00;
-				   *((UInt32*)a32_4p1) = 0x00FF00FF;
-				   a32_4p0 += 4;
-				   a32_4p1 += 4;
+		   if (dStore->curMode != kDepthMode5) {
+			   /* grey the screen */
+			   a32_l0 = a32;
+			   a32_l1 = a32 + wb;
+			   for (j = 0 ; j < VRES ; j+= 2) {
+				   a32_4p0 = a32_l0;
+				   a32_4p1 = a32_l1;
+				   for (i = 0 ; i < wb ; i += 4) {
+					   *((UInt32*)a32_4p0) = 0xFF00FF00;
+					   *((UInt32*)a32_4p1) = 0x00FF00FF;
+					   a32_4p0 += 4;
+					   a32_4p1 += 4;
+				   }
+				   a32_l0 += 2*wb;
+				   a32_l1 += 2*wb;
 			   }
-			   a32_l0 += 2*wb;
-			   a32_l1 += 2*wb;
+		   } else {
+			   /* testing */
+			   a32_l0 = a32;
+			   a32_l1 = a32 + HRES*4;
+			   for (j = 0 ; j < VRES ; j+= 2) {
+				   a32_4p0 = a32_l0;
+				   a32_4p1 = a32_l1;
+				   for (i = 0 ; i < HRES ; i ++ ) {
+					   *((UInt32*)a32_4p0) = (i&0xFF);//(i&0xFF) | (i&0xFF)<<8 | (i&0xff)<<24;
+					   *((UInt32*)a32_4p1) = (i&0xFF)<<16;//(i&0xFF) | (i&0xFF)<<8 | (i&0xff)<<24;
+					   a32_4p0 += 4;
+					   a32_4p1 += 4;
+				   }
+				   a32_l0 += 2*HRES*4;
+				   a32_l1 += 2*HRES*4;
+			   }
 		   }
 		   SwapMMUMode ( &busMode );
 		   
@@ -315,6 +340,12 @@ OSErr cNuBusFPGACtl(CntrlParamPtr pb, /* DCtlPtr */ AuxDCEPtr dce)
 			   break;
 		   case secondVidMode:
 			   break;
+		   case thirdVidMode:
+			   break;
+		   case fourthVidMode:
+			   break;
+		   case fifthVidMode:
+			   break;
 		   default:
 			   return paramErr;
 		  }
@@ -348,6 +379,11 @@ OSErr cNuBusFPGACtl(CntrlParamPtr pb, /* DCtlPtr */ AuxDCEPtr dce)
 			   write_reg(dce, GOBOFB_MODE, GOBOFB_MODE_1BIT);
 			   SwapMMUMode ( &busMode );
 			  break;
+		  case kDepthMode5:
+			   SwapMMUMode ( &busMode );
+			   write_reg(dce, GOBOFB_MODE, GOBOFB_MODE_24BIT);
+			   SwapMMUMode ( &busMode );
+			  break;
 		  default:
 			  return paramErr;
 		  }
@@ -361,11 +397,17 @@ OSErr cNuBusFPGACtl(CntrlParamPtr pb, /* DCtlPtr */ AuxDCEPtr dce)
 #if 1
 	   {
 		  VDSwitchInfoRec	*vdswitch = *(VDSwitchInfoRec **)(long *)pb->csParam;
-		  switch (vdswitch->csMode) {
+		  switch (vdswitch->csMode) { // checkme: really mode?
 		  case firstVidMode:
 			  break;
 		  case secondVidMode:
 			  break;
+		   case thirdVidMode:
+			   break;
+		   case fourthVidMode:
+			   break;
+		   case fifthVidMode:
+			   break;
 		  default:
 			  return paramErr;
 		  }
@@ -374,6 +416,12 @@ OSErr cNuBusFPGACtl(CntrlParamPtr pb, /* DCtlPtr */ AuxDCEPtr dce)
 			  break;
 		  case secondVidMode:
 			  break;
+		   case thirdVidMode:
+			   break;
+		   case fourthVidMode:
+			   break;
+		   case fifthVidMode:
+			   break;
 		  default:
 			  return paramErr;
 		  }

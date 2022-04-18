@@ -355,10 +355,10 @@ class NuBusFPGA(SoCCore):
         if (goblin):
             if (not hdmi):
                 self.submodules.videophy = VideoVGAPHY(platform.request("vga"), clock_domain="vga")
-                self.submodules.goblin = goblin_fb.goblin(soc=self, phy=self.videophy, timings=goblin_res, clock_domain="vga", irq_line=self.platform.request("nmrq_3v3_n"), endian="little", truecolor=False) # clock_domain for the VGA side, goblin is running in cd_sys
+                self.submodules.goblin = goblin_fb.goblin(soc=self, phy=self.videophy, timings=goblin_res, clock_domain="vga", irq_line=self.platform.request("nmrq_3v3_n"), endian="little", truecolor=True) # clock_domain for the VGA side, goblin is running in cd_sys
             else:
                 self.submodules.videophy = VideoS7HDMIPHY(platform.request("hdmi"), clock_domain="hdmi")
-                self.submodules.goblin = goblin_fb.goblin(soc=self, phy=self.videophy, timings=goblin_res, clock_domain="hdmi", irq_line=self.platform.request("nmrq_3v3_n"), endian="little", truecolor=False) # clock_domain for the HDMI side, goblin is running in cd_sys
+                self.submodules.goblin = goblin_fb.goblin(soc=self, phy=self.videophy, timings=goblin_res, clock_domain="hdmi", irq_line=self.platform.request("nmrq_3v3_n"), endian="little", truecolor=True) # clock_domain for the HDMI side, goblin is running in cd_sys
             self.bus.add_slave("goblin_bt", self.goblin.bus, SoCRegion(origin=self.mem_map.get("goblin_bt", None), size=0x1000, cached=False))
             pad_user_led_0 = platform.request("user_led", 0)
             pad_user_led_1 = platform.request("user_led", 1)

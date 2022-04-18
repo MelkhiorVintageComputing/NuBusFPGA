@@ -161,21 +161,26 @@ class VideoFrameBufferMultiDepth(Module, AutoCSR):
             handle_truecolor_sink = [ self.cdc.source.connect(self.conv32.sink) ]
             handle_truecolor_source = [ source_buf_valid.eq(self.conv32.source.valid),
                                         self.conv32.source.connect(source, keep={"ready"}), ]
-            handle_truecolor_databuf = [ data_buf_direct[0].eq(self.conv32.source.data[24:32]),
-                                         data_buf_direct[1].eq(self.conv32.source.data[16:24]),
-                                         data_buf_direct[2].eq(self.conv32.source.data[8:16]), ]
+            if (endian == "big"): # this starts to _really_ mean "i'm in the SBusFPGA"...
+                handle_truecolor_databuf = [ data_buf_direct[0].eq(self.conv32.source.data[24:32]),
+                                             data_buf_direct[1].eq(self.conv32.source.data[16:24]),
+                                             data_buf_direct[2].eq(self.conv32.source.data[8:16]), ]
+            else:
+                handle_truecolor_databuf = [ data_buf_direct[2].eq(self.conv32.source.data[24:32]),
+                                             data_buf_direct[1].eq(self.conv32.source.data[16:24]),
+                                             data_buf_direct[0].eq(self.conv32.source.data[8:16]), ]
             handle_truecolor_databuf_b = [ data_buf_b_direct[0].eq(data_buf_direct[0]),
                                            data_buf_b_direct[1].eq(data_buf_direct[1]),
                                            data_buf_b_direct[2].eq(data_buf_direct[2]), ]
-            handle_truecolor_source = [ source_out_r.eq(data_buf_b_direct[2]),
-                                        source_out_g.eq(data_buf_b_direct[1]),
-                                        source_out_b.eq(data_buf_b_direct[0]), ]
+            handle_truecolor_final_source = [ source_out_r.eq(data_buf_b_direct[2]),
+                                              source_out_g.eq(data_buf_b_direct[1]),
+                                              source_out_b.eq(data_buf_b_direct[0]), ]
         else:
             handle_truecolor_sink = [ ]
             handle_truecolor_source = [ ]
             handle_truecolor_databuf = [ ]
             handle_truecolor_databuf_b = [ ]
-            handle_truecolor_source = [ ]
+            handle_truecolor_final_source = [ ]
         self.submodules.conv8 = ClockDomainsRenamer({"sys": clock_domain})(stream.Converter(dram_port.data_width, 8))
         self.submodules.conv4 = ClockDomainsRenamer({"sys": clock_domain})(stream.Converter(dram_port.data_width, 4))
         self.submodules.conv2 = ClockDomainsRenamer({"sys": clock_domain})(stream.Converter(dram_port.data_width, 2))
@@ -296,7 +301,7 @@ class VideoFrameBufferMultiDepth(Module, AutoCSR):
                           source_out_g.eq(clut[data_buf_b_index][1]),
                           source_out_b.eq(clut[data_buf_b_index][0])
                        ).Else(
-                           *handle_truecolor_source,
+                           *handle_truecolor_final_source,
                        ),
                 ).Else(source_out_r.eq(0),
                        source_out_g.eq(0),
@@ -311,7 +316,7 @@ class VideoFrameBufferMultiDepth(Module, AutoCSR):
                           source_out_g.eq(clut[data_buf_b_index][1]),
                           source_out_b.eq(clut[data_buf_b_index][0])
                        ).Else(
-                           *handle_truecolor_source,
+                           *handle_truecolor_final_source,
                        ),
                 ).Else(source_out_r.eq(0),
                        source_out_g.eq(0),
