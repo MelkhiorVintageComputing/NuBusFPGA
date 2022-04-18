@@ -6,6 +6,8 @@ defMinorBase = 0 /*  beginning */
 defMinorLength = 0x200000 /* 2048 KiB */
 
 Pages8s = 1
+Pages4s = 1
+Pages2s = 1
 Pages1s = 1
 
 defmBounds_Ls = 0
@@ -17,6 +19,8 @@ defScrnRow = HRES
 
 /* row bytes */
 RB8s = HRES
+RB4s = HRES/2
+RB2s = HRES/4
 RB1s = HRES/8
 
 DrHwNuBusFPGA = 0xBEEF /*  placeholder */

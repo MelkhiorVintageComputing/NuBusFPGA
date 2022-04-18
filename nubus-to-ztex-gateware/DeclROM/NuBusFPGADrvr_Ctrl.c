@@ -116,7 +116,7 @@ OSErr cNuBusFPGACtl(CntrlParamPtr pb, /* DCtlPtr */ AuxDCEPtr dce)
 	   {
 		   VDPageInfo	*vPInfo = (VDPageInfo *)*(long *)pb->csParam;
 		   dStore->curMode = firstVidMode;
-		   dStore->curDepth = kDepthMode1;
+		   dStore->curDepth = kDepthMode1; /* 8-bit */
 		   vPInfo->csMode = firstVidMode;
 		   vPInfo->csPage = 0;
 		   vPInfo->csBaseAddr = 0;
@@ -140,6 +140,18 @@ OSErr cNuBusFPGACtl(CntrlParamPtr pb, /* DCtlPtr */ AuxDCEPtr dce)
 			   SwapMMUMode ( &busMode );
 			   break;
 		   case secondVidMode:
+			   dStore->curMode = secondVidMode;
+			   SwapMMUMode ( &busMode );
+			   write_reg(dce, GOBOFB_MODE, GOBOFB_MODE_4BIT);
+			   SwapMMUMode ( &busMode );
+		   	   break;
+		   case thirdVidMode:
+			   dStore->curMode = secondVidMode;
+			   SwapMMUMode ( &busMode );
+			   write_reg(dce, GOBOFB_MODE, GOBOFB_MODE_2BIT);
+			   SwapMMUMode ( &busMode );
+		   	   break;
+		   case fourthVidMode:
 			   dStore->curMode = secondVidMode;
 			   SwapMMUMode ( &busMode );
 			   write_reg(dce, GOBOFB_MODE, GOBOFB_MODE_1BIT);
@@ -244,60 +256,32 @@ OSErr cNuBusFPGACtl(CntrlParamPtr pb, /* DCtlPtr */ AuxDCEPtr dce)
 	  break;
   case cscGrayPage: /* 5 == cscGrayScreen */
 	   {
-		   /* FIXME: TODO */
 		   VDPageInfo	*vPInfo = (VDPageInfo *)*(long *)pb->csParam;
+		   const uint8_t idx = dStore->curMode % 4; // checkme
+		   const UInt32 a32 = dce->dCtlDevBase;
+		   UInt32 a32_l0, a32_l1;
+		   UInt32 a32_4p0, a32_4p1;
+		   const uint32_t wb = HRES >> idx;
+		   unsigned short j, i;
 		   if (vPInfo->csPage != 0)
 			   return paramErr;
-
+		   
 		   SwapMMUMode ( &busMode );
-
-		   switch (dStore->curMode) {
-		   case firstVidMode: // 8bpp
-			   {
-				   /* grey the screen */
-				   UInt32 a32 = dce->dCtlDevBase;
-				   UInt32 a32_l0, a32_l1;
-				   UInt32 a32_4p0, a32_4p1;
-				   short j, i;
-				   a32_l0 = a32;
-				   a32_l1 = a32 + HRES;
-				   for (j = 0 ; j < VRES ; j+= 2) {
-					   a32_4p0 = a32_l0;
-					   a32_4p1 = a32_l1;
-					   for (i = 0 ; i < HRES ; i += 4) {
-						   *((UInt32*)a32_4p0) = 0xFF00FF00;
-						   *((UInt32*)a32_4p1) = 0x00FF00FF;
-						   a32_4p0 += 4;
-						   a32_4p1 += 4;
-					   }
-					   a32_l0 += 2*HRES;
-					   a32_l1 += 2*HRES;
-				   }
-			   } break;
-		   case secondVidMode: // 1bpp
-			   {
-				   /* grey the screen */
-				   UInt32 a32 = dce->dCtlDevBase;
-				   UInt32 a32_l0, a32_l1;
-				   UInt32 a32_4p0, a32_4p1;
-				   short j, i;
-				   a32_l0 = a32;
-				   a32_l1 = a32 + HRES/8;
-				   for (j = 0 ; j < VRES ; j+= 2) {
-					   a32_4p0 = a32_l0;
-					   a32_4p1 = a32_l1;
-					   for (i = 0 ; i < HRES/8 ; i += 4) {
-						   *((UInt32*)a32_4p0) = 0xAAAAAAAA;
-						   *((UInt32*)a32_4p1) = 0x55555555;
-						   a32_4p0 += 4;
-						   a32_4p1 += 4;
-					   }
-					   a32_l0 += 2*HRES/8;
-					   a32_l1 += 2*HRES/8;
-				   }
-			   } break;
+		   /* grey the screen */
+		   a32_l0 = a32;
+		   a32_l1 = a32 + wb;
+		   for (j = 0 ; j < VRES ; j+= 2) {
+			   a32_4p0 = a32_l0;
+			   a32_4p1 = a32_l1;
+			   for (i = 0 ; i < wb ; i += 4) {
+				   *((UInt32*)a32_4p0) = 0xFF00FF00;
+				   *((UInt32*)a32_4p1) = 0x00FF00FF;
+				   a32_4p0 += 4;
+				   a32_4p1 += 4;
+			   }
+			   a32_l0 += 2*wb;
+			   a32_l1 += 2*wb;
 		   }
-
 		   SwapMMUMode ( &busMode );
 		   
 		   ret = noErr;
@@ -350,6 +334,16 @@ OSErr cNuBusFPGACtl(CntrlParamPtr pb, /* DCtlPtr */ AuxDCEPtr dce)
 			   SwapMMUMode ( &busMode );
 			  break;
 		  case kDepthMode2:
+			   SwapMMUMode ( &busMode );
+			   write_reg(dce, GOBOFB_MODE, GOBOFB_MODE_4BIT);
+			   SwapMMUMode ( &busMode );
+			  break;
+		  case kDepthMode3:
+			   SwapMMUMode ( &busMode );
+			   write_reg(dce, GOBOFB_MODE, GOBOFB_MODE_2BIT);
+			   SwapMMUMode ( &busMode );
+			  break;
+		  case kDepthMode4:
 			   SwapMMUMode ( &busMode );
 			   write_reg(dce, GOBOFB_MODE, GOBOFB_MODE_1BIT);
 			   SwapMMUMode ( &busMode );

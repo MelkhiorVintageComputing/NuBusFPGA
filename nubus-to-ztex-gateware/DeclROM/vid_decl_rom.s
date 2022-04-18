@@ -96,7 +96,9 @@ _sRsrc_VidHiRes:
     /* OSLstEntry  sGammaDir,_GammaDirS      /*  directory for 640x480 monitor */
 /*  Parameters */
     OSLstEntry  firstVidMode,_HiRes8Modes        /*  offset to 8 Bit Mode parms */
-    OSLstEntry  secondVidMode,_HiRes1Modes        /*  offset to 1 Bit Mode parms */
+    OSLstEntry  secondVidMode,_HiRes4Modes        /*  offset to 4 Bit Mode parms */
+    OSLstEntry  thirdVidMode,_HiRes2Modes        /*  offset to 2 Bit Mode parms */
+    OSLstEntry  fourthVidMode,_HiRes1Modes        /*  offset to 1 Bit Mode parms */
     .long EndOfList               /*  end of list */
 
 	ALIGN 2
@@ -180,6 +182,50 @@ _HRV8Parms:
              .word          8                           /*  bmCmpSize */
              .long          defmPlaneBytes              /*  bmPlaneBytes */
 _EndHRV8Parms:	
+	ALIGN 2
+_HiRes4Modes:	
+             OSLstEntry    mVidParams,_HRV4Parms         /*  offset to vid parameters */
+             DatLstEntry   mPageCnt,Pages4s             /*  number of video pages */
+             DatLstEntry   mDevType,defmDevType         /*  device type */
+             .long   EndOfList                  /*  end of list */
+_HRV4Parms:	
+             .long          _EndHRV4Parms-_HRV4Parms      /*  physical block size  */
+             .long          defmBaseOffset              /*  QuickDraw base offset ; vpBaseOffset */
+             .word          RB4s                        /*  physRowBytes ; vpRowBytes */
+             .word          defmBounds_Ts,defmBounds_Ls,defmBounds_Bs,defmBounds_Rs /*  vpBounds */
+             .word          defVersion                  /*  bmVersion ; vpVersion */
+             .word	   0				/*  packType not used ; vpPackType */
+             .long	   0 				/*  packSize not used ; vpPackSize */
+             .long          defmHRes                    /*  bmHRes  */
+             .long          defmVRes                    /*  bmVRes */
+             .word          ChunkyIndexed               /*  bmPixelType */
+             .word          4                           /*  bmPixelSize */
+             .word          1                           /*  bmCmpCount */
+             .word          4                           /*  bmCmpSize */
+             .long          defmPlaneBytes              /*  bmPlaneBytes */
+_EndHRV4Parms:
+	ALIGN 2
+_HiRes2Modes:	
+             OSLstEntry    mVidParams,_HRV2Parms         /*  offset to vid parameters */
+             DatLstEntry   mPageCnt,Pages2s             /*  number of video pages */
+             DatLstEntry   mDevType,defmDevType         /*  device type */
+             .long   EndOfList                  /*  end of list */
+_HRV2Parms:	
+             .long          _EndHRV2Parms-_HRV2Parms      /*  physical block size  */
+             .long          defmBaseOffset              /*  QuickDraw base offset ; vpBaseOffset */
+             .word          RB2s                        /*  physRowBytes ; vpRowBytes */
+             .word          defmBounds_Ts,defmBounds_Ls,defmBounds_Bs,defmBounds_Rs /*  vpBounds */
+             .word          defVersion                  /*  bmVersion ; vpVersion */
+             .word	   0				/*  packType not used ; vpPackType */
+             .long	   0 				/*  packSize not used ; vpPackSize */
+             .long          defmHRes                    /*  bmHRes  */
+             .long          defmVRes                    /*  bmVRes */
+             .word          ChunkyIndexed               /*  bmPixelType */
+             .word          2                           /*  bmPixelSize */
+             .word          1                           /*  bmCmpCount */
+             .word          2                           /*  bmCmpSize */
+             .long          defmPlaneBytes              /*  bmPlaneBytes */
+_EndHRV2Parms:
 	ALIGN 2
 _HiRes1Modes:	
              OSLstEntry    mVidParams,_HRV1Parms         /*  offset to vid parameters */

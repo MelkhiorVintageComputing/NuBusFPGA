@@ -200,8 +200,10 @@ class VideoFrameBufferMultiDepth(Module, AutoCSR):
                 If(self.use_indexed,
                    Case(self.indexed_mode, {
                        0x3: [ self.cdc.source.connect(self.conv8.sink), ],
-                       0x2: [ self.cdc.source.connect(self.conv4.sink), ],
-                       0x1: [ self.cdc.source.connect(self.conv2.sink), ],
+                       0x2: [ self.cdc.source.connect(self.conv4.sink, omit={"data"}),
+                              *[ self.conv4.sink.data[xbyte*8 + xbit*4:xbyte*8 + xbit*4+4].eq(self.cdc.source.data[xbyte*8 + 4-xbit*4:xbyte*8 + 4-xbit*2+4]) for xbit in range(0,2) for xbyte in range(0, dram_port.data_width//8) ], ],
+                       0x1: [ self.cdc.source.connect(self.conv2.sink, omit={"data"}),
+                              *[ self.conv2.sink.data[xbyte*8 + xbit*2:xbyte*8 + xbit*2+2].eq(self.cdc.source.data[xbyte*8 + 6-xbit*2:xbyte*8 + 6-xbit*2+2]) for xbit in range(0,4) for xbyte in range(0, dram_port.data_width//8) ], ],
                        0x0: [ self.cdc.source.connect(self.conv1.sink, omit={"data"}),
                               *[ self.conv1.sink.data[xbyte*8 + xbit].eq(self.cdc.source.data[xbyte*8 + 7-xbit]) for xbit in range(0,8) for xbyte in range(0, dram_port.data_width//8) ],
                        ],
