@@ -7,11 +7,11 @@
 	.include "DepVideo.inc"
 
 sRsrc_Board = 1 /*  board sResource (>0 & <128) */
-sRsrc_VidS8 = 0x80 /*  functional sResources */
+sRsrc_VidHiRes = 0x80 /*  functional sResources */
 
 _sRsrcDir:
 	OSLstEntry  sRsrc_Board,_sRsrc_Board     /*  board sRsrc List */
-    OSLstEntry  sRsrc_VidS8,_sRsrc_VidS8     /*  video sRsrc List */
+    OSLstEntry  sRsrc_VidHiRes,_sRsrc_VidHiRes     /*  video sRsrc List */
 	.long EndOfList
 
 _sRsrc_Board:	
@@ -74,18 +74,18 @@ _Date:
 	ALIGN 2
 	
 _VModeName:	
-	OSLstEntry	sRsrc_VidS8, _ScreenNameVidS8
+	OSLstEntry	sRsrc_VidHiRes, _ScreenNameVidHiRes
 	DatLstEntry	endOfList,	0	
 
 	ALIGN 2
-_ScreenNameVidS8:	
-	.long		_ScreenNameVidS8End - _ScreenNameVidS8
+_ScreenNameVidHiRes:	
+	.long		_ScreenNameVidHiResEnd - _ScreenNameVidHiRes
 	.word		0
 	.string		"That one resolution\0"
-_ScreenNameVidS8End:	
+_ScreenNameVidHiResEnd:	
 
 	ALIGN 2
-_sRsrc_VidS8:	
+_sRsrc_VidHiRes:	
 	OSLstEntry  sRsrcType,_VideoType      /*  video type descriptor */
     OSLstEntry  sRsrcName,_VideoName      /*  offset to driver name string */
     OSLstEntry  sRsrcDrvrDir,_VidDrvrDir /* offset to driver directory */
@@ -95,7 +95,8 @@ _sRsrc_VidS8:
     OSLstEntry  MinorLength,_MinorLength  /*  offset to frame buffer length */
     /* OSLstEntry  sGammaDir,_GammaDirS      /*  directory for 640x480 monitor */
 /*  Parameters */
-    OSLstEntry  firstVidMode,_EBMs        /*  offset to EightBitMode parms */
+    OSLstEntry  firstVidMode,_HiRes8Modes        /*  offset to 8 Bit Mode parms */
+    OSLstEntry  secondVidMode,_HiRes1Modes        /*  offset to 1 Bit Mode parms */
     .long EndOfList               /*  end of list */
 
 	ALIGN 2
@@ -158,13 +159,13 @@ _End020Drvr:
 /* _EndSmallGamma: */
 
 	ALIGN 2
-_EBMs:	
-             OSLstEntry    mVidParams,_EBVParms         /*  offset to vid parameters */
+_HiRes8Modes:	
+             OSLstEntry    mVidParams,_HRV8Parms         /*  offset to vid parameters */
              DatLstEntry   mPageCnt,Pages8s             /*  number of video pages */
              DatLstEntry   mDevType,defmDevType         /*  device type */
              .long   EndOfList                  /*  end of list */
-_EBVParms:	
-             .long          _EndEBVParms-_EBVParms      /*  physical block size  */
+_HRV8Parms:	
+             .long          _EndHRV8Parms-_HRV8Parms      /*  physical block size  */
              .long          defmBaseOffset              /*  QuickDraw base offset ; vpBaseOffset */
              .word          RB8s                        /*  physRowBytes ; vpRowBytes */
              .word          defmBounds_Ts,defmBounds_Ls,defmBounds_Bs,defmBounds_Rs /*  vpBounds */
@@ -178,7 +179,29 @@ _EBVParms:
              .word          1                           /*  bmCmpCount */
              .word          8                           /*  bmCmpSize */
              .long          defmPlaneBytes              /*  bmPlaneBytes */
-_EndEBVParms:	
+_EndHRV8Parms:	
+	ALIGN 2
+_HiRes1Modes:	
+             OSLstEntry    mVidParams,_HRV1Parms         /*  offset to vid parameters */
+             DatLstEntry   mPageCnt,Pages1s             /*  number of video pages */
+             DatLstEntry   mDevType,defmDevType         /*  device type */
+             .long   EndOfList                  /*  end of list */
+_HRV1Parms:	
+             .long          _EndHRV1Parms-_HRV1Parms      /*  physical block size  */
+             .long          defmBaseOffset              /*  QuickDraw base offset ; vpBaseOffset */
+             .word          RB1s                        /*  physRowBytes ; vpRowBytes */
+             .word          defmBounds_Ts,defmBounds_Ls,defmBounds_Bs,defmBounds_Rs /*  vpBounds */
+             .word          defVersion                  /*  bmVersion ; vpVersion */
+             .word	   0				/*  packType not used ; vpPackType */
+             .long	   0 				/*  packSize not used ; vpPackSize */
+             .long          defmHRes                    /*  bmHRes  */
+             .long          defmVRes                    /*  bmVRes */
+             .word          ChunkyIndexed               /*  bmPixelType */
+             .word          1                           /*  bmPixelSize */
+             .word          1                           /*  bmCmpCount */
+             .word          1                           /*  bmCmpSize */
+             .long          defmPlaneBytes              /*  bmPlaneBytes */
+_EndHRV1Parms:	
 
 	/* Declaration ROM directory at end */
 	ALIGN 2

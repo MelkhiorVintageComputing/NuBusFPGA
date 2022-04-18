@@ -5,7 +5,8 @@ NuBusFPGAID = 0xC0
 defMinorBase = 0 /*  beginning */
 defMinorLength = 0x200000 /* 2048 KiB */
 
-Pages8s = 1 /*  no idea */
+Pages8s = 1
+Pages1s = 1
 
 defmBounds_Ls = 0
 defmBounds_Ts = 0
@@ -13,7 +14,10 @@ defmBounds_Rs = HRES
 defmBounds_Bs = VRES
 
 defScrnRow = HRES
+
+/* row bytes */
 RB8s = HRES
+RB1s = HRES/8
 
 DrHwNuBusFPGA = 0xBEEF /*  placeholder */
 

@@ -38,8 +38,8 @@ OSErr cNuBusFPGAStatus(CntrlParamPtr pb, /* DCtlPtr */ AuxDCEPtr dce)
    NuBusFPGADriverGlobalsHdl dStoreHdl = (NuBusFPGADriverGlobalsHdl)dce->dCtlStorage;
    NuBusFPGADriverGlobalsPtr dStore = *dStoreHdl;
    short ret = -1;
-   /* write_reg(dce, GOBOFB_DEBUG, 0xBEEF0002); */
-   /* write_reg(dce, GOBOFB_DEBUG, pb->csCode); */
+   write_reg(dce, GOBOFB_DEBUG, 0xBEEF0002);
+   write_reg(dce, GOBOFB_DEBUG, pb->csCode);
 #if 1
    switch (pb->csCode)
    {
@@ -54,7 +54,7 @@ OSErr cNuBusFPGAStatus(CntrlParamPtr pb, /* DCtlPtr */ AuxDCEPtr dce)
    case cscGetMode: /* 2 */
 	   {
 		   VDPageInfo	*vPInfo = (VDPageInfo *)*(long *)pb->csParam;
-		   vPInfo->csMode = eightBitMode;
+		   vPInfo->csMode = dStore->curMode; /* checkme: PCI says depth, 7.5+ doesn't call anyway? */ 
 		   vPInfo->csPage = 0;
 		   vPInfo->csBaseAddr = 0;
 		   ret = noErr;
@@ -68,8 +68,14 @@ OSErr cNuBusFPGAStatus(CntrlParamPtr pb, /* DCtlPtr */ AuxDCEPtr dce)
    case cscGetPageCnt: /* 4 == cscGetPages */
 	   {
 		   VDPageInfo	*vPInfo = (VDPageInfo *)*(long *)pb->csParam;
-		   if (vPInfo->csMode != eightBitMode)
+		   switch (vPInfo->csMode) {
+		   case firstVidMode:
+			   break;
+		   case secondVidMode:
+		   	   break;
+		   default:
 			   return paramErr;
+		   }
 		   vPInfo->csPage = 0;
 		   ret = noErr;
 	   }
@@ -111,9 +117,9 @@ OSErr cNuBusFPGAStatus(CntrlParamPtr pb, /* DCtlPtr */ AuxDCEPtr dce)
 	   }
 	   break;
    case cscGetDefaultMode: /* 9 */
-	   {
+	   { /* obsolete in PCI, not called >= 7.5 */
 		   VDDefMode	*vddefm = (VDDefMode *)*(long *)pb->csParam;
-		   vddefm->csID = 128;
+		   vddefm->csID = firstVidMode;
 		   ret = noErr;
 	   }
 	   break;
@@ -121,8 +127,8 @@ OSErr cNuBusFPGAStatus(CntrlParamPtr pb, /* DCtlPtr */ AuxDCEPtr dce)
    case cscGetCurMode: /* 0xa */
 	   {
 		  VDSwitchInfoRec	*vdswitch = *(VDSwitchInfoRec **)(long *)pb->csParam;
-		  vdswitch->csMode = eightBitMode;
-		  vdswitch->csData = 128;
+		  vdswitch->csMode = dStore->curDepth;
+		  vdswitch->csData = dStore->curMode;
 		  vdswitch->csPage = 0;
 		  vdswitch->csBaseAddr = 0;
 		  ret = noErr;
@@ -150,7 +156,7 @@ OSErr cNuBusFPGAStatus(CntrlParamPtr pb, /* DCtlPtr */ AuxDCEPtr dce)
 	   {
 		   VDTimingInfoRec *vdtim = *(VDTimingInfoRec **)(long *)pb->csParam;
 		  ret = noErr;
-		  if ((vdtim->csTimingMode != 128) &&
+		  if ((vdtim->csTimingMode != firstVidMode) &&
 			  (vdtim->csTimingMode != kDisplayModeIDFindFirstResolution) &&
 			  (vdtim->csTimingMode != kDisplayModeIDCurrent))
 			  return paramErr;
@@ -161,16 +167,20 @@ OSErr cNuBusFPGAStatus(CntrlParamPtr pb, /* DCtlPtr */ AuxDCEPtr dce)
 	   break;
 
    case cscGetModeBaseAddress: /* 0xe */
-	   asm volatile(".word 0xfe16\n");
 	   /* undocumented ??? */
-	   ret = statusErr;
+	   {
+		  VDBaseAddressInfoRec	*vdbase = *(VDBaseAddressInfoRec **)(long *)pb->csParam;
+		  vdbase->csDevBase = 0;
+		  ret = noErr;
+	   }
+	   ret = noErr;
 	   break;
 
    case cscGetPreferredConfiguration: /* 0x10 */
 	   {
 		  VDSwitchInfoRec	*vdswitch = *(VDSwitchInfoRec **)(long *)pb->csParam;
-		  vdswitch->csMode = eightBitMode;
-		  vdswitch->csData = 128;
+		  vdswitch->csMode = kDepthMode1; //dStore->curDepth; /* fixme: prefered not current / default */
+		  vdswitch->csData = firstVidMode; //dStore->curMode;
 		  ret = noErr;
 	   }
 	   break;
@@ -178,18 +188,21 @@ OSErr cNuBusFPGAStatus(CntrlParamPtr pb, /* DCtlPtr */ AuxDCEPtr dce)
    case cscGetNextResolution: /* 0x11 */
 	   {
 		  VDResolutionInfoRec	*vdres = *(VDResolutionInfoRec **)(long *)pb->csParam;
+		  vdres->csHorizontalPixels = HRES;
+		  vdres->csVerticalLines = VRES;
+		  vdres->csRefreshRate = 60 << 16; /* Fixed 16+16 */
 		  switch (vdres->csPreviousDisplayModeID)
 			  {
-			  case 128:
+			  case firstVidMode:
 				  vdres->csDisplayModeID = kDisplayModeIDNoMoreResolutions;
 				  break;
 			  case kDisplayModeIDFindFirstResolution:
+				  vdres->csDisplayModeID = firstVidMode;
+				  vdres->csMaxDepthMode = kDepthMode2;
+				  break;
 			  case kDisplayModeIDCurrent:
-				  vdres->csDisplayModeID = 128;
-				  vdres->csHorizontalPixels = HRES;
-				  vdres->csVerticalLines = VRES;
-				  vdres->csRefreshRate = 60 << 16; /* Fixed 16+16 */
-				  vdres->csMaxDepthMode = kDepthMode1;
+				  vdres->csDisplayModeID = firstVidMode;
+				  vdres->csMaxDepthMode = kDepthMode2;
 				  break;
 			  default:
 				  return paramErr;
@@ -201,11 +214,12 @@ OSErr cNuBusFPGAStatus(CntrlParamPtr pb, /* DCtlPtr */ AuxDCEPtr dce)
    case cscGetVideoParameters: /* 0x12 */
 	   {
 		  VDVideoParametersInfoRec	*vdparam = *(VDVideoParametersInfoRec **)(long *)pb->csParam;
-		  if ((vdparam->csDisplayModeID != 128) &&
+		  if ((vdparam->csDisplayModeID != firstVidMode) &&
 			  (vdparam->csDisplayModeID != kDisplayModeIDFindFirstResolution) &&
 			  (vdparam->csDisplayModeID != kDisplayModeIDCurrent))
 			  return paramErr;
-		  if (vdparam->csDepthMode != kDepthMode1)
+		  if ((vdparam->csDepthMode != kDepthMode1) &&
+			  (vdparam->csDepthMode != kDepthMode2)) 
 			  return paramErr;
 		  VPBlock* vpblock = vdparam->csVPBlockPtr;
 		  /* basically the same as the EBVParms ? */
@@ -223,13 +237,21 @@ OSErr cNuBusFPGAStatus(CntrlParamPtr pb, /* DCtlPtr */ AuxDCEPtr dce)
 		  vpblock->vpHRes = 0x480000;
 		  vpblock->vpVRes = 0x480000;
 		  vpblock->vpPixelType = chunky;
-		  vpblock->vpPixelSize = 8;
-		  vpblock->vpCmpCount = 1;
-		  vpblock->vpCmpSize = 8;
+		  if (vdparam->csDepthMode == kDepthMode1) {
+			  vpblock->vpPixelSize = 8;
+			  vpblock->vpCmpCount = 1;
+			  vpblock->vpCmpSize = 8;
+		  } else if (vdparam->csDepthMode == kDepthMode2) {
+			  vpblock->vpPixelSize = 1;
+			  vpblock->vpCmpCount = 1;
+			  vpblock->vpCmpSize = 1;
+		  }
 		  vpblock->vpPlaneBytes = 0;
 		  ret = noErr;
 	   }
 	   break;
+
+	   /* 0x13 */ /* nothing */
 
    case cscGetGammaInfoList: /* 0x14 */
 	   ret = statusErr;

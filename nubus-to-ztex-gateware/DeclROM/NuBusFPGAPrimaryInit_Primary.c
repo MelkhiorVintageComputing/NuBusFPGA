@@ -79,6 +79,13 @@ UInt32 Primary(SEBlock* seblock) {
 	spblock.spSlot = seblock->seSlot;
 	spblock.spResult = (UInt32)pram;
 	err = SReadPRAMRec(&spblock);
+
+#if 0
+	PRIM_WRITEREG(GOBOFB_DEBUG, 0x88888888);
+	for (j = 0 ; j < 8 ; j++)
+		PRIM_WRITEREG(GOBOFB_DEBUG, (uint32_t)pram[j]);
+	PRIM_WRITEREG(GOBOFB_DEBUG, 0x88888888);
+#endif
 	
 	busMode = 1;
 	SwapMMUMode ( &busMode ); // to32

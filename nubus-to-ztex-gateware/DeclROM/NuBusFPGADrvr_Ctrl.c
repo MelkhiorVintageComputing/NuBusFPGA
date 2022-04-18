@@ -104,8 +104,8 @@ OSErr cNuBusFPGACtl(CntrlParamPtr pb, /* DCtlPtr */ AuxDCEPtr dce)
    short ret = -1;
    char	busMode = 1;
 
-   /* write_reg(dce, GOBOFB_DEBUG, 0xBEEF0001); */
-   /* write_reg(dce, GOBOFB_DEBUG, pb->csCode); */
+   write_reg(dce, GOBOFB_DEBUG, 0xBEEF0001);
+   write_reg(dce, GOBOFB_DEBUG, pb->csCode);
 #if 1
   switch (pb->csCode)
   {
@@ -115,7 +115,9 @@ OSErr cNuBusFPGACtl(CntrlParamPtr pb, /* DCtlPtr */ AuxDCEPtr dce)
   case cscReset:
 	   {
 		   VDPageInfo	*vPInfo = (VDPageInfo *)*(long *)pb->csParam;
-		   vPInfo->csMode = eightBitMode;
+		   dStore->curMode = firstVidMode;
+		   dStore->curDepth = kDepthMode1;
+		   vPInfo->csMode = firstVidMode;
 		   vPInfo->csPage = 0;
 		   vPInfo->csBaseAddr = 0;
 		   ret = noErr;
@@ -125,13 +127,27 @@ OSErr cNuBusFPGACtl(CntrlParamPtr pb, /* DCtlPtr */ AuxDCEPtr dce)
 	  asm volatile(".word 0xfe16\n");
 	  ret = noErr;
 	  break;
-  case cscSetMode:
+  case cscSetMode: /* 2 */
 	   {
 		   VDPageInfo	*vPInfo = (VDPageInfo *)*(long *)pb->csParam;
-		   if (vPInfo->csMode != eightBitMode)
-			   return paramErr;
 		   if (vPInfo->csPage != 0)
 			   return paramErr;
+		   switch (vPInfo->csMode) {
+		   case firstVidMode:
+			   dStore->curMode = firstVidMode;
+			   SwapMMUMode ( &busMode );
+			   write_reg(dce, GOBOFB_MODE, GOBOFB_MODE_8BIT);
+			   SwapMMUMode ( &busMode );
+			   break;
+		   case secondVidMode:
+			   dStore->curMode = secondVidMode;
+			   SwapMMUMode ( &busMode );
+			   write_reg(dce, GOBOFB_MODE, GOBOFB_MODE_1BIT);
+			   SwapMMUMode ( &busMode );
+		   	   break;
+		   default:
+			   return paramErr;
+		   }
 		   vPInfo->csBaseAddr = 0;
 		   ret = noErr;
 	   }
@@ -232,6 +248,58 @@ OSErr cNuBusFPGACtl(CntrlParamPtr pb, /* DCtlPtr */ AuxDCEPtr dce)
 		   VDPageInfo	*vPInfo = (VDPageInfo *)*(long *)pb->csParam;
 		   if (vPInfo->csPage != 0)
 			   return paramErr;
+
+		   SwapMMUMode ( &busMode );
+
+		   switch (dStore->curMode) {
+		   case firstVidMode: // 8bpp
+			   {
+				   /* grey the screen */
+				   UInt32 a32 = dce->dCtlDevBase;
+				   UInt32 a32_l0, a32_l1;
+				   UInt32 a32_4p0, a32_4p1;
+				   short j, i;
+				   a32_l0 = a32;
+				   a32_l1 = a32 + HRES;
+				   for (j = 0 ; j < VRES ; j+= 2) {
+					   a32_4p0 = a32_l0;
+					   a32_4p1 = a32_l1;
+					   for (i = 0 ; i < HRES ; i += 4) {
+						   *((UInt32*)a32_4p0) = 0xFF00FF00;
+						   *((UInt32*)a32_4p1) = 0x00FF00FF;
+						   a32_4p0 += 4;
+						   a32_4p1 += 4;
+					   }
+					   a32_l0 += 2*HRES;
+					   a32_l1 += 2*HRES;
+				   }
+			   } break;
+		   case secondVidMode: // 1bpp
+			   {
+				   /* grey the screen */
+				   UInt32 a32 = dce->dCtlDevBase;
+				   UInt32 a32_l0, a32_l1;
+				   UInt32 a32_4p0, a32_4p1;
+				   short j, i;
+				   a32_l0 = a32;
+				   a32_l1 = a32 + HRES/8;
+				   for (j = 0 ; j < VRES ; j+= 2) {
+					   a32_4p0 = a32_l0;
+					   a32_4p1 = a32_l1;
+					   for (i = 0 ; i < HRES/8 ; i += 4) {
+						   *((UInt32*)a32_4p0) = 0xAAAAAAAA;
+						   *((UInt32*)a32_4p1) = 0x55555555;
+						   a32_4p0 += 4;
+						   a32_4p1 += 4;
+					   }
+					   a32_l0 += 2*HRES/8;
+					   a32_l1 += 2*HRES/8;
+				   }
+			   } break;
+		   }
+
+		   SwapMMUMode ( &busMode );
+		   
 		   ret = noErr;
 	   }
 	  break;
@@ -258,8 +326,14 @@ OSErr cNuBusFPGACtl(CntrlParamPtr pb, /* DCtlPtr */ AuxDCEPtr dce)
   case cscSetDefaultMode: /* 9 */
 	   {
 		   VDDefMode	*vddefm = (VDDefMode *)*(long *)pb->csParam;
-		   if (vddefm->csID != 128)
+		   switch (vddefm->csID) { // checkme: really mode?
+		   case firstVidMode:
+			   break;
+		   case secondVidMode:
+			   break;
+		   default:
 			   return paramErr;
+		  }
 		   ret = noErr;
 	   }
 	  break;
@@ -267,12 +341,22 @@ OSErr cNuBusFPGACtl(CntrlParamPtr pb, /* DCtlPtr */ AuxDCEPtr dce)
   case cscSwitchMode: /* 0xa */
 	  {
 		  VDSwitchInfoRec	*vdswitch = *(VDSwitchInfoRec **)(long *)pb->csParam;
-		  if (vdswitch->csMode != eightBitMode)
-			  return paramErr;
-		  if (vdswitch->csData != 128)
-			  return paramErr;
 		  if (vdswitch->csPage != 0)
 			  return paramErr;
+		  switch (vdswitch->csData) {
+		  case kDepthMode1:
+			   SwapMMUMode ( &busMode );
+			   write_reg(dce, GOBOFB_MODE, GOBOFB_MODE_8BIT);
+			   SwapMMUMode ( &busMode );
+			  break;
+		  case kDepthMode2:
+			   SwapMMUMode ( &busMode );
+			   write_reg(dce, GOBOFB_MODE, GOBOFB_MODE_1BIT);
+			   SwapMMUMode ( &busMode );
+			  break;
+		  default:
+			  return paramErr;
+		  }
 		  vdswitch->csBaseAddr = 0;
 		  ret = noErr;
 	  }
@@ -283,10 +367,22 @@ OSErr cNuBusFPGACtl(CntrlParamPtr pb, /* DCtlPtr */ AuxDCEPtr dce)
 #if 1
 	   {
 		  VDSwitchInfoRec	*vdswitch = *(VDSwitchInfoRec **)(long *)pb->csParam;
-		  if (vdswitch->csMode != eightBitMode)
+		  switch (vdswitch->csMode) {
+		  case firstVidMode:
+			  break;
+		  case secondVidMode:
+			  break;
+		  default:
 			  return paramErr;
-		  if (vdswitch->csData != 128)
+		  }
+		  switch (vdswitch->csData) { // checkme: really mode?
+		  case firstVidMode:
+			  break;
+		  case secondVidMode:
+			  break;
+		  default:
 			  return paramErr;
+		  }
 		  if (vdswitch->csPage != 0)
 			  return paramErr;
 		  vdswitch->csBaseAddr = 0;

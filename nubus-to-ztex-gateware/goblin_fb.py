@@ -40,7 +40,7 @@ def goblin_rounded_size(hres, vres):
 
 class VideoFrameBufferMultiDepth(Module, AutoCSR):
     """Video FrameBufferMultiDepth"""
-    def __init__(self, dram_port, upd_clut_fifo = None, hres=800, vres=600, base=0x00000000, fifo_depth=65536, clock_domain="sys", clock_faster_than_sys=False, hwcursor=False, upd_overlay_fifo=False, upd_omap_fifo=False, truecolor=True):
+    def __init__(self, dram_port, upd_clut_fifo = None, hres=800, vres=600, base=0x00000000, fifo_depth=65536, clock_domain="sys", clock_faster_than_sys=False, hwcursor=False, upd_overlay_fifo=False, upd_omap_fifo=False, truecolor=True, endian="big"):
         
         print(f"FRAMEBUFFER: dram_port.data_width = {dram_port.data_width}, {hres}x{vres}, 0x{base:x}, in {clock_domain}, clock_faster_than_sys={clock_faster_than_sys}")
         
@@ -180,18 +180,38 @@ class VideoFrameBufferMultiDepth(Module, AutoCSR):
         self.submodules.conv4 = ClockDomainsRenamer({"sys": clock_domain})(stream.Converter(dram_port.data_width, 4))
         self.submodules.conv2 = ClockDomainsRenamer({"sys": clock_domain})(stream.Converter(dram_port.data_width, 2))
         self.submodules.conv1 = ClockDomainsRenamer({"sys": clock_domain})(stream.Converter(dram_port.data_width, 1))
-        self.comb += [
-            If(self.use_indexed,
-               Case(self.indexed_mode, {
-                   0x3: self.cdc.source.connect(self.conv8.sink),
-                   0x2: self.cdc.source.connect(self.conv4.sink),
-                   0x1: self.cdc.source.connect(self.conv2.sink),
-                   0x0: self.cdc.source.connect(self.conv1.sink),
-               })
-            ).Else(
-                *handle_truecolor_sink
-            )
-        ]
+
+        # not sure the bit-reversal needed in the NuBusFPGA is really tied to the endianess (didn't really try < 8 bits on SBusFPGA)
+        if (endian == "big"):
+            self.comb += [
+                If(self.use_indexed,
+                   Case(self.indexed_mode, {
+                       0x3: [ self.cdc.source.connect(self.conv8.sink), ],
+                       0x2: [ self.cdc.source.connect(self.conv4.sink), ],
+                       0x1: [ self.cdc.source.connect(self.conv2.sink), ],
+                       0x0: [ self.cdc.source.connect(self.conv1.sink), ],
+                   })
+                ).Else(
+                    *handle_truecolor_sink
+                )
+            ]
+        else:
+            self.comb += [
+                If(self.use_indexed,
+                   Case(self.indexed_mode, {
+                       0x3: [ self.cdc.source.connect(self.conv8.sink), ],
+                       0x2: [ self.cdc.source.connect(self.conv4.sink), ],
+                       0x1: [ self.cdc.source.connect(self.conv2.sink), ],
+                       0x0: [ self.cdc.source.connect(self.conv1.sink, omit={"data"}),
+                              *[ self.conv1.sink.data[xbyte*8 + xbit].eq(self.cdc.source.data[xbyte*8 + 7-xbit]) for xbit in range(0,8) for xbyte in range(0, dram_port.data_width//8) ],
+                       ],
+                   })
+                ).Else(
+                    *handle_truecolor_sink
+                )
+            ]
+            
+        
             
         # Video Generation.
         self.comb += [
@@ -372,6 +392,7 @@ class goblin(Module, AutoCSR):
                                          upd_overlay_fifo = upd_overlay_fifo,
                                          upd_omap_fifo = upd_omap_fifo,
                                          truecolor = truecolor,
+                                         endian = endian,
         )
         setattr(self.submodules, name, vfb)
         ##dma_reset = Signal(reset = 0)

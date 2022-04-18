@@ -30,8 +30,8 @@ BeginSecondary:
 	
 	/* param block in %A3, our HW (32-bits mode) in %A1 */
 	addl #0x00900000, %A1
-	movel #0x0f0f0f0f,%A1@(0x20) /* marker to qemu */
-	movel %D1,%A1@(0x20)  /*_sVersion spResult to Qemu */
+	movel #0x0f0f0f0f,%A1@(0x1c) /* marker to qemu */
+	movel %D1,%A1@(0x1c)  /*_sVersion spResult to Qemu */
 	
 ExitSecondary:
 	RTS									/* Return */

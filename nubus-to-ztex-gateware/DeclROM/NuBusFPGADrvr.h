@@ -57,6 +57,8 @@ struct NuBusFPGADriverGlobals {
 	AuxDCEPtr	dce; // unused
 	SlotIntQElement *siqel;
 	//unsigned char shadowClut[768];
+	unsigned short curMode; /* mode include depth in <= 7.1 ROM-based mode */
+	unsigned short curDepth; /* depth separate from mode in >= 7.5 driver-based mode */
 	char gray;
 	char irqen;
 	struct MyGammaTbl gamma;
