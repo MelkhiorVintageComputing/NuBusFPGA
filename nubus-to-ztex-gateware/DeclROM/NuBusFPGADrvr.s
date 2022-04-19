@@ -88,6 +88,5 @@ interruptRoutine:
 	jsr (%a0)
 	moveq #1,%d0
 	rts
-
-
-    ALIGN  2
+	
+	ALIGN 2

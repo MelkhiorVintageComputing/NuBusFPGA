@@ -40,6 +40,8 @@ UInt32 Primary(SEBlock* seblock) {
 	}
 	
 	SwapMMUMode ( &busMode ); // restore
+	
+#if 0
 
 	/* call SVersion to figure out if we have a recent SlotManager */
 	//spblock.spSlot = seblock->seSlot;
@@ -98,7 +100,8 @@ UInt32 Primary(SEBlock* seblock) {
 		/* 	PRIM_WRITEREG(GOBOFB_DEBUG, pram[i]);*/
 	}
 	SwapMMUMode ( &busMode ); // restore
-	
+
+#endif
 
 	seblock->seStatus = 1;
 

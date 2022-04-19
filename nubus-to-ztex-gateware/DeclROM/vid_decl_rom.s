@@ -272,18 +272,3 @@ _HRV24Parms:
              .long          defmPlaneBytes              /*  bmPlaneBytes */
 _EndHRV24Parms:	
 
-	/* Declaration ROM directory at end */
-	ALIGN 2
-DeclROMDir:
-	OSLstEntry 0, _sRsrcDir
-	.long DeclRomEnd-_sRsrcDir /* Length should be 0x824 */
-DeclROMCRC:
-	.long 0x0 /* TODO: calculate this */
-	.byte 1			 /* Revision Level */
-	.byte appleFormat			 /* Apple Format */
-	.long testPattern	 /* magic TestPattern */
-	.byte 0			 /* reserved */
-	.byte 0x0F		 /* byte lane marker */
-DeclRomEnd:
-	.end
-

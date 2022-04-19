@@ -39,8 +39,8 @@ OSErr cNuBusFPGAStatus(CntrlParamPtr pb, /* DCtlPtr */ AuxDCEPtr dce)
    NuBusFPGADriverGlobalsPtr dStore = *dStoreHdl;
    short ret = -1;
    
-   write_reg(dce, GOBOFB_DEBUG, 0xBEEF0002);
-   write_reg(dce, GOBOFB_DEBUG, pb->csCode);
+   /* write_reg(dce, GOBOFB_DEBUG, 0xBEEF0002); */
+   /* write_reg(dce, GOBOFB_DEBUG, pb->csCode); */
    
 #if 1
    switch (pb->csCode)
