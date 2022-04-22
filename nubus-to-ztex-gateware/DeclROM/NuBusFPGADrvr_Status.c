@@ -81,6 +81,8 @@ OSErr cNuBusFPGAStatus(CntrlParamPtr pb, /* DCtlPtr */ AuxDCEPtr dce)
 		   	   break;
 		   case fifthVidMode:
 		   	   break;
+		   case sixthVidMode:
+		   	   break;
 		   default:
 			   return paramErr;
 		   }
@@ -206,11 +208,11 @@ OSErr cNuBusFPGAStatus(CntrlParamPtr pb, /* DCtlPtr */ AuxDCEPtr dce)
 				  break;
 			  case kDisplayModeIDFindFirstResolution:
 				  vdres->csDisplayModeID = firstVidMode;
-				  vdres->csMaxDepthMode = kDepthMode5;
+				  vdres->csMaxDepthMode = kDepthMode6;
 				  break;
 			  case kDisplayModeIDCurrent:
 				  vdres->csDisplayModeID = firstVidMode;
-				  vdres->csMaxDepthMode = kDepthMode5;
+				  vdres->csMaxDepthMode = kDepthMode6;
 				  break;
 			  default:
 				  return paramErr;
@@ -230,7 +232,8 @@ OSErr cNuBusFPGAStatus(CntrlParamPtr pb, /* DCtlPtr */ AuxDCEPtr dce)
 			  (vdparam->csDepthMode != kDepthMode2) &&
 			  (vdparam->csDepthMode != kDepthMode3) &&
 			  (vdparam->csDepthMode != kDepthMode4) &&
-			  (vdparam->csDepthMode != kDepthMode5)) 
+			  (vdparam->csDepthMode != kDepthMode5) &&
+			  (vdparam->csDepthMode != kDepthMode6)) 
 			  return paramErr;
 		  VPBlock* vpblock = vdparam->csVPBlockPtr;
 		  /* basically the same as the EBVParms ? */
@@ -276,6 +279,12 @@ OSErr cNuBusFPGAStatus(CntrlParamPtr pb, /* DCtlPtr */ AuxDCEPtr dce)
 			  vpblock->vpPixelSize = 32;
 			  vpblock->vpCmpCount = 3;
 			  vpblock->vpCmpSize = 8;
+		  } else if (vdparam->csDepthMode == kDepthMode6) {
+			  vpblock->vpRowBytes = HRES*2;
+			  vdparam->csDeviceType = directType;
+			  vpblock->vpPixelSize = 16;
+			  vpblock->vpCmpCount = 3;
+			  vpblock->vpCmpSize = 5;
 		  }
 		  vpblock->vpPlaneBytes = 0;
 		  ret = noErr;

@@ -42,6 +42,7 @@
 #define GOBOFB_MODE_4BIT  0x2
 #define GOBOFB_MODE_8BIT  0x3
 #define GOBOFB_MODE_24BIT 0x10
+#define GOBOFB_MODE_15BIT 0x11
 
 struct MyGammaTbl {
   short               gVersion;               /*gamma version number*/

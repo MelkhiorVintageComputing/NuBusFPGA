@@ -164,6 +164,12 @@ OSErr cNuBusFPGACtl(CntrlParamPtr pb, /* DCtlPtr */ AuxDCEPtr dce)
 			   write_reg(dce, GOBOFB_MODE, GOBOFB_MODE_24BIT);
 			   SwapMMUMode ( &busMode );
 		   	   break;
+		   case sixthVidMode:
+			   dStore->curMode = sixthVidMode;
+			   SwapMMUMode ( &busMode );
+			   write_reg(dce, GOBOFB_MODE, GOBOFB_MODE_15BIT);
+			   SwapMMUMode ( &busMode );
+		   	   break;
 		   default:
 			   return paramErr;
 		   }
@@ -274,7 +280,7 @@ OSErr cNuBusFPGACtl(CntrlParamPtr pb, /* DCtlPtr */ AuxDCEPtr dce)
 			   return paramErr;
 		   
 		   SwapMMUMode ( &busMode );
-		   if (dStore->curMode != kDepthMode5) {
+		   if ((dStore->curMode != kDepthMode5) && (dStore->curMode != kDepthMode6)) {
 			   /* grey the screen */
 			   a32_l0 = a32;
 			   a32_l1 = a32 + wb;
@@ -346,6 +352,8 @@ OSErr cNuBusFPGACtl(CntrlParamPtr pb, /* DCtlPtr */ AuxDCEPtr dce)
 			   break;
 		   case fifthVidMode:
 			   break;
+		   case sixthVidMode:
+			   break;
 		   default:
 			   return paramErr;
 		  }
@@ -384,6 +392,11 @@ OSErr cNuBusFPGACtl(CntrlParamPtr pb, /* DCtlPtr */ AuxDCEPtr dce)
 			   write_reg(dce, GOBOFB_MODE, GOBOFB_MODE_24BIT);
 			   SwapMMUMode ( &busMode );
 			  break;
+		  case kDepthMode6:
+			   SwapMMUMode ( &busMode );
+			   write_reg(dce, GOBOFB_MODE, GOBOFB_MODE_15BIT);
+			   SwapMMUMode ( &busMode );
+			  break;
 		  default:
 			  return paramErr;
 		  }
@@ -408,6 +421,8 @@ OSErr cNuBusFPGACtl(CntrlParamPtr pb, /* DCtlPtr */ AuxDCEPtr dce)
 			   break;
 		   case fifthVidMode:
 			   break;
+		   case sixthVidMode:
+			   break;
 		  default:
 			  return paramErr;
 		  }
@@ -421,6 +436,8 @@ OSErr cNuBusFPGACtl(CntrlParamPtr pb, /* DCtlPtr */ AuxDCEPtr dce)
 		   case fourthVidMode:
 			   break;
 		   case fifthVidMode:
+			   break;
+		   case sixthVidMode:
 			   break;
 		  default:
 			  return paramErr;

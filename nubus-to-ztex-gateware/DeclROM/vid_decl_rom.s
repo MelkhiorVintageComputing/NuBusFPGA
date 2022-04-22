@@ -99,7 +99,8 @@ _sRsrc_VidHiRes:
     OSLstEntry  secondVidMode,_HiRes4Modes        /*  offset to 4 Bit Mode parms */
     OSLstEntry  thirdVidMode,_HiRes2Modes        /*  offset to 2 Bit Mode parms */
     OSLstEntry  fourthVidMode,_HiRes1Modes        /*  offset to 1 Bit Mode parms */
-    OSLstEntry  fifthVidMode,_HiRes24Modes        /*  offset to 24 Bit Mode parms */
+    OSLstEntry  fifthVidMode,_HiRes24Modes        /*  offset to 24/32 Bit Mode parms */
+    OSLstEntry  sixthVidMode,_HiRes15Modes        /*  offset to 1516 Bit Mode parms */
     .long EndOfList               /*  end of list */
 
 	ALIGN 2
@@ -271,4 +272,26 @@ _HRV24Parms:
              .word          8                           /*  bmCmpSize */
              .long          defmPlaneBytes              /*  bmPlaneBytes */
 _EndHRV24Parms:	
+	ALIGN 2
+_HiRes15Modes:	
+             OSLstEntry    mVidParams,_HRV15Parms         /*  offset to vid parameters */
+             DatLstEntry   mPageCnt,Pages15s             /*  number of video pages */
+             DatLstEntry   mDevType,directType         /*  device type */
+             .long   EndOfList                  /*  end of list */
+_HRV15Parms:	
+             .long          _EndHRV15Parms-_HRV15Parms      /*  physical block size  */
+             .long          defmBaseOffset              /*  QuickDraw base offset ; vpBaseOffset */
+             .word          RB15s                        /*  physRowBytes ; vpRowBytes */
+             .word          defmBounds_Ts,defmBounds_Ls,defmBounds_Bs,defmBounds_Rs /*  vpBounds */
+             .word          defVersion                  /*  bmVersion ; vpVersion */
+             .word	   0				/*  packType not used ; vpPackType */
+             .long	   0 				/*  packSize not used ; vpPackSize */
+             .long          defmHRes                    /*  bmHRes  */
+             .long          defmVRes                    /*  bmVRes */
+             .word          ChunkyDirect                /*  bmPixelType */
+             .word          16                          /*  bmPixelSize */
+             .word          3                           /*  bmCmpCount */
+             .word          5                           /*  bmCmpSize */
+             .long          defmPlaneBytes              /*  bmPlaneBytes */
+_EndHRV15Parms:	
 

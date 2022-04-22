@@ -158,23 +158,45 @@ class VideoFrameBufferMultiDepth(Module, AutoCSR):
         # we have 5 possible conversion and mux/connect the appropriate one
         if (truecolor):
             self.submodules.conv32 = ClockDomainsRenamer({"sys": clock_domain})(stream.Converter(dram_port.data_width, 32))
-            handle_truecolor_sink = [ self.cdc.source.connect(self.conv32.sink) ]
-            handle_truecolor_source = [ source_buf_valid.eq(self.conv32.source.valid),
-                                        self.conv32.source.connect(source, keep={"ready"}), ]
+            self.submodules.conv16 = ClockDomainsRenamer({"sys": clock_domain})(stream.Converter(dram_port.data_width, 16))
+                
+            handle_truecolor_sink = [ Case(self.indexed_mode, {
+                0x0: [ self.cdc.source.connect(self.conv32.sink) ],
+                0x1: [ self.cdc.source.connect(self.conv16.sink) ],
+            })]
+                
+            handle_truecolor_source = [ Case(self.indexed_mode, {
+                0x0: [ source_buf_valid.eq(self.conv32.source.valid), self.conv32.source.connect(source, keep={"ready"}), ],
+                0x1: [ source_buf_valid.eq(self.conv16.source.valid), self.conv16.source.connect(source, keep={"ready"}), ],
+            })]
+            
             if (endian == "big"): # this starts to _really_ mean "i'm in the SBusFPGA"...
-                handle_truecolor_databuf = [ data_buf_direct[0].eq(self.conv32.source.data[24:32]),
-                                             data_buf_direct[1].eq(self.conv32.source.data[16:24]),
-                                             data_buf_direct[2].eq(self.conv32.source.data[8:16]), ]
+                handle_truecolor_databuf = [ Case(self.indexed_mode, {
+                    0x0: [ data_buf_direct[0].eq(self.conv32.source.data[24:32]),
+                           data_buf_direct[1].eq(self.conv32.source.data[16:24]),
+                           data_buf_direct[2].eq(self.conv32.source.data[8:16]), ],
+                    0x1: [ data_buf_direct[0].eq(Cat(Signal(3, reset = 0), self.conv16.source.data[11:16])), # fixme: 16-bits in X11 ???
+                           data_buf_direct[1].eq(Cat(Signal(3, reset = 0), self.conv16.source.data[6:11])),
+                           data_buf_direct[2].eq(Cat(Signal(3, reset = 0), self.conv16.source.data[1:6])), ]
+                })]
             else:
-                handle_truecolor_databuf = [ data_buf_direct[2].eq(self.conv32.source.data[24:32]),
-                                             data_buf_direct[1].eq(self.conv32.source.data[16:24]),
-                                             data_buf_direct[0].eq(self.conv32.source.data[8:16]), ]
+                handle_truecolor_databuf =[ Case(self.indexed_mode, {
+                    0x0: [ data_buf_direct[2].eq(self.conv32.source.data[24:32]),
+                           data_buf_direct[1].eq(self.conv32.source.data[16:24]),
+                           data_buf_direct[0].eq(self.conv32.source.data[8:16]), ],
+                    0x1: [ data_buf_direct[0].eq(Cat(self.conv16.source.data[ 4: 7], self.conv16.source.data[ 2: 7])), # 16-bits in QD32
+                           data_buf_direct[1].eq(Cat(self.conv16.source.data[15:16], self.conv16.source.data[ 0: 2],   # seems byte-swapped in 5551 BGRx
+                                                     self.conv16.source.data[13:16], self.conv16.source.data[ 0: 2])),
+                           data_buf_direct[2].eq(Cat(self.conv16.source.data[10:13], self.conv16.source.data[ 8:13])), ]
+                })]
+                
             handle_truecolor_databuf_b = [ data_buf_b_direct[0].eq(data_buf_direct[0]),
                                            data_buf_b_direct[1].eq(data_buf_direct[1]),
                                            data_buf_b_direct[2].eq(data_buf_direct[2]), ]
             handle_truecolor_final_source = [ source_out_r.eq(data_buf_b_direct[2]),
                                               source_out_g.eq(data_buf_b_direct[1]),
                                               source_out_b.eq(data_buf_b_direct[0]), ]
+            
         else:
             handle_truecolor_sink = [ ]
             handle_truecolor_source = [ ]
@@ -356,7 +378,7 @@ class VideoFrameBufferMultiDepth(Module, AutoCSR):
         self.comb += self.vblping.eq(self.vbl_ps.o)
 
 class goblin(Module, AutoCSR):
-    def __init__(self, soc=None, phy=None, timings=None, clock_domain="sys", irq_line=None, endian="big", truecolor=True):
+    def __init__(self, soc=None, phy=None, timings=None, clock_domain="sys", irq_line=None, endian="big", hwcursor=True, truecolor=True):
         
         # 2 bits for color (0/r, 1/g, 2/b), 8 for @ and 8 for value
         self.submodules.upd_cmap_fifo = upd_cmap_fifo = ClockDomainsRenamer({"read": clock_domain, "write": "sys"})(AsyncFIFOBuffered(width=layout_len(cmap_layout), depth=8))
@@ -372,7 +394,7 @@ class goblin(Module, AutoCSR):
         name = "video_framebuffer"
         # near duplicate of plaform.add_video_framebuffer
         # Video Timing Generator.
-        vtg = FBVideoTimingGenerator(default_video_timings=timings if isinstance(timings, str) else timings[1], hwcursor=True)
+        vtg = FBVideoTimingGenerator(default_video_timings=timings if isinstance(timings, str) else timings[1], hwcursor=hwcursor)
         vtg = ClockDomainsRenamer(clock_domain)(vtg)
         setattr(self.submodules, f"{name}_vtg", vtg)
         vtg_enable = Signal(reset = 0)
@@ -417,12 +439,17 @@ class goblin(Module, AutoCSR):
         soc.add_constant("VIDEO_FRAMEBUFFER_VRES", vres)
 
         # HW Cursor
-        
-        hwcursor_x = Signal(12)
-        hwcursor_y = Signal(12)
 
-        self.comb += vtg.hwcursor_x.eq(hwcursor_x)
-        self.comb += vtg.hwcursor_y.eq(hwcursor_y)
+        if (hwcursor):
+            hwcursor_x = Signal(12)
+            hwcursor_y = Signal(12)
+            self.comb += vtg.hwcursor_x.eq(hwcursor_x)
+            self.comb += vtg.hwcursor_y.eq(hwcursor_y)
+            handle_hwcursor = [ NextValue(hwcursor_x, bus.dat_w[16:28]), # FIXME: endianess
+                                NextValue(hwcursor_y, bus.dat_w[ 0:12]), # FIXME: endianess
+            ]
+        else:
+            handle_hwcursor = [ ]
 
         self.bus = bus = wishbone.Interface()
 
@@ -493,12 +520,10 @@ class goblin(Module, AutoCSR):
                                        }),
                                 ],
                                 # hw cursor x/y
-                                0x9: [ NextValue(hwcursor_x, bus.dat_w[16:28]), # FIXME: endianess
-                                       NextValue(hwcursor_y, bus.dat_w[ 0:12]), # FIXME: endianess
-                                ],
+                                0x9: [ *handle_hwcursor ],
                             }),
                             Case(bus.adr[5:18], {
-                                "default": [],
+                                "default": [], # fixme: hwcursor for 0x1/0x2
                                 0x1 : [ upd_overlay_fifo.we.eq(1), # 1*32 = 32..63 / 0x20..0x3F
                                         upd_overlay_fifo.din.eq(Cat(Signal(1, reset = 0), 31-bus.adr[0:5], bus.dat_w)) # FIXME: endianess
                                 ],
@@ -540,7 +565,7 @@ class goblin(Module, AutoCSR):
                        ),
                        If(in_reset & ~vtg_enable, # we asked for a reset and by now, the VTG has been turned off (or was off) so we reset the DMA and change the parameters
                           ##dma_reset.eq(1), # hpefully this will clear the FIFO as well
-                          self.video_framebuffer.indexed_mode.eq(bt_mode[0:2] & ~(Replicate(bt_mode[4:5], 2))),
+                          self.video_framebuffer.indexed_mode.eq(bt_mode[0:2]), #  & ~(Replicate(bt_mode[4:5], 2))
                           *handle_truecolor_bit,
                           in_reset.eq(0),
                           post_reset_ctr.eq(7),
@@ -550,7 +575,10 @@ class goblin(Module, AutoCSR):
                        ##),
                        If(post_reset_ctr == 4, # now reconfigure the DMA
                           If(bt_mode[4:5],
-                             self.video_framebuffer.fb_dma.length.eq(npixels * 4),
+                              Case(bt_mode[0:2], { # fixme: truecolor
+                                  0x0: self.video_framebuffer.fb_dma.length.eq(npixels * 4),
+                                  0x1: self.video_framebuffer.fb_dma.length.eq(npixels * 2),
+                              }),
                           ).Else(
                               Case(bt_mode[0:2], {
                                   3: self.video_framebuffer.fb_dma.length.eq(npixels   ),

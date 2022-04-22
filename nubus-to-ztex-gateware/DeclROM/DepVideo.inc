@@ -9,6 +9,7 @@ Pages8s = 1
 Pages4s = 1
 Pages2s = 1
 Pages1s = 1
+Pages15s = 1
 Pages24s = 1
 
 defmBounds_Ls = 0
@@ -23,6 +24,7 @@ RB8s = HRES
 RB4s = HRES/2
 RB2s = HRES/4
 RB1s = HRES/8
+RB15s = HRES*2
 RB24s = HRES*4
 
 DrHwNuBusFPGA = 0xBEEF /*  placeholder */
