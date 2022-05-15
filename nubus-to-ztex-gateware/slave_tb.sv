@@ -324,9 +324,9 @@ module nubus_slave_tb ();
 
 	  // check PingMaster
       $display  ("PING ---------------------------");
-      write_word(TMADN_WR_WORD,   PING_ADDR+0, 'hC0FFEE00);
+      write_word(TMADN_WR_WORD,   PING_ADDR+0, 'h00C0FFEE);
 	  read_word (TMADN_RD_WORD,   PING_ADDR+0);
-      write_word(TMADN_WR_WORD,   PING_ADDR+4, 'hF0F0F0F0);
+      write_word(TMADN_WR_WORD,   PING_ADDR+4, 'h00096240);
 
 	  mastermode_start <= 1;
 	  mastermode_tmack <= 0;

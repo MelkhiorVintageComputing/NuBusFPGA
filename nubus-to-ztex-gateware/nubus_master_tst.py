@@ -12,6 +12,12 @@ class PingMaster(Module):
         valu_reg = Signal(32)
         addr_reg = Signal(32)
         writ_del = Signal(6)
+        addr_reg_rev = Signal(32)
+
+        self.comb += [ addr_reg_rev[ 0: 8].eq(addr_reg[24:32]),
+                       addr_reg_rev[ 8:16].eq(addr_reg[16:24]),
+                       addr_reg_rev[16:24].eq(addr_reg[ 8:16]),
+                       addr_reg_rev[24:32].eq(addr_reg[ 0: 8]), ]
 
         self.sync += If(writ_del != 0,
                         writ_del.eq(writ_del - 1))
@@ -26,7 +32,7 @@ class PingMaster(Module):
                             Case(bus_slv.adr[0:1], {
                                 0x0: [ NextValue(valu_reg, bus_slv.dat_w[0:32]), ],
                                 0x1: [ NextValue(addr_reg, bus_slv.dat_w[0:32]),
-                                       NextValue(writ_del, 63), ],
+                                       NextValue(writ_del, 3), ],
                             }),
                             NextValue(bus_slv.ack, 1),
                          ).Elif(bus_slv.cyc & bus_slv.stb & ~bus_slv.we & ~bus_slv.ack, #read

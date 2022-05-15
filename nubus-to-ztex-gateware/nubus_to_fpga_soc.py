@@ -30,6 +30,7 @@ from litex.soc.cores.video import VideoS7HDMIPHY
 from litex.soc.cores.video import VideoVGAPHY
 from litex.soc.cores.video import video_timings
 import goblin_fb
+import goblin_accel
 
 # Wishbone stuff
 from sbus_wb import WishboneDomainCrossingMaster
@@ -241,17 +242,22 @@ class NuBusFPGA(SoCCore):
         # they are translated: '$s0 0000-$sF FFFF' to '$Fs00 0000-$Fs0F FFFF' (for s in range $9 through $E)
         # let's assume we have 32-bits mode, this can be requested in the DeclROM apparently
         self.wb_mem_map = wb_mem_map = {
-            "goblin_mem":        0x00000000, # up to 8 MiB of FB memory
-            #"END OF FIRST MB" :  0x000FFFFF,
-            #"END OF 8 MB":       0x007FFFFF,
-            "goblin_bt" :        0x00900000, # BT for goblin
-            "csr" :              0x00a00000, # CSR
-            "pingmaster":        0x00b00000,
-            "rom":               0x00FF8000, # ROM at the end (32 KiB of it ATM)
-            #"END OF SLOT SPACE": 0x00FFFFFF,
+            # master to map the NuBus access to RAM
+            "master":            0x00000000, # to 0x3FFFFFFF
             "main_ram":          0x80000000, # not directly reachable from NuBus
             "video_framebuffer": 0x80000000 + 0x10000000 - goblin_fb_size, # Updated later
-            "fixme_master":      0xF0000000,
+            # map everything in slot 0, remapped from the real slot in NuBus2Wishbone
+            "goblin_mem":        0xF0000000, # up to 8 MiB of FB memory
+            #"END OF FIRST MB" :  0xF00FFFFF,
+            #"END OF 8 MB":       0xF07FFFFF,
+            "goblin_bt" :        0xF0900000, # BT for goblin (regs)
+            "goblin_accel" :     0xF0901000, # accel for goblin (regs)
+            "goblin_accel_ram" : 0xF0902000, # accel for goblin (scratch ram)
+            "goblin_accel_rom" : 0xF0910000, # accel for goblin (rom)
+            "csr" :              0xF0a00000, # CSR
+            "pingmaster":        0xF0b00000,
+            "rom":               0xF0FF8000, # ROM at the end (32 KiB of it ATM)
+            #"END OF SLOT SPACE": 0xF0FFFFFF,
         }
         self.mem_map.update(wb_mem_map)
         self.submodules.crg = _CRG(platform=platform, sys_clk_freq=sys_clk_freq, goblin=goblin, hdmi=hdmi, pix_clk=litex.soc.cores.video.video_timings[goblin_res]["pix_clk"])
@@ -302,7 +308,7 @@ class NuBusFPGA(SoCCore):
             self.bus.add_master(name="DDR3Init", master=self.sdram_init.bus)
         else:
             avail_sdram = 256 * 1024 * 1024
-            self.add_ram("ram", origin=self.mem_map["goblin_mem"], size=2**16, mode="rw")
+            self.add_ram("ram", origin=0x8f800000, size=2**16, mode="rw")
 
         #self.submodules.leds = ClockDomainsRenamer("nubus")(LedChaser(
         #    pads         = platform.request_all("user_led"),
@@ -349,8 +355,7 @@ class NuBusFPGA(SoCCore):
         wishbone_slave_nubus = wishbone.Interface(data_width=self.bus.data_width)
         self.submodules.wishbone2nubus = ClockDomainsRenamer("nubus")(Wishbone2NuBus(nubus=self.nubus,wb=wishbone_slave_nubus))
         self.submodules.wishbone_slave_sys = WishboneDomainCrossingMaster(platform=self.platform, slave=wishbone_slave_nubus, cd_master="sys", cd_slave="nubus")
-        self.bus.add_slave("DMA", self.wishbone_slave_sys, SoCRegion(origin=self.mem_map.get("fixme_master", None), size=0x0fffffff, cached=False))
-        
+        self.bus.add_slave("DMA", self.wishbone_slave_sys, SoCRegion(origin=self.mem_map.get("master", None), size=0x40000000, cached=False))
 
         if (goblin):
             if (not hdmi):
@@ -364,13 +369,25 @@ class NuBusFPGA(SoCCore):
             #pad_user_led_1 = platform.request("user_led", 1)
             #self.comb += pad_user_led_0.eq(self.goblin.video_framebuffer.underflow)
             #self.comb += pad_user_led_1.eq(self.goblin.video_framebuffer.fb_dma.enable)
+            if (True):
+                self.submodules.goblin_accel = goblin_accel.GoblinAccel(soc = self)
+                self.bus.add_slave("goblin_accel", self.goblin_accel.bus, SoCRegion(origin=self.mem_map.get("goblin_accel", None), size=0x1000, cached=False))
+                self.bus.add_master(name="goblin_accel_r5_i", master=self.goblin_accel.ibus)
+                self.bus.add_master(name="goblin_accel_r5_d", master=self.goblin_accel.dbus)
+                goblin_rom_file = "blit.raw"
+                goblin_rom_data = soc_core.get_mem_data(goblin_rom_file, "little")
+                goblin_rom_len = 4*len(goblin_rom_data);
+                rounded_goblin_rom_len = 2**log2_int(goblin_rom_len, False)
+                print(f"GOBLIN ROM is {goblin_rom_len} bytes, using {rounded_goblin_rom_len}")
+                assert(rounded_goblin_rom_len <= 2**16)
+                self.add_ram("goblin_accel_rom", origin=self.mem_map["goblin_accel_rom"], size=rounded_goblin_rom_len, contents=goblin_rom_data, mode="r")
+                self.add_ram("goblin_accel_ram", origin=self.mem_map["goblin_accel_ram"], size=2**12, mode="rw")
 
         # for testing
         #from nubus_master_tst import PingMaster
         #self.submodules.pingmaster = PingMaster()
         #self.bus.add_slave("pingmaster_slv", self.pingmaster.bus_slv, SoCRegion(origin=self.mem_map.get("pingmaster", None), size=0x010, cached=False))
         #self.bus.add_master(name="pingmaster_mst", master=self.pingmaster.bus_mst)
-
         
 def main():
     parser = argparse.ArgumentParser(description="SbusFPGA")

@@ -175,11 +175,11 @@ class VideoFrameBufferMultiDepth(Module, AutoCSR):
                     0x0: [ data_buf_direct[0].eq(self.conv32.source.data[24:32]),
                            data_buf_direct[1].eq(self.conv32.source.data[16:24]),
                            data_buf_direct[2].eq(self.conv32.source.data[8:16]), ],
-                    0x1: [ data_buf_direct[0].eq(Cat(Signal(3, reset = 0), self.conv16.source.data[11:16])), # fixme: 16-bits in X11 ???
-                           data_buf_direct[1].eq(Cat(Signal(3, reset = 0), self.conv16.source.data[6:11])),
-                           data_buf_direct[2].eq(Cat(Signal(3, reset = 0), self.conv16.source.data[1:6])), ]
+                    0x1: [ data_buf_direct[0].eq(Cat(Signal(3, reset = 0), self.conv16.source.data[0:5])), # fixme: 16-bits in X11 ??? (this is QD32)
+                           data_buf_direct[1].eq(Cat(Signal(3, reset = 0), self.conv16.source.data[5:10])),
+                           data_buf_direct[2].eq(Cat(Signal(3, reset = 0), self.conv16.source.data[10:15])), ]
                 })]
-            else:
+            else: # and little "i'm in the NuBusFPGA" ...
                 handle_truecolor_databuf =[ Case(self.indexed_mode, {
                     0x0: [ data_buf_direct[2].eq(self.conv32.source.data[24:32]),
                            data_buf_direct[1].eq(self.conv32.source.data[16:24]),

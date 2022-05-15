@@ -38,6 +38,17 @@ class NuBus(Module):
         self.mem_local = Signal()
 
         self.add_sources(platform)
+
+        #arbcy_n = platform.request("arbcy_n")
+        #grant = platform.request("grant")
+        #pad_user_led_0 = platform.request("user_led", 0)
+        #pad_user_led_1 = platform.request("user_led", 1)
+        #arbcy_n_mem = Signal()
+        #grant_mem = Signal()
+        #self.sync.nubus += [ arbcy_n_mem.eq(~arbcy_n | arbcy_n_mem) ]
+        #self.sync.nubus += [ grant_mem.eq(grant | grant_mem) ]
+        #self.comb += pad_user_led_0.eq(arbcy_n_mem)
+        #self.comb += pad_user_led_1.eq(grant_mem)
         
         #fixme: parameters
         self.specials += Instance(self.get_netlist_name(),

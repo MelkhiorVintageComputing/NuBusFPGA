@@ -18,7 +18,7 @@ dfii_command_wrdata = 0x10
 dfii_command_rddata = 0x20
 
 # /!\ keep up to date with csr /!\
-sdram_dfii_base = 0x00a01000
+sdram_dfii_base = 0xf0a01000
 sdram_dfii_control =           sdram_dfii_base + 0x000
 sdram_dfii_pi0_command  =      sdram_dfii_base + 0x004
 sdram_dfii_pi0_command_issue = sdram_dfii_base + 0x008
@@ -26,7 +26,7 @@ sdram_dfii_pi0_address  =      sdram_dfii_base + 0x00c
 sdram_dfii_pi0_baddress =      sdram_dfii_base + 0x010
 
 # /!\ keep up to date with csr /!\
-ddrphy_base = 0x00a00000
+ddrphy_base = 0xf0a00000
 ddrphy_rst                 = ddrphy_base + 0x000
 ddrphy_dly_sel             = ddrphy_base + 0x010
 ddrphy_rdly_dq_rst         = ddrphy_base + 0x014
