@@ -13,6 +13,7 @@
 
 // cmd
 #define DO_BLIT_BIT            0 // hardwired in goblin_accel.py
+#define DO_FILL_BIT            1 // hardwired in goblin_accel.py
 
 
 #define FUN_DONE_BIT           31
@@ -35,7 +36,7 @@ struct goblin_accel_regs {
 	u_int32_t resv0;
 	u_int32_t reg_width;
 	u_int32_t reg_height;
-	u_int32_t resv1;
+	u_int32_t reg_fgcolor;
 	u_int32_t resv2;
 	u_int32_t reg_bitblt_src_x;
 	u_int32_t reg_bitblt_src_y;

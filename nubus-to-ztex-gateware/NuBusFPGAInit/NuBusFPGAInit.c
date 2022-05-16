@@ -344,7 +344,7 @@ struct qdstuff {
 	uint16_t PATROW;	//  (must follow PATHMASK) // PATHMASK-2
 	uint16_t PATHMASK;	//  (must follow PATVMASK) // PATVMASK-2
 	uint16_t PATVMASK;	//  (must follow expat) // EXPAT-2
-	uint32_t EXPAT;	// 				YES // STACKFREE-4
+	uint32_t* EXPAT;	// 				YES // STACKFREE-4
 	//													 SET UP  FOR BITBLT   FOR RGNBLT
 
 	// (CALLED BY STRETCHBITS, RGNBLT, BITBLT, DRAWARC, DRAWLINE)
@@ -383,13 +383,13 @@ int hwblit(char* stack, char* p_fb_base, /* short dstshift, */ short mode, Patte
 	short height = qdstack->MINRECT.bottom - qdstack->MINRECT.top;
 	short dstshift = qdstack->DSTSHIFT;
 	
- 	if (mode != 0) { // only copy handled for now
-#if 0 //def QEMU
+ 	if ((mode != 0) && (mode != 8)) { // only copy handled for now
+#ifdef QEMU
 		bt->debug = -2L;
 		bt->debug = mode;
 		if (mode == 8) {
 			bt->debug = qdstack->PATROW;
-			bt->debug = -2L;
+#if 0
 			bt->debug = pat->pat[0];
 			bt->debug = pat->pat[1];
 			bt->debug = pat->pat[2];
@@ -398,11 +398,33 @@ int hwblit(char* stack, char* p_fb_base, /* short dstshift, */ short mode, Patte
 			bt->debug = pat->pat[5];
 			bt->debug = pat->pat[6];
 			bt->debug = pat->pat[7];
+#endif
 		}
 #endif
 		return 0;
 	}
+	if (mode == 8) {
+		register int i;
+		register unsigned long expat0 = qdstack->EXPAT[0];
+		if (qdstack->PATROW != 0) {
+			bt->debug = -6L;
+			return 0;
+		}
+		if ((expat0 & 0xFFFF) != ((expat0 >> 16) & 0xFFFF))
+			return 0;
+		if ((expat0 & 0xFF) != ((expat0 >> 8) & 0xFF))
+			return 0;
+		for (i = 1 ; i < 16 ; i++)
+			if (expat0 != qdstack->EXPAT[i]) {
+				bt->debug = -7L;
+				return 0;
+			}
+	}
  	if (dstshift < 3) { // only 8/16/32 bits for now
+#ifdef QEMU
+		bt->debug = -3L;
+		bt->debug = dstshift;
+#endif
  		return 0;
 	}
 	dstshift -= 3;
@@ -411,9 +433,17 @@ int hwblit(char* stack, char* p_fb_base, /* short dstshift, */ short mode, Patte
 	}
 	
 	if (dstpix->baseAddr != p_fb_base) { // we're not destination
+#ifdef QEMU
+		bt->debug = -4L;
+		bt->debug = (unsigned long)dstpix->baseAddr;
+#endif
 		return 0;
 	}
 	if (srcpix->baseAddr != p_fb_base) { // we're not source
+#ifdef QEMU
+		bt->debug = -5L;
+		bt->debug = (unsigned long)srcpix->baseAddr;
+#endif
 		return 0;
 	}
 	
@@ -440,48 +470,75 @@ int hwblit(char* stack, char* p_fb_base, /* short dstshift, */ short mode, Patte
 		realrect.left += (srcrect->left - dstrect->left); /* A2 */
 			/* qdstack->MINRECT is A3 */
 		
-			srcv.top = realrect.top - srcpix->bounds.top;
-			srcv.left = realrect.left - srcpix->bounds.left;
+		srcv.top = realrect.top - srcpix->bounds.top;
+		srcv.left = realrect.left - srcpix->bounds.left;
 		
-			dstv.top = qdstack->MINRECT.top - dstpix->bounds.top;
-			dstv.left = qdstack->MINRECT.left - dstpix->bounds.left;
+		dstv.top = qdstack->MINRECT.top - dstpix->bounds.top;
+		dstv.left = qdstack->MINRECT.left - dstpix->bounds.left;
 		
-			/* if .baseAddr of both pix are different, no overlap */
-			/*
-			// the HW can handle that for us
-			if (dstpix->baseAddr == srcpix->baseAddr) {
-			
-			}
-			*/
+		/* if .baseAddr of both pix are different, no overlap */
+		/*
+		// the HW can handle that for us
+		if (dstpix->baseAddr == srcpix->baseAddr) {
+		
+		}
+		*/
 #ifdef QEMU
-			bt->debug = srcv.top;
-			bt->debug = srcv.left;
+#if 0
+		if ((mode == 8) && (qdstack->PATROW == 0)) {
+			bt->debug = 0x87654321;
+			bt->debug = qdstack->EXPAT[ 0];
+			bt->debug = qdstack->EXPAT[ 1];
+			bt->debug = qdstack->EXPAT[ 2];
+			bt->debug = qdstack->EXPAT[ 3];
+			bt->debug = qdstack->EXPAT[ 4];
+			bt->debug = qdstack->EXPAT[ 5];
+			bt->debug = qdstack->EXPAT[ 6];
+			bt->debug = qdstack->EXPAT[ 7];
+			bt->debug = qdstack->EXPAT[ 8];
+			bt->debug = qdstack->EXPAT[ 9];
+			bt->debug = qdstack->EXPAT[10];
+			bt->debug = qdstack->EXPAT[11];
+			bt->debug = qdstack->EXPAT[12];
+			bt->debug = qdstack->EXPAT[13];
+			bt->debug = qdstack->EXPAT[14];
+			bt->debug = qdstack->EXPAT[15];
+		}
+#endif
+		bt->debug = -1L; 
+		bt->debug = srcv.top;
+		bt->debug = srcv.left;
 		
-			bt->debug = height;
-			bt->debug = width;
+		bt->debug = height;
+		bt->debug = width;
 		
-			bt->debug = dstv.top;
-			bt->debug = dstv.left;
+		bt->debug = dstv.top;
+		bt->debug = dstv.left;
 		
-			bt->debug = (long)dstpix->baseAddr;
-			bt->debug = (long)srcpix->baseAddr;
+		bt->debug = (long)dstpix->baseAddr;
+		bt->debug = (long)srcpix->baseAddr;
 		
 			return 0;
 #else
-			WAIT_FOR_HW(accel);
+		WAIT_FOR_HW(accel);
 		
-			accel->reg_width = brev(width);
-			accel->reg_height = brev(height);
+		accel->reg_width = brev(width);
+		accel->reg_height = brev(height);
+		accel->reg_bitblt_dst_x = brev(dstv.left << dstshift);
+		accel->reg_bitblt_dst_y = brev(dstv.top);
+		
+		if (mode == 0) {
 			accel->reg_bitblt_src_x = brev(srcv.left << dstshift);
 			accel->reg_bitblt_src_y = brev(srcv.top);
-			accel->reg_bitblt_dst_x = brev(dstv.left << dstshift);
-			accel->reg_bitblt_dst_y = brev(dstv.top);
+			accel->reg_cmd = brev(1<<DO_BLIT_BIT);	
+		} else if (mode == 8) {
+			accel->reg_fgcolor = qdstack->EXPAT[0];
+			accel->reg_cmd = brev(1<<DO_FILL_BIT);	
+		}
 		
-			accel->reg_cmd = brev(1<<DO_BLIT_BIT);
+		WAIT_FOR_HW(accel);
 		
-			WAIT_FOR_HW(accel);
-		
-			return 1;
+		return 1;
 #endif
 	}
 	

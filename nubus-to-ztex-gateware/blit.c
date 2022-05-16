@@ -41,8 +41,10 @@ struct control_blitter {
 */
 
 #define FUN_BLIT_BIT            0 // hardwired in goblin_accel.py
+#define FUN_FILL_BIT            1 // hardwired in goblin_accel.py
 #define FUN_DONE_BIT           31
 #define FUN_BLIT           (1<<FUN_BLIT_BIT)
+#define FUN_FILL           (1<<FUN_FILL_BIT)
 #define FUN_DONE           (1<<FUN_DONE_BIT)
 
 struct goblin_accel_regs {
@@ -52,7 +54,7 @@ struct goblin_accel_regs {
 	u_int32_t resv0;
 	u_int32_t reg_width;
 	u_int32_t reg_height;
-	u_int32_t resv1;
+	u_int32_t reg_fgcolor;
 	u_int32_t resv2;
 	u_int32_t reg_bitblt_src_x;
 	u_int32_t reg_bitblt_src_y;
@@ -163,7 +165,12 @@ void from_reset(void) {
 				fbc->reg_width, fbc->reg_height,
 				fbc->reg_bitblt_dst_x, fbc->reg_bitblt_dst_y,
 				0xFF, 0x3); // GXcopy
-	}
+	} break;
+	case FUN_FILL: {
+		rectfill(fbc->reg_bitblt_dst_x, fbc->reg_bitblt_dst_y,
+				 fbc->reg_width, fbc->reg_height,
+				 fbc->reg_fgcolor);
+	} break;
 	default:
 		break;
 	}

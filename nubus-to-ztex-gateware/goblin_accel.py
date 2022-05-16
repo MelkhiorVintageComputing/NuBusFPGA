@@ -18,9 +18,9 @@ class GoblinAccel(Module): # AutoCSR ?
         reg_cmd = Signal(32) # 1
         reg_r5_cmd = Signal(32) # 2, to communicate with Vex
         # 3 resv0
-        reg_width = Signal(COORD_BITS)
-        reg_height = Signal(COORD_BITS)
-        # 6 resv1
+        reg_width = Signal(COORD_BITS) # 4
+        reg_height = Signal(COORD_BITS) # 5
+        reg_fgcolor = Signal(32) # 6
         # 7 resv2
         reg_bitblt_src_x = Signal(COORD_BITS) # 8
         reg_bitblt_src_y = Signal(COORD_BITS) # 9
@@ -29,9 +29,11 @@ class GoblinAccel(Module): # AutoCSR ?
         
         # do-some-work flags
         do_blit = Signal()
+        do_fill = Signal()
 
         # cmd register reg_cmd
         DO_BLIT_BIT = 0
+        DO_FILL_BIT = 1
         
         # global status register reg_status
         WORK_IN_PROGRESS_BIT = 0
@@ -48,12 +50,14 @@ class GoblinAccel(Module): # AutoCSR ?
                                 0: [ NextValue(reg_status, bus.dat_w) ], # debug, remove me
                                 1: [ NextValue(reg_cmd, bus.dat_w),
                                      NextValue(do_blit, bus.dat_w[DO_BLIT_BIT] & ~reg_status[WORK_IN_PROGRESS_BIT]),
+                                     NextValue(do_fill, bus.dat_w[DO_FILL_BIT] & ~reg_status[WORK_IN_PROGRESS_BIT]),
                                 ],
                                 2: [ NextValue(reg_r5_cmd, bus.dat_w) ],
                                 # 3
                                 4: [ NextValue(reg_width, bus.dat_w) ],
                                 5: [ NextValue(reg_height, bus.dat_w) ],
-                                # 6,7
+                                6: [ NextValue(reg_fgcolor, bus.dat_w) ],
+                                # 7
                                 8: [ NextValue(reg_bitblt_src_x, bus.dat_w) ],
                                 9: [ NextValue(reg_bitblt_src_y, bus.dat_w) ],
                                 10: [ NextValue(reg_bitblt_dst_x, bus.dat_w) ],
@@ -69,7 +73,8 @@ class GoblinAccel(Module): # AutoCSR ?
                                        # 3
                                        4: [ NextValue(bus.dat_r, reg_width) ],
                                        5: [ NextValue(bus.dat_r, reg_height) ],
-                                       # 6, 7
+                                       6: [ NextValue(bus.dat_r, reg_fgcolor) ],
+                                       # 7
                                        8: [ NextValue(bus.dat_r, reg_bitblt_src_x) ],
                                        9: [ NextValue(bus.dat_r, reg_bitblt_src_y) ],
                                        10: [ NextValue(bus.dat_r, reg_bitblt_dst_x) ],
@@ -84,6 +89,7 @@ class GoblinAccel(Module): # AutoCSR ?
         # also in blit.c, for r5-cmd
         FUN_DONE_BIT = 31
         FUN_BLIT_BIT = 0
+        FUN_FILL_BIT = 1
         # to hold the Vex in reset
         local_reset = Signal(reset = 1)
 
@@ -96,6 +102,12 @@ class GoblinAccel(Module): # AutoCSR ?
             ).Elif(do_blit & ~reg_status[WORK_IN_PROGRESS_BIT],
                    do_blit.eq(0),
                    reg_r5_cmd[FUN_BLIT_BIT].eq(1),
+                   reg_status[WORK_IN_PROGRESS_BIT].eq(1),
+                   local_reset.eq(0),
+                   #timeout.eq(timeout_rst),
+            ).Elif(do_fill & ~reg_status[WORK_IN_PROGRESS_BIT],
+                   do_fill.eq(0),
+                   reg_r5_cmd[FUN_FILL_BIT].eq(1),
                    reg_status[WORK_IN_PROGRESS_BIT].eq(1),
                    local_reset.eq(0),
                    #timeout.eq(timeout_rst),
