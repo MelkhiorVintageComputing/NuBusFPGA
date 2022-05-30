@@ -35,6 +35,7 @@ import goblin_accel
 # Wishbone stuff
 from sbus_wb import WishboneDomainCrossingMaster
 from nubus_mem_wb import NuBus2Wishbone
+from nubus_memfifo_wb import NuBus2WishboneFIFO
 from nubus_cpu_wb import Wishbone2NuBus
 
 # CRG ----------------------------------------------------------------------------------------------
@@ -350,8 +351,10 @@ class NuBusFPGA(SoCCore):
         self.bus.add_master(name="NuBusBridgeToWishbone", master=wishbone_master_sys)
         
         self.submodules.nubus = nubus.NuBus(platform=platform, cd_nubus="nubus")
-        self.submodules.nubus2wishbone = ClockDomainsRenamer("nubus")(NuBus2Wishbone(nubus=self.nubus,wb=self.wishbone_master_nubus))
-
+        #self.submodules.nubus2wishbone = ClockDomainsRenamer("nubus")(NuBus2Wishbone(nubus=self.nubus,wb=self.wishbone_master_nubus))
+        nubus_writemaster_sys = wishbone.Interface(data_width=self.bus.data_width)
+        self.submodules.nubus2wishbone = NuBus2WishboneFIFO(platform=self.platform,nubus=self.nubus,wb_read=self.wishbone_master_nubus,wb_write=nubus_writemaster_sys)
+        self.bus.add_master(name="NuBusBridgeToWishboneWrite", master=nubus_writemaster_sys)
         wishbone_slave_nubus = wishbone.Interface(data_width=self.bus.data_width)
         self.submodules.wishbone2nubus = ClockDomainsRenamer("nubus")(Wishbone2NuBus(nubus=self.nubus,wb=wishbone_slave_nubus))
         self.submodules.wishbone_slave_sys = WishboneDomainCrossingMaster(platform=self.platform, slave=wishbone_slave_nubus, cd_master="sys", cd_slave="nubus")

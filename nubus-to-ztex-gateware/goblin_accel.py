@@ -114,8 +114,8 @@ class GoblinAccel(Module): # AutoCSR ?
             )
         ]
 
-        led0 = platform.request("user_led", 0)
-        self.comb += led0.eq(~local_reset)
+        #led0 = platform.request("user_led", 0)
+        #self.comb += led0.eq(~local_reset)
         
         self.ibus = ibus = wishbone.Interface()
         self.dbus = dbus = wishbone.Interface()
