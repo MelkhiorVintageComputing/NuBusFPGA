@@ -255,8 +255,8 @@ class NuBusFPGA(SoCCore):
             "goblin_accel" :     0xF0901000, # accel for goblin (regs)
             "goblin_accel_ram" : 0xF0902000, # accel for goblin (scratch ram)
             "goblin_accel_rom" : 0xF0910000, # accel for goblin (rom)
-            "csr" :              0xF0a00000, # CSR
-            "pingmaster":        0xF0b00000,
+            "csr" :              0xF0A00000, # CSR
+            "pingmaster":        0xF0B00000,
             "rom":               0xF0FF8000, # ROM at the end (32 KiB of it ATM)
             #"END OF SLOT SPACE": 0xF0FFFFFF,
         }
@@ -387,10 +387,10 @@ class NuBusFPGA(SoCCore):
                 self.add_ram("goblin_accel_ram", origin=self.mem_map["goblin_accel_ram"], size=2**12, mode="rw")
 
         # for testing
-        #from nubus_master_tst import PingMaster
-        #self.submodules.pingmaster = PingMaster()
-        #self.bus.add_slave("pingmaster_slv", self.pingmaster.bus_slv, SoCRegion(origin=self.mem_map.get("pingmaster", None), size=0x010, cached=False))
-        #self.bus.add_master(name="pingmaster_mst", master=self.pingmaster.bus_mst)
+        from nubus_master_tst import PingMaster
+        self.submodules.pingmaster = PingMaster(platform=self.platform)
+        self.bus.add_slave("pingmaster_slv", self.pingmaster.bus_slv, SoCRegion(origin=self.mem_map.get("pingmaster", None), size=0x010, cached=False))
+        self.bus.add_master(name="pingmaster_mst", master=self.pingmaster.bus_mst)
         
 def main():
     parser = argparse.ArgumentParser(description="SbusFPGA")

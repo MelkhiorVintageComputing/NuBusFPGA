@@ -59,10 +59,10 @@ class NuBus2WishboneFIFO(Module):
         self.comb += nubus.mem_error.eq(0) # FIXME: TODO: ???
         self.comb += nubus.mem_tryagain.eq(0) # FIXME: TODO: ???
 
-        led0 = platform.request("user_led", 0)
-        led1 = platform.request("user_led", 1)
-        self.comb += [ led0.eq(wb_read.ack),
-                       led1.eq(write_ack), ]
+        #led0 = platform.request("user_led", 0)
+        #led1 = platform.request("user_led", 1)
+        #self.comb += [ led0.eq(wb_read.ack),
+        #               led1.eq(write_ack), ]
 
         #self.submodules.write_fsm = write_fsm = FSM(reset_state = "Reset")
         #write_fsm.act("Reset",
