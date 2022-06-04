@@ -12,7 +12,7 @@ class GoblinAccel(Module): # AutoCSR ?
         # reg access
         self.bus = bus = wishbone.Interface()
         
-        self.COORD_BITS = COORD_BITS = 12 #
+        self.COORD_BITS = COORD_BITS = 16 # need enough bytes for 32-bits wat widest resolution
 
         reg_status = Signal(32) # 0
         reg_cmd = Signal(32) # 1

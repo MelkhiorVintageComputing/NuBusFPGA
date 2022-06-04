@@ -94,7 +94,7 @@ class NuBus(Module):
             ("data", 32),
             ("sel", 4),
         ]
-        self.submodules.write_fifo = write_fifo = ClockDomainsRenamer({"read": "sys", "write": "nubus"})(AsyncFIFOBuffered(width=layout_len(write_fifo_layout), depth=8))
+        self.submodules.write_fifo = write_fifo = ClockDomainsRenamer({"read": "sys", "write": "nubus"})(AsyncFIFOBuffered(width=layout_len(write_fifo_layout), depth=16))
         write_fifo_dout = Record(write_fifo_layout)
         self.comb += write_fifo_dout.raw_bits().eq(write_fifo.dout)
         write_fifo_din = Record(write_fifo_layout)
@@ -201,12 +201,17 @@ class NuBus(Module):
         #              )
         #)
         slave_fsm.act("NubusWriteDataToFIFO",
-                      write_fifo.we.eq(1),
                       tmo_oe.eq(1),
-                      tm0_o_n.eq(0),
-                      tm1_o_n.eq(0),
-                      ack_o_n.eq(0),
-                      NextState("Idle"),
+                      tm0_o_n.eq(1),
+                      tm1_o_n.eq(1),
+                      ack_o_n.eq(1),
+                      If(write_fifo.writable,
+                         write_fifo.we.eq(1),
+                         tm0_o_n.eq(0),
+                         tm1_o_n.eq(0),
+                         ack_o_n.eq(0),
+                         NextState("Idle"),
+                      )
         )
 
         # connect the write FIFO inputs

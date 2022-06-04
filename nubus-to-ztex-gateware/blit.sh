@@ -18,7 +18,7 @@ GCC=${GCCDIR}/bin/${GCCPFX}gcc
 OBJCOPY=${GCCDIR}/bin/${GCCPFX}objcopy
 
 OPT=-Os #-fno-inline
-ARCH=rv32i_zba_zbb_zbt
+ARCH=rv32im_zba_zbb_zbt
 
 PARAM="-DHRES=${HRES} -DVRES=${VRES} -DBASE_FB=${BASE_FB}"
 

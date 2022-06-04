@@ -22,9 +22,10 @@
 #define BASE_RAM 0xF0902000 // FIXME : should be generated : 4-64 KiB of Wishbone SRAM ? ; also in _start
 #define BASE_RAM_SIZE 0x00001000 // FIXME : should be generated : 4-64 KiB of Wishbone SRAM ? ; also in _start
 
+#define BASE_BT_REGS    0xF0900000
 #define BASE_ACCEL_REGS 0xF0901000
 
-#define mul_HRES(a) ((a) * HRES)
+#define mul_sHRES(a) ((a) * sHRES)
 
 //typedef void (*boot_t)(void);
 //typedef void (*start_t)(unsigned short, unsigned short, unsigned short, unsigned short, unsigned short, unsigned short, unsigned short, unsigned short);
@@ -48,6 +49,26 @@ struct control_blitter {
 #define FUN_FILL           (1<<FUN_FILL_BIT)
 #define FUN_TEST           (1<<FUN_TEST_BIT)
 #define FUN_DONE           (1<<FUN_DONE_BIT)
+
+struct goblin_bt_regs {
+	u_int32_t mode;
+	u_int32_t vbl_mask;
+	u_int32_t videoctrl;
+	u_int32_t intr_clear;
+	u_int32_t reset;
+	u_int32_t lut_addr;
+	u_int32_t lut;
+	u_int32_t debug;
+};
+
+enum goblin_bt_mode {
+					 mode_1bit =  0x00,
+					 mode_2bit =  0x01,
+					 mode_4bit =  0x02,
+					 mode_8bit =  0x03,
+					 mode_32bit = 0x10,
+					 mode_16bit = 0x11
+};
 
 struct goblin_accel_regs {
 	u_int32_t reg_status; // 0
@@ -77,45 +98,51 @@ static inline void flush_cache(void) {
 typedef unsigned int unsigned_param_type;
 
 static void rectfill(const unsigned_param_type xd,
-			  const unsigned_param_type yd,
-			  const unsigned_param_type wi,
-			  const unsigned_param_type re,
-			  const unsigned_param_type color
-			  );
+					 const unsigned_param_type yd,
+					 const unsigned_param_type wi,
+					 const unsigned_param_type re,
+					 const unsigned_param_type color,
+					 const unsigned_param_type sHRES
+					 );
 static void rectfill_pm(const unsigned_param_type xd,
-				 const unsigned_param_type yd,
-				 const unsigned_param_type wi,
-				 const unsigned_param_type re,
-				 const unsigned_param_type color,
-				 const unsigned char pm
-			  );
-static void xorrectfill(const unsigned_param_type xd,
-						const unsigned_param_type yd,
-						const unsigned_param_type wi,
-						const unsigned_param_type re,
-						const unsigned_param_type color
-						);
-static void xorrectfill_pm(const unsigned_param_type xd,
 						const unsigned_param_type yd,
 						const unsigned_param_type wi,
 						const unsigned_param_type re,
 						const unsigned_param_type color,
-						const unsigned char pm
+						const unsigned char pm,
+						const unsigned_param_type sHRES
+						);
+static void xorrectfill(const unsigned_param_type xd,
+						const unsigned_param_type yd,
+						const unsigned_param_type wi,
+						const unsigned_param_type re,
+						const unsigned_param_type color,
+						const unsigned_param_type sHRES
+						);
+static void xorrectfill_pm(const unsigned_param_type xd,
+						   const unsigned_param_type yd,
+						   const unsigned_param_type wi,
+						   const unsigned_param_type re,
+						   const unsigned_param_type color,
+						   const unsigned char pm,
+						   const unsigned_param_type sHRES
 						);
 static void invert(const unsigned_param_type xd,
-			const unsigned_param_type yd,
-			const unsigned_param_type wi,
-			const unsigned_param_type re
-			);
+				   const unsigned_param_type yd,
+				   const unsigned_param_type wi,
+				   const unsigned_param_type re,
+				   const unsigned_param_type sHRES
+				   );
 static void bitblit(const unsigned_param_type xs,
-			 const unsigned_param_type ys,
-			 const unsigned_param_type wi,
-			 const unsigned_param_type re,
-			 const unsigned_param_type xd,
-			 const unsigned_param_type yd,
-			 const unsigned char pm,
-			 const unsigned char gxop
-			 );
+					const unsigned_param_type ys,
+					const unsigned_param_type wi,
+					const unsigned_param_type re,
+					const unsigned_param_type xd,
+					const unsigned_param_type yd,
+					const unsigned char pm,
+					const unsigned char gxop,
+					const unsigned_param_type sHRES
+					);
 
 static void print_hexword(unsigned int v, unsigned int bx, unsigned int by);
 static void show_status_on_screen(void);
@@ -160,20 +187,32 @@ asm(".global _start\n"
 /* also need to figure out the non-coherent caches ... */
 void from_reset(void) {
 	struct goblin_accel_regs* fbc = (struct goblin_accel_regs*)BASE_ACCEL_REGS;
+	struct goblin_bt_regs* fbt = (struct goblin_bt_regs*)BASE_BT_REGS;
 	unsigned int cmd = fbc->reg_r5_cmd;
+	unsigned_param_type sHRES;
+	switch ((fbt->mode>>24) & 0xFF) { // mode is 8 bits wrong-endian (all fbt is wrong-endian)
+	case mode_32bit:
+		sHRES = HRES * 4;
+		break;
+	case mode_16bit:
+		sHRES = HRES * 2;
+		break;
+	default:
+		sHRES = HRES;
+		break;
+	}
 
-	// fixme; switching to & 0xFFFF will use zext.h, which isn't included in our Vex ATM
 	switch (cmd & 0xF) {
 	case FUN_BLIT: {
 		bitblit(fbc->reg_bitblt_src_x, fbc->reg_bitblt_src_y,
 				fbc->reg_width, fbc->reg_height,
 				fbc->reg_bitblt_dst_x, fbc->reg_bitblt_dst_y,
-				0xFF, 0x3); // GXcopy
+				0xFF, 0x3, sHRES); // GXcopy
 	} break;
 	case FUN_FILL: {
 		rectfill(fbc->reg_bitblt_dst_x, fbc->reg_bitblt_dst_y,
 				 fbc->reg_width, fbc->reg_height,
-				 fbc->reg_fgcolor);
+				 fbc->reg_fgcolor, sHRES);
 	} break;
 #if 1
 	case FUN_TEST: {
@@ -207,12 +246,13 @@ void from_reset(void) {
 
 #define bitblit_proto_int(a, b, suf)									\
 	static void bitblit##a##b##suf(const unsigned_param_type xs,		\
-							const unsigned_param_type ys,				\
-							const unsigned_param_type wi,				\
-							const unsigned_param_type re,				\
-							const unsigned_param_type xd,				\
-							const unsigned_param_type yd,				\
-							const unsigned char pm						\
+								   const unsigned_param_type ys,		\
+								   const unsigned_param_type wi,		\
+								   const unsigned_param_type re,		\
+								   const unsigned_param_type xd,		\
+								   const unsigned_param_type yd,		\
+								   const unsigned char pm,				\
+								   const unsigned_param_type sHRES			\
 							)
 #define bitblit_proto(suf)						\
 	bitblit_proto_int(_fwd, _fwd, suf);			\
@@ -226,18 +266,19 @@ bitblit_proto(_copy_pm);
 bitblit_proto(_xor_pm);
 
 
-#define ROUTE_BITBLIT_PM(pm, bb)					\
-	if (pm == 0xFF) bb(xs, ys, wi, re, xd, yd, pm); \
-	else bb##_pm(xs, ys, wi, re, xd, yd, pm)
+#define ROUTE_BITBLIT_PM(pm, bb)							\
+	if (pm == 0xFF) bb(xs, ys, wi, re, xd, yd, pm, sHRES);	\
+	else bb##_pm(xs, ys, wi, re, xd, yd, pm, sHRES)
 
 static void bitblit(const unsigned_param_type xs,
-			 const unsigned_param_type ys,
-			 const unsigned_param_type wi,
-			 const unsigned_param_type re,
-			 const unsigned_param_type xd,
-			 const unsigned_param_type yd,
-			 const unsigned char pm,
-			 const unsigned char gxop
+					const unsigned_param_type ys,
+					const unsigned_param_type wi,
+					const unsigned_param_type re,
+					const unsigned_param_type xd,
+					const unsigned_param_type yd,
+					const unsigned char pm,
+					const unsigned char gxop,
+					const unsigned_param_type sHRES
 			 ) {
 	struct goblin_accel_regs* fbc = (struct goblin_accel_regs*)BASE_ACCEL_REGS;
 	
@@ -284,7 +325,7 @@ static void bitblit(const unsigned_param_type xs,
 				/* don't bother */
 				break;
 			case 0x6:  // GXxor
-				rectfill_pm(xd, yd, wi, re, 0, pm);
+				rectfill_pm(xd, yd, wi, re, 0, pm, sHRES);
 				break;
 			}
 		}
@@ -293,14 +334,15 @@ static void bitblit(const unsigned_param_type xs,
 
 
 static void rectfill(const unsigned_param_type xd,
-			  const unsigned_param_type yd,
-			  const unsigned_param_type wi,
-			  const unsigned_param_type re,
-			  const unsigned_param_type color
+					 const unsigned_param_type yd,
+					 const unsigned_param_type wi,
+					 const unsigned_param_type re,
+					 const unsigned_param_type color,
+					 const unsigned_param_type sHRES
 			  ) {
 	struct goblin_accel_regs* fbc = (struct goblin_accel_regs*)BASE_ACCEL_REGS;
 	unsigned int i, j;
-	unsigned char *dptr = (((unsigned char *)BASE_FB) + mul_HRES(yd) + xd);
+	unsigned char *dptr = (((unsigned char *)BASE_FB) + mul_sHRES(yd) + xd);
 	unsigned char *dptr_line = dptr;
 	unsigned char u8color = color & 0xFF;
 
@@ -322,20 +364,21 @@ static void rectfill(const unsigned_param_type xd,
 			*dptr_elt = u8color;
 			dptr_elt ++;
 		}
-		dptr_line += HRES;
+		dptr_line += sHRES;
 	}
 }
 
 static void rectfill_pm(const unsigned_param_type xd,
-				 const unsigned_param_type yd,
-				 const unsigned_param_type wi,
-				 const unsigned_param_type re,
-				 const unsigned_param_type color,
-				 const unsigned char pm
+						const unsigned_param_type yd,
+						const unsigned_param_type wi,
+						const unsigned_param_type re,
+						const unsigned_param_type color,
+						const unsigned char pm,
+						const unsigned_param_type sHRES
 			  ) {
 	struct goblin_accel_regs* fbc = (struct goblin_accel_regs*)BASE_ACCEL_REGS;
 	unsigned int i, j;
-	unsigned char *dptr = (((unsigned char *)BASE_FB) + mul_HRES(yd) + xd);
+	unsigned char *dptr = (((unsigned char *)BASE_FB) + mul_sHRES(yd) + xd);
 	unsigned char *dptr_line = dptr;
 	unsigned char u8color = color;
 
@@ -358,20 +401,21 @@ static void rectfill_pm(const unsigned_param_type xd,
 			*dptr_elt = (u8color & pm) | (*dptr_elt & ~pm);
 			dptr_elt ++;
 		}
-		dptr_line += HRES;
+		dptr_line += sHRES;
 	}
 }
 
 
 static void xorrectfill(const unsigned_param_type xd,
-			  const unsigned_param_type yd,
-			  const unsigned_param_type wi,
-			  const unsigned_param_type re,
-			  const unsigned_param_type color
+						const unsigned_param_type yd,
+						const unsigned_param_type wi,
+						const unsigned_param_type re,
+						const unsigned_param_type color,
+						const unsigned_param_type sHRES
 			  ) {
 	struct goblin_accel_regs* fbc = (struct goblin_accel_regs*)BASE_ACCEL_REGS;
 	unsigned int i, j;
-	unsigned char *dptr = (((unsigned char *)BASE_FB) + mul_HRES(yd) + xd);
+	unsigned char *dptr = (((unsigned char *)BASE_FB) + mul_sHRES(yd) + xd);
 	unsigned char *dptr_line = dptr;
 	unsigned char u8color = color & 0xFF;
 
@@ -393,19 +437,20 @@ static void xorrectfill(const unsigned_param_type xd,
 			*dptr_elt ^= u8color;
 			dptr_elt ++;
 		}
-		dptr_line += HRES;
+		dptr_line += sHRES;
 	}
 }
 static void xorrectfill_pm(const unsigned_param_type xd,
-				 const unsigned_param_type yd,
-				 const unsigned_param_type wi,
-				 const unsigned_param_type re,
-				 const unsigned_param_type color,
-				 const unsigned char pm
+						   const unsigned_param_type yd,
+						   const unsigned_param_type wi,
+						   const unsigned_param_type re,
+						   const unsigned_param_type color,
+						   const unsigned char pm,
+						   const unsigned_param_type sHRES
 			  ) {
 	struct goblin_accel_regs* fbc = (struct goblin_accel_regs*)BASE_ACCEL_REGS;
 	unsigned int i, j;
-	unsigned char *dptr = (((unsigned char *)BASE_FB) + mul_HRES(yd) + xd);
+	unsigned char *dptr = (((unsigned char *)BASE_FB) + mul_sHRES(yd) + xd);
 	unsigned char *dptr_line = dptr;
 	unsigned char u8color = color;
 
@@ -428,18 +473,19 @@ static void xorrectfill_pm(const unsigned_param_type xd,
 			*dptr_elt ^= (u8color & pm);
 			dptr_elt ++;
 		}
-		dptr_line += HRES;
+		dptr_line += sHRES;
 	}
 }
 
 static void invert(const unsigned_param_type xd,
-			const unsigned_param_type yd,
-			const unsigned_param_type wi,
-			const unsigned_param_type re
-			) {
+				   const unsigned_param_type yd,
+				   const unsigned_param_type wi,
+				   const unsigned_param_type re,
+				   const unsigned_param_type sHRES
+				   ) {
 	struct goblin_accel_regs* fbc = (struct goblin_accel_regs*)BASE_ACCEL_REGS;
 	unsigned int i, j;
-	unsigned char *dptr = (((unsigned char *)BASE_FB) + mul_HRES(yd) + xd);
+	unsigned char *dptr = (((unsigned char *)BASE_FB) + mul_sHRES(yd) + xd);
 	unsigned char *dptr_line = dptr;
 	
 	for (j = 0 ; j < re ; j++) {
@@ -459,7 +505,7 @@ static void invert(const unsigned_param_type xd,
 			*dptr_elt = ~(*dptr_elt);
 			dptr_elt ++;
 		}
-		dptr_line += HRES;
+		dptr_line += sHRES;
 	}
 }
 
@@ -479,10 +525,11 @@ static void invert(const unsigned_param_type xd,
 									   const unsigned_param_type re,	\
 									   const unsigned_param_type xd,	\
 									   const unsigned_param_type yd,	\
-									   const unsigned char pm) {		\
+									   const unsigned char pm,			\
+									   const unsigned_param_type sHRES) {		\
 	unsigned int i, j;													\
-	unsigned char *sptr = (((unsigned char *)BASE_FB) + mul_HRES(ys) + xs); \
-	unsigned char *dptr = (((unsigned char *)BASE_FB) + mul_HRES(yd) + xd); \
+	unsigned char *sptr = (((unsigned char *)BASE_FB) + mul_sHRES(ys) + xs); \
+	unsigned char *dptr = (((unsigned char *)BASE_FB) + mul_sHRES(yd) + xd); \
 	unsigned char *sptr_line = sptr;									\
 	unsigned char *dptr_line = dptr;									\
 	/*const unsigned char npm = ~pm;*/									\
@@ -537,8 +584,8 @@ static void invert(const unsigned_param_type xd,
 			dptr_elt ++;												\
 			sptr_elt ++;												\
 		}																\
-		sptr_line += HRES;												\
-		dptr_line += HRES;												\
+		sptr_line += sHRES;												\
+		dptr_line += sHRES;												\
 	}																	\
 	}
 
@@ -549,10 +596,11 @@ static void invert(const unsigned_param_type xd,
 									   const unsigned_param_type re,	\
 									   const unsigned_param_type xd,	\
 									   const unsigned_param_type yd,	\
-									   const unsigned char pm) {		\
+									   const unsigned char pm,			\
+									   const unsigned_param_type sHRES) {		\
 		unsigned int i, j;												\
-		unsigned char *sptr = (((unsigned char *)BASE_FB) + mul_HRES(ys) + xs); \
-		unsigned char *dptr = (((unsigned char *)BASE_FB) + mul_HRES(yd) + xd); \
+		unsigned char *sptr = (((unsigned char *)BASE_FB) + mul_sHRES(ys) + xs); \
+		unsigned char *dptr = (((unsigned char *)BASE_FB) + mul_sHRES(yd) + xd); \
 		unsigned char *sptr_line = sptr + wi - 1;						\
 		unsigned char *dptr_line = dptr + wi - 1;						\
 		const unsigned char npm = ~pm;									\
@@ -565,8 +613,8 @@ static void invert(const unsigned_param_type xd,
 				dptr_elt --;											\
 				sptr_elt --;											\
 			}															\
-			sptr_line += HRES;											\
-			dptr_line += HRES;											\
+			sptr_line += sHRES;											\
+			dptr_line += sHRES;											\
 		}																\
 	}
 
@@ -577,12 +625,13 @@ static void invert(const unsigned_param_type xd,
 									   const unsigned_param_type re,	\
 									   const unsigned_param_type xd,	\
 									   const unsigned_param_type yd,	\
-									   const unsigned char pm) {		\
+									   const unsigned char pm,			\
+									   const unsigned_param_type sHRES) {		\
 	unsigned int i, j;													\
-	unsigned char *sptr = (((unsigned char *)BASE_FB) + mul_HRES(ys) + xs); \
-	unsigned char *dptr = (((unsigned char *)BASE_FB) + mul_HRES(yd) + xd); \
-	unsigned char *sptr_line = sptr + mul_HRES(re-1);					\
-	unsigned char *dptr_line = dptr + mul_HRES(re-1);					\
+	unsigned char *sptr = (((unsigned char *)BASE_FB) + mul_sHRES(ys) + xs); \
+	unsigned char *dptr = (((unsigned char *)BASE_FB) + mul_sHRES(yd) + xd); \
+	unsigned char *sptr_line = sptr + mul_sHRES(re-1);					\
+	unsigned char *dptr_line = dptr + mul_sHRES(re-1);					\
 	const unsigned char npm = ~pm;										\
 																		\
 	for (j = 0 ; j < re ; j++) {										\
@@ -639,8 +688,8 @@ static void invert(const unsigned_param_type xd,
 			dptr_elt ++;												\
 			sptr_elt ++;												\
 		}																\
-		sptr_line -= HRES;												\
-		dptr_line -= HRES;												\
+		sptr_line -= sHRES;												\
+		dptr_line -= sHRES;												\
 	}																	\
 	}
 
@@ -655,69 +704,4 @@ BLIT_ALLDIR(copy, COPY)
 BLIT_ALLDIR(xor, XOR)
 BLIT_ALLDIR(copy_pm, COPY_PM)
 BLIT_ALLDIR(xor_pm, XOR_PM)
-
-#if 0
-		else if ((xd & 0xf) == 0) {
-			unsigned int fsr_cst = xs & 0x3;
-			unsigned char* sptr_elt_al = sptr_elt - fsr_cst;
-			unsigned int src0 = ((unsigned int*)sptr_elt_al)[0];
-			for ( ; i < (wi&(~0xf)) ; i+= 16) {
-				unsigned int src1, val;
-
-				src1 = ((unsigned int*)sptr_elt_al)[1];
-				val = _rv32_fsr(src0, src1, fsr_cst);
-				((unsigned int*)dptr_elt)[0] = val;
-				src0 = src1;
-
-				src1 = ((unsigned int*)sptr_elt_al)[2];
-				val = _rv32_fsr(src0, src1, fsr_cst);
-				((unsigned int*)dptr_elt)[1] = val;
-				src0 = src1;
-
-				src1 = ((unsigned int*)sptr_elt_al)[3];
-				val = _rv32_fsr(src0, src1, fsr_cst);
-				((unsigned int*)dptr_elt)[2] = val;
-				src0 = src1;
-
-				src1 = ((unsigned int*)sptr_elt_al)[4];
-				val = _rv32_fsr(src0, src1, fsr_cst);
-				((unsigned int*)dptr_elt)[3] = val;
-				src0 = src1;
 	
-				dptr_elt += 16;
-				sptr_elt_al += 16;
-			}
-      
-		}
-#endif
-
-#if 0
-static void bitblit_bwd_bwd_copy(const unsigned_param_type xs,
-						  const unsigned_param_type ys,
-						  const unsigned_param_type wi,
-						  const unsigned_param_type re,
-						  const unsigned_param_type xd,
-						  const unsigned_param_type yd,
-						  const unsigned char pm
-						  ) {
-	unsigned int i, j;
-	unsigned char *sptr = (((unsigned char *)BASE_FB) + mul_HRES(ys) + xs);
-	unsigned char *dptr = (((unsigned char *)BASE_FB) + mul_HRES(yd) + xd);
-	unsigned char *sptr_line = sptr + mul_HRES(re-1);
-	unsigned char *dptr_line = dptr + mul_HRES(re-1);
-
-	// flush_cache(); // handled in boot()
-  
-	for (j = 0 ; j < re ; j++) {
-		unsigned char *sptr_elt = sptr_line + wi - 1;
-		unsigned char *dptr_elt = dptr_line + wi - 1;
-		for (i = 0 ; i < wi ; i++) {
-			*dptr_elt = *sptr_elt;
-			dptr_elt --;
-			sptr_elt --;
-		}
-		sptr_line -= HRES;
-		dptr_line -= HRES;
-	}
-}
-#endif

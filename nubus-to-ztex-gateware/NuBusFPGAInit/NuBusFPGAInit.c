@@ -28,38 +28,6 @@ void* fb_base;
 void* bt_base;
 void* accel_base;
 
-#if 0
-pascal void myStdBits(BitMap *srcBits, Rect *srcRect, Rect *dstRect, short mode, RgnHandle maskRgn){
-	long	oldA4;
-	volatile unsigned long * const debug_ptr = (unsigned long*)0xFC90001c;
-	*debug_ptr = 0xC0FFEE00;
-	
-	oldA4 = SetCurrentA4();
-	RememberA4();
-	
-	oldStdBits(srcBits, srcRect, dstRect, mode, maskRgn);
-	
-	SetA4(oldA4);
-}
-
-pascal void myBitBltX(BitMap *srcBits, BitMap *maskBits, BitMap *dstBits, Rect *srcRect, Rect *maskRect, Rect *dstRect, short mode, Pattern *pat, RgnHandle rgnA, RgnHandle rgnB, RgnHandle rgnC, short multColor){
-	register BitBltProc loldBitBlt;
-	register long oldA4;
-	volatile unsigned long * const debug_ptr = (unsigned long*)0xFC90001c;
-	*debug_ptr = 0xC0FFEE00;
-	
-	oldA4 = SetCurrentA4();
-	RememberA4();
-	
-	//oldBitBlt(srcBits, maskBits, dstBits, srcRect, maskRect, dstRect, mode, pat, rgnA, rgnB, rgnC, multColor);
-	loldBitBlt = oldBitBlt;
-	
-	SetA4(oldA4);
-	
-	loldBitBlt(srcBits, maskBits, dstBits, srcRect, maskRect, dstRect, mode, pat, rgnA, rgnB, rgnC, multColor);
-}
-#endif
-
 static inline unsigned long brev(const unsigned long r) {
 	return (((r&0xFF000000)>>24) | ((r&0xFF0000)>>8) | ((r&0xFF00)<<8) | ((r&0xFF)<<24));
 }
@@ -442,6 +410,7 @@ int hwblit(char* stack, char* p_fb_base, /* short dstshift, */ short mode, Patte
 #endif
 		return 0;
 	}
+	
 	if (srcpix->baseAddr != p_fb_base) { // we're not source
 #ifdef QEMU
 		bt->debug = -5L;
@@ -449,14 +418,6 @@ int hwblit(char* stack, char* p_fb_base, /* short dstshift, */ short mode, Patte
 #endif
 		return 0;
 	}
-	
-#if 0
-	if ((qdstack->MINRECT.top == 0x0) & (qdstack->MINRECT.bottom == 0x14) &
-	    (qdstack->MINRECT.left == 0x5c9) & (qdstack->MINRECT.right == 0x5f6)) { // ignore that one until later
-		//*debug_ptr = -5L;
-		return 0;
-	}
-#endif
 	
 	{	
 		Rect realrect, srcv, dstv;
@@ -525,18 +486,18 @@ int hwblit(char* stack, char* p_fb_base, /* short dstshift, */ short mode, Patte
 #else
 		WAIT_FOR_HW_LE(accel_le);
 		
-		accel_le->reg_width = (width);
+		accel_le->reg_width = (width << dstshift); // bytes
 		accel_le->reg_height = (height);
-		accel_le->reg_bitblt_dst_x = (dstv.left << dstshift);
+		accel_le->reg_bitblt_dst_x = (dstv.left << dstshift); // bytes
 		accel_le->reg_bitblt_dst_y = (dstv.top);
 		
 		if (mode == 0) {
-			accel_le->reg_bitblt_src_x = (srcv.left << dstshift);
+			accel_le->reg_bitblt_src_x = (srcv.left << dstshift); // bytes
 			accel_le->reg_bitblt_src_y = (srcv.top);
-			accel_le->reg_cmd = (1<<DO_BLIT_BIT);	
+			accel_le->reg_cmd = (1<<DO_BLIT_BIT);
 		} else if (mode == 8) {
 			accel_le->reg_fgcolor = (qdstack->EXPAT[0]);
-			accel_le->reg_cmd = (1<<DO_FILL_BIT);	
+			accel_le->reg_cmd = (1<<DO_FILL_BIT);
 		}
 		
 		WAIT_FOR_HW_LE(accel_le);
@@ -597,18 +558,11 @@ pascal asm void myBitBlt(BitMap *srcBits, BitMap *maskBits, BitMap *dstBits, Rec
 		finish:
 	rts
 		}
-//616 610
-#if 0
-CQDProcs customCProcs;
-#endif
 
 void main(void)
 {
 	long	oldA4;
 
-#if 0
-	GrafPtr currPort;
-#endif
 	Handle h;
 	struct goblin_bt_regs* bt;
 	 
@@ -634,31 +588,13 @@ void main(void)
 	} else {
 		DebugStr("\pargh");
 	}
-	
-#if 0
-	GetPort(&currPort);
-	if (currPort->portBits.rowBytes < 0) /* color port */ {
-		SetStdCProcs(&customCProcs);
-		customCProcs.bitsProc = myStdBits;
-		currPort->grafProcs = (QDProcs*)&customCProcs;
-		*debug_ptr = 0;
-	} else {
-		*debug_ptr = 0xF00FF00F;
-	}
-#endif
-
-#if 0
-	oldStdBits = (StdBitsProc)GetToolTrapAddress(_StdBits);
-	*debug_ptr = (unsigned long)oldStdBits;
-	SetToolTrapAddress((UniversalProcPtr)myStdBits, _StdBits);
-#endif
 
 	oldBitBlt = (BitBltProc)GetToolTrapAddress(_BitBlt);
 	//*debug_ptr = (unsigned long)oldBitBlt;
 	SetToolTrapAddress((UniversalProcPtr)myBitBlt, _BitBlt);
 	
 	/* restore the a4 world */
-		SetA4(oldA4);
-		//	*debug_ptr = 0xBEEFDEAD;
+	SetA4(oldA4);
+	//	*debug_ptr = 0xBEEFDEAD;
 }
 

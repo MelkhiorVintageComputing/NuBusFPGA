@@ -1,0 +1,13 @@
+*.log
+*.orig
+*.rej
+*.BAK
+*.jou
+csr.csv
+csr.json
+blit
+blit.o
+blit.raw
+blit.s
+*.patch
+OLD
