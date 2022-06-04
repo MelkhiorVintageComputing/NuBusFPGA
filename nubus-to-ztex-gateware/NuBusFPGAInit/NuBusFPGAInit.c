@@ -67,6 +67,9 @@ static inline unsigned long brev(const unsigned long r) {
 #define WAIT_FOR_HW(accel)						\
 	while (accel->reg_status & brev(1<<WORK_IN_PROGRESS_BIT))
 
+#define WAIT_FOR_HW_LE(accel_le)						\
+	while (accel_le->reg_status & (1<<WORK_IN_PROGRESS_BIT))
+
 #define uint8_t unsigned char
 #define uint16_t unsigned short
 #define uint32_t unsigned long
@@ -378,7 +381,7 @@ struct qdstuff {
 
 int hwblit(char* stack, char* p_fb_base, /* short dstshift, */ short mode, Pattern* pat, PixMapPtr dstpix, PixMapPtr srcpix, Rect *dstrect, Rect *srcrect) {
 	struct goblin_bt_regs* bt = (struct goblin_bt_regs*)(p_fb_base + GOBLIN_BT_OFFSET);
-	struct goblin_accel_regs* accel = (struct goblin_accel_regs*)(p_fb_base + GOBLIN_ACCEL_OFFSET);
+	struct goblin_accel_regs* accel_le = (struct goblin_accel_regs*)(p_fb_base + GOBLIN_ACCEL_OFFSET_LE);
 	struct qdstuff* qdstack = (struct qdstuff*)(stack - sizeof(struct qdstuff));
 	short height = qdstack->MINRECT.bottom - qdstack->MINRECT.top;
 	short dstshift = qdstack->DSTSHIFT;
@@ -520,23 +523,23 @@ int hwblit(char* stack, char* p_fb_base, /* short dstshift, */ short mode, Patte
 		
 			return 0;
 #else
-		WAIT_FOR_HW(accel);
+		WAIT_FOR_HW_LE(accel_le);
 		
-		accel->reg_width = brev(width);
-		accel->reg_height = brev(height);
-		accel->reg_bitblt_dst_x = brev(dstv.left << dstshift);
-		accel->reg_bitblt_dst_y = brev(dstv.top);
+		accel_le->reg_width = (width);
+		accel_le->reg_height = (height);
+		accel_le->reg_bitblt_dst_x = (dstv.left << dstshift);
+		accel_le->reg_bitblt_dst_y = (dstv.top);
 		
 		if (mode == 0) {
-			accel->reg_bitblt_src_x = brev(srcv.left << dstshift);
-			accel->reg_bitblt_src_y = brev(srcv.top);
-			accel->reg_cmd = brev(1<<DO_BLIT_BIT);	
+			accel_le->reg_bitblt_src_x = (srcv.left << dstshift);
+			accel_le->reg_bitblt_src_y = (srcv.top);
+			accel_le->reg_cmd = (1<<DO_BLIT_BIT);	
 		} else if (mode == 8) {
-			accel->reg_fgcolor = qdstack->EXPAT[0];
-			accel->reg_cmd = brev(1<<DO_FILL_BIT);	
+			accel_le->reg_fgcolor = (qdstack->EXPAT[0]);
+			accel_le->reg_cmd = (1<<DO_FILL_BIT);	
 		}
 		
-		WAIT_FOR_HW(accel);
+		WAIT_FOR_HW_LE(accel_le);
 		
 		return 1;
 #endif

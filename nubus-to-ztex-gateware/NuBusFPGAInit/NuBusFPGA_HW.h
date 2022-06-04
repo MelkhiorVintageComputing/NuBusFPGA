@@ -3,8 +3,9 @@
 
 #define GOBLIN_FB_BASE 0xFC000000 // FIXME !!!!
 
-#define GOBLIN_BT_OFFSET    0x00900000
-#define GOBLIN_ACCEL_OFFSET 0x00901000
+#define GOBLIN_BT_OFFSET       0x00900000
+#define GOBLIN_ACCEL_OFFSET    0x00901000
+#define GOBLIN_ACCEL_OFFSET_LE 0x00901800
 
 #define u_int32_t volatile unsigned long 
 
@@ -14,6 +15,7 @@
 // cmd
 #define DO_BLIT_BIT            0 // hardwired in goblin_accel.py
 #define DO_FILL_BIT            1 // hardwired in goblin_accel.py
+#define DO_TEST_BIT            3 // hardwired in goblin_accel.py
 
 
 #define FUN_DONE_BIT           31
@@ -30,19 +32,20 @@ struct goblin_bt_regs {
 };
 
 struct goblin_accel_regs {
-	u_int32_t reg_status;
+	u_int32_t reg_status; // 0
 	u_int32_t reg_cmd;
 	u_int32_t reg_r5_cmd;
 	u_int32_t resv0;
-	u_int32_t reg_width;
+	u_int32_t reg_width; // 4
 	u_int32_t reg_height;
 	u_int32_t reg_fgcolor;
 	u_int32_t resv2;
-	u_int32_t reg_bitblt_src_x;
+	u_int32_t reg_bitblt_src_x; // 8
 	u_int32_t reg_bitblt_src_y;
 	u_int32_t reg_bitblt_dst_x;
 	u_int32_t reg_bitblt_dst_y;
-	
+	u_int32_t reg_chk_adr; // 12
+	u_int32_t reg_chk_val;
 };
 
 

@@ -42,52 +42,72 @@ class GoblinAccel(Module): # AutoCSR ?
         # global status register reg_status
         WORK_IN_PROGRESS_BIT = 0
 
+        # replicate all registers in both endianess
+        # we want to avoid byte-reversal on either the host or the Vex
+        bus_dat_w_endian = Signal(32)
+        bus_dat_r_endian = Signal(32)
+        self.comb += [
+            If(bus.adr[9], # 9 on bus is 11 for host
+               bus_dat_w_endian[24:32].eq(bus.dat_w[ 0: 8]),
+               bus_dat_w_endian[16:24].eq(bus.dat_w[ 8:16]),
+               bus_dat_w_endian[ 8:16].eq(bus.dat_w[16:24]),
+               bus_dat_w_endian[ 0: 8].eq(bus.dat_w[24:32]),
+               bus.dat_r[24:32].eq(bus_dat_r_endian[ 0: 8]),
+               bus.dat_r[16:24].eq(bus_dat_r_endian[ 8:16]),
+               bus.dat_r[ 8:16].eq(bus_dat_r_endian[16:24]),
+               bus.dat_r[ 0: 8].eq(bus_dat_r_endian[24:32]),
+            ).Else(
+                bus_dat_w_endian.eq(bus.dat_w),
+                bus.dat_r.eq(bus_dat_r_endian),
+            )
+        ]
+
         self.submodules.wishbone_fsm = wishbone_fsm = FSM(reset_state = "Reset")
         wishbone_fsm.act("Reset",
                          NextValue(bus.ack, 0),
                          NextState("Idle"))
         wishbone_fsm.act("Idle",
                          If(bus.cyc & bus.stb & bus.we & ~bus.ack, #write
-                            Case(bus.adr[0:10], { #
+                            Case(bus.adr[0:9], { # bit 9 is used for endianess, so not there
                                 "default": [ ],
                                 # 0: reg_status R/O
-                                0: [ NextValue(reg_status, bus.dat_w) ], # debug, remove me
-                                1: [ NextValue(reg_cmd, bus.dat_w),
-                                     NextValue(do_blit, bus.dat_w[DO_BLIT_BIT] & ~reg_status[WORK_IN_PROGRESS_BIT]),
-                                     NextValue(do_fill, bus.dat_w[DO_FILL_BIT] & ~reg_status[WORK_IN_PROGRESS_BIT]),
-                                     NextValue(do_test, bus.dat_w[DO_TEST_BIT] & ~reg_status[WORK_IN_PROGRESS_BIT]),
+                                0:  [ NextValue(reg_status, bus_dat_w_endian) ], # debug, remove me
+                                1:  [ NextValue(reg_cmd, bus_dat_w_endian),
+                                      NextValue(do_blit, bus_dat_w_endian[DO_BLIT_BIT] & ~reg_status[WORK_IN_PROGRESS_BIT]),
+                                      NextValue(do_fill, bus_dat_w_endian[DO_FILL_BIT] & ~reg_status[WORK_IN_PROGRESS_BIT]),
+                                      NextValue(do_test, bus_dat_w_endian[DO_TEST_BIT] & ~reg_status[WORK_IN_PROGRESS_BIT]),
                                 ],
-                                2: [ NextValue(reg_r5_cmd, bus.dat_w) ],
+                                2:  [ NextValue(reg_r5_cmd, bus_dat_w_endian) ],
                                 # 3
-                                4: [ NextValue(reg_width, bus.dat_w) ],
-                                5: [ NextValue(reg_height, bus.dat_w) ],
-                                6: [ NextValue(reg_fgcolor, bus.dat_w) ],
+                                4:  [ NextValue(reg_width, bus_dat_w_endian) ],
+                                5:  [ NextValue(reg_height, bus_dat_w_endian) ],
+                                6:  [ NextValue(reg_fgcolor, bus_dat_w_endian) ],
                                 # 7
-                                8: [ NextValue(reg_bitblt_src_x, bus.dat_w) ],
-                                9: [ NextValue(reg_bitblt_src_y, bus.dat_w) ],
-                                10: [ NextValue(reg_bitblt_dst_x, bus.dat_w) ],
-                                11: [ NextValue(reg_bitblt_dst_y, bus.dat_w) ],
-                                12: [ NextValue(reg_chk_adr, bus.dat_w) ],
-                                13: [ NextValue(reg_chk_val, bus.dat_w) ],
+                                8:  [ NextValue(reg_bitblt_src_x, bus_dat_w_endian) ],
+                                9:  [ NextValue(reg_bitblt_src_y, bus_dat_w_endian) ],
+                                10: [ NextValue(reg_bitblt_dst_x, bus_dat_w_endian) ],
+                                11: [ NextValue(reg_bitblt_dst_y, bus_dat_w_endian) ],
+                                12: [ NextValue(reg_chk_adr, bus_dat_w_endian) ],
+                                13: [ NextValue(reg_chk_val, bus_dat_w_endian) ],
                             }),
                             NextValue(bus.ack, 1),
                             ).Elif(bus.cyc & bus.stb & ~bus.we & ~bus.ack, #read
-                                   Case(bus.adr[0:10], {
-                                       "default": [ NextValue(bus.dat_r, 0xDEADBEEF) ],
-                                       0: [ NextValue(bus.dat_r, reg_status) ],
-                                       1: [ NextValue(bus.dat_r, reg_cmd) ],
-                                       2: [ NextValue(bus.dat_r, reg_r5_cmd) ],
+                                   Case(bus.adr[0:9], { # bit 9 is used for endianess, so not there
+                                       "default": [ NextValue(bus_dat_r_endian, 0xDEADBEEF) ],
+                                       0:  [ NextValue(bus_dat_r_endian, reg_status) ],
+                                       1:  [ NextValue(bus_dat_r_endian, reg_cmd) ],
+                                       2:  [ NextValue(bus_dat_r_endian, reg_r5_cmd) ],
                                        # 3
-                                       4: [ NextValue(bus.dat_r, reg_width) ],
-                                       5: [ NextValue(bus.dat_r, reg_height) ],
-                                       6: [ NextValue(bus.dat_r, reg_fgcolor) ],
+                                       4:  [ NextValue(bus_dat_r_endian, reg_width) ],
+                                       5:  [ NextValue(bus_dat_r_endian, reg_height) ],
+                                       6:  [ NextValue(bus_dat_r_endian, reg_fgcolor) ],
                                        # 7
-                                       8: [ NextValue(bus.dat_r, reg_bitblt_src_x) ],
-                                       9: [ NextValue(bus.dat_r, reg_bitblt_src_y) ],
-                                       10: [ NextValue(bus.dat_r, reg_bitblt_dst_x) ],
-                                       11: [ NextValue(bus.dat_r, reg_bitblt_dst_y) ],
-                                       12: [ NextValue(bus.dat_r, reg_chk_adr) ],
-                                       13: [ NextValue(bus.dat_r, reg_chk_val) ],
+                                       8:  [ NextValue(bus_dat_r_endian, reg_bitblt_src_x) ],
+                                       9:  [ NextValue(bus_dat_r_endian, reg_bitblt_src_y) ],
+                                       10: [ NextValue(bus_dat_r_endian, reg_bitblt_dst_x) ],
+                                       11: [ NextValue(bus_dat_r_endian, reg_bitblt_dst_y) ],
+                                       12: [ NextValue(bus_dat_r_endian, reg_chk_adr) ],
+                                       13: [ NextValue(bus_dat_r_endian, reg_chk_val) ],
                                    }),
                                    NextValue(bus.ack, 1),
                             ).Else(
