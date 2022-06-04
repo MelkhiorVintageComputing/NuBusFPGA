@@ -54,7 +54,7 @@ module nubus
     // output 		  nub_nmrqn, // Non-Master Request, handled in the Litex code
 
 	/* those are used but connected only to the CPLD */
-	/* we deal with the CPLD via 'arbcy_n' and 'grant'
+	/* we deal with the CPLD via 'arbcy_n' and 'grant' */
     // inout [ 3:0]  nub_arbn, // Arbitration
 	
 	 /* *** CPLD <-> FPGA signals, not in NuBus */
@@ -275,7 +275,7 @@ module nubus
    // ==========================================================================
 
    assign cpu_rdata = ~nub_adn;
-   assign cpu_ready = ~nub_ackn & nub_startn;
+   assign cpu_ready = ~nub_ackn & nub_startn & ~mst_ownern; // if mst_ownern is inactive (high), then we're seeing the ACK from the previous slave transaction that we were waiting on
 
    nubus_cpubus UCPUBus
      (

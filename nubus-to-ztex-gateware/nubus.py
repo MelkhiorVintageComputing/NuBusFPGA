@@ -109,6 +109,7 @@ class NuBus(Module):
 
     def add_sources(self, platform):
         platform.add_source("nubus.v", "verilog")
+        # XiBus is from my github, branch 'more_fixes'
         platform.add_source("/home/dolbeau/XiBus/nubus.svh", "verilog")
         #platform.add_source("/home/dolbeau/XiBus/nubus_arbiter.v", "verilog") # in the CPLD
         platform.add_source("/home/dolbeau/XiBus/nubus_cpubus.v", "verilog")

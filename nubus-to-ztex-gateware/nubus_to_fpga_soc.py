@@ -17,6 +17,7 @@ import ztex213_nubus
 import nubus_to_fpga_export
 
 import nubus
+import nubus_full
 
 from litedram.modules import MT41J128M16
 from litedram.phy import s7ddrphy
@@ -39,56 +40,6 @@ from nubus_memfifo_wb import NuBus2WishboneFIFO
 from nubus_cpu_wb import Wishbone2NuBus
 
 # CRG ----------------------------------------------------------------------------------------------
-class _CRG_MINI_SIM(Module):
-    def __init__(self, platform, sys_clk_freq,
-                 goblin=False,
-                 hdmi=False,
-                 pix_clk=0):
-        self.clock_domains.cd_sys       = ClockDomain()
-        self.clock_domains.cd_native    = ClockDomain(reset_less=True) # 48MHz native, non-reset'ed (for power-on long delay, never reset, we don't want the delay after a warm reset)
-        self.clock_domains.cd_nubus      = ClockDomain() # 10 MHz NuBus, reset'ed by NuBus, native NuBus clock domain (25% duty cycle)
-        self.clock_domains.cd_nubus90    = ClockDomain() # 20 MHz NuBus90, reset'ed by NuBus, native NuBus90 clock domain (25% duty cycle)
-
-        # # #
-        clk48 = platform.request("clk48")
-        ###### explanations from betrusted-io/betrusted-soc/betrusted_soc.py
-        # Note: below feature cannot be used because Litex appends this *after* platform commands! This causes the generated
-        # clock derived constraints immediately below to fail, because .xdc file is parsed in-order, and the main clock needs
-        # to be created before the derived clocks. Instead, we use the line afterwards.
-        platform.add_platform_command("create_clock -name clk48 -period 20.8333 [get_nets clk48]")
-        # The above constraint must strictly proceed the below create_generated_clock constraints in the .XDC file
-        # This allows PLLs/MMCMEs to be placed anywhere and reference the input clock
-        self.clk48_bufg = Signal()
-        self.specials += Instance("BUFG", i_I=clk48, o_O=self.clk48_bufg)
-        self.comb += self.cd_native.clk.eq(self.clk48_bufg)                
-        #self.cd_native.clk = clk48
-        
-        clk_nubus = platform.request("clk_3v3_n")
-        if (clk_nubus is None):
-            print(" ***** ERROR ***** Can't find the NuBus Clock !!!!\n");
-            assert(false)
-        self.cd_nubus.clk = clk_nubus
-        rst_nubus_n = platform.request("reset_3v3_n")
-        self.comb += self.cd_nubus.rst.eq(~rst_nubus_n)
-        platform.add_platform_command("create_clock -name nubus_clk -period 100.0 -waveform {{0.0 75.0}} [get_ports clk_3v3_n]")
-        
-        clk2x_nubus = platform.request("clk2x_3v3_n")
-        if (clk2x_nubus is None):
-            print(" ***** ERROR ***** Can't find the NuBus90 Clock !!!!\n");
-            assert(false)
-        self.cd_nubus90.clk = clk2x_nubus
-        self.comb += self.cd_nubus90.rst.eq(~rst_nubus_n)
-        platform.add_platform_command("create_clock -name nubus90_clk -period 50.0  -waveform {{0.0 37.5}} [get_ports clk2x_3v3_n]")
-
-        num_adv = 0
-        num_clk = 0
-
-        #platform.add_platform_command("create_clock -name sysclk -period 20.8333 [get_nets clk48]")
-        #self.sys_bufg = Signal()
-        #self.specials += Instance("BUFG", i_I=clk48, o_O=self.sys_bufg)
-        #self.comb += self.cd_native.clk.eq(self.sys_bufg)
-
-            
 class _CRG(Module):
     def __init__(self, platform, sys_clk_freq,
                  goblin=False,
@@ -311,10 +262,11 @@ class NuBusFPGA(SoCCore):
             avail_sdram = 256 * 1024 * 1024
             self.add_ram("ram", origin=0x8f800000, size=2**16, mode="rw")
 
-        #self.submodules.leds = ClockDomainsRenamer("nubus")(LedChaser(
-        #    pads         = platform.request_all("user_led"),
-        #    sys_clk_freq = 10e6))
-        #self.add_csr("leds")
+        if (not notsimul): # otherwise we have no CSRs and litex doesn't like that
+            self.submodules.leds = ClockDomainsRenamer("nubus")(LedChaser(
+                pads         = platform.request_all("user_led"),
+                sys_clk_freq = 10e6))
+            self.add_csr("leds")
 
         base_fb = self.wb_mem_map["main_ram"] + avail_sdram - 1048576 # placeholder
         if (goblin):
@@ -346,20 +298,36 @@ class NuBusFPGA(SoCCore):
         # Interface NuBus to wishbone
         # we need to cross clock domains
         
-        wishbone_master_sys = wishbone.Interface(data_width=self.bus.data_width)
-        self.submodules.wishbone_master_nubus = WishboneDomainCrossingMaster(platform=self.platform, slave=wishbone_master_sys, cd_master="nubus", cd_slave="sys")
-        self.bus.add_master(name="NuBusBridgeToWishbone", master=wishbone_master_sys)
-        
-        self.submodules.nubus = nubus.NuBus(platform=platform, cd_nubus="nubus")
-        #self.submodules.nubus2wishbone = ClockDomainsRenamer("nubus")(NuBus2Wishbone(nubus=self.nubus,wb=self.wishbone_master_nubus))
-        nubus_writemaster_sys = wishbone.Interface(data_width=self.bus.data_width)
-        self.submodules.nubus2wishbone = NuBus2WishboneFIFO(platform=self.platform,nubus=self.nubus,wb_read=self.wishbone_master_nubus,wb_write=nubus_writemaster_sys)
-        self.bus.add_master(name="NuBusBridgeToWishboneWrite", master=nubus_writemaster_sys)
-        wishbone_slave_nubus = wishbone.Interface(data_width=self.bus.data_width)
-        self.submodules.wishbone2nubus = ClockDomainsRenamer("nubus")(Wishbone2NuBus(nubus=self.nubus,wb=wishbone_slave_nubus))
-        self.submodules.wishbone_slave_sys = WishboneDomainCrossingMaster(platform=self.platform, slave=wishbone_slave_nubus, cd_master="sys", cd_slave="nubus")
-        self.bus.add_slave("DMA", self.wishbone_slave_sys, SoCRegion(origin=self.mem_map.get("master", None), size=0x40000000, cached=False))
-
+        xibus=0
+        if (xibus):
+            wishbone_master_sys = wishbone.Interface(data_width=self.bus.data_width)
+            self.submodules.wishbone_master_nubus = WishboneDomainCrossingMaster(platform=self.platform, slave=wishbone_master_sys, cd_master="nubus", cd_slave="sys")
+            self.bus.add_master(name="NuBusBridgeToWishbone", master=wishbone_master_sys)
+            self.submodules.nubus = nubus.NuBus(platform=platform, cd_nubus="nubus")
+            #self.submodules.nubus2wishbone = ClockDomainsRenamer("nubus")(NuBus2Wishbone(nubus=self.nubus,wb=self.wishbone_master_nubus))
+            nubus_writemaster_sys = wishbone.Interface(data_width=self.bus.data_width)
+            self.submodules.nubus2wishbone = NuBus2WishboneFIFO(platform=self.platform,nubus=self.nubus,wb_read=self.wishbone_master_nubus,wb_write=nubus_writemaster_sys)
+            self.bus.add_master(name="NuBusBridgeToWishboneWrite", master=nubus_writemaster_sys)
+            
+            wishbone_slave_nubus = wishbone.Interface(data_width=self.bus.data_width)
+            self.submodules.wishbone2nubus = ClockDomainsRenamer("nubus")(Wishbone2NuBus(nubus=self.nubus,wb=wishbone_slave_nubus))
+            self.submodules.wishbone_slave_sys = WishboneDomainCrossingMaster(platform=self.platform, slave=wishbone_slave_nubus, cd_master="sys", cd_slave="nubus")
+            self.bus.add_slave("DMA", self.wishbone_slave_sys, SoCRegion(origin=self.mem_map.get("master", None), size=0x40000000, cached=False))
+        else:
+            wishbone_master_sys = wishbone.Interface(data_width=self.bus.data_width)
+            self.submodules.wishbone_master_nubus = WishboneDomainCrossingMaster(platform=self.platform, slave=wishbone_master_sys, cd_master="nubus", cd_slave="sys")
+            nubus_writemaster_sys = wishbone.Interface(data_width=self.bus.data_width)
+            wishbone_slave_nubus = wishbone.Interface(data_width=self.bus.data_width)
+            self.submodules.wishbone_slave_sys = WishboneDomainCrossingMaster(platform=self.platform, slave=wishbone_slave_nubus, cd_master="sys", cd_slave="nubus")
+            self.submodules.nubus = nubus_full.NuBus(platform=platform,
+                                                     wb_read=self.wishbone_master_nubus,
+                                                     wb_write=nubus_writemaster_sys,
+                                                     wb_dma=wishbone_slave_nubus,
+                                                     cd_nubus="nubus")
+            self.bus.add_master(name="NuBusBridgeToWishbone", master=wishbone_master_sys)
+            self.bus.add_slave("DMA", self.wishbone_slave_sys, SoCRegion(origin=self.mem_map.get("master", None), size=0x40000000, cached=False))
+            self.bus.add_master(name="NuBusBridgeToWishboneWrite", master=nubus_writemaster_sys)
+            
         if (goblin):
             if (not hdmi):
                 self.submodules.videophy = VideoVGAPHY(platform.request("vga"), clock_domain="vga")
@@ -387,10 +355,11 @@ class NuBusFPGA(SoCCore):
                 self.add_ram("goblin_accel_ram", origin=self.mem_map["goblin_accel_ram"], size=2**12, mode="rw")
 
         # for testing
-        from nubus_master_tst import PingMaster
-        self.submodules.pingmaster = PingMaster(platform=self.platform)
-        self.bus.add_slave("pingmaster_slv", self.pingmaster.bus_slv, SoCRegion(origin=self.mem_map.get("pingmaster", None), size=0x010, cached=False))
-        self.bus.add_master(name="pingmaster_mst", master=self.pingmaster.bus_mst)
+        if (True):
+            from nubus_master_tst import PingMaster
+            self.submodules.pingmaster = PingMaster(nubus=self.nubus, platform=self.platform)
+            self.bus.add_slave("pingmaster_slv", self.pingmaster.bus_slv, SoCRegion(origin=self.mem_map.get("pingmaster", None), size=0x010, cached=False))
+            self.bus.add_master(name="pingmaster_mst", master=self.pingmaster.bus_mst)
         
 def main():
     parser = argparse.ArgumentParser(description="SbusFPGA")

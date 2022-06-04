@@ -42,25 +42,28 @@ struct control_blitter {
 
 #define FUN_BLIT_BIT            0 // hardwired in goblin_accel.py
 #define FUN_FILL_BIT            1 // hardwired in goblin_accel.py
+#define FUN_TEST_BIT            3 // hardwired in goblin_accel.py
 #define FUN_DONE_BIT           31
 #define FUN_BLIT           (1<<FUN_BLIT_BIT)
 #define FUN_FILL           (1<<FUN_FILL_BIT)
+#define FUN_TEST           (1<<FUN_TEST_BIT)
 #define FUN_DONE           (1<<FUN_DONE_BIT)
 
 struct goblin_accel_regs {
-	u_int32_t reg_status;
+	u_int32_t reg_status; // 0
 	u_int32_t reg_cmd;
 	u_int32_t reg_r5_cmd;
 	u_int32_t resv0;
-	u_int32_t reg_width;
+	u_int32_t reg_width; // 4
 	u_int32_t reg_height;
 	u_int32_t reg_fgcolor;
 	u_int32_t resv2;
-	u_int32_t reg_bitblt_src_x;
+	u_int32_t reg_bitblt_src_x; // 8
 	u_int32_t reg_bitblt_src_y;
 	u_int32_t reg_bitblt_dst_x;
 	u_int32_t reg_bitblt_dst_y;
-	
+	u_int32_t reg_chk_adr; // 12
+	u_int32_t reg_chk_val; // 13
 };
 
 //#include "./rvintrin.h"
@@ -159,6 +162,7 @@ void from_reset(void) {
 	struct goblin_accel_regs* fbc = (struct goblin_accel_regs*)BASE_ACCEL_REGS;
 	unsigned int cmd = fbc->reg_r5_cmd;
 
+	// fixme; switching to & 0xFFFF will use zext.h, which isn't included in our Vex ATM
 	switch (cmd & 0xF) {
 	case FUN_BLIT: {
 		bitblit(fbc->reg_bitblt_src_x, fbc->reg_bitblt_src_y,
@@ -171,6 +175,20 @@ void from_reset(void) {
 				 fbc->reg_width, fbc->reg_height,
 				 fbc->reg_fgcolor);
 	} break;
+#if 1
+	case FUN_TEST: {
+		u_int32_t val = fbc->reg_chk_val;
+		u_int32_t* ptr = (u_int32_t*)fbc->reg_chk_adr;
+		u_int32_t pval = (*ptr);
+		fbc->reg_chk_val = (val ^ pval);
+		if (pval == 0x01234567)
+			fbc->reg_chk_adr = 1;
+		else if (pval == 0x67452301)
+			fbc->reg_chk_adr = 0;
+		else
+			fbc->reg_chk_adr = -1;
+	} break;
+#endif
 	default:
 		break;
 	}
@@ -180,7 +198,7 @@ void from_reset(void) {
 	// make sure we have nothing left in the cache
 	flush_cache();
 
-	fbc->reg_r5_cmd = 0xFFFFFFFF; //FUN_DONE;
+	fbc->reg_r5_cmd = FUN_DONE;
 
  done:
 	/* wait for reset */

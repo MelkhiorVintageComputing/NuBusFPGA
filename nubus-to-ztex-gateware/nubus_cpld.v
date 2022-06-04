@@ -12,7 +12,7 @@ module nubus_cpld
    input  clk2x_n_5v, // clk from NuBus90
 
    // Spares
-   input  fpga_to_cpld_clk, // unused (extra line from FPGA to CPLD, pin is a clk input)
+   input  fpga_to_cpld_clk, // rqstoen (extra line from FPGA to CPLD, pin is a clk input)
    input  fpga_to_cpld_signal, // unused (extra line from FPGA to CPLD)
    inout  fpga_to_cpld_signal_2, // unused (extra line from FPGA to CPLD)
 
@@ -82,7 +82,8 @@ module nubus_cpld
    // rqst_o_n is always driven (the 74lvt125 wired as open collector will convert 1 to Z) and is active low
    assign rqst_o_n   = nubus_oe ?   1 : (~fpga_to_cpld_signal ? rqst_n_3v3 :  1); // master out
    assign rqst_n_3v3 = nubus_oe ? 'bZ : ( fpga_to_cpld_signal ? rqst_n_5v : 'bZ); // master in
-	
+   //assign rqst_n_3v3 = rqst_n_5v; // master in, always on
+   
    //assign ack_o_5v   = nubus_oe ? 'bZ : ((nubus_master_dir ^ ~tmoen) ? ack_n_3v3 : 'bZ); // slave out/in
    assign ack_o_n    = nubus_oe ?   1 : (( ~tmoen) ? ack_n_3v3 : 1); // slave out/in
    assign ack_oe_n   = nubus_oe ?   1 : (( ~tmoen) ? 0 : 1); // slave out/in

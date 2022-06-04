@@ -223,6 +223,7 @@ module nubus_slave_tb ();
    reg [31:0]  tst_addrn;
    reg [31:0]  tst_wdatan;
    reg [31:0]  tst_rdatan;
+   reg         tst_rqstn;
 
    reg 		   mastermode_start;
    reg 		   mastermode_tmack;
@@ -231,6 +232,7 @@ module nubus_slave_tb ();
    assign nub_clk2xn   = tst_clk2xn;
    assign bd_clk48     = tst_clk48;
    assign nub_resetn   = tst_resetn;
+   assign nub_rqstn    = tst_rqstn;
    // Drive NuBus signals
    assign nub_startn   =                mastermode_start  ? 'bZ: tst_startn;   
    assign nub_tm0n     = (tst_startn & ~mastermode_tmack) ? 'bZ : tst_tmn[0];
@@ -257,6 +259,7 @@ module nubus_slave_tb ();
 
       tst_clkn   <= 1;
       tst_resetn <= 0;
+      tst_rqstn  <= 'bz;
       tst_addrn  <= 'hFFFFFFFF;
       tst_wdatan <= 'hFFFFFFFF;
       tst_rdatan <= 'hFFFFFFFF;
@@ -327,6 +330,7 @@ module nubus_slave_tb ();
       write_word(TMADN_WR_WORD,   PING_ADDR+0, 'h00C0FFEE);
 	  read_word (TMADN_RD_WORD,   PING_ADDR+0);
       write_word(TMADN_WR_WORD,   PING_ADDR+4, 'h00096240);
+      //read_word (TMADN_RD_WORD,   ROM_ADDR+0);
 
 	  mastermode_start <= 1;
 	  mastermode_tmack <= 0;
@@ -351,7 +355,6 @@ module nubus_slave_tb ();
 	  @ (posedge nub_clkn);
 	  mastermode_start <= 0;
 	  mastermode_tmack <= 0;
-
 	  
 	  #2000;
 	  

@@ -26,14 +26,18 @@ class GoblinAccel(Module): # AutoCSR ?
         reg_bitblt_src_y = Signal(COORD_BITS) # 9
         reg_bitblt_dst_x = Signal(COORD_BITS) # 10
         reg_bitblt_dst_y = Signal(COORD_BITS) # 11
+        reg_chk_adr = Signal(32) # 12
+        reg_chk_val = Signal(32) # 13
         
         # do-some-work flags
         do_blit = Signal()
         do_fill = Signal()
+        do_test = Signal()
 
         # cmd register reg_cmd
         DO_BLIT_BIT = 0
         DO_FILL_BIT = 1
+        DO_TEST_BIT = 3
         
         # global status register reg_status
         WORK_IN_PROGRESS_BIT = 0
@@ -51,6 +55,7 @@ class GoblinAccel(Module): # AutoCSR ?
                                 1: [ NextValue(reg_cmd, bus.dat_w),
                                      NextValue(do_blit, bus.dat_w[DO_BLIT_BIT] & ~reg_status[WORK_IN_PROGRESS_BIT]),
                                      NextValue(do_fill, bus.dat_w[DO_FILL_BIT] & ~reg_status[WORK_IN_PROGRESS_BIT]),
+                                     NextValue(do_test, bus.dat_w[DO_TEST_BIT] & ~reg_status[WORK_IN_PROGRESS_BIT]),
                                 ],
                                 2: [ NextValue(reg_r5_cmd, bus.dat_w) ],
                                 # 3
@@ -62,6 +67,8 @@ class GoblinAccel(Module): # AutoCSR ?
                                 9: [ NextValue(reg_bitblt_src_y, bus.dat_w) ],
                                 10: [ NextValue(reg_bitblt_dst_x, bus.dat_w) ],
                                 11: [ NextValue(reg_bitblt_dst_y, bus.dat_w) ],
+                                12: [ NextValue(reg_chk_adr, bus.dat_w) ],
+                                13: [ NextValue(reg_chk_val, bus.dat_w) ],
                             }),
                             NextValue(bus.ack, 1),
                             ).Elif(bus.cyc & bus.stb & ~bus.we & ~bus.ack, #read
@@ -79,6 +86,8 @@ class GoblinAccel(Module): # AutoCSR ?
                                        9: [ NextValue(bus.dat_r, reg_bitblt_src_y) ],
                                        10: [ NextValue(bus.dat_r, reg_bitblt_dst_x) ],
                                        11: [ NextValue(bus.dat_r, reg_bitblt_dst_y) ],
+                                       12: [ NextValue(bus.dat_r, reg_chk_adr) ],
+                                       13: [ NextValue(bus.dat_r, reg_chk_val) ],
                                    }),
                                    NextValue(bus.ack, 1),
                             ).Else(
@@ -90,6 +99,7 @@ class GoblinAccel(Module): # AutoCSR ?
         FUN_DONE_BIT = 31
         FUN_BLIT_BIT = 0
         FUN_FILL_BIT = 1
+        FUN_TEST_BIT = 3
         # to hold the Vex in reset
         local_reset = Signal(reset = 1)
 
@@ -108,6 +118,12 @@ class GoblinAccel(Module): # AutoCSR ?
             ).Elif(do_fill & ~reg_status[WORK_IN_PROGRESS_BIT],
                    do_fill.eq(0),
                    reg_r5_cmd[FUN_FILL_BIT].eq(1),
+                   reg_status[WORK_IN_PROGRESS_BIT].eq(1),
+                   local_reset.eq(0),
+                   #timeout.eq(timeout_rst),
+            ).Elif(do_test & ~reg_status[WORK_IN_PROGRESS_BIT],
+                   do_test.eq(0),
+                   reg_r5_cmd[FUN_TEST_BIT].eq(1),
                    reg_status[WORK_IN_PROGRESS_BIT].eq(1),
                    local_reset.eq(0),
                    #timeout.eq(timeout_rst),
