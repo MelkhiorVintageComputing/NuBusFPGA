@@ -18,6 +18,7 @@ import nubus_to_fpga_export
 
 import nubus
 import nubus_full
+import nubus_stat
 
 from litedram.modules import MT41J128M16
 from litedram.phy import s7ddrphy
@@ -205,6 +206,7 @@ class NuBusFPGA(SoCCore):
             "goblin_bt" :        0xF0900000, # BT for goblin (regs)
             "goblin_accel" :     0xF0901000, # accel for goblin (regs)
             "goblin_accel_ram" : 0xF0902000, # accel for goblin (scratch ram)
+            "stat"             : 0xF0903000, # stat
             "goblin_accel_rom" : 0xF0910000, # accel for goblin (rom)
             "csr" :              0xF0A00000, # CSR
             "pingmaster":        0xF0B00000,
@@ -327,6 +329,10 @@ class NuBusFPGA(SoCCore):
             self.bus.add_master(name="NuBusBridgeToWishbone", master=wishbone_master_sys)
             self.bus.add_slave("DMA", self.wishbone_slave_sys, SoCRegion(origin=self.mem_map.get("master", None), size=0x40000000, cached=False))
             self.bus.add_master(name="NuBusBridgeToWishboneWrite", master=nubus_writemaster_sys)
+
+            self.submodules.stat = nubus_stat.NuBusStat(nubus=self.nubus, platform=platform)
+            self.bus.add_slave("Stat", self.stat.bus_slv, SoCRegion(origin=self.mem_map.get("stat", None), size=0x1000, cached=False))
+                                                        
             
         if (goblin):
             if (not hdmi):

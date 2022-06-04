@@ -68,7 +68,7 @@ class PingMaster(Module):
         writer_fsm.act("Reset",
                        NextState("Idle"),)
         writer_fsm.act("Idle",
-                       If(do_write, # & ~nubus.slave_in_use,
+                       If(do_write,
                           NextValue(do_write, 0),
                           bus_mst.cyc.eq(1),
                           bus_mst.stb.eq(1),

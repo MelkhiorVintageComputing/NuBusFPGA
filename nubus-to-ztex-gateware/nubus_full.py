@@ -121,6 +121,9 @@ class NuBus(Module):
                                   o_block = decoded_block,
                                   o_busy = decoded_busy,
         )
+        
+        self.read_ctr = read_ctr = Signal(32)
+        self.writ_ctr = writ_ctr = Signal(32)
 
         self.submodules.slave_fsm = slave_fsm = ClockDomainsRenamer(cd_nubus)(FSM(reset_state="Reset"))
         slave_fsm.act("Reset",
@@ -135,6 +138,7 @@ class NuBus(Module):
                          #NextValue(current_block, decoded_block),
                          #If(decoded_block,
                          #   NextValue(decoded_block_memory, 1),),
+                         NextValue(read_ctr, read_ctr + 1),
                          NextState("WaitWBRead"),
                       ).Elif(decoded_myslot & sampled_start & ~sampled_ack & sampled_tm1,# & ~decoded_block, # regular write
                              NextValue(current_adr, processed_ad),
@@ -145,6 +149,7 @@ class NuBus(Module):
                              #If(decoded_block,
                              #   NextValue(decoded_block_memory, 1),),
                              #NextState("GetNubusWriteData"),
+                             NextValue(writ_ctr, writ_ctr + 1),
                              NextState("NubusWriteDataToFIFO"),
                       )
         )
