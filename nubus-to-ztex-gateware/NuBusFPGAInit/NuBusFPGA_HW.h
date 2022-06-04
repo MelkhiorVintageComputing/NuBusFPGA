@@ -44,8 +44,10 @@ struct goblin_accel_regs {
 	u_int32_t reg_bitblt_src_y;
 	u_int32_t reg_bitblt_dst_x;
 	u_int32_t reg_bitblt_dst_y;
-	u_int32_t reg_chk_adr; // 12
-	u_int32_t reg_chk_val;
+	u_int32_t reg_src_stride; // 12
+	u_int32_t reg_dst_stride;
+	u_int32_t reg_src_ptr; // 12
+	u_int32_t reg_dst_ptr;
 };
 
 

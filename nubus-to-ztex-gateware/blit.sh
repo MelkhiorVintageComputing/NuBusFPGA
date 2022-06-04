@@ -1,8 +1,6 @@
 #!/bin/bash -x
 
-HRES=${1:-1920}
-VRES=${2:-1080}
-BASE_FB=${3:-0x8F800000}
+BASE_FB=${1:-0x8F800000}
 
 GCCDIR=~/LITEX/riscv64-unknown-elf-gcc-10.1.0-2020.08.2-x86_64-linux-ubuntu14
 GCCPFX=riscv64-unknown-elf-
@@ -20,7 +18,7 @@ OBJCOPY=${GCCDIR}/bin/${GCCPFX}objcopy
 OPT=-Os #-fno-inline
 ARCH=rv32im_zba_zbb_zbt
 
-PARAM="-DHRES=${HRES} -DVRES=${VRES} -DBASE_FB=${BASE_FB}"
+PARAM="-DBASE_FB=${BASE_FB}"
 
 if test "x$1" != "xASM"; then
 	$GCC $OPT -S -o blit.s $PARAM -march=$ARCH -mabi=ilp32 -mstrict-align -fno-builtin-memset -nostdlib -ffreestanding -nostartfiles blit.c

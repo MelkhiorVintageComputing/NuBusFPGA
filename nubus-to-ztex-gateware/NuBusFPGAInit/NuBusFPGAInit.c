@@ -10,7 +10,7 @@
 
 #define _BitBlt 0xAB00
 
-//#define QEMU
+// #define QEMU
 
 
 //extern pascal void CopyBits(const BitMap *srcBits, const BitMap *dstBits, const Rect *srcRect, const Rect *dstRect, short mode, RgnHandle maskRgn) ONEWORDINLINE(0xA8EC);
@@ -353,6 +353,7 @@ int hwblit(char* stack, char* p_fb_base, /* short dstshift, */ short mode, Patte
 	struct qdstuff* qdstack = (struct qdstuff*)(stack - sizeof(struct qdstuff));
 	short height = qdstack->MINRECT.bottom - qdstack->MINRECT.top;
 	short dstshift = qdstack->DSTSHIFT;
+	short srcshift = qdstack->SRCSHIFT;
 	
  	if ((mode != 0) && (mode != 8)) { // only copy handled for now
 #ifdef QEMU
@@ -374,6 +375,7 @@ int hwblit(char* stack, char* p_fb_base, /* short dstshift, */ short mode, Patte
 #endif
 		return 0;
 	}
+	
 	if (mode == 8) {
 		register int i;
 		register unsigned long expat0 = qdstack->EXPAT[0];
@@ -388,9 +390,13 @@ int hwblit(char* stack, char* p_fb_base, /* short dstshift, */ short mode, Patte
 		for (i = 1 ; i < 16 ; i++)
 			if (expat0 != qdstack->EXPAT[i]) {
 				bt->debug = -7L;
+				bt->debug = i;
+				bt->debug = expat0;
+				bt->debug = qdstack->EXPAT[i];
 				return 0;
 			}
 	}
+	
  	if (dstshift < 3) { // only 8/16/32 bits for now
 #ifdef QEMU
 		bt->debug = -3L;
@@ -399,6 +405,24 @@ int hwblit(char* stack, char* p_fb_base, /* short dstshift, */ short mode, Patte
  		return 0;
 	}
 	dstshift -= 3;
+	
+ 	if (srcshift < 3) { // only 8/16/32 bits for now
+#ifdef QEMU
+		bt->debug = -8L;
+		bt->debug = srcshift;
+#endif
+ 		return 0;
+	}
+	srcshift -= 3;
+	
+	if (srcshift != dstshift) {
+		bt->debug = -9L;
+		bt->debug = srcshift;
+		bt->debug = dstshift;
+		return 0;
+	}
+	
+	
  	if (height < 0) { // no height
  		return 0;
 	}
@@ -411,7 +435,9 @@ int hwblit(char* stack, char* p_fb_base, /* short dstshift, */ short mode, Patte
 		return 0;
 	}
 	
-	if (srcpix->baseAddr != p_fb_base) { // we're not source
+	if ((srcpix->baseAddr != p_fb_base)
+	    //  && ((unsigned long)srcpix->baseAddr >= 0x40000000) // and neither is main memory
+	   ){ 
 #ifdef QEMU
 		bt->debug = -5L;
 		bt->debug = (unsigned long)srcpix->baseAddr;
@@ -470,6 +496,10 @@ int hwblit(char* stack, char* p_fb_base, /* short dstshift, */ short mode, Patte
 		}
 #endif
 		bt->debug = -1L; 
+		
+		bt->debug = srcpix->rowBytes;
+		bt->debug = dstpix->rowBytes;
+		
 		bt->debug = srcv.top;
 		bt->debug = srcv.left;
 		
@@ -486,14 +516,24 @@ int hwblit(char* stack, char* p_fb_base, /* short dstshift, */ short mode, Patte
 #else
 		WAIT_FOR_HW_LE(accel_le);
 		
-		accel_le->reg_width = (width << dstshift); // bytes
+		accel_le->reg_width = (width); // pixels
 		accel_le->reg_height = (height);
-		accel_le->reg_bitblt_dst_x = (dstv.left << dstshift); // bytes
+		accel_le->reg_bitblt_dst_x = (dstv.left); // pixels
 		accel_le->reg_bitblt_dst_y = (dstv.top);
+		if (dstpix->baseAddr != p_fb_base)
+			accel_le->reg_dst_ptr = (unsigned long)(dstpix->baseAddr);
+		else
+			accel_le->reg_dst_ptr = 0; // let the HW pick its internal address
+		accel_le->reg_dst_stride = (dstpix->rowBytes); // bytes // we should strip the high-order bit, but the HW ignore that for us anyway
 		
 		if (mode == 0) {
-			accel_le->reg_bitblt_src_x = (srcv.left << dstshift); // bytes
+			accel_le->reg_bitblt_src_x = (srcv.left); // pixels
 			accel_le->reg_bitblt_src_y = (srcv.top);
+			if (srcpix->baseAddr != p_fb_base)
+				accel_le->reg_src_ptr = (unsigned long)(srcpix->baseAddr);
+			else
+				accel_le->reg_src_ptr = 0; // let the HW pick its internal address
+			accel_le->reg_src_stride = (srcpix->rowBytes); // bytes // we should strip the high-order bit, but the HW ignore that for us anyway
 			accel_le->reg_cmd = (1<<DO_BLIT_BIT);
 		} else if (mode == 8) {
 			accel_le->reg_fgcolor = (qdstack->EXPAT[0]);

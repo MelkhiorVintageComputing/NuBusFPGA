@@ -12,7 +12,7 @@ class GoblinAccel(Module): # AutoCSR ?
         # reg access
         self.bus = bus = wishbone.Interface()
         
-        self.COORD_BITS = COORD_BITS = 16 # need enough bytes for 32-bits wat widest resolution
+        self.COORD_BITS = COORD_BITS = 14 # need enough bytes for 32-bits depth and widest resolution ; should be <= 15 otherwise the INIT code will need to strip the upper bit from some parameters
 
         reg_status = Signal(32) # 0
         reg_cmd = Signal(32) # 1
@@ -26,8 +26,10 @@ class GoblinAccel(Module): # AutoCSR ?
         reg_bitblt_src_y = Signal(COORD_BITS) # 9
         reg_bitblt_dst_x = Signal(COORD_BITS) # 10
         reg_bitblt_dst_y = Signal(COORD_BITS) # 11
-        reg_chk_adr = Signal(32) # 12
-        reg_chk_val = Signal(32) # 13
+        reg_src_stride = Signal(COORD_BITS) # 12
+        reg_dst_stride = Signal(COORD_BITS) # 13
+        reg_src_ptr = Signal(32) # 14
+        reg_dst_ptr = Signal(32) # 15
         
         # do-some-work flags
         do_blit = Signal()
@@ -87,8 +89,10 @@ class GoblinAccel(Module): # AutoCSR ?
                                 9:  [ NextValue(reg_bitblt_src_y, bus_dat_w_endian) ],
                                 10: [ NextValue(reg_bitblt_dst_x, bus_dat_w_endian) ],
                                 11: [ NextValue(reg_bitblt_dst_y, bus_dat_w_endian) ],
-                                12: [ NextValue(reg_chk_adr, bus_dat_w_endian) ],
-                                13: [ NextValue(reg_chk_val, bus_dat_w_endian) ],
+                                12: [ NextValue(reg_src_stride, bus_dat_w_endian) ],
+                                13: [ NextValue(reg_dst_stride, bus_dat_w_endian) ],
+                                14: [ NextValue(reg_src_ptr, bus_dat_w_endian) ],
+                                15: [ NextValue(reg_dst_ptr, bus_dat_w_endian) ],
                             }),
                             NextValue(bus.ack, 1),
                             ).Elif(bus.cyc & bus.stb & ~bus.we & ~bus.ack, #read
@@ -106,8 +110,10 @@ class GoblinAccel(Module): # AutoCSR ?
                                        9:  [ NextValue(bus_dat_r_endian, reg_bitblt_src_y) ],
                                        10: [ NextValue(bus_dat_r_endian, reg_bitblt_dst_x) ],
                                        11: [ NextValue(bus_dat_r_endian, reg_bitblt_dst_y) ],
-                                       12: [ NextValue(bus_dat_r_endian, reg_chk_adr) ],
-                                       13: [ NextValue(bus_dat_r_endian, reg_chk_val) ],
+                                       12: [ NextValue(bus_dat_r_endian, reg_src_stride) ],
+                                       13: [ NextValue(bus_dat_r_endian, reg_dst_stride) ],
+                                       14: [ NextValue(bus_dat_r_endian, reg_src_ptr) ],
+                                       15: [ NextValue(bus_dat_r_endian, reg_dst_ptr) ],
                                    }),
                                    NextValue(bus.ack, 1),
                             ).Else(
