@@ -320,7 +320,7 @@ class NuBusFPGA(SoCCore):
             self.submodules.wishbone_master_nubus = WishboneDomainCrossingMaster(platform=self.platform, slave=wishbone_master_sys, cd_master="nubus", cd_slave="sys")
             nubus_writemaster_sys = wishbone.Interface(data_width=self.bus.data_width)
             wishbone_slave_nubus = wishbone.Interface(data_width=self.bus.data_width)
-            self.submodules.wishbone_slave_sys = WishboneDomainCrossingMaster(platform=self.platform, slave=wishbone_slave_nubus, cd_master="sys", cd_slave="nubus")
+            self.submodules.wishbone_slave_sys = WishboneDomainCrossingMaster(platform=self.platform, slave=wishbone_slave_nubus, cd_master="sys", cd_slave="nubus", force_delay=6) # force delay needed to avoid back-to-back transaction running into issue https://github.com/alexforencich/verilog-wishbone/issues/4
             self.submodules.nubus = nubus_full.NuBus(platform=platform,
                                                      wb_read=self.wishbone_master_nubus,
                                                      wb_write=nubus_writemaster_sys,
