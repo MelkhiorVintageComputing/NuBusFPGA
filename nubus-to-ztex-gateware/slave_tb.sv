@@ -487,19 +487,19 @@ module nubus_slave_tb ();
    
    always begin
       tst_clkn <= 1;
-      #75;
+      #75.075;
       tst_clkn <= 0;
       if (DEBUG_NUBUS_START) begin
          if (~nub_startn) 
             $display ("%g  (NuBus Start) /ad: $%h {/tmadn}: %b%b%b%b", $time, nub_adn, nub_tm1n, nub_tm0n, nub_adn[1], nub_adn[0]);
       end
-      #25;
+      #25.025;
    end
    always begin
       tst_clk2xn <= 0;
-      #25;
+      #25.025;
       tst_clk2xn <= 1;
-      #25;
+      #25.025;
    end
 
    always begin

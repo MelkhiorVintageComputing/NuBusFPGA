@@ -18,6 +18,7 @@ import nubus_to_fpga_export
 
 import nubus
 import nubus_full
+import nubus_full_sampling
 import nubus_stat
 
 from litedram.modules import MT41J128M16
@@ -317,15 +318,14 @@ class NuBusFPGA(SoCCore):
             self.bus.add_slave("DMA", self.wishbone_slave_sys, SoCRegion(origin=self.mem_map.get("master", None), size=0x40000000, cached=False))
         else:
             wishbone_master_sys = wishbone.Interface(data_width=self.bus.data_width)
-            self.submodules.wishbone_master_nubus = WishboneDomainCrossingMaster(platform=self.platform, slave=wishbone_master_sys, cd_master="nubus", cd_slave="sys")
             nubus_writemaster_sys = wishbone.Interface(data_width=self.bus.data_width)
             wishbone_slave_nubus = wishbone.Interface(data_width=self.bus.data_width)
             self.submodules.wishbone_slave_sys = WishboneDomainCrossingMaster(platform=self.platform, slave=wishbone_slave_nubus, cd_master="sys", cd_slave="nubus", force_delay=6) # force delay needed to avoid back-to-back transaction running into issue https://github.com/alexforencich/verilog-wishbone/issues/4
-            self.submodules.nubus = nubus_full.NuBus(platform=platform,
-                                                     wb_read=self.wishbone_master_nubus,
-                                                     wb_write=nubus_writemaster_sys,
-                                                     wb_dma=wishbone_slave_nubus,
-                                                     cd_nubus="nubus")
+            self.submodules.nubus = nubus_full_sampling.NuBus(platform=platform,
+                                                              wb_read=wishbone_master_sys,
+                                                              wb_write=nubus_writemaster_sys,
+                                                              wb_dma=wishbone_slave_nubus,
+                                                              cd_nubus="nubus")
             self.bus.add_master(name="NuBusBridgeToWishbone", master=wishbone_master_sys)
             self.bus.add_slave("DMA", self.wishbone_slave_sys, SoCRegion(origin=self.mem_map.get("master", None), size=0x40000000, cached=False))
             self.bus.add_master(name="NuBusBridgeToWishboneWrite", master=nubus_writemaster_sys)

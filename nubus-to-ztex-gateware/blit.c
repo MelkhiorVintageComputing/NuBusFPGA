@@ -189,24 +189,46 @@ void from_reset(void) {
 	struct goblin_accel_regs* fbc = (struct goblin_accel_regs*)BASE_ACCEL_REGS;
 	struct goblin_bt_regs* fbt = (struct goblin_bt_regs*)BASE_BT_REGS;
 	unsigned int cmd = fbc->reg_r5_cmd;
-	unsigned char scale;
+	uint32_t srcx, wi, dstx;
 	switch ((fbt->mode>>24) & 0xFF) { // mode is 8 bits wrong-endian (all fbt is wrong-endian)
 	case mode_32bit:
-		scale = 2;
+		srcx = fbc->reg_bitblt_src_x << 2;
+		wi   = fbc->reg_width        << 2;
+		dstx = fbc->reg_bitblt_dst_x << 2;
 		break;
 	case mode_16bit:
-		scale = 1;
+		srcx = fbc->reg_bitblt_src_x << 1;
+		wi   = fbc->reg_width        << 1;
+		dstx = fbc->reg_bitblt_dst_x << 1;
 		break;
 	default:
-		scale = 0;
+	case mode_8bit:
+		srcx = fbc->reg_bitblt_src_x;
+		wi   = fbc->reg_width;
+		dstx = fbc->reg_bitblt_dst_x;
+		break;
+	case mode_4bit:
+		srcx = fbc->reg_bitblt_src_x >> 1;
+		wi   = fbc->reg_width        >> 1;
+		dstx = fbc->reg_bitblt_dst_x >> 1;
+		break;
+	case mode_2bit:
+		srcx = fbc->reg_bitblt_src_x >> 2;
+		wi   = fbc->reg_width        >> 2;
+		dstx = fbc->reg_bitblt_dst_x >> 2;
+		break;
+	case mode_1bit:
+		srcx = fbc->reg_bitblt_src_x >> 3;
+		wi   = fbc->reg_width        >> 3;
+		dstx = fbc->reg_bitblt_dst_x >> 3;
 		break;
 	}
 
 	switch (cmd & 0xF) {
 	case FUN_BLIT: {
-		bitblit(fbc->reg_bitblt_src_x << scale, fbc->reg_bitblt_src_y,
-				fbc->reg_width        << scale, fbc->reg_height,
-				fbc->reg_bitblt_dst_x << scale, fbc->reg_bitblt_dst_y,
+		bitblit(srcx, fbc->reg_bitblt_src_y,
+				wi  , fbc->reg_height,
+				dstx, fbc->reg_bitblt_dst_y,
 				0xFF, 0x3, // GXcopy
 				fbc->reg_src_ptr ? (unsigned char*)fbc->reg_src_ptr : (unsigned char*)BASE_FB,
 				fbc->reg_dst_ptr ? (unsigned char*)fbc->reg_dst_ptr : (unsigned char*)BASE_FB,
@@ -214,8 +236,8 @@ void from_reset(void) {
 				fbc->reg_dst_stride); // assumed to be scaled already
 	} break;
 	case FUN_FILL: {
-		rectfill(fbc->reg_bitblt_dst_x << scale, fbc->reg_bitblt_dst_y,
-				 fbc->reg_width        << scale, fbc->reg_height,
+		rectfill(dstx, fbc->reg_bitblt_dst_y,
+				 wi  , fbc->reg_height,
 				 fbc->reg_fgcolor,
 				 fbc->reg_dst_ptr ? (unsigned char*)fbc->reg_dst_ptr : (unsigned char*)BASE_FB,
 				 fbc->reg_dst_stride); // assumed to be scaled already

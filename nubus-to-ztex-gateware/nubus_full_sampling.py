@@ -14,6 +14,25 @@ class NuBus(Module):
         #led0 = platform.request("user_led", 0)
         #led1 = platform.request("user_led", 1)
 
+        nub_clk = ClockSignal(cd_nubus)
+        nub_resetn = ~ResetSignal(cd_nubus)
+        nub_clk_prev_bits = 4 # how many cycles after posedge do we still dare set some signals (i.e. still before setup time before negedge)
+        nub_clk_prev = Signal(nub_clk_prev_bits)
+        nub_clk_negedge = Signal()
+        nub_clk_posedge = Signal()
+        nub_clk_insetup = Signal()
+        self.sync += [
+            nub_clk_prev[0].eq(nub_clk),
+        ]
+        self.sync += [
+            nub_clk_prev[i].eq(nub_clk_prev[i-1]) for i in range(1, nub_clk_prev_bits)
+        ]
+        self.sync += [
+            nub_clk_negedge.eq(~nub_clk &  nub_clk_prev[0]),
+            nub_clk_posedge.eq( nub_clk & ~nub_clk_prev[0]),
+            nub_clk_insetup.eq( nub_clk & (nub_clk_prev != ((2**nub_clk_prev_bits)-1))), # if one of the previous X cycles is zero, we're early enough to set up signals
+        ]
+
         # Signals for tri-stated nubus access
         # slave
         tmo_oe = Signal() # output enable
@@ -94,43 +113,54 @@ class NuBus(Module):
             ("data", 32),
             ("sel", 4),
         ]
-        self.submodules.write_fifo = write_fifo = ClockDomainsRenamer({"read": "sys", "write": "nubus"})(AsyncFIFOBuffered(width=layout_len(write_fifo_layout), depth=16))
+        self.submodules.write_fifo = write_fifo = SyncFIFOBuffered(width=layout_len(write_fifo_layout), depth=16)
         write_fifo_dout = Record(write_fifo_layout)
         self.comb += write_fifo_dout.raw_bits().eq(write_fifo.dout)
         write_fifo_din = Record(write_fifo_layout)
         self.comb += write_fifo.din.eq(write_fifo_din.raw_bits())
+
+        self.sync += [
+            #If((~nub_clk &  nub_clk_prev[0]), # simultaneous with setting negedge
+            If(nub_clk_negedge,
+               sampled_tm0.eq(~tm0_i_n),
+               sampled_tm1.eq(~tm1_i_n),
+               sampled_start.eq(~start_i_n),
+               sampled_rqst.eq(~rqst_i_n),
+               sampled_ack.eq(~ack_i_n),
+               sampled_ad.eq(~ad_i_n),
+            )
+        ]
         
-        self.specials += Instance("nubus_sampling",
-                                  i_nub_clkn = ClockSignal(cd_nubus),
-                                  i_nub_resetn = ~ResetSignal(cd_nubus),
-                                  i_nub_tm0n = tm0_i_n,
-                                  i_nub_tm1n = tm1_i_n,
-                                  i_nub_startn = start_i_n,
-                                  i_nub_rqstn = rqst_i_n,
-                                  i_nub_ackn = ack_i_n,
-                                  i_nub_adn = ad_i_n,
-
-                                  o_tm0 = sampled_tm0,
-                                  o_tm1 = sampled_tm1,
-                                  o_start = sampled_start,
-                                  o_rqst = sampled_rqst,
-                                  o_ack = sampled_ack,
-                                  o_ad = sampled_ad,
-
-                                  o_sel = decoded_sel,
-                                  o_block = decoded_block,
-                                  o_busy = decoded_busy,
-        )
+        self.comb += [
+            decoded_block.eq(sampled_ad[1] & ~sampled_ad[0] & ~sampled_tm0), # 1x block write or 1x block read
+            decoded_sel[3].eq(sampled_tm1 &  sampled_ad[1] &  sampled_ad[0] &  sampled_tm0 # Byte 3
+                            | sampled_tm1 &  sampled_ad[1] &  sampled_ad[0] & ~sampled_tm0 # Half 1
+                            | sampled_tm1 & ~sampled_ad[1] & ~sampled_ad[0] & ~sampled_tm0 # Word
+            ),
+            decoded_sel[2].eq(sampled_tm1 &  sampled_ad[1] & ~sampled_ad[0] &  sampled_tm0 # Byte 2
+                            | sampled_tm1 &  sampled_ad[1] &  sampled_ad[0] & ~sampled_tm0 # Half 1
+                            | sampled_tm1 & ~sampled_ad[1] & ~sampled_ad[0] & ~sampled_tm0 # Word
+            ),
+            decoded_sel[1].eq(sampled_tm1 & ~sampled_ad[1] &  sampled_ad[0] &  sampled_tm0 # Byte 1
+                            | sampled_tm1 & ~sampled_ad[1] &  sampled_ad[0] & ~sampled_tm0 # Half 0
+                            | sampled_tm1 & ~sampled_ad[1] & ~sampled_ad[0] & ~sampled_tm0 # Word
+            ),
+            decoded_sel[0].eq(sampled_tm1 & ~sampled_ad[1] & ~sampled_ad[0] &  sampled_tm0 # Byte 0
+                            | sampled_tm1 & ~sampled_ad[1] &  sampled_ad[0] & ~sampled_tm0 # Half 0
+                            | sampled_tm1 & ~sampled_ad[1] & ~sampled_ad[0] & ~sampled_tm0 # Word
+            ),
+        ]
         
         self.read_ctr = read_ctr = Signal(32)
         self.writ_ctr = writ_ctr = Signal(32)
 
-        self.submodules.slave_fsm = slave_fsm = ClockDomainsRenamer(cd_nubus)(FSM(reset_state="Reset"))
+        self.submodules.slave_fsm = slave_fsm = FSM(reset_state="Reset")
         slave_fsm.act("Reset",
                       NextState("Idle")
         )
         slave_fsm.act("Idle",
-                      If(decoded_myslot & sampled_start & ~sampled_ack & ~sampled_tm1,# & ~decoded_block, # regular read (we always send back 32 bits, so don't worry about byte/word)
+                      # only react to transaction start at posedge
+                      If(nub_clk_posedge & decoded_myslot & sampled_start & ~sampled_ack & ~sampled_tm1,# & ~decoded_block, # regular read (we always send back 32 bits, so don't worry about byte/word)
                          NextValue(current_adr, processed_ad),
                          #NextValue(current_tm0, sampled_tm0),
                          #NextValue(current_tm1, sampled_tm1),
@@ -140,7 +170,7 @@ class NuBus(Module):
                          #   NextValue(decoded_block_memory, 1),),
                          NextValue(read_ctr, read_ctr + 1),
                          NextState("WaitWBRead"),
-                      ).Elif(decoded_myslot & sampled_start & ~sampled_ack & sampled_tm1,# & ~decoded_block, # regular write
+                      ).Elif(nub_clk_posedge & decoded_myslot & sampled_start & ~sampled_ack & sampled_tm1,# & ~decoded_block, # regular write
                              NextValue(current_adr, processed_ad),
                              #NextValue(current_tm0, sampled_tm0),
                              #NextValue(current_tm1, sampled_tm1),
@@ -150,7 +180,11 @@ class NuBus(Module):
                              #   NextValue(decoded_block_memory, 1),),
                              #NextState("GetNubusWriteData"),
                              NextValue(writ_ctr, writ_ctr + 1),
-                             NextState("NubusWriteDataToFIFO"),
+                             If(write_fifo.writable,
+                                NextState("NubusWriteDataToFIFO"),
+                             ).Else(
+                                NextState("NubusWaitForFIFO"),
+                             )
                       )
         )
         slave_fsm.act("WaitWBRead",
@@ -164,64 +198,86 @@ class NuBus(Module):
                       tm1_o_n.eq(1),
                       ack_o_n.eq(1),
                       If(wb_read.ack,
-                         ad_oe.eq(1),
-                         ad_o_n.eq(~wb_read.dat_r),
-                         tm0_o_n.eq(0),
-                         tm1_o_n.eq(0),
-                         ack_o_n.eq(0),
-                         NextState("Idle"),
+                         NextValue(current_data, wb_read.dat_r),
+                         If(nub_clk_insetup,
+                            ad_oe.eq(1),
+                            ad_o_n.eq(~wb_read.dat_r),
+                            tm0_o_n.eq(0),
+                            tm1_o_n.eq(0),
+                            ack_o_n.eq(0),
+                            NextState("FinishRead"),
+                         ).Else(
+                             NextState("WaitBeforeFinishRead"),
+                         )
                       )
         )
-        #slave_fsm.act("GetNubusWriteData",
-        #              NextValue(current_data, sampled_ad),
-        #              wb_read.cyc.eq(1),
-        #              wb_read.stb.eq(1),
-        #              wb_read.we.eq(1),
-        #              wb_read.sel.eq(current_sel),
-        #              wb_read.adr.eq(current_adr[2:32]),
-        #              wb_read.dat_w.eq(sampled_ad),
-        #              If(wb_read.ack,
-        #                 tmo_oe.eq(1),
-        #                 tm0_o_n.eq(0),
-        #                 tm1_o_n.eq(0),
-        #                 ack_o_n.eq(0),
-        #                 NextState("Idle"),
-        #              ).Else(
-        #                  NextState("WaitWBWrite"),
-        #              )
-        #)
-        #slave_fsm.act("WaitWBWrite",
-        #              wb_read.cyc.eq(1),
-        #              wb_read.stb.eq(1),
-        #              wb_read.we.eq(1),
-        #              wb_read.sel.eq(current_sel),
-        #              wb_read.adr.eq(current_adr[2:32]),
-        #              wb_read.dat_w.eq(current_data),
-        #              If(wb_read.ack,
-        #                 tmo_oe.eq(1),
-        #                 tm0_o_n.eq(0),
-        #                 tm1_o_n.eq(0),
-        #                 ack_o_n.eq(0),
-        #                 NextState("Idle"),
-        #              )
-        #)
-        slave_fsm.act("NubusWriteDataToFIFO",
+        slave_fsm.act("WaitBeforeFinishRead",
                       tmo_oe.eq(1),
                       tm0_o_n.eq(1),
                       tm1_o_n.eq(1),
                       ack_o_n.eq(1),
-                      If(write_fifo.writable,
-                         write_fifo.we.eq(1),
+                      If(nub_clk_insetup,
+                         ad_oe.eq(1),
+                         ad_o_n.eq(~current_data),
                          tm0_o_n.eq(0),
                          tm1_o_n.eq(0),
                          ack_o_n.eq(0),
-                         NextState("Idle"),
+                         NextState("FinishRead"),
+                      ),
+        )
+        slave_fsm.act("FinishRead",
+                      tmo_oe.eq(1),
+                      ad_oe.eq(1),
+                      ad_o_n.eq(~current_data),
+                      tm0_o_n.eq(0),
+                      tm1_o_n.eq(0),
+                      ack_o_n.eq(0),
+                      #If((~nub_clk &  nub_clk_prev[0]), # simultaneous with setting negedge
+                      If(nub_clk_negedge,
+                         NextState("ReadCleanup"),
                       )
+        )
+        slave_fsm.act("ReadCleanup",
+                      tmo_oe.eq(1),
+                      ad_oe.eq(1),
+                      ad_o_n.eq(~current_data),
+                      tm0_o_n.eq(0),
+                      tm1_o_n.eq(0),
+                      ack_o_n.eq(0),
+                      NextState("Idle"),
+                      ),
+        
+        slave_fsm.act("NubusWriteDataToFIFO",
+                      tmo_oe.eq(1),
+                      tm0_o_n.eq(0),
+                      tm1_o_n.eq(0),
+                      ack_o_n.eq(0),
+                      #If((~nub_clk &  nub_clk_prev[0]), # simultaneous with setting negedge
+                      If(nub_clk_negedge,
+                         write_fifo.we.eq(1),
+                         NextState("WriteCleanup"),
+                      )
+        )
+        slave_fsm.act("NubusWaitForFIFO",
+                      tmo_oe.eq(1),
+                      tm0_o_n.eq(1),
+                      tm1_o_n.eq(1),
+                      ack_o_n.eq(1),
+                      If(nub_clk_posedge & write_fifo.writable,
+                         NextState("NubusWriteDataToFIFO"),
+                      )
+        )             
+        slave_fsm.act("WriteCleanup", # extra sysclk cycle after negedge
+                      tmo_oe.eq(1),
+                      tm0_o_n.eq(0),
+                      tm1_o_n.eq(0),
+                      ack_o_n.eq(0),
+                      NextState("Idle"),
         )
 
         # connect the write FIFO inputs
         self.comb += [ write_fifo_din.adr.eq(current_adr), # recorded
-                       write_fifo_din.data.eq(sampled_ad), # we do it live
+                       write_fifo_din.data.eq(~ad_i_n), # we do it live, direct from the bus as we use it at the same time we update sampled_ad
                        write_fifo_din.sel.eq(current_sel), # recorded
         ]
         # deal with emptying the Write FIFO to the write WB
@@ -374,7 +430,14 @@ class NuBus(Module):
             nub_arbcy_n.eq(~start_arbitration),
             grant.eq(nf_grant),
             nf_fpga_to_cpld_signal.eq(~rqst_oe),
-        ] 
+        ]
+
+        self.sync += [
+            If((~nub_clk &  nub_clk_prev[0]), # simultaneous with setting negedge
+               decoded_busy.eq(~decoded_busy & nub_ackn & ~nub_startn # beginning of transaction
+			     |  decoded_busy & nub_ackn &  nub_resetn), # hold during cycle
+            )
+        ]
 
         
     def add_sources(self, platform):

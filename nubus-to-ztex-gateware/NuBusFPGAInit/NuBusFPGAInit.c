@@ -42,310 +42,13 @@ static inline unsigned long brev(const unsigned long r) {
 #define uint16_t unsigned short
 #define uint32_t unsigned long
 
-// this is the stack frame upon entry in BitBlt as described in DravingVars.a
-// wrong order as it's going in negative offset
-struct qdstuff_order {
-	//  STACK FRAME VARS USED BY SEEKMASK (CALLED BY STRETCHBITS, RGNBLT, DRAWARC, DRAWLINE)
-	//  (NOT USED IN PATEXPAND)
+#include "NuBusFPGA_QD.h"
 
-	uint16_t RECTFLAG;		// // EQU 	-2					;WORD
-	uint16_t VERT;	//  // RECTFLAG-2
-	uint32_t RGNBUFFER;	// 							 // VERT-4
-	uint32_t RUNBUF;	// 						<BAL 21Sep88> // RGNBUFFER-4
-	uint16_t BUFLEFT;	//  // RUNBUF-2
-	uint16_t BUFSIZE;	//  // BUFLEFT-2
-	uint32_t EXRTN;	//  // BUFSIZE-4
-	uint32_t RUNRTN;	//  // EXRTN-4
-	uint32_t SEEKMASK;	//  // RUNRTN-4
-	uint32_t DSTMASKBUF;	//  // SEEKMASK-4
-	uint32_t DSTMASKALIGN;	//  // DSTMASKBUF-4
-	uint8_t STATEA[24];	//  STATE RECORD // DSTMASKALIGN-RGNREC
-	uint8_t STATEB[24];	//  STATE RECORD // STATEA-RGNREC
-	uint8_t STATEC[24];	//  STATE RECORD // STATEB-RGNREC
-	uint16_t MINRECT[4];	// 						<BAL 21Sep88> // STATEC-8
-	uint16_t DSTSHIFT;	// 						<BAL 21Sep88> // MINRECT-2
-	uint16_t RUNBUMP;	// 						<BAL 05Nov88> // DSTSHIFT-2
-	uint32_t DSTROW;	// 						<BAL 03Oct88> // RUNBUMP-4
-	uint32_t GoShow;	//  Go home and show crsr <BAL 21Mar89> // DSTROW-4
-	uint32_t STACKFREE;	// 	->					<BAL 21Sep88> // GoShow-4
-
-	//  STACK FRAME VARS USED BY PATEXPAND, COLORMAP, DRAWSLAB
-	// (CALLED BY STRETCHBITS, RGNBLT, BITBLT, DRAWARC, DRAWLINE)
-
-	//													 SET UP  FOR BITBLT   FOR RGNBLT
-	uint32_t EXPAT;	// 				YES // STACKFREE-4
-	uint16_t PATVMASK;	//  (must follow expat) // EXPAT-2
-	uint16_t PATHMASK;	//  (must follow PATVMASK) // PATVMASK-2
-	uint16_t PATROW;	//  (must follow PATHMASK) // PATHMASK-2
-	uint16_t PATHPOS;	// 				YES // PATROW-2
-	uint8_t  filler5;	// 	<8>			YES // PATHPOS-1
-	uint8_t  alphaMode;	// 	<8> // filler5-1
-	uint32_t PATVPOS;	// 	<8>			YES		<BAL 22Jan89> // alphaMode-4
-	uint16_t LOCMODE;	// 				YES // PATVPOS-2
-	uint32_t LOCPAT;	// 				YES // LOCMODE-4
-	uint32_t FCOLOR;	// 				YES // LOCPAT-4
-	uint32_t BCOLOR;	// 				YES // FCOLOR-4
-	uint8_t useDither;	//	//		BCOLOR-1			;(was pixsrc) 	reclaimed 07Jul88 <BAL>
-	uint8_t  NEWPATTERN;	// 				YES // useDither-1
-	uint8_t DSTPIX[78];	// +COLOR TABLE	   YES -> STACKFREE -54-(50+8) // NEWPATTERN-
-
-	uint16_t weight[3];	//   weight for averaging // DSTPIX-6 //uint16_t pin[3];	//   used by max, min // weight
-	uint16_t notWeight[3];	//   complement of weight (for average) // weight-6
-	uint8_t  multiColor;	// 	set if source contains nonblack/white colors // notWeight-1
-	uint8_t  MMUsave;	// 	MMU mode on entry to QD // multiColor-1
-	uint8_t  FGnotBlack;	//  /	true if forecolor - black // MMUsave-1
-	uint8_t  BGnotWhite;	//  \	true if backcolor - white (must follow FGBlack) // FGnotBlack-1
-	uint32_t colorTable;	// 	pointer to color table // BGnotWhite-4
-	uint32_t invColor;	// 	pointer to inverse color table // colorTable-4
-	uint16_t invSize;	//  	resolution of inverse color table // invColor-2
-	uint16_t rtShift;	// 	used by average how far to shift // invSize-2
-	uint32_t transColor;	// 	copy of backcolor for transparent // rtShift-4
-	uint32_t hilitColor;	// 	hilite color pixels-> DSTPIX-36 // transColor-4
-
-	//  MORE SHARED STACK FRAME VARS (STRETCHBITS, RGNBLT, BITBLT)
-
-	uint16_t alignSrcPM;    //  // hilitColor-2
-	uint8_t SRCPIX[78];     //      YES // alignSrcPM-
-	uint16_t alignMaskPM;   //  // SRCPIX-2
-	uint8_t MASKPIX[78];    //      YES // alignMaskPM-
-	uint32_t SRCROW;        //                              YES // MASKPIX-4
-	uint32_t MASKROW;       //                              YES // SRCROW-4
-	uint16_t SRCSHIFT;      //                              YES // MASKROW-2
-	uint16_t MASKSHIFT;     //                              YES // SRCSHIFT-2
-	uint32_t INVERTFLAG;    //                              YES // MASKSHIFT-4
-	uint32_t SAVESTK;       //                              YES // INVERTFLAG-4
-	uint32_t SAVEA5;        //                              YES // SAVESTK-4
-
-	uint32_t SRCBUF;        //  // SAVEA5-4
-	uint32_t DSTBUF;        //  // SRCBUF-4
-	uint32_t SCALEBUF;      //  // DSTBUF-4
-	uint32_t dstBufBump;    //              <BAL 17Mar89> // SCALEBUF-4
-	uint32_t scaleBufBump;  //              <BAL 17Mar89> // dstBufBump-4
-	uint32_t SRCMASKBUF;    //  // scaleBufBump-4
-	uint16_t filler1;       //  // SRCMASKBUF-2
-	uint16_t SRCLONGS;      //  // filler1-2
-	uint16_t SRCMASKLONGS;  //  // SRCLONGS-2
-	uint16_t DSTMASKLONGS;  //  // SRCMASKLONGS-2
-	uint16_t DSTLONGS;      //  // DSTMASKLONGS-2
-	uint16_t SCALELONGS;    //  // DSTLONGS-2
-	uint32_t SRCADDR;       //  // SCALELONGS-4
-	uint32_t MASKADDR;      //  // SRCADDR-4
-	uint32_t DSTADDR;       //  // MASKADDR-4
-	uint32_t SRCLIMIT;      //  // DSTADDR-4
-	uint16_t NUMER[2];      //  // SRCLIMIT-4
-	uint16_t DENOM[2];      //  // NUMER-4
-	uint16_t MASKNUMER[2];  //  // DENOM-4
-	uint16_t MASKDENOM[2];  //  // MASKNUMER-4
-	uint32_t MODECASE;      // -> hilitColor-140-2*(PMREC+CTREC) (50+8) -> -256 -> DSTPIX -292 // MASKDENOM-4
-
-	//  STACK FRAME VARS USED BY STRETCHBITS ONLY
-
-	uint32_t RATIOCASE;     //  // MODECASE-4
-	uint32_t MASKCASE;      //  // RATIOCASE-4
-	uint16_t HORIZFRACTION; //  // MASKCASE-2
-	uint16_t MASKFRACT;     //  // HORIZFRACTION-2
-	uint32_t SCALECASE;     //  // MASKFRACT-4
-	uint16_t SRCSCANS;      //  // SCALECASE-2
-	uint16_t SRCPIXCNT;     //  // SRCSCANS-2
-	uint32_t SRCALIGN;      //  // SRCPIXCNT-4
-	uint32_t DSTALIGN;      //  // SRCALIGN-4
-	uint32_t MASKALIGN;     //  // DSTALIGN-4
-	uint32_t ScaleTbl;      //  // MASKALIGN-4
-	uint16_t VERROR;        //  // ScaleTbl-2
-	uint16_t CRSRFLAG;      //  // VERROR-2
-	uint32_t REALBOUNDS;    // -> MODECASE-44 -> DSTPIX-336 // CRSRFLAG-4
-
-
-	//  STACK FRAME VARS USED BY RGNBLT ONLY
-
-	uint16_t FIRSTV;        //  // REALBOUNDS-2
-	uint16_t LASTV; //  // FIRSTV-2
-	uint16_t VBUMP; // , MUST BE ABOVE HBUMP // LASTV-2
-	uint16_t HBUMP; //  // VBUMP-2
-	uint32_t RGNADDR;       //  // HBUMP-4
-	uint16_t filler2;       //  // RGNADDR-2
-	uint16_t SRCSIZE;       //  // filler2-2
-	uint32_t SAVESTK2;      // -> REALBOUNDS-20 -> DSTPIX-356 // SRCSIZE-4
-
-
-	//  STACK FRAME VARS USED BY BITBLT ONLY
-
-	uint16_t SRCV;  //  // SAVESTK2-2
-	uint16_t DSTV;  //  // SRCV-2
-	uint16_t SRCBUMP;       //  // DSTV-2
-	uint16_t HEIGHT;        //  // SRCBUMP-2
-	uint16_t SRCRECT2[4];   // -> SAVESTK2-16 -> DSTPIX-372 // HEIGHT-8
-	uint32_t FIRSTMASK;     //  // SRCRECT2-4
-	uint16_t LONGCNT;       //  // FIRSTMASK-2
-
-
-	//  STACK FRAME VARS USED BY RGNBLT/BITBLT
-
-	uint8_t  doneMid;       //   two flags used to control loop // LONGCNT-1
-	uint8_t  endSwitch;     //   three-way switch chooses from src, pat, bigpat // doneMid-1
-	uint32_t lastMask;      //   mask for last long blitted on line // endSwitch-4
-	uint16_t midCount;      //   # of pixels on line less mask longs - 1 // lastMask-2
-	uint16_t pixInLong;     //   # of pixels in a long - 1 // midCount-2
-	uint32_t patOffset;     //   pattern horizontal initial offset   // pixInLong-4
-	uint16_t patPos;        //   pattern vertical offset // patOffset-2
-	uint16_t destPixCnt;    //   1-based cnt of pixels to blit<02Mar89 BAL> // patPos-2
-	uint32_t destPixOffset; //   destination pixel offset   <08Jan89 BAL> // destPixCnt-4
-	uint16_t pixInLong1;    //   same as pixInLong, 1 based (for transparent) // destPixOffset-2
-	uint16_t longBump;      //   32 signed direction of blit (for transparent) // pixInLong1-2
-};
-
-// same as above, but lines are in reverse order so it can be used directly once the pointer to the stack frame is known
-// some types have been hand-converted (e.g. MINRECT to Rect)
-struct qdstuff {
-	uint16_t longBump;      //   32 signed direction of blit (for transparent) // pixInLong1-2
-	uint16_t pixInLong1;    //   same as pixInLong, 1 based (for transparent) // destPixOffset-2
-	uint32_t destPixOffset; //   destination pixel offset   <08Jan89 BAL> // destPixCnt-4
-	uint16_t destPixCnt;    //   1-based cnt of pixels to blit<02Mar89 BAL> // patPos-2
-	uint16_t patPos;        //   pattern vertical offset // patOffset-2
-	uint32_t patOffset;     //   pattern horizontal initial offset   // pixInLong-4
-	uint16_t pixInLong;     //   # of pixels in a long - 1 // midCount-2
-	uint16_t midCount;      //   # of pixels on line less mask longs - 1 // lastMask-2
-	uint32_t lastMask;      //   mask for last long blitted on line // endSwitch-4
-	uint8_t  endSwitch;     //   three-way switch chooses from src, pat, bigpat // doneMid-1
-	uint8_t  doneMid;       //   two flags used to control loop // LONGCNT-1
-
-	//  STACK FRAME VARS USED BY RGNBLT/BITBLT
-
-
-	uint16_t LONGCNT;       //  // FIRSTMASK-2
-	uint32_t FIRSTMASK;     //  // SRCRECT2-4
-	uint16_t SRCRECT2[4];   // -> SAVESTK2-16 -> DSTPIX-372 // HEIGHT-8
-	uint16_t HEIGHT;        //  // SRCBUMP-2
-	uint16_t SRCBUMP;       //  // DSTV-2
-	uint16_t DSTV;  //  // SRCV-2
-	uint16_t SRCV;  //  // SAVESTK2-2
-
-	//  STACK FRAME VARS USED BY BITBLT ONLY
-
-
-	uint32_t SAVESTK2;      // -> REALBOUNDS-20 -> DSTPIX-356 // SRCSIZE-4
-	uint16_t SRCSIZE;       //  // filler2-2
-	uint16_t filler2;       //  // RGNADDR-2
-	uint32_t RGNADDR;       //  // HBUMP-4
-	uint16_t HBUMP; //  // VBUMP-2
-	uint16_t VBUMP; // , MUST BE ABOVE HBUMP // LASTV-2
-	uint16_t LASTV; //  // FIRSTV-2
-	uint16_t FIRSTV;        //  // REALBOUNDS-2
-
-	//  STACK FRAME VARS USED BY RGNBLT ONLY
-
-
-	uint32_t REALBOUNDS;    // -> MODECASE-44 -> DSTPIX-336 // CRSRFLAG-4
-	uint16_t CRSRFLAG;      //  // VERROR-2
-	uint16_t VERROR;        //  // ScaleTbl-2
-	uint32_t ScaleTbl;      //  // MASKALIGN-4
-	uint32_t MASKALIGN;     //  // DSTALIGN-4
-	uint32_t DSTALIGN;      //  // SRCALIGN-4
-	uint32_t SRCALIGN;      //  // SRCPIXCNT-4
-	uint16_t SRCPIXCNT;     //  // SRCSCANS-2
-	uint16_t SRCSCANS;      //  // SCALECASE-2
-	uint32_t SCALECASE;     //  // MASKFRACT-4
-	uint16_t MASKFRACT;     //  // HORIZFRACTION-2
-	uint16_t HORIZFRACTION; //  // MASKCASE-2
-	uint32_t MASKCASE;      //  // RATIOCASE-4
-	uint32_t RATIOCASE;     //  // MODECASE-4
-
-	//  STACK FRAME VARS USED BY STRETCHBITS ONLY
-
-	uint32_t MODECASE;      // -> hilitColor-140-2*(PMREC+CTREC) (50+8) -> -256 -> DSTPIX -292 // MASKDENOM-4
-	uint16_t MASKDENOM[2];  //  // MASKNUMER-4
-	uint16_t MASKNUMER[2];  //  // DENOM-4
-	uint16_t DENOM[2];      //  // NUMER-4
-	uint16_t NUMER[2];      //  // SRCLIMIT-4
-	uint32_t SRCLIMIT;      //  // DSTADDR-4
-	uint32_t DSTADDR;       //  // MASKADDR-4
-	uint32_t MASKADDR;      //  // SRCADDR-4
-	uint32_t SRCADDR;       //  // SCALELONGS-4
-	uint16_t SCALELONGS;    //  // DSTLONGS-2
-	uint16_t DSTLONGS;      //  // DSTMASKLONGS-2
-	uint16_t DSTMASKLONGS;  //  // SRCMASKLONGS-2
-	uint16_t SRCMASKLONGS;  //  // SRCLONGS-2
-	uint16_t SRCLONGS;      //  // filler1-2
-	uint16_t filler1;       //  // SRCMASKBUF-2
-	uint32_t SRCMASKBUF;    //  // scaleBufBump-4
-	uint32_t scaleBufBump;  //              <BAL 17Mar89> // dstBufBump-4
-	uint32_t dstBufBump;    //              <BAL 17Mar89> // SCALEBUF-4
-	uint32_t SCALEBUF;      //  // DSTBUF-4
-	uint32_t DSTBUF;        //  // SRCBUF-4
-	uint32_t SRCBUF;        //  // SAVEA5-4
-
-	uint32_t SAVEA5;        //                              YES // SAVESTK-4
-	uint32_t SAVESTK;       //                              YES // INVERTFLAG-4
-	uint32_t INVERTFLAG;    //                              YES // MASKSHIFT-4
-	uint16_t MASKSHIFT;     //                              YES // SRCSHIFT-2
-	uint16_t SRCSHIFT;      //                              YES // MASKROW-2
-	uint32_t MASKROW;       //                              YES // SRCROW-4
-	uint32_t SRCROW;        //                              YES // MASKPIX-4
-	uint8_t MASKPIX[78];    //      YES // alignMaskPM-
-	uint16_t alignMaskPM;   //  // SRCPIX-2
-	uint8_t SRCPIX[78];     //      YES // alignSrcPM-
-	uint16_t alignSrcPM;    //  // hilitColor-2
-
-	//  MORE SHARED STACK FRAME VARS (STRETCHBITS, RGNBLT, BITBLT)
-
-	uint32_t hilitColor;	// 	hilite color pixels-> DSTPIX-36 // transColor-4
-	uint32_t transColor;	// 	copy of backcolor for transparent // rtShift-4
-	uint16_t rtShift;	// 	used by average how far to shift // invSize-2
-	uint16_t invSize;	//  	resolution of inverse color table // invColor-2
-	uint32_t invColor;	// 	pointer to inverse color table // colorTable-4
-	uint32_t colorTable;	// 	pointer to color table // BGnotWhite-4
-	uint8_t  BGnotWhite;	//  \	true if backcolor - white (must follow FGBlack) // FGnotBlack-1
-	uint8_t  FGnotBlack;	//  /	true if forecolor - black // MMUsave-1
-	uint8_t  MMUsave;	// 	MMU mode on entry to QD // multiColor-1
-	uint8_t  multiColor;	// 	set if source contains nonblack/white colors // notWeight-1
-	uint16_t notWeight[3];	//   complement of weight (for average) // weight-6
-	uint16_t weight[3];	//   weight for averaging // DSTPIX-6 //uint16_t pin[3];	//   used by max, min // weight
-
-	uint8_t DSTPIX[78];	// +COLOR TABLE	   YES -> STACKFREE -54-(50+8) // NEWPATTERN-
-	uint8_t  NEWPATTERN;	// 				YES // useDither-1
-	uint8_t useDither;	//	//		BCOLOR-1			;(was pixsrc) 	reclaimed 07Jul88 <BAL>
-	uint32_t BCOLOR;	// 				YES // FCOLOR-4
-	uint32_t FCOLOR;	// 				YES // LOCPAT-4
-	uint32_t LOCPAT;	// 				YES // LOCMODE-4
-	uint16_t LOCMODE;	// 				YES // PATVPOS-2
-	uint32_t PATVPOS;	// 	<8>			YES		<BAL 22Jan89> // alphaMode-4
-	uint8_t  alphaMode;	// 	<8> // filler5-1
-	uint8_t  filler5;	// 	<8>			YES // PATHPOS-1
-	uint16_t PATHPOS;	// 				YES // PATROW-2
-	uint16_t PATROW;	//  (must follow PATHMASK) // PATHMASK-2
-	uint16_t PATHMASK;	//  (must follow PATVMASK) // PATVMASK-2
-	uint16_t PATVMASK;	//  (must follow expat) // EXPAT-2
-	uint32_t* EXPAT;	// 				YES // STACKFREE-4
-	//													 SET UP  FOR BITBLT   FOR RGNBLT
-
-	// (CALLED BY STRETCHBITS, RGNBLT, BITBLT, DRAWARC, DRAWLINE)
-	//  STACK FRAME VARS USED BY PATEXPAND, COLORMAP, DRAWSLAB
-
-	uint32_t STACKFREE;	// 	->					<BAL 21Sep88> // GoShow-4
-	uint32_t GoShow;	//  Go home and show crsr <BAL 21Mar89> // DSTROW-4
-	uint32_t DSTROW;	// 						<BAL 03Oct88> // RUNBUMP-4
-	uint16_t RUNBUMP;	// 						<BAL 05Nov88> // DSTSHIFT-2
-	uint16_t DSTSHIFT;	// 						<BAL 21Sep88> // MINRECT-2
-	Rect MINRECT;	// 						<BAL 21Sep88> // STATEC-8
-	uint8_t STATEC[24];	//  STATE RECORD // STATEB-RGNREC
-	uint8_t STATEB[24];	//  STATE RECORD // STATEA-RGNREC
-	uint8_t STATEA[24];	//  STATE RECORD // DSTMASKALIGN-RGNREC
-	uint32_t DSTMASKALIGN;	//  // DSTMASKBUF-4
-	uint32_t DSTMASKBUF;	//  // SEEKMASK-4
-	uint32_t SEEKMASK;	//  // RUNRTN-4
-	uint32_t RUNRTN;	//  // EXRTN-4
-	uint32_t EXRTN;	//  // BUFSIZE-4
-	uint16_t BUFSIZE;	//  // BUFLEFT-2
-	uint16_t BUFLEFT;	//  // RUNBUF-2
-	uint32_t RUNBUF;	// 						<BAL 21Sep88> // RGNBUFFER-4
-	uint32_t RGNBUFFER;	// 							 // VERT-4
-	uint16_t VERT;	//  // RECTFLAG-2
-	uint16_t RECTFLAG;		// // EQU 	-2					;WORD
-
-	//  (NOT USED IN PATEXPAND)
-	//  STACK FRAME VARS USED BY SEEKMASK (CALLED BY STRETCHBITS, RGNBLT, DRAWARC, DRAWLINE)
-};
-
+#ifdef QEMU
+#define DLOG(x) bt->debug - (x);
+#else
+#define DLOG(X)
+#endif
 
 int hwblit(char* stack, char* p_fb_base, /* short dstshift, */ short mode, Pattern* pat, PixMapPtr dstpix, PixMapPtr srcpix, Rect *dstrect, Rect *srcrect) {
 	struct goblin_bt_regs* bt = (struct goblin_bt_regs*)(p_fb_base + GOBLIN_BT_OFFSET);
@@ -357,19 +60,19 @@ int hwblit(char* stack, char* p_fb_base, /* short dstshift, */ short mode, Patte
 	
  	if ((mode != 0) && (mode != 8)) { // only copy handled for now
 #ifdef QEMU
-		bt->debug = -2L;
-		bt->debug = mode;
+		DLOG(-2L)
+		DLOG(mode)
 		if (mode == 8) {
-			bt->debug = qdstack->PATROW;
+			DLOG(qdstack->PATROW)
 #if 0
-			bt->debug = pat->pat[0];
-			bt->debug = pat->pat[1];
-			bt->debug = pat->pat[2];
-			bt->debug = pat->pat[3];
-			bt->debug = pat->pat[4];
-			bt->debug = pat->pat[5];
-			bt->debug = pat->pat[6];
-			bt->debug = pat->pat[7];
+			DLOG(pat->pat[0])
+			DLOG(pat->pat[1])
+			DLOG(pat->pat[2])
+			DLOG(pat->pat[3])
+			DLOG(pat->pat[4])
+			DLOG(pat->pat[5])
+			DLOG(pat->pat[6])
+			DLOG(pat->pat[7])
 #endif
 		}
 #endif
@@ -380,7 +83,7 @@ int hwblit(char* stack, char* p_fb_base, /* short dstshift, */ short mode, Patte
 		register int i;
 		register unsigned long expat0 = qdstack->EXPAT[0];
 		if (qdstack->PATROW != 0) {
-			bt->debug = -6L;
+			DLOG(-6L)
 			return 0;
 		}
 		if ((expat0 & 0xFFFF) != ((expat0 >> 16) & 0xFFFF))
@@ -389,18 +92,19 @@ int hwblit(char* stack, char* p_fb_base, /* short dstshift, */ short mode, Patte
 			return 0;
 		for (i = 1 ; i < 16 ; i++)
 			if (expat0 != qdstack->EXPAT[i]) {
-				bt->debug = -7L;
-				bt->debug = i;
-				bt->debug = expat0;
-				bt->debug = qdstack->EXPAT[i];
+				DLOG(-7L)
+				DLOG(i)
+				DLOG(expat0)
+				DLOG(qdstack->EXPAT[i])
 				return 0;
 			}
 	}
-	
+
+#if 0	
  	if (dstshift < 3) { // only 8/16/32 bits for now
 #ifdef QEMU
-		bt->debug = -3L;
-		bt->debug = dstshift;
+		DLOG(-3L)
+		DLOG(dstshift)
 #endif
  		return 0;
 	}
@@ -408,17 +112,18 @@ int hwblit(char* stack, char* p_fb_base, /* short dstshift, */ short mode, Patte
 	
  	if (srcshift < 3) { // only 8/16/32 bits for now
 #ifdef QEMU
-		bt->debug = -8L;
-		bt->debug = srcshift;
+		DLOG(-8L)
+		DLOG(srcshift)
 #endif
  		return 0;
 	}
 	srcshift -= 3;
+#endif
 	
 	if (srcshift != dstshift) {
-		bt->debug = -9L;
-		bt->debug = srcshift;
-		bt->debug = dstshift;
+		DLOG(-9L)
+		DLOG(srcshift)
+		DLOG(dstshift)
 		return 0;
 	}
 	
@@ -429,18 +134,18 @@ int hwblit(char* stack, char* p_fb_base, /* short dstshift, */ short mode, Patte
 	
 	if (dstpix->baseAddr != p_fb_base) { // we're not destination
 #ifdef QEMU
-		bt->debug = -4L;
-		bt->debug = (unsigned long)dstpix->baseAddr;
+		DLOG(-4L)
+		DLOG((unsigned long)dstpix->baseAddr)
 #endif
 		return 0;
 	}
 	
 	if ((srcpix->baseAddr != p_fb_base)
-	    //  && ((unsigned long)srcpix->baseAddr >= 0x40000000) // and neither is main memory
+	   //   && ((unsigned long)srcpix->baseAddr >= 0x40000000) // and neither is main memory
 	   ){ 
 #ifdef QEMU
-		bt->debug = -5L;
-		bt->debug = (unsigned long)srcpix->baseAddr;
+		DLOG(-5L)
+		DLOG((unsigned long)srcpix->baseAddr)
 #endif
 		return 0;
 	}
@@ -448,6 +153,8 @@ int hwblit(char* stack, char* p_fb_base, /* short dstshift, */ short mode, Patte
 	{	
 		Rect realrect, srcv, dstv;
 		short width = qdstack->MINRECT.right - qdstack->MINRECT.left;
+		short src_check = 0x07 >> srcshift;
+		short dst_check = 0x07 >> dstshift;
 		
 		//*debug_ptr = -1L;
 		
@@ -466,6 +173,14 @@ int hwblit(char* stack, char* p_fb_base, /* short dstshift, */ short mode, Patte
 		dstv.top = qdstack->MINRECT.top - dstpix->bounds.top;
 		dstv.left = qdstack->MINRECT.left - dstpix->bounds.left;
 		
+		// must be byte-aligned for now
+		if (width & src_check)
+			return 0;
+		if (srcv.left & src_check)
+			return 0;
+		if (dstv.left & dst_check)
+			return 0;
+		
 		/* if .baseAddr of both pix are different, no overlap */
 		/*
 		// the HW can handle that for us
@@ -476,41 +191,41 @@ int hwblit(char* stack, char* p_fb_base, /* short dstshift, */ short mode, Patte
 #ifdef QEMU
 #if 0
 		if ((mode == 8) && (qdstack->PATROW == 0)) {
-			bt->debug = 0x87654321;
-			bt->debug = qdstack->EXPAT[ 0];
-			bt->debug = qdstack->EXPAT[ 1];
-			bt->debug = qdstack->EXPAT[ 2];
-			bt->debug = qdstack->EXPAT[ 3];
-			bt->debug = qdstack->EXPAT[ 4];
-			bt->debug = qdstack->EXPAT[ 5];
-			bt->debug = qdstack->EXPAT[ 6];
-			bt->debug = qdstack->EXPAT[ 7];
-			bt->debug = qdstack->EXPAT[ 8];
-			bt->debug = qdstack->EXPAT[ 9];
-			bt->debug = qdstack->EXPAT[10];
-			bt->debug = qdstack->EXPAT[11];
-			bt->debug = qdstack->EXPAT[12];
-			bt->debug = qdstack->EXPAT[13];
-			bt->debug = qdstack->EXPAT[14];
-			bt->debug = qdstack->EXPAT[15];
+			DLOG(0x87654321)
+			DLOG(qdstack->EXPAT[ 0])
+			DLOG(qdstack->EXPAT[ 1])
+			DLOG(qdstack->EXPAT[ 2])
+			DLOG(qdstack->EXPAT[ 3])
+			DLOG(qdstack->EXPAT[ 4])
+			DLOG(qdstack->EXPAT[ 5])
+			DLOG(qdstack->EXPAT[ 6])
+			DLOG(qdstack->EXPAT[ 7])
+			DLOG(qdstack->EXPAT[ 8])
+			DLOG(qdstack->EXPAT[ 9])
+			DLOG(qdstack->EXPAT[10])
+			DLOG(qdstack->EXPAT[11])
+			DLOG(qdstack->EXPAT[12])
+			DLOG(qdstack->EXPAT[13])
+			DLOG(qdstack->EXPAT[14])
+			DLOG(qdstack->EXPAT[15])
 		}
 #endif
-		bt->debug = -1L; 
+		DLOG(-1L) 
 		
-		bt->debug = srcpix->rowBytes;
-		bt->debug = dstpix->rowBytes;
+		DLOG(srcpix->rowBytes)
+		DLOG(dstpix->rowBytes)
 		
-		bt->debug = srcv.top;
-		bt->debug = srcv.left;
+		DLOG(srcv.top)
+		DLOG(srcv.left)
 		
-		bt->debug = height;
-		bt->debug = width;
+		DLOG(height)
+		DLOG(width)
 		
-		bt->debug = dstv.top;
-		bt->debug = dstv.left;
+		DLOG(dstv.top)
+		DLOG(dstv.left)
 		
-		bt->debug = (long)dstpix->baseAddr;
-		bt->debug = (long)srcpix->baseAddr;
+		DLOG((long)dstpix->baseAddr)
+		DLOG((long)srcpix->baseAddr)
 		
 			return 0;
 #else
@@ -617,10 +332,10 @@ void main(void)
 	accel_base = ((char*)fb_base + GOBLIN_ACCEL_OFFSET);
 	
 	bt = (struct goblin_bt_regs*)bt_base;
-	bt->debug = 0xDEADBEEF;
-	bt->debug = (unsigned long)fb_base;
-	bt->debug = (unsigned long)bt_base;
-	bt->debug = (unsigned long)accel_base;
+	DLOG(0xDEADBEEF)
+	DLOG((unsigned long)fb_base)
+	DLOG((unsigned long)bt_base)
+	DLOG((unsigned long)accel_base)
 	
 	h = Get1Resource('INIT', kINITid);
 	if (h) {
