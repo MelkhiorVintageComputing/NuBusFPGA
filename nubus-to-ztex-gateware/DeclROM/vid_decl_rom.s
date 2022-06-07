@@ -7,11 +7,13 @@
 	.include "DepVideo.inc"
 
 sRsrc_Board = 1 /*  board sResource (>0 & <128) */
-sRsrc_VidHiRes = 0x80 /*  functional sResources */
+sRsrc_GoboFB = 0x80 /*  functional sResources */
+sRsrc_RAMDsk = 0x81 /*  functional sResources */
 
 _sRsrcDir:
-	OSLstEntry  sRsrc_Board,_sRsrc_Board     /*  board sRsrc List */
-    OSLstEntry  sRsrc_VidHiRes,_sRsrc_VidHiRes     /*  video sRsrc List */
+	OSLstEntry  sRsrc_Board,_sRsrc_Board       /*  board sRsrc List */
+    OSLstEntry  sRsrc_GoboFB,_sRsrc_GoboFB     /*  video sRsrc List */
+    OSLstEntry  sRsrc_RAMDsk,_sRsrc_RAMDsk     /*  video sRsrc List */
 	.long EndOfList
 
 _sRsrc_Board:	
@@ -31,7 +33,7 @@ _BoardType:
     .short 0
 	
 _BoardName: 
-    .string "NuBusFPGA Video\0" /*  name of board */
+    .string "NuBusFPGA GoboFB\0" /*  name of board */
 	ALIGN 2
 
 /*  _VidICON ; optional icon, not needed */
@@ -74,21 +76,21 @@ _Date:
 	ALIGN 2
 	
 _VModeName:	
-	OSLstEntry	sRsrc_VidHiRes, _ScreenNameVidHiRes
+	OSLstEntry	sRsrc_GoboFB, _ScreenNameGoboFB
 	DatLstEntry	endOfList,	0	
 
 	ALIGN 2
-_ScreenNameVidHiRes:	
-	.long		_ScreenNameVidHiResEnd - _ScreenNameVidHiRes
+_ScreenNameGoboFB:	
+	.long		_ScreenNameGoboFBEnd - _ScreenNameGoboFB
 	.word		0
-	.string		"That one resolution\0"
-_ScreenNameVidHiResEnd:	
+	.string		"GoblinFB Native\0"
+_ScreenNameGoboFBEnd:	
 
 	ALIGN 2
-_sRsrc_VidHiRes:	
-	OSLstEntry  sRsrcType,_VideoType      /*  video type descriptor */
-    OSLstEntry  sRsrcName,_VideoName      /*  offset to driver name string */
-    OSLstEntry  sRsrcDrvrDir,_VidDrvrDir /* offset to driver directory */
+_sRsrc_GoboFB:	
+	OSLstEntry  sRsrcType,_GoboFBType      /*  video type descriptor */
+    OSLstEntry  sRsrcName,_GoboFBName      /*  offset to driver name string */
+    OSLstEntry  sRsrcDrvrDir,_GoboFBDrvrDir /* offset to driver directory */
 	DatLstEntry  sRsrcFlags,6    /* force 32 bits mode & open */
     DatLstEntry sRsrcHWDevId,1           /*  hardware device ID */
     OSLstEntry  MinorBaseOS,_MinorBase    /*  offset to frame buffer array */
@@ -104,30 +106,31 @@ _sRsrc_VidHiRes:
     .long EndOfList               /*  end of list */
 
 	ALIGN 2
-_VideoType:	
+_GoboFBType:	
     .short        catDisplay               /*      <Category> */
     .short        typeVideo                 /*      <Type> */
     .short        drSwApple                /*      <DrvrSw> */
     .short        DrHwNuBusFPGA             /*      <DrvrHw> */
 			  
-_VideoName:	
-    .string        "Video_NuBusFPGA"        /*  video driver name */
+_GoboFBName:	
+    .string        "GoboFB_NuBusFPGA"        /*  video driver name */
+	
 _MinorBase:	
     .long        defMinorBase             /*  frame buffer offset */
 _MinorLength:	
     .long        defMinorLength           /*  frame buffer length */
 
 	ALIGN 2
-_VidDrvrDir:	
-    OSLstEntry  sMacOS68020,_DrvrMacOS68020     /* driver directory for Mac OS */
+_GoboFBDrvrDir:	
+    OSLstEntry  sMacOS68020,_GoboFBDrvrMacOS68020     /* driver directory for Mac OS */
     .long EndOfList 
 
 	ALIGN 2
-_DrvrMacOS68020:	
-    .long        _End020Drvr-.   /*  physical block size */
+_GoboFBDrvrMacOS68020:	
+    .long        _GoboFBEnd020Drvr-.   /*  physical block size */
     .include     "NuBusFPGADrvr.s"             /*   driver code */
 	.text
-_End020Drvr:	
+_GoboFBEnd020Drvr:
 
 /* 	ALIGN 2 */
 /* _GammaDirS: */
@@ -295,3 +298,34 @@ _HRV15Parms:
              .long          defmPlaneBytes              /*  bmPlaneBytes */
 _EndHRV15Parms:	
 
+	ALIGN 2
+_sRsrc_RAMDsk:	
+	OSLstEntry  sRsrcType,_RAMDskType      /*  video type descriptor */
+    OSLstEntry  sRsrcName,_RAMDskName      /*  offset to driver name string */
+    OSLstEntry  sRsrcDrvrDir,_RAMDskDrvrDir /* offset to driver directory */
+	DatLstEntry  sRsrcFlags,6    /* force 32 bits mode & open */
+    DatLstEntry sRsrcHWDevId,2           /*  hardware device ID */
+    .long EndOfList               /*  end of list */
+
+	ALIGN 2
+_RAMDskType:	
+    .short        catProto               /*      <Category> */
+    .short        typeDrive /* custom */                 /*      <Type> */
+    .short        drSwApple                /*      <DrvrSw> */
+    .short        DrHwNuBusFPGADsk             /*      <DrvrHw> */
+			  
+_RAMDskName:	
+    .string        "RAMDsk_NuBusFPGA"        /*  video driver name */
+	
+	ALIGN 2
+_RAMDskDrvrDir:	
+    OSLstEntry  sMacOS68020,_RAMDskDrvrMacOS68020     /* driver directory for Mac OS */
+    .long EndOfList 
+
+	ALIGN 2
+_RAMDskDrvrMacOS68020:	
+    .long        _RAMDskEnd020Drvr-.   /*  physical block size */
+    .include     "NuBusFPGARAMDskDrvr.s"             /*   driver code */
+	.text
+_RAMDskEnd020Drvr:
+	
