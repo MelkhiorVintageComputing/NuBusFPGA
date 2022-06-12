@@ -60,7 +60,10 @@ object GenGoblinAccel { // extends App {
 	),
         new StaticMemoryTranslatorPlugin(
 	  // only cache the sdram memory
-	  ioRange = addr => addr(31 downto 28) =/= 0x8
+	  ioRange = addr => ((addr(31 downto 28) =/= 0x8) & // SDRAM
+                             (addr(31 downto 12) =/= 0xF0902) & // SRAM
+                             (addr(31 downto 16) =/= 0xF091) // ROM
+                            )
         ),
         new DecoderSimplePlugin(
           catchIllegalInstruction = false

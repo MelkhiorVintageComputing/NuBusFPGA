@@ -3493,7 +3493,7 @@ module VexRiscv (
   assign IBusCachedPlugin_mmuBus_rsp_allowRead = 1'b1;
   assign IBusCachedPlugin_mmuBus_rsp_allowWrite = 1'b1;
   assign IBusCachedPlugin_mmuBus_rsp_allowExecute = 1'b1;
-  assign IBusCachedPlugin_mmuBus_rsp_isIoAccess = (IBusCachedPlugin_mmuBus_rsp_physicalAddress[31 : 28] != 4'b1000);
+  assign IBusCachedPlugin_mmuBus_rsp_isIoAccess = (((IBusCachedPlugin_mmuBus_rsp_physicalAddress[31 : 28] != 4'b1000) && (IBusCachedPlugin_mmuBus_rsp_physicalAddress[31 : 12] != 20'hf0902)) && (IBusCachedPlugin_mmuBus_rsp_physicalAddress[31 : 16] != 16'hf091));
   assign IBusCachedPlugin_mmuBus_rsp_isPaging = 1'b0;
   assign IBusCachedPlugin_mmuBus_rsp_exception = 1'b0;
   assign IBusCachedPlugin_mmuBus_rsp_refilling = 1'b0;
@@ -3502,7 +3502,7 @@ module VexRiscv (
   assign DBusCachedPlugin_mmuBus_rsp_allowRead = 1'b1;
   assign DBusCachedPlugin_mmuBus_rsp_allowWrite = 1'b1;
   assign DBusCachedPlugin_mmuBus_rsp_allowExecute = 1'b1;
-  assign DBusCachedPlugin_mmuBus_rsp_isIoAccess = (DBusCachedPlugin_mmuBus_rsp_physicalAddress[31 : 28] != 4'b1000);
+  assign DBusCachedPlugin_mmuBus_rsp_isIoAccess = (((DBusCachedPlugin_mmuBus_rsp_physicalAddress[31 : 28] != 4'b1000) && (DBusCachedPlugin_mmuBus_rsp_physicalAddress[31 : 12] != 20'hf0902)) && (DBusCachedPlugin_mmuBus_rsp_physicalAddress[31 : 16] != 16'hf091));
   assign DBusCachedPlugin_mmuBus_rsp_isPaging = 1'b0;
   assign DBusCachedPlugin_mmuBus_rsp_exception = 1'b0;
   assign DBusCachedPlugin_mmuBus_rsp_refilling = 1'b0;
