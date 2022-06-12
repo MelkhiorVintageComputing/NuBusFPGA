@@ -92,5 +92,7 @@ _RAMDskGoIODone:
 	.text
 	.include "NuBusFPGARAMDskDrvr_Status.s"
 	.text
+	.include "myrle.s"
+	.text
 	
 	ALIGN 2

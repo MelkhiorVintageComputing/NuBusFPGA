@@ -13,7 +13,7 @@ OSErr cNuBusFPGARAMDskOpen(IOParamPtr pb, /* DCtlPtr */ AuxDCEPtr dce)
 
 	dce->dCtlDevBase = 0xfc000000;
 	
-	/* write_reg(dce, GOBOFB_DEBUG, 0xDEAD0000); */
+	write_reg(dce, GOBOFB_DEBUG, 0xDEAD0000);
 	/* write_reg(dce, GOBOFB_DEBUG, dce->dCtlRefNum); */
 
 	if (dce->dCtlStorage == nil) {
@@ -50,8 +50,32 @@ OSErr cNuBusFPGARAMDskOpen(IOParamPtr pb, /* DCtlPtr */ AuxDCEPtr dce)
 		// dsptr->driveChar
 		// dsptr->driveMisc
 		
+	//	MyAddDrive(dsptr->dQRefNum, drvnum, (DrvQElPtr)&dsptr->qLink);
+
+	//	write_reg(dce, GOBOFB_DEBUG, 0x0000DEAD);
+		{
+			unsigned char* superslot = 0xc0000000; // FIXME
+			unsigned long *compressed = 0xFcFF8000; // FIXME
+			unsigned long res;
+			/*
+        write_reg(dce, GOBOFB_DEBUG, 0xDEAD0000);
+        write_reg(dce, GOBOFB_DEBUG, compressed);
+	write_reg(dce, GOBOFB_DEBUG, compressed[0]);
+        write_reg(dce, GOBOFB_DEBUG, compressed[1]);
+        write_reg(dce, GOBOFB_DEBUG, compressed[2]);
+        write_reg(dce, GOBOFB_DEBUG, compressed[3]);
+	*/
+			res = rledec(superslot, compressed, 730);
+			/*
+	write_reg(dce, GOBOFB_DEBUG, res);
+	write_reg(dce, GOBOFB_DEBUG, 0xDEEEEEAD);
+	*/
+		}
+
+
 		MyAddDrive(dsptr->dQRefNum, drvnum, (DrvQElPtr)&dsptr->qLink);
 	}
+		
 
  done:
 	return ret;

@@ -7,8 +7,8 @@ OSErr cNuBusFPGARAMDskCtl(CntrlParamPtr pb, /* DCtlPtr */ AuxDCEPtr dce)
 	
 	dce->dCtlDevBase = 0xfc000000;
 	
-	/* write_reg(dce, GOBOFB_DEBUG, 0xDEAD0002); */
-	/* write_reg(dce, GOBOFB_DEBUG, pb->csCode); */
+	write_reg(dce, GOBOFB_DEBUG, 0xDEAD0002);
+	write_reg(dce, GOBOFB_DEBUG, pb->csCode);
 	
 	ctx = *(struct RAMDrvContext**)dce->dCtlStorage;
 	

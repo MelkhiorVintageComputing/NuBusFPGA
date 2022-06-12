@@ -13,7 +13,7 @@ HRES=1920
 VRES=1080
 
 CSRC_VIDEO=NuBusFPGADrvr_OpenClose.c NuBusFPGADrvr_Ctrl.c NuBusFPGADrvr_Status.c NuBusFPGAPrimaryInit_Primary.c NuBusFPGASecondaryInit_Secondary.c
-CSRC_RAMDSK=NuBusFPGARAMDskDrvr_OpenClose.c NuBusFPGARAMDskDrvr_Ctrl.c NuBusFPGARAMDskDrvr_Prime.c NuBusFPGARAMDskDrvr_Status.c
+CSRC_RAMDSK=NuBusFPGARAMDskDrvr_OpenClose.c NuBusFPGARAMDskDrvr_Ctrl.c NuBusFPGARAMDskDrvr_Prime.c NuBusFPGARAMDskDrvr_Status.c myrle.c
 CSRC=${CSRC_VIDEO} ${CSRC_RAMDSK}
 CSRC_ASM=${CSRC:.c=.s}
 
@@ -60,6 +60,15 @@ NuBusFPGARAMDskDrvr_Status.s: NuBusFPGARAMDskDrvr_Status.c NuBusFPGARAMDskDrvr.h
 	sed -i -e 's/^\([^a-zA-Z0-9_]*\.globl.*\)/# --- \1/' $@
 	sed -i -e 's/\.\(L[0-9][0-9]*\)/.RDStatus_\1/g' $@
 
+myrle.s: myrle.c
+	${CC} -march=68020 -mcpu=68020 -O2 $< -S -o $@ -DSKIP_MAIN
+	sed -i -e 's/^\([^a-zA-Z0-9_]*\.globl.*\)/# --- \1/' $@
+	sed -i -e 's/\.\(L[0-9][0-9]*\)/.myrle_\1/g' $@
+
+dump_cpr.s: dump_cpr.c
+	${CC} -march=68020 -mcpu=68020 -O2 $< -S -o $@ -DSKIP_MAIN
+	sed -i -e 's/^\([^a-zA-Z0-9_]*\.globl.*\)/# --- \1/' $@
+	sed -i -e 's/\.\(L[0-9][0-9]*\)/.dump_cpr_\1/g' $@
 
 
 NuBusFPGAPrimaryInit_Primary.s: NuBusFPGAPrimaryInit_Primary.c NuBusFPGADrvr.h
