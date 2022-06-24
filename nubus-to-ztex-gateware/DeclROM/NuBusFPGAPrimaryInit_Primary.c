@@ -24,6 +24,7 @@ UInt32 Primary(SEBlock* seblock) {
 	/* PRIM_WRITEREG(GOBOFB_DEBUG, busMode);// trace */
 
 	/* grey the screen */
+	/* should switch to HW ? */
 	a32_l0 = a32;
 	a32_l1 = a32 + HRES;
 	for (j = 0 ; j < VRES ; j+= 2) {

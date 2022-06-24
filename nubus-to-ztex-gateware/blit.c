@@ -81,6 +81,8 @@ struct goblin_accel_regs {
 
 //#include "./rvintrin.h"
 
+#include "ldsdsupport.h"
+
 void from_reset(void) __attribute__ ((noreturn)); // nothrow, 
 
 static inline void flush_cache(void) {
@@ -376,6 +378,17 @@ static void rectfill(const unsigned_param_type xd,
 		}
 		if (wi > 3) {
 			unsigned int u32color = (unsigned int)u8color | ((unsigned int)u8color)<<8 | ((unsigned int)u8color)<<16 | ((unsigned int)u8color)<<24;
+			if ((wi>15) && (((unsigned int)dptr_elt&0x7)==0)) {
+				register unsigned int s8 asm("s8");
+				register unsigned int s9 asm("s9");
+				s8 = u32color;
+				s9 = u32color;
+				for ( ; i < (wi-15) ; i+=16) {
+					sd(dptr_elt, 0, 0, s8, s9);
+					sd(dptr_elt, 8, 0, s8, s9);
+					dptr_elt += 16;
+				}
+			}
 			for ( ; i < (wi-3) ; i+=4) {
 				*(unsigned int*)dptr_elt = u32color;
 				dptr_elt +=4;
@@ -732,10 +745,139 @@ static void invert(const unsigned_param_type xd,
 	BLIT_FWD_FWD(NAME, OP)					\
 	BLIT_FWD_BWD(NAME, OP)					\
 	BLIT_BWD_FWD(NAME, OP)					\
+		
+#define BLIT_NOTALLDIR(NAME, OP)				\
+	BLIT_FWD_BWD(NAME, OP)					\
+	BLIT_BWD_FWD(NAME, OP)					\
 	
-
-BLIT_ALLDIR(copy, COPY)
+//BLIT_ALLDIR(copy, COPY)
+BLIT_NOTALLDIR(copy, COPY)
 BLIT_ALLDIR(xor, XOR)
 BLIT_ALLDIR(copy_pm, COPY_PM)
 BLIT_ALLDIR(xor_pm, XOR_PM)
 	
+	
+static void bitblit_fwd_fwd_copy(const unsigned_param_type xs,
+								 const unsigned_param_type ys,
+								 const unsigned_param_type wi,
+								 const unsigned_param_type re,
+								 const unsigned_param_type xd,
+								 const unsigned_param_type yd,
+								 const unsigned char pm,
+								 unsigned char* src_ptr,
+								 unsigned char* dst_ptr,
+								 const unsigned_param_type src_stride,
+								 const unsigned_param_type dst_stride) {
+	unsigned int j;
+	unsigned char *sptr = (src_ptr + (ys * src_stride) + xs);
+	unsigned char *dptr = (dst_ptr + (yd * dst_stride) + xd);
+	unsigned char *sptr_line = sptr;
+	unsigned char *dptr_line = dptr;
+	/*const unsigned char npm = ~pm;*/
+	
+	for (j = 0 ; j < re ; j++) {
+	    register unsigned char *sptr_elt = sptr_line;
+		unsigned char *dptr_elt = dptr_line;
+		const unsigned char *dptr_elt_last = dptr_line + wi;
+		if (wi>3) {
+			if ((xs & 0x3) != (xd & 0x3)) {
+				/* align dest, we'll deal with src via shift realignement using fsr */
+				for ( ; (dptr_elt < dptr_elt_last) && ((unsigned int)dptr_elt&0x3)!=0; ) {
+					dptr_elt[0] = sptr_elt[0];
+					dptr_elt ++;
+					sptr_elt ++;
+				}
+				unsigned char *sptr_elt_al = (unsigned char*)((unsigned int)sptr_elt & ~0x3);
+				unsigned int fsr_cst = 8*((unsigned int)sptr_elt & 0x3);
+				unsigned int src0 = ((unsigned int*)sptr_elt_al)[0];
+				unsigned int u32pm = (unsigned int)pm | ((unsigned int)pm)<<8 | ((unsigned int)pm)<<16 | ((unsigned int)pm)<<24;
+				/* handle unaligned src */
+				for ( ; (dptr_elt < (dptr_elt_last-3)) ; ) {
+					unsigned int src1 = ((unsigned int*)sptr_elt_al)[1];
+					unsigned int val;
+					asm("fsr %0, %1, %2, %3\n" : "=r"(val) : "r"(src0), "r"(src1), "r"(fsr_cst));
+					((unsigned int*)dptr_elt)[0] = val;
+					src0 = src1;
+					dptr_elt += 4;
+					sptr_elt_al += 4;
+				}
+				sptr_elt = sptr_elt_al + ((unsigned int)sptr_elt & 0x3);
+			} else {
+				const unsigned int u32pm = (unsigned int)pm | ((unsigned int)pm)<<8 | ((unsigned int)pm)<<16 | ((unsigned int)pm)<<24;
+				const unsigned char* dptr_elt_end = dptr_elt + wi;
+				/* align dest & src (they are aligned the same here) */
+				for ( ; (dptr_elt < dptr_elt_last) && ((unsigned int)dptr_elt&0x3)!=0; ) {
+					dptr_elt[0] = sptr_elt[0];
+					dptr_elt ++;
+					sptr_elt ++;
+				}
+				/* align to 8 for ls/sd */
+				for ( ; (dptr_elt < (dptr_elt_last-3)) && ((unsigned int)dptr_elt&0x7)!=0;) {
+					((unsigned int*)dptr_elt)[0] = ((unsigned int*)sptr_elt)[0];
+					dptr_elt += 4;
+					sptr_elt += 4;
+				}
+#if 0
+				for ( ; (dptr_elt < (dptr_elt_last-31)) ; ) {
+					register unsigned int s4 asm("s4");
+					register unsigned int s5 asm("s5");
+					register unsigned int s6 asm("s6");
+					register unsigned int s7 asm("s7");
+					register unsigned int s8 asm("s8");
+					register unsigned int s9 asm("s9");
+					register unsigned int s10 asm("s10");
+					register unsigned int s11 asm("s11");
+					ld(sptr_elt, 0, s4, s5);
+					ld(sptr_elt, 16, s8, s9);
+					
+					ld(sptr_elt, 8, s6, s7);
+					sd(dptr_elt, 0, 0, s4, s5);
+					sd(dptr_elt, 8, 0, s6, s7);
+					
+					ld(sptr_elt, 24, s10, s11);
+					sd(dptr_elt, 16, 0, s8, s9);
+					sptr_elt += 32;
+					sd(dptr_elt, 24, 0, s10, s11);
+					dptr_elt += 32;
+					
+				}
+#endif
+				for ( ; (dptr_elt < (dptr_elt_last-15)) ; ) {
+					register unsigned int s8 asm("s8");
+					register unsigned int s9 asm("s9");
+					register unsigned int s10 asm("s10");
+					register unsigned int s11 asm("s11");
+					ld(sptr_elt, 0, s8, s9);
+					ld(sptr_elt, 8, s10, s11);
+					sd(dptr_elt, 0, 0, s8, s9);
+					sptr_elt += 16;
+					sd(dptr_elt, 8, 0, s10, s11);
+					dptr_elt += 16;
+				}
+#if 0
+				for ( ; (dptr_elt < (dptr_elt_last-7)) ; ) {
+					register unsigned int s8 asm("s8");
+					register unsigned int s9 asm("s9");
+					ld(sptr_elt, 0, s8, s9);
+					sd(dptr_elt, 0, 0, s8, s9);
+					sptr_elt += 8;
+					dptr_elt += 8;
+				}
+#endif
+				for ( ; (dptr_elt < (dptr_elt_last-3)) ; ) {
+					((unsigned int*)dptr_elt)[0] = ((unsigned int*)sptr_elt)[0];
+					dptr_elt += 4;
+					sptr_elt += 4;
+				}
+			}
+		}
+		/* common tail loop */
+		for ( ; dptr_elt < dptr_elt_last ; ) {
+			dptr_elt[0] = sptr_elt[0];
+			dptr_elt ++;
+			sptr_elt ++;
+		}
+		sptr_line += src_stride;
+		dptr_line += dst_stride;
+	}
+}

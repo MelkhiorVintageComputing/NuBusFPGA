@@ -19,12 +19,12 @@ object GenGoblinAccel { // extends App {
     val config = VexRiscvConfig(
       plugins = List(
         new IBusCachedPlugin(
-	  resetVector = 0x70910000, // beginning of ROM
+	  resetVector = 0xF0910000l, // beginning of ROM
           relaxedPcCalculation = false,
           prediction = STATIC,
           config = InstructionCacheConfig(
-            cacheSize = 512,
-            bytePerLine = 32,
+            cacheSize = 256,
+            bytePerLine = 16,
             wayCount = 1,
             addressWidth = 32,
             cpuDataWidth = 32,
@@ -42,8 +42,8 @@ object GenGoblinAccel { // extends App {
 //	),
         new DBusCachedPlugin(
           config = new DataCacheConfig(
-            cacheSize         = 512,
-            bytePerLine       = 32,
+            cacheSize         = 256,
+            bytePerLine       = 16,
             wayCount          = 2,
             addressWidth      = 32,
             cpuDataWidth      = 128,
@@ -51,7 +51,7 @@ object GenGoblinAccel { // extends App {
             catchAccessError  = false,
             catchIllegal      = false,
             catchUnaligned    = false,
-	    pendingMax        = 8, // 64
+	    pendingMax        = 8, // 64 ; irrelevant? only for SMP?
 	    withWriteAggregation = true // required if memDataWidth > 32
           ),
           dBusCmdMasterPipe = false, // prohibited if memDataWidth > 32
@@ -68,8 +68,8 @@ object GenGoblinAccel { // extends App {
         new DecoderSimplePlugin(
           catchIllegalInstruction = false
         ),
-        new RegFilePlugin(	
-          regFileReadyKind = plugin.SYNC,
+        new RegFileOddEvenPlugin(
+          regFileReadyKind = plugin.ASYNC, // FIXME why is even-odd failing with SYNC??? (and what's the difference...)
           zeroBoot = false
         ),
         new IntAluPlugin,
@@ -83,7 +83,7 @@ object GenGoblinAccel { // extends App {
 	//new BitManipZbaPlugin(earlyInjection = false), // sh.add
 	//new BitManipZbbPlugin(earlyInjection = false), // zero-ext, min/max, others
 	//new BitManipZbtPlugin(earlyInjection = false), // cmov, cmix, funnel
-	new CG6Plugin(earlyInjection = false),
+	new CG6Plugin(earlyInjection = false), // full-custom list
         new HazardSimplePlugin(
           bypassExecute           = true,
           bypassMemory            = true,

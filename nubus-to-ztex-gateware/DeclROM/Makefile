@@ -93,6 +93,7 @@ vid_decl_rom.dir: vid_decl_rom.raw append_romdir
 
 vid_decl_rom.bin: vid_decl_rom.dir
 	${NUBUS_CHECKSUM} --input_file $< --output_file $@ --output_size 32768
+	dd if=dump.cpr of=vid_decl_rom.bin bs=1 conv=notrunc
 
 clean:
 	rm -f res.inc ${CSRC_ASM} *.o vid_decl_rom.srec vid_decl_rom.raw vid_decl_rom.dir vid_decl_rom.l

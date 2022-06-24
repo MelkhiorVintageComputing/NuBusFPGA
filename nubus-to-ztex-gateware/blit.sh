@@ -15,7 +15,7 @@ GCCPFX=riscv32-buildroot-linux-gnu-
 GCC=${GCCDIR}/bin/${GCCPFX}gcc
 OBJCOPY=${GCCDIR}/bin/${GCCPFX}objcopy
 
-OPT=-Os #-fno-inline
+OPT=-O3 #-fno-inline
 ARCH=rv32im_zba_zbb_zbt
 
 PARAM="-DBASE_FB=${BASE_FB}"

@@ -12,11 +12,6 @@
 
 struct RAMDrvContext {
 	DrvSts2 drvsts;
-	//Ptr origcopyfunc;
-	//Ptr origdisk;      /* keep unstripped pointers for Dispose*/
-	//unsigned char * disk;
-	//char initialized;
-	//char alreadyalloced;
 };
 
 #define DRIVE_SIZE_BYTES ((256ul-8ul)*1024ul*1024ul) // FIXME: mem size minus fb size

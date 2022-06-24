@@ -6,22 +6,27 @@
 OSErr cNuBusFPGARAMDskOpen(IOParamPtr pb, /* DCtlPtr */ AuxDCEPtr dce)
 {
 	DrvSts2 *dsptr; // pointer to the DrvSts2 in our context
-	DrvQElPtr dq;
 	int drvnum = 1;
 	struct RAMDrvContext *ctx;
 	OSErr ret = noErr;
+	char busMode;
+	
+	busMode = 1;
+	SwapMMUMode ( &busMode ); // to32 // this likely won't work on older MacII ???
 
-	dce->dCtlDevBase = 0xfc000000;
+	dce->dCtlDevBase = 0xfc000000; // FIXME: why do we not get our slot properly ?
 	
 	write_reg(dce, GOBOFB_DEBUG, 0xDEAD0000);
 	/* write_reg(dce, GOBOFB_DEBUG, dce->dCtlRefNum); */
 
 	if (dce->dCtlStorage == nil) {
+		DrvQElPtr dq;
 		for(dq = (DrvQElPtr)(GetDrvQHdr())->qHead; dq; dq = (DrvQElPtr)dq->qLink) {
 			if (dq->dQDrive >= drvnum)
 				drvnum = dq->dQDrive+1;
 		}
 		
+		ReserveMemSys(sizeof(struct RAMDrvContext));
 		dce->dCtlStorage = NewHandleSysClear(sizeof(struct RAMDrvContext));
 		if (dce->dCtlStorage == nil) {
 			ret = openErr;
@@ -65,7 +70,7 @@ OSErr cNuBusFPGARAMDskOpen(IOParamPtr pb, /* DCtlPtr */ AuxDCEPtr dce)
         write_reg(dce, GOBOFB_DEBUG, compressed[2]);
         write_reg(dce, GOBOFB_DEBUG, compressed[3]);
 	*/
-			res = rledec(superslot, compressed, 730);
+			res = rledec(superslot, compressed, 730); // FIXME: 730 = 2920/4 (compressed size in words)
 			/*
 	write_reg(dce, GOBOFB_DEBUG, res);
 	write_reg(dce, GOBOFB_DEBUG, 0xDEEEEEAD);
@@ -76,6 +81,7 @@ OSErr cNuBusFPGARAMDskOpen(IOParamPtr pb, /* DCtlPtr */ AuxDCEPtr dce)
 		MyAddDrive(dsptr->dQRefNum, drvnum, (DrvQElPtr)&dsptr->qLink);
 	}
 		
+	SwapMMUMode ( &busMode ); 
 
  done:
 	return ret;

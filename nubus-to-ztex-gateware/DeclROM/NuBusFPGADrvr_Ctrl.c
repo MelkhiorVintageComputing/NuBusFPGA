@@ -276,10 +276,12 @@ OSErr cNuBusFPGACtl(CntrlParamPtr pb, /* DCtlPtr */ AuxDCEPtr dce)
 		   UInt32 a32_4p0, a32_4p1;
 		   const uint32_t wb = HRES >> idx;
 		   unsigned short j, i;
+		   
 		   if (vPInfo->csPage != 0)
 			   return paramErr;
 		   
 		   SwapMMUMode ( &busMode );
+#if 0
 		   if ((dStore->curMode != kDepthMode5) && (dStore->curMode != kDepthMode6)) {
 			   /* grey the screen */
 			   a32_l0 = a32;
@@ -313,6 +315,25 @@ OSErr cNuBusFPGACtl(CntrlParamPtr pb, /* DCtlPtr */ AuxDCEPtr dce)
 				   a32_l1 += 2*HRES*4;
 			   }
 		   }
+#else
+
+#define WAIT_FOR_HW_LE(accel_le)						\
+	while (accel_le->reg_status & (1<<WORK_IN_PROGRESS_BIT))
+		   const UInt32 fgcolor = 0; // FIXME: per-depth?
+		   struct goblin_accel_regs* accel_le = (struct goblin_accel_regs*)(dce->dCtlDevBase+GOBOFB_ACCEL_LE);
+		   WAIT_FOR_HW_LE(accel_le);
+		   accel_le->reg_width = HRES; // pixels
+		   accel_le->reg_height = VRES;
+		   accel_le->reg_bitblt_dst_x = 0; // pixels
+		   accel_le->reg_bitblt_dst_y = 0;
+		   accel_le->reg_dst_ptr = 0;
+		   accel_le->reg_fgcolor = fgcolor;
+		   accel_le->reg_cmd = (1<<DO_FILL_BIT);
+		   WAIT_FOR_HW_LE(accel_le);
+
+#undef WAIT_FOR_HW_LE
+		   
+#endif
 		   SwapMMUMode ( &busMode );
 		   
 		   ret = noErr;

@@ -17,7 +17,9 @@
 #warning "Using default VRES"
 #endif
 
-#define GOBOFB_BASE  0x00900000
+#define GOBOFB_BASE     0x00900000
+#define GOBOFB_ACCEL    0x00901000
+#define GOBOFB_ACCEL_LE 0x00901800
 
 //#define GOBOFB_REG_BASE       0x00900000
 //#define GOBOFB_MEM_BASE       0x00000000 /* remapped to 0x8f800000 by HW */
@@ -43,6 +45,34 @@
 #define GOBOFB_MODE_8BIT  0x3
 #define GOBOFB_MODE_24BIT 0x10
 #define GOBOFB_MODE_15BIT 0x11
+
+#define u_int32_t volatile unsigned long
+struct goblin_accel_regs {
+	u_int32_t reg_status; // 0
+	u_int32_t reg_cmd;
+	u_int32_t reg_r5_cmd;
+	u_int32_t resv0;
+	u_int32_t reg_width; // 4
+	u_int32_t reg_height;
+	u_int32_t reg_fgcolor;
+	u_int32_t resv2;
+	u_int32_t reg_bitblt_src_x; // 8
+	u_int32_t reg_bitblt_src_y;
+	u_int32_t reg_bitblt_dst_x;
+	u_int32_t reg_bitblt_dst_y;
+	u_int32_t reg_src_stride; // 12
+	u_int32_t reg_dst_stride;
+	u_int32_t reg_src_ptr; // 12
+	u_int32_t reg_dst_ptr;
+};
+
+// status
+#define WORK_IN_PROGRESS_BIT 0
+
+// cmd
+#define DO_BLIT_BIT            0 // hardwired in goblin_accel.py
+#define DO_FILL_BIT            1 // hardwired in goblin_accel.py
+#define DO_TEST_BIT            3 // hardwired in goblin_accel.py
 
 struct MyGammaTbl {
   short               gVersion;               /*gamma version number*/
