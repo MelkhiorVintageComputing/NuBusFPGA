@@ -33,10 +33,13 @@ struct control_blitter {
 
 #define FUN_BLIT_BIT            0 // hardwired in goblin_accel.py
 #define FUN_FILL_BIT            1 // hardwired in goblin_accel.py
+#define FUN_PATT_BIT            2 // hardwired in goblin_accel.py
 #define FUN_TEST_BIT            3 // hardwired in goblin_accel.py
 #define FUN_DONE_BIT           31
+
 #define FUN_BLIT           (1<<FUN_BLIT_BIT)
 #define FUN_FILL           (1<<FUN_FILL_BIT)
+#define FUN_PATT           (1<<FUN_PATT_BIT)
 #define FUN_TEST           (1<<FUN_TEST_BIT)
 #define FUN_DONE           (1<<FUN_DONE_BIT)
 
@@ -146,6 +149,18 @@ static void bitblit(const unsigned_param_type xs,
 					const unsigned_param_type dst_stride
 					);
 
+static void patternrectfill(const unsigned_param_type xd,
+							const unsigned_param_type yd,
+							const unsigned_param_type wi,
+							const unsigned_param_type re,
+							unsigned char *pat_ptr,
+							const unsigned_param_type pat_xmask,
+							const unsigned_param_type pat_ymask,
+							const unsigned_param_type pat_stride,
+							unsigned char* dst_ptr,
+							const unsigned_param_type dst_stride
+							);
+
 static void print_hexword(unsigned int v, unsigned int bx, unsigned int by);
 static void show_status_on_screen(void);
 
@@ -243,6 +258,16 @@ void from_reset(void) {
 				 fbc->reg_fgcolor,
 				 fbc->reg_dst_ptr ? (unsigned char*)fbc->reg_dst_ptr : (unsigned char*)BASE_FB,
 				 fbc->reg_dst_stride); // assumed to be scaled already
+	} break;
+	case FUN_PATT: {
+		patternrectfill(dstx, fbc->reg_bitblt_dst_y,
+						wi  , fbc->reg_height,
+						(unsigned char*)BASE_FB + (8*1024*1024) - (64*1024), // FIXME
+						fbc->reg_bitblt_src_x, // unscaled
+						fbc->reg_bitblt_src_y, // unscaled
+						fbc->reg_src_stride,
+						fbc->reg_dst_ptr ? (unsigned char*)fbc->reg_dst_ptr : (unsigned char*)BASE_FB,
+						fbc->reg_dst_stride); // assumed to be scaled already
 	} break;
 	default:
 		break;
@@ -879,5 +904,54 @@ static void bitblit_fwd_fwd_copy(const unsigned_param_type xs,
 		}
 		sptr_line += src_stride;
 		dptr_line += dst_stride;
+	}
+}
+
+static void patternrectfill(const unsigned_param_type xd,
+							const unsigned_param_type yd,
+							const unsigned_param_type wi,
+							const unsigned_param_type re,
+							unsigned char *pat_ptr,
+							const unsigned_param_type pat_xmask,
+							const unsigned_param_type pat_ymask,
+							const unsigned_param_type pat_stride,
+							unsigned char* dst_ptr,
+							const unsigned_param_type dst_stride
+							) {
+	struct goblin_accel_regs* fbc = (struct goblin_accel_regs*)BASE_ACCEL_REGS;
+	unsigned int i, j;
+	unsigned int io, jo;
+	unsigned char *dptr = (dst_ptr + (yd * dst_stride) + xd);
+	unsigned char *dptr_line = dptr;
+	unsigned char *pat_ptr_line;
+
+	io = xd & pat_xmask;
+	jo = yd & pat_ymask;
+
+	pat_ptr_line = pat_ptr + (jo & pat_ymask) * pat_stride;
+	
+	for (j = 0 ; j < re ; j++) {
+		unsigned char *dptr_elt = dptr_line;
+		i = 0;
+		for ( ; i < wi && ((unsigned int)dptr_elt&0x3)!=0; i++) {
+			dptr_elt[0] = pat_ptr_line[(i+io) & pat_xmask];
+			dptr_elt ++;
+		}
+		unsigned int fsr_cst = 8*((i+io) & 0x3);
+		unsigned int src0 = ((unsigned int*)pat_ptr_line)[((i+io) & pat_xmask) >> 2];
+		for ( ; i < (wi-3) ; i+=4) {
+			unsigned int src1 = ((unsigned int*)pat_ptr_line)[((i+io+4) & pat_xmask) >> 2];
+			unsigned int val;
+			asm("fsr %0, %1, %2, %3\n" : "=r"(val) : "r"(src0), "r"(src1), "r"(fsr_cst));
+			((unsigned int*)dptr_elt)[0] = val;
+			src0 = src1;
+			dptr_elt += 4;
+		}
+		for ( ; i < wi ; i++) {
+			dptr_elt[0] = pat_ptr_line[(i+io) & pat_xmask];
+			dptr_elt ++;
+		}
+		dptr_line += dst_stride;
+		pat_ptr_line = pat_ptr + ((j+jo) & pat_ymask) * pat_stride;
 	}
 }

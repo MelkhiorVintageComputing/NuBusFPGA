@@ -6,6 +6,8 @@
 
 #include "NuBusFPGA_HW.h"
 
+#include "ShowInitIcon.h"
+
 #define kINITid 0
 
 #define _BitBlt 0xAB00
@@ -45,7 +47,7 @@ static inline unsigned long brev(const unsigned long r) {
 #include "NuBusFPGA_QD.h"
 
 #ifdef QEMU
-#define DLOG(x) bt->debug - (x);
+#define DLOG(x) bt->debug = (x);
 #else
 #define DLOG(X)
 #endif
@@ -57,68 +59,53 @@ int hwblit(char* stack, char* p_fb_base, /* short dstshift, */ short mode, Patte
 	short height = qdstack->MINRECT.bottom - qdstack->MINRECT.top;
 	short dstshift = qdstack->DSTSHIFT;
 	short srcshift = qdstack->SRCSHIFT;
+	short expat_size = 0;
 	
  	if ((mode != 0) && (mode != 8)) { // only copy handled for now
-#ifdef QEMU
+#if 0
 		DLOG(-2L)
 		DLOG(mode)
-		if (mode == 8) {
-			DLOG(qdstack->PATROW)
-#if 0
-			DLOG(pat->pat[0])
-			DLOG(pat->pat[1])
-			DLOG(pat->pat[2])
-			DLOG(pat->pat[3])
-			DLOG(pat->pat[4])
-			DLOG(pat->pat[5])
-			DLOG(pat->pat[6])
-			DLOG(pat->pat[7])
-#endif
-		}
 #endif
 		return 0;
 	}
 	
 	if (mode == 8) {
-		register int i;
+		register int i, n;
 		register unsigned long expat0 = qdstack->EXPAT[0];
 		if (qdstack->PATROW != 0) {
 			DLOG(-6L)
-			return 0;
-		}
-		if ((expat0 & 0xFFFF) != ((expat0 >> 16) & 0xFFFF))
-			return 0;
-		if ((expat0 & 0xFF) != ((expat0 >> 8) & 0xFF))
-			return 0;
-		for (i = 1 ; i < 16 ; i++)
-			if (expat0 != qdstack->EXPAT[i]) {
-				DLOG(-7L)
-				DLOG(i)
-				DLOG(expat0)
-				DLOG(qdstack->EXPAT[i])
-				return 0;
+			DLOG((unsigned long)qdstack->EXPAT)
+			expat_size = (qdstack->PATVMASK+1) >> 2;
+			DLOG(expat_size)
+			for (i = 0 ; i < expat_size ; i++) {
+			  DLOG(qdstack->EXPAT[i])
 			}
+			// PATROW is the stride between lines (bytes)
+			DLOG(qdstack->PATROW)
+			// PATVMASK has the number of bytes-1 in the pattern?
+			DLOG(qdstack->PATVMASK)
+			// PATHMASK has ???
+			DLOG(qdstack->PATHMASK)
+			DLOG(qdstack->PATVPOS)
+			DLOG(qdstack->PATHPOS)
+			
+			if (expat_size > 16384)
+				return 0;
+		} else {
+			if ((expat0 & 0xFFFF) != ((expat0 >> 16) & 0xFFFF))
+				return 0;
+			if ((expat0 & 0xFF) != ((expat0 >> 8) & 0xFF))
+				return 0;
+			for (i = 1 ; i < 16 ; i++)
+				if (expat0 != qdstack->EXPAT[i]) {
+					DLOG(-7L)
+					DLOG(i)
+					DLOG(expat0)
+					DLOG(qdstack->EXPAT[i])
+					return 0;
+				}
+		}
 	}
-
-#if 0	
- 	if (dstshift < 3) { // only 8/16/32 bits for now
-#ifdef QEMU
-		DLOG(-3L)
-		DLOG(dstshift)
-#endif
- 		return 0;
-	}
-	dstshift -= 3;
-	
- 	if (srcshift < 3) { // only 8/16/32 bits for now
-#ifdef QEMU
-		DLOG(-8L)
-		DLOG(srcshift)
-#endif
- 		return 0;
-	}
-	srcshift -= 3;
-#endif
 	
 	if (srcshift != dstshift) {
 		DLOG(-9L)
@@ -133,7 +120,7 @@ int hwblit(char* stack, char* p_fb_base, /* short dstshift, */ short mode, Patte
 	}
 	
 	if (dstpix->baseAddr != p_fb_base) { // we're not destination
-#ifdef QEMU
+#if 0//def QEMU
 		DLOG(-4L)
 		DLOG((unsigned long)dstpix->baseAddr)
 #endif
@@ -143,7 +130,7 @@ int hwblit(char* stack, char* p_fb_base, /* short dstshift, */ short mode, Patte
 	if ((srcpix->baseAddr != p_fb_base)
 	   //   && ((unsigned long)srcpix->baseAddr >= 0x40000000) // and neither is main memory
 	   ){ 
-#ifdef QEMU
+#if 0//def QEMU
 		DLOG(-5L)
 		DLOG((unsigned long)srcpix->baseAddr)
 #endif
@@ -210,6 +197,8 @@ int hwblit(char* stack, char* p_fb_base, /* short dstshift, */ short mode, Patte
 			DLOG(qdstack->EXPAT[15])
 		}
 #endif
+
+#if 0
 		DLOG(-1L) 
 		
 		DLOG(srcpix->rowBytes)
@@ -226,6 +215,7 @@ int hwblit(char* stack, char* p_fb_base, /* short dstshift, */ short mode, Patte
 		
 		DLOG((long)dstpix->baseAddr)
 		DLOG((long)srcpix->baseAddr)
+#endif
 		
 			return 0;
 #else
@@ -251,8 +241,19 @@ int hwblit(char* stack, char* p_fb_base, /* short dstshift, */ short mode, Patte
 			accel_le->reg_src_stride = (srcpix->rowBytes); // bytes // we should strip the high-order bit, but the HW ignore that for us anyway
 			accel_le->reg_cmd = (1<<DO_BLIT_BIT);
 		} else if (mode == 8) {
-			accel_le->reg_fgcolor = (qdstack->EXPAT[0]);
-			accel_le->reg_cmd = (1<<DO_FILL_BIT);
+			if (qdstack->PATROW == 0) { // not big pattern, need to improve for non-constant?
+				accel_le->reg_fgcolor = (qdstack->EXPAT[0]);
+				accel_le->reg_cmd = (1<<DO_FILL_BIT);
+			} else { // big pattern
+				register unsigned short i;
+				for (i = 0 ; i < expat_size ; i++) {
+					((unsigned long*)(p_fb_base + GOBLIN_PATTERN_OFFSET))[i] = qdstack->EXPAT[i];
+				}
+				accel_le->reg_bitblt_src_x = qdstack->PATROW - 1;
+				accel_le->reg_bitblt_src_y = ((qdstack->PATVMASK+1)/qdstack->PATROW)-1;
+				accel_le->reg_src_stride = qdstack->PATROW;
+				accel_le->reg_cmd = (1<<DO_PATT_BIT);
+			}
 		}
 		
 		WAIT_FOR_HW_LE(accel_le);
@@ -347,6 +348,8 @@ void main(void)
 	oldBitBlt = (BitBltProc)GetToolTrapAddress(_BitBlt);
 	//*debug_ptr = (unsigned long)oldBitBlt;
 	SetToolTrapAddress((UniversalProcPtr)myBitBlt, _BitBlt);
+	
+	ShowInitIcon(128, true);
 	
 	/* restore the a4 world */
 	SetA4(oldA4);

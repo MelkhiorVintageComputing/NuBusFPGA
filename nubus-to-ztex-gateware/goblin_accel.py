@@ -37,11 +37,13 @@ class GoblinAccel(Module): # AutoCSR ?
         # do-some-work flags
         do_blit = Signal()
         do_fill = Signal()
+        do_patt = Signal()
         do_test = Signal()
 
         # cmd register reg_cmd
         DO_BLIT_BIT = 0
         DO_FILL_BIT = 1
+        DO_PATT_BIT = 2
         DO_TEST_BIT = 3
         
         # global status register reg_status
@@ -80,6 +82,7 @@ class GoblinAccel(Module): # AutoCSR ?
                                 1:  [ NextValue(reg_cmd, bus_dat_w_endian),
                                       NextValue(do_blit, bus_dat_w_endian[DO_BLIT_BIT] & ~reg_status[WORK_IN_PROGRESS_BIT]),
                                       NextValue(do_fill, bus_dat_w_endian[DO_FILL_BIT] & ~reg_status[WORK_IN_PROGRESS_BIT]),
+                                      NextValue(do_patt, bus_dat_w_endian[DO_PATT_BIT] & ~reg_status[WORK_IN_PROGRESS_BIT]),
                                       NextValue(do_test, bus_dat_w_endian[DO_TEST_BIT] & ~reg_status[WORK_IN_PROGRESS_BIT]),
                                 ],
                                 2:  [ NextValue(reg_r5_cmd, bus_dat_w_endian) ],
@@ -128,6 +131,7 @@ class GoblinAccel(Module): # AutoCSR ?
         FUN_DONE_BIT = 31
         FUN_BLIT_BIT = 0
         FUN_FILL_BIT = 1
+        FUN_PATT_BIT = 2
         FUN_TEST_BIT = 3
         # to hold the Vex in reset
         local_reset = Signal(reset = 1)
@@ -147,6 +151,12 @@ class GoblinAccel(Module): # AutoCSR ?
             ).Elif(do_fill & ~reg_status[WORK_IN_PROGRESS_BIT],
                    do_fill.eq(0),
                    reg_r5_cmd[FUN_FILL_BIT].eq(1),
+                   reg_status[WORK_IN_PROGRESS_BIT].eq(1),
+                   local_reset.eq(0),
+                   #timeout.eq(timeout_rst),
+            ).Elif(do_patt & ~reg_status[WORK_IN_PROGRESS_BIT],
+                   do_patt.eq(0),
+                   reg_r5_cmd[FUN_PATT_BIT].eq(1),
                    reg_status[WORK_IN_PROGRESS_BIT].eq(1),
                    local_reset.eq(0),
                    #timeout.eq(timeout_rst),

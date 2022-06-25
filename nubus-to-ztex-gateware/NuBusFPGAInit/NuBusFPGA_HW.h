@@ -7,6 +7,10 @@
 #define GOBLIN_ACCEL_OFFSET    0x00901000
 #define GOBLIN_ACCEL_OFFSET_LE 0x00901800
 
+
+#define GOBLIN_FB_OFFSET       0x00000000
+#define GOBLIN_PATTERN_OFFSET  0x007F0000 // 8 MiB - 64 KiB
+
 #define u_int32_t volatile unsigned long 
 
 // status
@@ -15,6 +19,7 @@
 // cmd
 #define DO_BLIT_BIT            0 // hardwired in goblin_accel.py
 #define DO_FILL_BIT            1 // hardwired in goblin_accel.py
+#define DO_PATT_BIT            2 // hardwired in goblin_accel.py
 #define DO_TEST_BIT            3 // hardwired in goblin_accel.py
 
 
