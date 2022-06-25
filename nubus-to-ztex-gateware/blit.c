@@ -937,15 +937,17 @@ static void patternrectfill(const unsigned_param_type xd,
 			dptr_elt[0] = pat_ptr_line[(i+io) & pat_xmask];
 			dptr_elt ++;
 		}
-		unsigned int fsr_cst = 8*((i+io) & 0x3);
-		unsigned int src0 = ((unsigned int*)pat_ptr_line)[((i+io) & pat_xmask) >> 2];
-		for ( ; i < (wi-3) ; i+=4) {
-			unsigned int src1 = ((unsigned int*)pat_ptr_line)[((i+io+4) & pat_xmask) >> 2];
-			unsigned int val;
-			asm("fsr %0, %1, %2, %3\n" : "=r"(val) : "r"(src0), "r"(src1), "r"(fsr_cst));
-			((unsigned int*)dptr_elt)[0] = val;
-			src0 = src1;
-			dptr_elt += 4;
+		if (wi > 3) {
+			unsigned int fsr_cst = 8*((i+io) & 0x3);
+			unsigned int src0 = ((unsigned int*)pat_ptr_line)[((i+io) & pat_xmask) >> 2];
+			for ( ; i < (wi-3) ; i+=4) {
+				unsigned int src1 = ((unsigned int*)pat_ptr_line)[((i+io+4) & pat_xmask) >> 2];
+				unsigned int val;
+				asm("fsr %0, %1, %2, %3\n" : "=r"(val) : "r"(src0), "r"(src1), "r"(fsr_cst));
+				((unsigned int*)dptr_elt)[0] = val;
+				src0 = src1;
+				dptr_elt += 4;
+			}
 		}
 		for ( ; i < wi ; i++) {
 			dptr_elt[0] = pat_ptr_line[(i+io) & pat_xmask];

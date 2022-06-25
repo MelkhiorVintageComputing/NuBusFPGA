@@ -60,6 +60,7 @@ int hwblit(char* stack, char* p_fb_base, /* short dstshift, */ short mode, Patte
 	short dstshift = qdstack->DSTSHIFT;
 	short srcshift = qdstack->SRCSHIFT;
 	short expat_size = 0;
+	short expat_const = 0;
 	
  	if ((mode != 0) && (mode != 8)) { // only copy handled for now
 #if 0
@@ -73,9 +74,10 @@ int hwblit(char* stack, char* p_fb_base, /* short dstshift, */ short mode, Patte
 		register int i, n;
 		register unsigned long expat0 = qdstack->EXPAT[0];
 		if (qdstack->PATROW != 0) {
+			expat_size = (qdstack->PATVMASK+1) >> 2;
+#if 0
 			DLOG(-6L)
 			DLOG((unsigned long)qdstack->EXPAT)
-			expat_size = (qdstack->PATVMASK+1) >> 2;
 			DLOG(expat_size)
 			for (i = 0 ; i < expat_size ; i++) {
 			  DLOG(qdstack->EXPAT[i])
@@ -88,22 +90,38 @@ int hwblit(char* stack, char* p_fb_base, /* short dstshift, */ short mode, Patte
 			DLOG(qdstack->PATHMASK)
 			DLOG(qdstack->PATVPOS)
 			DLOG(qdstack->PATHPOS)
-			
-			if (expat_size > 16384)
+#endif
+			if (expat_size > 512)
 				return 0;
+				
+			expat_const = 0;
 		} else {
+			expat_const = 1;
 			if ((expat0 & 0xFFFF) != ((expat0 >> 16) & 0xFFFF))
-				return 0;
+				expat_const = 0;
 			if ((expat0 & 0xFF) != ((expat0 >> 8) & 0xFF))
-				return 0;
-			for (i = 1 ; i < 16 ; i++)
-				if (expat0 != qdstack->EXPAT[i]) {
-					DLOG(-7L)
-					DLOG(i)
-					DLOG(expat0)
+				expat_const = 0;
+			for (i = 1 ; expat_const && i < 16 ; i++)
+				if (expat0 != qdstack->EXPAT[i])
+					expat_const = 0;
+				
+#ifdef QEMU
+			if (!expat_const) {
+				DLOG(-7L)
+				// PATROW is the stride between lines (bytes)
+				DLOG(qdstack->PATROW)
+				// PATVMASK has the number of bytes-1 in the pattern?
+				DLOG(qdstack->PATVMASK)
+				// PATHMASK has ???
+				DLOG(qdstack->PATHMASK)
+				DLOG(qdstack->PATVPOS)
+				DLOG(qdstack->PATHPOS)
+				for (i = 0 ; i < 16 ; i++)
 					DLOG(qdstack->EXPAT[i])
-					return 0;
-				}
+				//return 0;
+			}
+#endif
+			expat_size = 16;
 		}
 	}
 	
@@ -161,11 +179,22 @@ int hwblit(char* stack, char* p_fb_base, /* short dstshift, */ short mode, Patte
 		dstv.left = qdstack->MINRECT.left - dstpix->bounds.left;
 		
 		// must be byte-aligned for now
-		if (width & src_check)
+		if (width & src_check) {
+			DLOG(-15);
+			DLOG(width);
 			return 0;
-		if (srcv.left & src_check)
+		}
+		if (srcv.left & src_check) {
+			DLOG(-16);
+			DLOG(srcv.left);
 			return 0;
-		if (dstv.left & dst_check)
+		}
+		if (dstv.left & dst_check) {
+			DLOG(-17);
+			DLOG(dstv.left);
+			return 0;
+		}
+		if (width < 4)
 			return 0;
 		
 		/* if .baseAddr of both pix are different, no overlap */
@@ -176,29 +205,7 @@ int hwblit(char* stack, char* p_fb_base, /* short dstshift, */ short mode, Patte
 		}
 		*/
 #ifdef QEMU
-#if 0
-		if ((mode == 8) && (qdstack->PATROW == 0)) {
-			DLOG(0x87654321)
-			DLOG(qdstack->EXPAT[ 0])
-			DLOG(qdstack->EXPAT[ 1])
-			DLOG(qdstack->EXPAT[ 2])
-			DLOG(qdstack->EXPAT[ 3])
-			DLOG(qdstack->EXPAT[ 4])
-			DLOG(qdstack->EXPAT[ 5])
-			DLOG(qdstack->EXPAT[ 6])
-			DLOG(qdstack->EXPAT[ 7])
-			DLOG(qdstack->EXPAT[ 8])
-			DLOG(qdstack->EXPAT[ 9])
-			DLOG(qdstack->EXPAT[10])
-			DLOG(qdstack->EXPAT[11])
-			DLOG(qdstack->EXPAT[12])
-			DLOG(qdstack->EXPAT[13])
-			DLOG(qdstack->EXPAT[14])
-			DLOG(qdstack->EXPAT[15])
-		}
-#endif
-
-#if 0
+#if 1
 		DLOG(-1L) 
 		
 		DLOG(srcpix->rowBytes)
@@ -241,21 +248,27 @@ int hwblit(char* stack, char* p_fb_base, /* short dstshift, */ short mode, Patte
 			accel_le->reg_src_stride = (srcpix->rowBytes); // bytes // we should strip the high-order bit, but the HW ignore that for us anyway
 			accel_le->reg_cmd = (1<<DO_BLIT_BIT);
 		} else if (mode == 8) {
-			if (qdstack->PATROW == 0) { // not big pattern, need to improve for non-constant?
-				accel_le->reg_fgcolor = (qdstack->EXPAT[0]);
+			register unsigned short i;
+			if (expat_const) {
+				accel_le->reg_fgcolor = qdstack->EXPAT[0];
 				accel_le->reg_cmd = (1<<DO_FILL_BIT);
-			} else { // big pattern
-				register unsigned short i;
+			} else {
+				if (qdstack->PATROW == 0) { // same as 4 ?
+					accel_le->reg_bitblt_src_x = 0x3;
+					accel_le->reg_bitblt_src_y = 0xf;
+					accel_le->reg_src_stride = 4;
+					expat_size = 16;
+				} else {
+					accel_le->reg_bitblt_src_x = qdstack->PATROW - 1;
+					accel_le->reg_bitblt_src_y = ((qdstack->PATVMASK+1)/qdstack->PATROW)-1;
+					accel_le->reg_src_stride = qdstack->PATROW;
+				}
 				for (i = 0 ; i < expat_size ; i++) {
 					((unsigned long*)(p_fb_base + GOBLIN_PATTERN_OFFSET))[i] = qdstack->EXPAT[i];
 				}
-				accel_le->reg_bitblt_src_x = qdstack->PATROW - 1;
-				accel_le->reg_bitblt_src_y = ((qdstack->PATVMASK+1)/qdstack->PATROW)-1;
-				accel_le->reg_src_stride = qdstack->PATROW;
 				accel_le->reg_cmd = (1<<DO_PATT_BIT);
 			}
 		}
-		
 		WAIT_FOR_HW_LE(accel_le);
 		
 		return 1;
