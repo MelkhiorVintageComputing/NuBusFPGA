@@ -6,8 +6,6 @@ OSErr cNuBusFPGARAMDskPrime(IOParamPtr pb, /* DCtlPtr */ AuxDCEPtr dce)
 	OSErr ret = noErr;
 	struct RAMDrvContext *ctx;
 	
-	dce->dCtlDevBase = 0xfc000000;
-	
 	/* write_reg(dce, GOBOFB_DEBUG, 0xDEAD0003); */
 	/* write_reg(dce, GOBOFB_DEBUG, pb->ioTrap); */
 	/* write_reg(dce, GOBOFB_DEBUG, pb->ioPosMode); */
@@ -17,7 +15,7 @@ OSErr cNuBusFPGARAMDskPrime(IOParamPtr pb, /* DCtlPtr */ AuxDCEPtr dce)
 	ctx = *(struct RAMDrvContext**)dce->dCtlStorage;
 	
 	if (ctx) {
-		unsigned char* superslot = 0xc0000000; //(unsigned char*)(((unsigned long)dce->dCtlSlot) << 28ul);
+		unsigned char* superslot = (unsigned char*)(((unsigned long)ctx->slot) << 28ul);
 		unsigned long abs_offset = 0;
 		/* IOParamPtr: Devices 1-53 (p73) */
 		/* **** WHERE **** */

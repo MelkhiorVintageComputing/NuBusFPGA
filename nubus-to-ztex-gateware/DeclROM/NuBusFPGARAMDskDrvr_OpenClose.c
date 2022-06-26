@@ -3,6 +3,8 @@
 /* duplicated */
  void MyAddDrive(short drvrRefNum, short drvNum, DrvQElPtr qEl);
 
+#include <ROMDefs.h>
+
 OSErr cNuBusFPGARAMDskOpen(IOParamPtr pb, /* DCtlPtr */ AuxDCEPtr dce)
 {
 	DrvSts2 *dsptr; // pointer to the DrvSts2 in our context
@@ -10,13 +12,32 @@ OSErr cNuBusFPGARAMDskOpen(IOParamPtr pb, /* DCtlPtr */ AuxDCEPtr dce)
 	struct RAMDrvContext *ctx;
 	OSErr ret = noErr;
 	char busMode;
+	char slot;
 	
 	busMode = 1;
 	SwapMMUMode ( &busMode ); // to32 // this likely won't work on older MacII ???
 
-	dce->dCtlDevBase = 0xfc000000; // FIXME: why do we not get our slot properly ?
+	if (dce->dCtlDevBase == 0) { // for some unknown reason, we get an empty dCtlDevBase...
+		SpBlock				mySpBlock;
+		SInfoRecord			mySInfoRecord;
+		mySpBlock.spResult = (long)&mySInfoRecord;
+		
+		mySpBlock.spSlot = 0x9; // start at first
+		mySpBlock.spID = 0;
+		mySpBlock.spExtDev = 0;
+		mySpBlock.spCategory = catProto;
+		mySpBlock.spCType = 0x1000; // typeDrive;
+		mySpBlock.spDrvrSW = drSwApple;
+		mySpBlock.spDrvrHW = 0xbeee; // DrHwNuBusFPGADsk
+		mySpBlock.spTBMask = 0;
+		ret = SNextTypeSRsrc(&mySpBlock);
+		if (ret)
+			goto done;
+		slot = mySpBlock.spSlot;
+		dce->dCtlDevBase = 0xF0000000ul | ((unsigned long)slot << 24);
+	}
 	
-	write_reg(dce, GOBOFB_DEBUG, 0xDEAD0000);
+	/* write_reg(dce, GOBOFB_DEBUG, 0xDEAD0000); */
 	/* write_reg(dce, GOBOFB_DEBUG, dce->dCtlRefNum); */
 
 	if (dce->dCtlStorage == nil) {
@@ -36,6 +57,7 @@ OSErr cNuBusFPGARAMDskOpen(IOParamPtr pb, /* DCtlPtr */ AuxDCEPtr dce)
 		HLock(dce->dCtlStorage);
 
 		ctx = *(struct RAMDrvContext **)dce->dCtlStorage;
+		ctx->slot = slot;
 		
 		dsptr = &ctx->drvsts;
 		// dsptr->track /* current track */
@@ -58,27 +80,24 @@ OSErr cNuBusFPGARAMDskOpen(IOParamPtr pb, /* DCtlPtr */ AuxDCEPtr dce)
 	//	MyAddDrive(dsptr->dQRefNum, drvnum, (DrvQElPtr)&dsptr->qLink);
 
 	//	write_reg(dce, GOBOFB_DEBUG, 0x0000DEAD);
+
+		// initialize to our empty volume
 		{
-			unsigned char* superslot = 0xc0000000; // FIXME
-			unsigned long *compressed = 0xFcFF8000; // FIXME
+			unsigned long *superslot = (unsigned long*)(((unsigned long)ctx->slot) << 28ul);
+			unsigned long *compressed = (unsigned long*)(dce->dCtlDevBase + 0x00FF8000ul);
 			unsigned long res;
-			/*
-        write_reg(dce, GOBOFB_DEBUG, 0xDEAD0000);
-        write_reg(dce, GOBOFB_DEBUG, compressed);
-	write_reg(dce, GOBOFB_DEBUG, compressed[0]);
-        write_reg(dce, GOBOFB_DEBUG, compressed[1]);
-        write_reg(dce, GOBOFB_DEBUG, compressed[2]);
-        write_reg(dce, GOBOFB_DEBUG, compressed[3]);
-	*/
 			res = rledec(superslot, compressed, 730); // FIXME: 730 = 2920/4 (compressed size in words)
-			/*
-	write_reg(dce, GOBOFB_DEBUG, res);
-	write_reg(dce, GOBOFB_DEBUG, 0xDEEEEEAD);
-	*/
 		}
 
-
+		// add the drive
 		MyAddDrive(dsptr->dQRefNum, drvnum, (DrvQElPtr)&dsptr->qLink);
+
+		// auto-mount
+		{
+			ParamBlockRec pbr;
+			pbr.volumeParam.ioVRefNum = dsptr->dQDrive;
+			ret = PBMountVol(&pbr);
+		}
 	}
 		
 	SwapMMUMode ( &busMode ); 
@@ -92,7 +111,7 @@ OSErr cNuBusFPGARAMDskClose(IOParamPtr pb, /* DCtlPtr */ AuxDCEPtr dce)
 	OSErr ret = noErr;
 	//RAMDrvContext *ctx = *(RAMDrvContext**)dce->dCtlStorage;
 	
-	dce->dCtlDevBase = 0xfc000000;
+	/* dce->dCtlDevBase = 0xfc000000; */
 	
 	/* write_reg(dce, GOBOFB_DEBUG, 0xDEAD0001); */
 	

@@ -5,10 +5,8 @@ OSErr cNuBusFPGARAMDskStatus(CntrlParamPtr pb, /* DCtlPtr */ AuxDCEPtr dce)
 	OSErr ret = noErr;
 	struct RAMDrvContext *ctx;
 	
-	dce->dCtlDevBase = 0xfc000000;
-	
-	write_reg(dce, GOBOFB_DEBUG, 0xDEAD0004);
-	write_reg(dce, GOBOFB_DEBUG, pb->csCode);
+	/* write_reg(dce, GOBOFB_DEBUG, 0xDEAD0004); */
+	/* write_reg(dce, GOBOFB_DEBUG, pb->csCode); */
 
 	ctx = *(struct RAMDrvContext**)dce->dCtlStorage;
 	

@@ -1,7 +1,7 @@
 #ifndef __NUBUSFPGA_HW_H__
 #define __NUBUSFPGA_HW_H__
 
-#define GOBLIN_FB_BASE 0xFC000000 // FIXME !!!!
+//#define GOBLIN_FB_BASE 0xFC000000 // FIXME !!!!
 
 #define GOBLIN_BT_OFFSET       0x00900000
 #define GOBLIN_ACCEL_OFFSET    0x00901000

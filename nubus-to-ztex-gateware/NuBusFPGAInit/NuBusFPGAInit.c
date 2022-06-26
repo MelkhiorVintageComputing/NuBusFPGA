@@ -3,6 +3,8 @@
 #include <OSUtils.h>
 #include <Types.h>
 #include <QuickDraw.h>
+#include	<Slots.h>
+#include	<ROMDefs.h>
 
 #include "NuBusFPGA_HW.h"
 
@@ -15,13 +17,9 @@
 // #define QEMU
 
 
-//extern pascal void CopyBits(const BitMap *srcBits, const BitMap *dstBits, const Rect *srcRect, const Rect *dstRect, short mode, RgnHandle maskRgn) ONEWORDINLINE(0xA8EC);
-//extern pascal void StdBits(const BitMap *srcBits, const Rect *srcRect, const Rect *dstRect, short mode, RgnHandle maskRgn) ONEWORDINLINE(0xA8EB);
-
-#if 0
-typedef pascal void (*StdBitsProc)(BitMap *srcBits, Rect *srcRect, Rect *dstRect, short mode, RgnHandle maskRgn);
-StdBitsProc oldStdBits;
-#endif
+int hwblit(char* stack, char* p_fb_base, /* short dstshift, */ short mode, Pattern* pat, PixMapPtr dstpix, PixMapPtr srcpix, Rect *dstrect, Rect *srcrect);
+pascal asm void myBitBlt(BitMap *srcBits, BitMap *maskBits, BitMap *dstBits, Rect *srcRect, Rect *maskRect, Rect *dstRect, short mode, Pattern *pat, RgnHandle rgnA, RgnHandle rgnB, RgnHandle rgnC, short multColor);
+short check_slots(char list[6]);
 
 typedef pascal void (*BitBltProc)(BitMap *srcBits, BitMap *maskBits, BitMap *dstBits, Rect *srcRect, Rect *maskRect, Rect *dstRect, short mode, Pattern *pat, RgnHandle rgnA, RgnHandle rgnB, RgnHandle rgnC, short multColor);
 static BitBltProc oldBitBlt;
@@ -278,7 +276,7 @@ int hwblit(char* stack, char* p_fb_base, /* short dstshift, */ short mode, Patte
 	return 0;
 }
 
-pascal asm void myBitBlt(BitMap *srcBits, BitMap *maskBits, BitMap *dstBits, Rect *srcRect, Rect *maskRect, Rect *dstRect, short mode, Pattern *pat, RgnHandle rgnA, RgnHandle rgnB, RgnHandle rgnC, short multColor){
+pascal asm void myBitBlt(BitMap *srcBits, BitMap *maskBits, BitMap *dstBits, Rect *srcRect, Rect *maskRect, Rect *dstRect, short mode, Pattern *pat, RgnHandle rgnA, RgnHandle rgnB, RgnHandle rgnC, short multColor) {
 	// a2: srcrect
 	// a3: dstrect
 	// a4: srcpix
@@ -331,7 +329,9 @@ pascal asm void myBitBlt(BitMap *srcBits, BitMap *maskBits, BitMap *dstBits, Rec
 void main(void)
 {
 	long	oldA4;
-
+	short cnt;
+	char list[6];
+	char slot;
 	Handle h;
 	struct goblin_bt_regs* bt;
 	 
@@ -341,7 +341,15 @@ void main(void)
 	oldA4 = SetCurrentA4();
 	RememberA4();
 	
-	fb_base = (void*)GOBLIN_FB_BASE; // FIXME !!!
+	cnt = check_slots(list);
+	
+	if (!cnt)
+		goto finish;
+		
+	slot = list[0]; // FIXME: what if more than one ???
+	
+	//fb_base = (void*)GOBLIN_FB_BASE; // FIXME !!!
+	fb_base = (void*)(0xF0000000ul | (((unsigned long)slot) << 24));
 	bt_base = ((char*)fb_base + GOBLIN_BT_OFFSET);
 	accel_base = ((char*)fb_base + GOBLIN_ACCEL_OFFSET);
 	
@@ -362,10 +370,54 @@ void main(void)
 	//*debug_ptr = (unsigned long)oldBitBlt;
 	SetToolTrapAddress((UniversalProcPtr)myBitBlt, _BitBlt);
 	
-	ShowInitIcon(128, true);
+	ShowInitIcon(121 + slot, true);
 	
+finish:
 	/* restore the a4 world */
 	SetA4(oldA4);
 	//	*debug_ptr = 0xBEEFDEAD;
 }
 
+short check_slots(char list[6]) {
+	int		i;
+	short cnt;
+	OSErr	err;
+	SpBlock				mySpBlock;
+	SInfoRecord			mySInfoRecord;
+	cnt = 0;
+	// check all slots
+	for (i = 0x9 ; i < 0xf ; i++) {
+		// check if there's something there
+		mySpBlock.spResult = (long)&mySInfoRecord;
+		mySpBlock.spSlot = i;
+		mySpBlock.spSize = 0; // unused by SReadInfo, can be altered
+		err = SReadInfo(&mySpBlock);
+		if (!err) {
+			if (mySInfoRecord.siInitStatusA == smEmptySlot) {
+				// oups ?
+			} else {
+				// check for what exactly is here
+				mySpBlock.spSlot = i;
+				mySpBlock.spID = 0;
+				mySpBlock.spExtDev = 0;
+				mySpBlock.spCategory = catDisplay;
+				mySpBlock.spCType = typeVideo;
+				mySpBlock.spDrvrSW = drSwApple;
+				mySpBlock.spDrvrHW = 0xbeef; // DrHwNuBusFPGA
+				mySpBlock.spTBMask = 0;
+				err = SNextTypeSRsrc(&mySpBlock);
+				if (!err) {
+					if ((mySpBlock.spCategory == catDisplay) &&
+						(mySpBlock.spCType == typeVideo) &&
+						(mySpBlock.spDrvrSW == drSwApple) &&
+						(mySpBlock.spDrvrHW == 0xbeef) &&
+						(mySpBlock.spSlot == i))  {
+						list[cnt] = i;
+						cnt ++;
+					}
+				}
+			}
+		}
+	}
+	return cnt;
+}

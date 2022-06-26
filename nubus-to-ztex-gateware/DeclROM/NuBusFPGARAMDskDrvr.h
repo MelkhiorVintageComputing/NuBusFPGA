@@ -12,6 +12,7 @@
 
 struct RAMDrvContext {
 	DrvSts2 drvsts;
+	char slot;
 };
 
 #define DRIVE_SIZE_BYTES ((256ul-8ul)*1024ul*1024ul) // FIXME: mem size minus fb size
