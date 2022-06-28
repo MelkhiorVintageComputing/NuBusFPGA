@@ -407,60 +407,6 @@ Text GLabel 4100 3050 2    50   Input ~ 0
 ~AD18_3V3
 Text GLabel 1600 2450 0    39   Input ~ 8
 NUBUS_OE
-Text GLabel 9900 2950 2    50   Input ~ 0
-FPGA_R0
-Text GLabel 9900 3050 2    50   Input ~ 0
-FPGA_R1
-Text GLabel 9900 3150 2    50   Input ~ 0
-FPGA_R2
-Text GLabel 9900 3250 2    50   Input ~ 0
-FPGA_R3
-Text GLabel 9900 3350 2    50   Input ~ 0
-FPGA_R4
-Text GLabel 9900 3450 2    50   Input ~ 0
-FPGA_R5
-Text GLabel 9900 3550 2    50   Input ~ 0
-FPGA_R6
-Text GLabel 9900 3650 2    50   Input ~ 0
-FPGA_R7
-Text GLabel 9900 3750 2    50   Input ~ 0
-FPGA_G0
-Text GLabel 9900 3850 2    50   Input ~ 0
-FPGA_G1
-Text GLabel 9900 3950 2    50   Input ~ 0
-FPGA_G2
-Text GLabel 9900 4050 2    50   Input ~ 0
-FPGA_G3
-Text GLabel 7400 4050 0    50   Input ~ 0
-FPGA_G4
-Text GLabel 7400 3950 0    50   Input ~ 0
-FPGA_G5
-Text GLabel 7400 3850 0    50   Input ~ 0
-FPGA_G6
-Text GLabel 7400 3750 0    50   Input ~ 0
-FPGA_G7
-Text GLabel 7400 3650 0    50   Input ~ 0
-FPGA_B0
-Text GLabel 7400 3550 0    50   Input ~ 0
-FPGA_B1
-Text GLabel 7400 3450 0    50   Input ~ 0
-FPGA_B2
-Text GLabel 7400 3350 0    50   Input ~ 0
-FPGA_B3
-Text GLabel 7400 3250 0    50   Input ~ 0
-FPGA_B4
-Text GLabel 7400 3150 0    50   Input ~ 0
-FPGA_B5
-Text GLabel 7400 3050 0    50   Input ~ 0
-FPGA_B6
-Text GLabel 7400 2950 0    50   Input ~ 0
-FPGA_B7
-Text GLabel 7400 2550 0    50   Input ~ 0
-FPGA_VGA_CLK
-Text GLabel 9900 2050 2    50   Input ~ 0
-FPGA_VGA_HS
-Text GLabel 9900 2150 2    50   Input ~ 0
-FPGA_VGA_VS
 Wire Wire Line
 	11000 1250 11000 2750
 Connection ~ 11000 2750
