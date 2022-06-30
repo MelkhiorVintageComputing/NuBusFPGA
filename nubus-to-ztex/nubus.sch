@@ -4,7 +4,7 @@ EELAYER 26 0
 EELAYER END
 $Descr A2 23386 16535
 encoding utf-8
-Sheet 3 7
+Sheet 3 9
 Title "nubus-to-ztex NuBus connection & level shifting"
 Date ""
 Rev ""
@@ -63,17 +63,6 @@ F 1 "GND" H 17355 4077 50  0000 C CNN
 F 2 "" H 17350 4250 50  0001 C CNN
 F 3 "" H 17350 4250 50  0001 C CNN
 	1    17350 4250
-	1    0    0    -1  
-$EndComp
-$Comp
-L power:GND #PWR038
-U 1 1 5F91AEBF
-P 9800 6750
-F 0 "#PWR038" H 9800 6500 50  0001 C CNN
-F 1 "GND" H 9805 6577 50  0000 C CNN
-F 2 "" H 9800 6750 50  0001 C CNN
-F 3 "" H 9800 6750 50  0001 C CNN
-	1    9800 6750
 	1    0    0    -1  
 $EndComp
 $Comp
@@ -630,7 +619,7 @@ Text GLabel 21950 9950 0    50   Input ~ 0
 ~NMRQ_5V
 Text GLabel 21950 10450 0    50   Input ~ 0
 ~CLK_5V
-Text GLabel 10150 8800 2    50   Input ~ 0
+Text GLabel 14950 13800 2    50   Input ~ 0
 ~RESET_5V
 Text GLabel 20250 1800 0    50   Input ~ 0
 SB0_5V
@@ -706,7 +695,7 @@ Text GLabel 11750 2950 2    50   Input ~ 0
 ~AD31_5V
 Text GLabel 11750 3050 2    50   Input ~ 0
 ~AD30_5V
-Text GLabel 10150 7200 2    50   Input ~ 0
+Text GLabel 14950 13700 2    50   Input ~ 0
 ~TM2_5V
 Text GLabel 20250 1300 0    50   Input ~ 0
 ~CM0_5V
@@ -716,23 +705,23 @@ Text GLabel 20250 1500 0    50   Input ~ 0
 ~CM2_5V
 Text GLabel 20250 2350 0    50   Input ~ 0
 ~PFW_5V
-Text GLabel 8550 8100 0    50   Input ~ 0
+Text GLabel 7200 13350 0    50   Input ~ 0
 ~CLK2X_5V
-Text GLabel 7600 8300 0    50   Input ~ 0
+Text GLabel 2200 13750 0    50   Input ~ 0
 ~ID1_5V
-Text GLabel 7600 8400 0    50   Input ~ 0
+Text GLabel 2200 13850 0    50   Input ~ 0
 ~ID0_5V
-Text GLabel 7600 8100 0    50   Input ~ 0
+Text GLabel 2200 13550 0    50   Input ~ 0
 ~ID3_5V
-Text GLabel 7600 8200 0    50   Input ~ 0
+Text GLabel 2200 13650 0    50   Input ~ 0
 ~ID2_5V
 Text GLabel 20250 3450 0    50   Input ~ 0
 ~CLK2XEN_5V
 Text GLabel 20250 1200 0    50   Input ~ 0
 ~CBUSY_5V
-Text GLabel 8550 7500 0    50   Input ~ 0
+Text GLabel 12100 13600 2    50   Input ~ 0
 ~ACK_5V
-Text GLabel 8550 7800 0    50   Input ~ 0
+Text GLabel 12100 13800 2    50   Input ~ 0
 ~START_5V
 NoConn ~ 20250 1800
 NoConn ~ 20250 1700
@@ -751,13 +740,13 @@ Text Notes 20300 2450 0    50   ~ 0
 SW Pwr-ON/OFF\n(we ignore)
 NoConn ~ 20250 2350
 NoConn ~ 20250 2450
-Text GLabel 8550 9900 0    50   Input ~ 0
+Text GLabel 10500 13500 0    50   Input ~ 0
 ~RQST_3V3
-Text GLabel 10150 9100 2    50   Input ~ 0
+Text GLabel 10500 13700 0    50   Input ~ 0
 ~CLK_3V3
-Text GLabel 8550 9100 0    50   Input ~ 0
+Text GLabel 12100 13500 2    50   Input ~ 0
 ~RQST_5V
-Text GLabel 8550 8900 0    50   Input ~ 0
+Text GLabel 10500 13800 0    50   Input ~ 0
 ~START_3V3
 Text GLabel 12800 3250 0    50   Input ~ 0
 ~AD21_3V3
@@ -783,7 +772,7 @@ Text GLabel 10750 2950 0    50   Input ~ 0
 ~AD31_3V3
 Text GLabel 10750 3050 0    50   Input ~ 0
 ~AD30_3V3
-Text GLabel 10150 9200 2    50   Input ~ 0
+Text GLabel 13350 13800 0    50   Input ~ 0
 ~RESET_3V3
 Text GLabel 16850 3650 0    50   Input ~ 0
 ~AD1_3V3
@@ -826,142 +815,98 @@ Text GLabel 12800 3450 0    50   Input ~ 0
 Text GLabel 12800 3350 0    50   Input ~ 0
 ~AD18_3V3
 Wire Wire Line
-	7600 8300 7750 8300
+	2200 13750 2350 13750
 $Comp
 L Device:R R?
 U 1 1 61AF5DD2
-P 7850 8650
+P 2450 14100
 AR Path="/5F6B165A/61AF5DD2" Ref="R?"  Part="1" 
 AR Path="/5F679B53/61AF5DD2" Ref="R?"  Part="1" 
 AR Path="/618F532C/61AF5DD2" Ref="R7"  Part="1" 
-F 0 "R7" V 7930 8650 50  0000 C CNN
-F 1 "10k" V 7850 8650 50  0000 C CNN
-F 2 "Resistor_SMD:R_0603_1608Metric" V 7780 8650 50  0001 C CNN
-F 3 "" H 7850 8650 50  0000 C CNN
-F 4 "0603WAF1002T5E" V 7850 8050 50  0001 C CNN "MPN"
-	1    7850 8650
+F 0 "R7" V 2530 14100 50  0000 C CNN
+F 1 "10k" V 2450 14100 50  0000 C CNN
+F 2 "Resistor_SMD:R_0603_1608Metric" V 2380 14100 50  0001 C CNN
+F 3 "" H 2450 14100 50  0000 C CNN
+F 4 "0603WAF1002T5E" V 2450 13500 50  0001 C CNN "MPN"
+	1    2450 14100
 	-1   0    0    1   
 $EndComp
 $Comp
 L Device:R R?
 U 1 1 61AF6878
-P 7650 8650
+P 2250 14100
 AR Path="/5F6B165A/61AF6878" Ref="R?"  Part="1" 
 AR Path="/5F679B53/61AF6878" Ref="R?"  Part="1" 
 AR Path="/618F532C/61AF6878" Ref="R5"  Part="1" 
-F 0 "R5" V 7730 8650 50  0000 C CNN
-F 1 "10k" V 7650 8650 50  0000 C CNN
-F 2 "Resistor_SMD:R_0603_1608Metric" V 7580 8650 50  0001 C CNN
-F 3 "" H 7650 8650 50  0000 C CNN
-F 4 "0603WAF1002T5E" V 7650 8050 50  0001 C CNN "MPN"
-	1    7650 8650
+F 0 "R5" V 2330 14100 50  0000 C CNN
+F 1 "10k" V 2250 14100 50  0000 C CNN
+F 2 "Resistor_SMD:R_0603_1608Metric" V 2180 14100 50  0001 C CNN
+F 3 "" H 2250 14100 50  0000 C CNN
+F 4 "0603WAF1002T5E" V 2250 13500 50  0001 C CNN "MPN"
+	1    2250 14100
 	-1   0    0    1   
 $EndComp
 $Comp
 L Device:R R?
 U 1 1 61AF68D0
-P 7750 8650
+P 2350 14100
 AR Path="/5F6B165A/61AF68D0" Ref="R?"  Part="1" 
 AR Path="/5F679B53/61AF68D0" Ref="R?"  Part="1" 
 AR Path="/618F532C/61AF68D0" Ref="R6"  Part="1" 
-F 0 "R6" V 7830 8650 50  0000 C CNN
-F 1 "10k" V 7750 8650 50  0000 C CNN
-F 2 "Resistor_SMD:R_0603_1608Metric" V 7680 8650 50  0001 C CNN
-F 3 "" H 7750 8650 50  0000 C CNN
-F 4 "0603WAF1002T5E" V 7750 8050 50  0001 C CNN "MPN"
-	1    7750 8650
+F 0 "R6" V 2430 14100 50  0000 C CNN
+F 1 "10k" V 2350 14100 50  0000 C CNN
+F 2 "Resistor_SMD:R_0603_1608Metric" V 2280 14100 50  0001 C CNN
+F 3 "" H 2350 14100 50  0000 C CNN
+F 4 "0603WAF1002T5E" V 2350 13500 50  0001 C CNN "MPN"
+	1    2350 14100
 	-1   0    0    1   
 $EndComp
 Wire Wire Line
-	7750 8500 7750 8300
+	2350 13950 2350 13750
 Wire Wire Line
-	7650 8500 7650 8400
+	2250 13950 2250 13850
 Wire Wire Line
-	7650 8400 7600 8400
+	2250 13850 2200 13850
 Wire Wire Line
-	7850 8800 7750 8800
-Connection ~ 7750 8800
-$Comp
-L Device:C C7
-U 1 1 61B12074
-P 9800 6600
-F 0 "C7" H 9825 6700 50  0000 L CNN
-F 1 "10nF" H 9825 6500 50  0000 L CNN
-F 2 "Capacitor_SMD:C_0603_1608Metric" H 9838 6450 50  0001 C CNN
-F 3 "" H 9800 6600 50  0000 C CNN
-F 4 "www.yageo.com" H 9800 6600 50  0001 C CNN "MNF1_URL"
-F 5 "CC0603KRX7R8BB103" H 9800 6600 50  0001 C CNN "MPN"
-F 6 "603-CC603KRX7R8BB103" H 9800 6600 50  0001 C CNN "Mouser"
-F 7 "?" H 9800 6600 50  0001 C CNN "Digikey"
-F 8 "?" H 9800 6600 50  0001 C CNN "LCSC"
-F 9 "?" H 9800 6600 50  0001 C CNN "Koncar"
-F 10 "TB" H 9800 6600 50  0001 C CNN "Side"
-F 11 "https://lcsc.com/product-detail/Multilayer-Ceramic-Capacitors-MLCC-SMD-SMT_YAGEO-CC0603KRX7R8BB103_C327204.html" H 9800 6600 50  0001 C CNN "URL"
-	1    9800 6600
-	1    0    0    -1  
-$EndComp
+	2450 14250 2350 14250
+Connection ~ 2350 14250
 Wire Wire Line
 	7850 6200 8050 6200
 Wire Wire Line
-	7650 8800 7450 8800
-Connection ~ 7650 8800
+	2250 14250 2050 14250
+Connection ~ 2250 14250
 $Comp
 L power:+5V #PWR035
 U 1 1 61B1713E
-P 7450 8800
-F 0 "#PWR035" H 7450 8650 50  0001 C CNN
-F 1 "+5V" H 7465 8973 50  0000 C CNN
-F 2 "" H 7450 8800 50  0001 C CNN
-F 3 "" H 7450 8800 50  0001 C CNN
-	1    7450 8800
+P 2050 14250
+F 0 "#PWR035" H 2050 14100 50  0001 C CNN
+F 1 "+5V" H 2065 14423 50  0000 C CNN
+F 2 "" H 2050 14250 50  0001 C CNN
+F 3 "" H 2050 14250 50  0001 C CNN
+	1    2050 14250
 	1    0    0    -1  
 $EndComp
 Text GLabel 17850 3950 2    39   Input ~ 8
 NUBUS_OE
-Text GLabel 10150 8100 2    50   Input ~ 0
+Text GLabel 4550 13850 2    50   Input ~ 0
 ~ARB1_5V
-Text GLabel 10150 7900 2    50   Input ~ 0
+Text GLabel 4550 13750 2    50   Input ~ 0
 ~ARB0_5V
-Text GLabel 10150 7700 2    50   Input ~ 0
+Text GLabel 4550 13650 2    50   Input ~ 0
 ~ARB3_5V
-Text GLabel 10150 7500 2    50   Input ~ 0
+Text GLabel 4550 13550 2    50   Input ~ 0
 ~ARB2_5V
-Text GLabel 8550 9500 0    50   Input ~ 0
+Text GLabel 3150 14250 0    50   Input ~ 0
 ~ID1_3V3
-Text GLabel 8550 9400 0    50   Input ~ 0
+Text GLabel 3150 14350 0    50   Input ~ 0
 ~ID0_3V3
-Text GLabel 8550 8700 0    50   Input ~ 0
+Text GLabel 3150 14050 0    50   Input ~ 0
 ~ID3_3V3
-Text GLabel 8550 9800 0    50   Input ~ 0
+Text GLabel 3150 14150 0    50   Input ~ 0
 ~ID2_3V3
-$Comp
-L power:+3V3 #PWR037
-U 1 1 61BB817E
-P 9800 6450
-F 0 "#PWR037" H 9800 6300 50  0001 C CNN
-F 1 "+3V3" H 9815 6623 50  0000 C CNN
-F 2 "" H 9800 6450 50  0001 C CNN
-F 3 "" H 9800 6450 50  0001 C CNN
-	1    9800 6450
-	1    0    0    -1  
-$EndComp
-Wire Wire Line
-	9450 10500 9550 10500
-Connection ~ 9450 10500
-$Comp
-L power:GND #PWR036
-U 1 1 61BB9199
-P 9450 10500
-F 0 "#PWR036" H 9450 10250 50  0001 C CNN
-F 1 "GND" H 9455 10327 50  0000 C CNN
-F 2 "" H 9450 10500 50  0001 C CNN
-F 3 "" H 9450 10500 50  0001 C CNN
-	1    9450 10500
-	1    0    0    -1  
-$EndComp
-Text GLabel 10150 9700 2    39   Input ~ 8
+Text GLabel 7700 9050 0    39   Input ~ 8
 GRANT
-Text GLabel 10150 9600 2    39   Input ~ 8
+Text GLabel 7700 8950 0    39   Input ~ 8
 ARB
 $Comp
 L 74xx:74LS245 U8
@@ -1209,156 +1154,25 @@ Text GLabel 13800 3850 2    50   Input ~ 10
 NUBUS_AD_DIR
 Text GLabel 11750 3850 2    50   Input ~ 10
 NUBUS_AD_DIR
-$Comp
-L Device:C C8
-U 1 1 61BFF690
-P 10050 6600
-F 0 "C8" H 10075 6700 50  0000 L CNN
-F 1 "10nF" H 10075 6500 50  0000 L CNN
-F 2 "Capacitor_SMD:C_0603_1608Metric" H 10088 6450 50  0001 C CNN
-F 3 "" H 10050 6600 50  0000 C CNN
-F 4 "www.yageo.com" H 10050 6600 50  0001 C CNN "MNF1_URL"
-F 5 "CC0603KRX7R8BB103" H 10050 6600 50  0001 C CNN "MPN"
-F 6 "603-CC603KRX7R8BB103" H 10050 6600 50  0001 C CNN "Mouser"
-F 7 "?" H 10050 6600 50  0001 C CNN "Digikey"
-F 8 "?" H 10050 6600 50  0001 C CNN "LCSC"
-F 9 "?" H 10050 6600 50  0001 C CNN "Koncar"
-F 10 "TB" H 10050 6600 50  0001 C CNN "Side"
-F 11 "https://lcsc.com/product-detail/Multilayer-Ceramic-Capacitors-MLCC-SMD-SMT_YAGEO-CC0603KRX7R8BB103_C327204.html" H 10050 6600 50  0001 C CNN "URL"
-	1    10050 6600
-	1    0    0    -1  
-$EndComp
-Text GLabel 10150 8900 2    39   Input ~ 8
-NUBUS_OE
-Text GLabel 10150 9300 2    39   Input ~ 8
+Text GLabel 7700 8750 0    39   Input ~ 8
 NUBUS_MASTER_DIR
-Connection ~ 9800 6450
 Text Notes 13000 2050 0    50   ~ 0
 input/output\n(ad*)\n74LVT245 with enable (always on except after reset) and direction pin
-Text GLabel 10150 8200 2    50   Input ~ 0
+Text GLabel 14950 13500 2    50   Input ~ 0
 ~TM1_5V
-Text GLabel 10150 8300 2    50   Input ~ 0
+Text GLabel 14950 13600 2    50   Input ~ 0
 ~TM0_5V
-Text GLabel 8550 9700 0    50   Input ~ 0
+Text GLabel 13350 13500 0    50   Input ~ 0
 ~TM1_3V3
-Text GLabel 8550 9600 0    50   Input ~ 0
+Text GLabel 13350 13600 0    50   Input ~ 0
 ~TM0_3V3
-Text GLabel 10150 10000 2    50   Input ~ 0
-CPLD_JTAG_TDI
-Text GLabel 10150 10100 2    50   Input ~ 0
-CPLD_JTAG_TMS
-Text GLabel 10150 10200 2    50   Input ~ 0
-CPLD_JTAG_TCK
-Text GLabel 10150 10300 2    50   Input ~ 0
-CPLD_JTAG_TDO
 Wire Wire Line
-	7750 8300 8550 8300
-Connection ~ 7750 8300
-Connection ~ 7650 8400
-Text GLabel 8550 7900 0    39   Input ~ 8
-fpga_to_cpld_clk
-Wire Wire Line
-	9800 6450 10050 6450
-Wire Wire Line
-	10050 6750 9800 6750
-Connection ~ 9800 6750
-$Comp
-L Device:C C9
-U 1 1 61CBFFB1
-P 10300 6600
-F 0 "C9" H 10325 6700 50  0000 L CNN
-F 1 "100nF" H 10325 6500 50  0000 L CNN
-F 2 "Capacitor_SMD:C_0603_1608Metric" H 10338 6450 50  0001 C CNN
-F 3 "" H 10300 6600 50  0000 C CNN
-F 4 "www.yageo.com" H 10300 6600 50  0001 C CNN "MNF1_URL"
-F 5 "CC0603KRX7R8BB104" H 10300 6600 50  0001 C CNN "MPN"
-F 6 "603-CC603KRX7R8BB104" H 10300 6600 50  0001 C CNN "Mouser"
-F 7 "?" H 10300 6600 50  0001 C CNN "Digikey"
-F 8 "?" H 10300 6600 50  0001 C CNN "LCSC"
-F 9 "?" H 10300 6600 50  0001 C CNN "Koncar"
-F 10 "TB" H 10300 6600 50  0001 C CNN "Side"
-F 11 "https://lcsc.com/product-detail/Multilayer-Ceramic-Capacitors-MLCC-SMD-SMT_YAGEO-CC0603KRX7R8BB104_C92490.html" H 10300 6600 50  0001 C CNN "URL"
-	1    10300 6600
-	1    0    0    -1  
-$EndComp
-Wire Wire Line
-	10050 6450 10300 6450
-Wire Wire Line
-	10300 6750 10050 6750
-$Comp
-L Device:C C10
-U 1 1 61CC2A0D
-P 10550 6600
-F 0 "C10" H 10575 6700 50  0000 L CNN
-F 1 "100nF" H 10575 6500 50  0000 L CNN
-F 2 "Capacitor_SMD:C_0603_1608Metric" H 10588 6450 50  0001 C CNN
-F 3 "" H 10550 6600 50  0000 C CNN
-F 4 "www.yageo.com" H 10550 6600 50  0001 C CNN "MNF1_URL"
-F 5 "CC0603KRX7R8BB104" H 10550 6600 50  0001 C CNN "MPN"
-F 6 "603-CC603KRX7R8BB104" H 10550 6600 50  0001 C CNN "Mouser"
-F 7 "?" H 10550 6600 50  0001 C CNN "Digikey"
-F 8 "?" H 10550 6600 50  0001 C CNN "LCSC"
-F 9 "?" H 10550 6600 50  0001 C CNN "Koncar"
-F 10 "TB" H 10550 6600 50  0001 C CNN "Side"
-	1    10550 6600
-	1    0    0    -1  
-$EndComp
-Wire Wire Line
-	10300 6450 10550 6450
-Wire Wire Line
-	10550 6750 10300 6750
-$Comp
-L Device:C C11
-U 1 1 61CC44CF
-P 10800 6600
-F 0 "C11" H 10825 6700 50  0000 L CNN
-F 1 "10nF" H 10825 6500 50  0000 L CNN
-F 2 "Capacitor_SMD:C_0603_1608Metric" H 10838 6450 50  0001 C CNN
-F 3 "" H 10800 6600 50  0000 C CNN
-F 4 "www.yageo.com" H 10800 6600 50  0001 C CNN "MNF1_URL"
-F 5 "CC0603KRX7R8BB103" H 10800 6600 50  0001 C CNN "MPN"
-F 6 "603-CC603KRX7R8BB103" H 10800 6600 50  0001 C CNN "Mouser"
-F 7 "?" H 10800 6600 50  0001 C CNN "Digikey"
-F 8 "?" H 10800 6600 50  0001 C CNN "LCSC"
-F 9 "?" H 10800 6600 50  0001 C CNN "Koncar"
-F 10 "TB" H 10800 6600 50  0001 C CNN "Side"
-F 11 "https://lcsc.com/product-detail/Multilayer-Ceramic-Capacitors-MLCC-SMD-SMT_YAGEO-CC0603KRX7R8BB103_C327204.html" H 10800 6600 50  0001 C CNN "URL"
-	1    10800 6600
-	1    0    0    -1  
-$EndComp
-Wire Wire Line
-	10550 6450 10800 6450
-Connection ~ 10550 6450
-Wire Wire Line
-	10550 6750 10800 6750
-Connection ~ 10550 6750
-$Comp
-L Device:C C12
-U 1 1 61BC6E4B
-P 11050 6600
-F 0 "C12" H 11075 6700 50  0000 L CNN
-F 1 "100nF" H 11075 6500 50  0000 L CNN
-F 2 "Capacitor_SMD:C_0603_1608Metric" H 11088 6450 50  0001 C CNN
-F 3 "" H 11050 6600 50  0000 C CNN
-F 4 "www.yageo.com" H 11050 6600 50  0001 C CNN "MNF1_URL"
-F 5 "CC0603KRX7R8BB104" H 11050 6600 50  0001 C CNN "MPN"
-F 6 "603-CC603KRX7R8BB104" H 11050 6600 50  0001 C CNN "Mouser"
-F 7 "?" H 11050 6600 50  0001 C CNN "Digikey"
-F 8 "?" H 11050 6600 50  0001 C CNN "LCSC"
-F 9 "?" H 11050 6600 50  0001 C CNN "Koncar"
-F 10 "TB" H 11050 6600 50  0001 C CNN "Side"
-	1    11050 6600
-	1    0    0    -1  
-$EndComp
-Wire Wire Line
-	10800 6450 11050 6450
-Connection ~ 10800 6450
-Wire Wire Line
-	10800 6750 11050 6750
-Connection ~ 10800 6750
-Text GLabel 10150 9500 2    50   Input ~ 10
+	2350 13750 3150 13750
+Connection ~ 2350 13750
+Connection ~ 2250 13850
+Text GLabel 7700 8850 0    50   Input ~ 10
 tmoen
-Text GLabel 8550 8500 0    39   Input ~ 8
+Text GLabel 7700 8650 0    39   Input ~ 8
 fpga_to_cpld_signal
 Wire Wire Line
 	15900 7850 15750 7850
@@ -1545,568 +1359,56 @@ Text GLabel 15750 9350 0    50   Input ~ 0
 Text GLabel 15750 8850 0    50   Input ~ 0
 ~ID2_3V3
 Text Notes 15500 7500 0    50   ~ 0
-Slot ID Leds\n(pull-ups are on the 5V side of the CPLD)
-Wire Wire Line
-	15800 10750 15650 10750
-Wire Wire Line
-	16100 10750 16500 10750
-$Comp
-L Device:R R?
-U 1 1 61DA4E68
-P 16650 10750
-AR Path="/5F6B165A/61DA4E68" Ref="R?"  Part="1" 
-AR Path="/5F67E4B9/61DA4E68" Ref="R?"  Part="1" 
-AR Path="/618E8C75/61DA4E68" Ref="R?"  Part="1" 
-AR Path="/618F532C/61DA4E68" Ref="R11"  Part="1" 
-F 0 "R11" V 16730 10750 50  0000 C CNN
-F 1 "549" V 16650 10750 50  0000 C CNN
-F 2 "Resistor_SMD:R_0603_1608Metric" V 16580 10750 50  0001 C CNN
-F 3 "" H 16650 10750 50  0000 C CNN
-F 4 "0603WAF5490T5E" V 16650 10750 50  0001 C CNN "MPN"
-F 5 "https://lcsc.com/product-detail/Chip-Resistor-Surface-Mount_UNI-ROYAL-Uniroyal-Elec-0603WAF5490T5E_C23079.html" V 16650 10750 50  0001 C CNN "URL"
-	1    16650 10750
-	0    1    1    0   
-$EndComp
-$Comp
-L Device:LED_ALT D?
-U 1 1 61DA4E72
-P 15950 10750
-AR Path="/5F6B165A/61DA4E72" Ref="D?"  Part="1" 
-AR Path="/5F67E4B9/61DA4E72" Ref="D?"  Part="1" 
-AR Path="/618E8C75/61DA4E72" Ref="D?"  Part="1" 
-AR Path="/618F532C/61DA4E72" Ref="D6"  Part="1" 
-F 0 "D6" H 15950 10850 50  0000 C CNN
-F 1 "YELLOW" H 16000 10600 50  0000 R CNN
-F 2 "LED_SMD:LED_0805_2012Metric" H 15950 10750 50  0001 C CNN
-F 3 "https://lcsc.com/product-detail/Light-Emitting-Diodes-LED_Lite-On-LTST-C170KSKT_C125091.html" H 15950 10750 50  0001 C CNN
-F 4 "www.liteon.com" H 15950 10750 60  0001 C CNN "MNF1_URL"
-F 5 "LTST-C170KSKT" H 15950 10750 60  0001 C CNN "MPN"
-F 6 "https://lcsc.com/product-detail/Light-Emitting-Diodes-LED_Lite-On-LTST-C170KSKT_C125091.html" H 15950 10750 50  0001 C CNN "URL"
-	1    15950 10750
-	1    0    0    -1  
-$EndComp
-$Comp
-L power:+3V3 #PWR050
-U 1 1 61DA4E79
-P 16800 10750
-F 0 "#PWR050" H 16800 10600 50  0001 C CNN
-F 1 "+3V3" H 16815 10923 50  0000 C CNN
-F 2 "" H 16800 10750 50  0001 C CNN
-F 3 "" H 16800 10750 50  0001 C CNN
-	1    16800 10750
-	1    0    0    -1  
-$EndComp
-Wire Wire Line
-	15800 11050 15650 11050
-Wire Wire Line
-	16100 11050 16500 11050
-$Comp
-L Device:R R?
-U 1 1 61DA5DAA
-P 16650 11050
-AR Path="/5F6B165A/61DA5DAA" Ref="R?"  Part="1" 
-AR Path="/5F67E4B9/61DA5DAA" Ref="R?"  Part="1" 
-AR Path="/618E8C75/61DA5DAA" Ref="R?"  Part="1" 
-AR Path="/618F532C/61DA5DAA" Ref="R12"  Part="1" 
-F 0 "R12" V 16730 11050 50  0000 C CNN
-F 1 "549" V 16650 11050 50  0000 C CNN
-F 2 "Resistor_SMD:R_0603_1608Metric" V 16580 11050 50  0001 C CNN
-F 3 "" H 16650 11050 50  0000 C CNN
-F 4 "0603WAF5490T5E" V 16650 11050 50  0001 C CNN "MPN"
-F 5 "https://lcsc.com/product-detail/Chip-Resistor-Surface-Mount_UNI-ROYAL-Uniroyal-Elec-0603WAF5490T5E_C23079.html" V 16650 11050 50  0001 C CNN "URL"
-	1    16650 11050
-	0    1    1    0   
-$EndComp
-$Comp
-L Device:LED_ALT D?
-U 1 1 61DA5DB4
-P 15950 11050
-AR Path="/5F6B165A/61DA5DB4" Ref="D?"  Part="1" 
-AR Path="/5F67E4B9/61DA5DB4" Ref="D?"  Part="1" 
-AR Path="/618E8C75/61DA5DB4" Ref="D?"  Part="1" 
-AR Path="/618F532C/61DA5DB4" Ref="D7"  Part="1" 
-F 0 "D7" H 15950 11150 50  0000 C CNN
-F 1 "YELLOW" H 16000 10900 50  0000 R CNN
-F 2 "LED_SMD:LED_0805_2012Metric" H 15950 11050 50  0001 C CNN
-F 3 "https://lcsc.com/product-detail/Light-Emitting-Diodes-LED_Lite-On-LTST-C170KSKT_C125091.html" H 15950 11050 50  0001 C CNN
-F 4 "www.liteon.com" H 15950 11050 60  0001 C CNN "MNF1_URL"
-F 5 "LTST-C170KSKT" H 15950 11050 60  0001 C CNN "MPN"
-F 6 "https://lcsc.com/product-detail/Light-Emitting-Diodes-LED_Lite-On-LTST-C170KSKT_C125091.html" H 15950 11050 50  0001 C CNN "URL"
-	1    15950 11050
-	1    0    0    -1  
-$EndComp
-$Comp
-L power:+3V3 #PWR051
-U 1 1 61DA5DBB
-P 16800 11050
-F 0 "#PWR051" H 16800 10900 50  0001 C CNN
-F 1 "+3V3" H 16815 11223 50  0000 C CNN
-F 2 "" H 16800 11050 50  0001 C CNN
-F 3 "" H 16800 11050 50  0001 C CNN
-	1    16800 11050
-	1    0    0    -1  
-$EndComp
-Text GLabel 15650 10750 0    50   Input ~ 0
-~TM1_3V3
-Text GLabel 15650 11050 0    50   Input ~ 0
-~TM0_3V3
-Text Notes 16900 10300 0    50   ~ 0
-Signals Tap Leds
-Wire Wire Line
-	15800 11550 15650 11550
-Wire Wire Line
-	16100 11550 16500 11550
-$Comp
-L Device:R R?
-U 1 1 61DABC59
-P 16650 11550
-AR Path="/5F6B165A/61DABC59" Ref="R?"  Part="1" 
-AR Path="/5F67E4B9/61DABC59" Ref="R?"  Part="1" 
-AR Path="/618E8C75/61DABC59" Ref="R?"  Part="1" 
-AR Path="/618F532C/61DABC59" Ref="R13"  Part="1" 
-F 0 "R13" V 16730 11550 50  0000 C CNN
-F 1 "549" V 16650 11550 50  0000 C CNN
-F 2 "Resistor_SMD:R_0603_1608Metric" V 16580 11550 50  0001 C CNN
-F 3 "" H 16650 11550 50  0000 C CNN
-F 4 "0603WAF5490T5E" V 16650 11550 50  0001 C CNN "MPN"
-F 5 "https://lcsc.com/product-detail/Chip-Resistor-Surface-Mount_UNI-ROYAL-Uniroyal-Elec-0603WAF5490T5E_C23079.html" V 16650 11550 50  0001 C CNN "URL"
-	1    16650 11550
-	0    1    1    0   
-$EndComp
-$Comp
-L Device:LED_ALT D?
-U 1 1 61DABC63
-P 15950 11550
-AR Path="/5F6B165A/61DABC63" Ref="D?"  Part="1" 
-AR Path="/5F67E4B9/61DABC63" Ref="D?"  Part="1" 
-AR Path="/618E8C75/61DABC63" Ref="D?"  Part="1" 
-AR Path="/618F532C/61DABC63" Ref="D8"  Part="1" 
-F 0 "D8" H 15950 11650 50  0000 C CNN
-F 1 "YELLOW" H 16000 11400 50  0000 R CNN
-F 2 "LED_SMD:LED_0805_2012Metric" H 15950 11550 50  0001 C CNN
-F 3 "https://lcsc.com/product-detail/Light-Emitting-Diodes-LED_Lite-On-LTST-C170KSKT_C125091.html" H 15950 11550 50  0001 C CNN
-F 4 "www.liteon.com" H 15950 11550 60  0001 C CNN "MNF1_URL"
-F 5 "LTST-C170KSKT" H 15950 11550 60  0001 C CNN "MPN"
-F 6 "https://lcsc.com/product-detail/Light-Emitting-Diodes-LED_Lite-On-LTST-C170KSKT_C125091.html" H 15950 11550 50  0001 C CNN "URL"
-	1    15950 11550
-	1    0    0    -1  
-$EndComp
-$Comp
-L power:+3V3 #PWR052
-U 1 1 61DABC6A
-P 16800 11550
-F 0 "#PWR052" H 16800 11400 50  0001 C CNN
-F 1 "+3V3" H 16815 11723 50  0000 C CNN
-F 2 "" H 16800 11550 50  0001 C CNN
-F 3 "" H 16800 11550 50  0001 C CNN
-	1    16800 11550
-	1    0    0    -1  
-$EndComp
-Text GLabel 15650 11550 0    50   Input ~ 0
-~ACK_3V3
-Wire Wire Line
-	15800 12150 15650 12150
-Wire Wire Line
-	16100 12150 16500 12150
-$Comp
-L Device:R R?
-U 1 1 61DB5BFB
-P 16650 12150
-AR Path="/5F6B165A/61DB5BFB" Ref="R?"  Part="1" 
-AR Path="/5F67E4B9/61DB5BFB" Ref="R?"  Part="1" 
-AR Path="/618E8C75/61DB5BFB" Ref="R?"  Part="1" 
-AR Path="/618F532C/61DB5BFB" Ref="R14"  Part="1" 
-F 0 "R14" V 16730 12150 50  0000 C CNN
-F 1 "549" V 16650 12150 50  0000 C CNN
-F 2 "Resistor_SMD:R_0603_1608Metric" V 16580 12150 50  0001 C CNN
-F 3 "" H 16650 12150 50  0000 C CNN
-F 4 "0603WAF5490T5E" V 16650 12150 50  0001 C CNN "MPN"
-F 5 "https://lcsc.com/product-detail/Chip-Resistor-Surface-Mount_UNI-ROYAL-Uniroyal-Elec-0603WAF5490T5E_C23079.html" V 16650 12150 50  0001 C CNN "URL"
-	1    16650 12150
-	0    1    1    0   
-$EndComp
-$Comp
-L Device:LED_ALT D?
-U 1 1 61DB5C05
-P 15950 12150
-AR Path="/5F6B165A/61DB5C05" Ref="D?"  Part="1" 
-AR Path="/5F67E4B9/61DB5C05" Ref="D?"  Part="1" 
-AR Path="/618E8C75/61DB5C05" Ref="D?"  Part="1" 
-AR Path="/618F532C/61DB5C05" Ref="D9"  Part="1" 
-F 0 "D9" H 15950 12250 50  0000 C CNN
-F 1 "YELLOW" H 16000 12000 50  0000 R CNN
-F 2 "LED_SMD:LED_0805_2012Metric" H 15950 12150 50  0001 C CNN
-F 3 "https://lcsc.com/product-detail/Light-Emitting-Diodes-LED_Lite-On-LTST-C170KSKT_C125091.html" H 15950 12150 50  0001 C CNN
-F 4 "www.liteon.com" H 15950 12150 60  0001 C CNN "MNF1_URL"
-F 5 "LTST-C170KSKT" H 15950 12150 60  0001 C CNN "MPN"
-F 6 "https://lcsc.com/product-detail/Light-Emitting-Diodes-LED_Lite-On-LTST-C170KSKT_C125091.html" H 15950 12150 50  0001 C CNN "URL"
-	1    15950 12150
-	1    0    0    -1  
-$EndComp
-$Comp
-L power:+3V3 #PWR053
-U 1 1 61DB5C0C
-P 16800 12150
-F 0 "#PWR053" H 16800 12000 50  0001 C CNN
-F 1 "+3V3" H 16815 12323 50  0000 C CNN
-F 2 "" H 16800 12150 50  0001 C CNN
-F 3 "" H 16800 12150 50  0001 C CNN
-	1    16800 12150
-	1    0    0    -1  
-$EndComp
-Text GLabel 15650 12150 0    50   Input ~ 0
-~START_3V3
-Wire Wire Line
-	18000 10750 17850 10750
-Wire Wire Line
-	18300 10750 18700 10750
-$Comp
-L Device:R R?
-U 1 1 61DC5CFD
-P 18850 10750
-AR Path="/5F6B165A/61DC5CFD" Ref="R?"  Part="1" 
-AR Path="/5F67E4B9/61DC5CFD" Ref="R?"  Part="1" 
-AR Path="/618E8C75/61DC5CFD" Ref="R?"  Part="1" 
-AR Path="/618F532C/61DC5CFD" Ref="R20"  Part="1" 
-F 0 "R20" V 18930 10750 50  0000 C CNN
-F 1 "549" V 18850 10750 50  0000 C CNN
-F 2 "Resistor_SMD:R_0603_1608Metric" V 18780 10750 50  0001 C CNN
-F 3 "" H 18850 10750 50  0000 C CNN
-F 4 "0603WAF5490T5E" V 18850 10750 50  0001 C CNN "MPN"
-F 5 "https://lcsc.com/product-detail/Chip-Resistor-Surface-Mount_UNI-ROYAL-Uniroyal-Elec-0603WAF5490T5E_C23079.html" V 18850 10750 50  0001 C CNN "URL"
-	1    18850 10750
-	0    1    1    0   
-$EndComp
-$Comp
-L Device:LED_ALT D?
-U 1 1 61DC5D07
-P 18150 10750
-AR Path="/5F6B165A/61DC5D07" Ref="D?"  Part="1" 
-AR Path="/5F67E4B9/61DC5D07" Ref="D?"  Part="1" 
-AR Path="/618E8C75/61DC5D07" Ref="D?"  Part="1" 
-AR Path="/618F532C/61DC5D07" Ref="D15"  Part="1" 
-F 0 "D15" H 18150 10850 50  0000 C CNN
-F 1 "YELLOW" H 18200 10600 50  0000 R CNN
-F 2 "LED_SMD:LED_0805_2012Metric" H 18150 10750 50  0001 C CNN
-F 3 "https://lcsc.com/product-detail/Light-Emitting-Diodes-LED_Lite-On-LTST-C170KSKT_C125091.html" H 18150 10750 50  0001 C CNN
-F 4 "www.liteon.com" H 18150 10750 60  0001 C CNN "MNF1_URL"
-F 5 "LTST-C170KSKT" H 18150 10750 60  0001 C CNN "MPN"
-F 6 "https://lcsc.com/product-detail/Light-Emitting-Diodes-LED_Lite-On-LTST-C170KSKT_C125091.html" H 18150 10750 50  0001 C CNN "URL"
-	1    18150 10750
-	1    0    0    -1  
-$EndComp
-$Comp
-L power:+3V3 #PWR059
-U 1 1 61DC5D0E
-P 19000 10750
-F 0 "#PWR059" H 19000 10600 50  0001 C CNN
-F 1 "+3V3" H 19015 10923 50  0000 C CNN
-F 2 "" H 19000 10750 50  0001 C CNN
-F 3 "" H 19000 10750 50  0001 C CNN
-	1    19000 10750
-	1    0    0    -1  
-$EndComp
-Wire Wire Line
-	18000 11050 17850 11050
-Wire Wire Line
-	18300 11050 18700 11050
-$Comp
-L Device:R R?
-U 1 1 61DC5D18
-P 18850 11050
-AR Path="/5F6B165A/61DC5D18" Ref="R?"  Part="1" 
-AR Path="/5F67E4B9/61DC5D18" Ref="R?"  Part="1" 
-AR Path="/618E8C75/61DC5D18" Ref="R?"  Part="1" 
-AR Path="/618F532C/61DC5D18" Ref="R21"  Part="1" 
-F 0 "R21" V 18930 11050 50  0000 C CNN
-F 1 "549" V 18850 11050 50  0000 C CNN
-F 2 "Resistor_SMD:R_0603_1608Metric" V 18780 11050 50  0001 C CNN
-F 3 "" H 18850 11050 50  0000 C CNN
-F 4 "0603WAF5490T5E" V 18850 11050 50  0001 C CNN "MPN"
-F 5 "https://lcsc.com/product-detail/Chip-Resistor-Surface-Mount_UNI-ROYAL-Uniroyal-Elec-0603WAF5490T5E_C23079.html" V 18850 11050 50  0001 C CNN "URL"
-	1    18850 11050
-	0    1    1    0   
-$EndComp
-$Comp
-L Device:LED_ALT D?
-U 1 1 61DC5D22
-P 18150 11050
-AR Path="/5F6B165A/61DC5D22" Ref="D?"  Part="1" 
-AR Path="/5F67E4B9/61DC5D22" Ref="D?"  Part="1" 
-AR Path="/618E8C75/61DC5D22" Ref="D?"  Part="1" 
-AR Path="/618F532C/61DC5D22" Ref="D16"  Part="1" 
-F 0 "D16" H 18150 11150 50  0000 C CNN
-F 1 "YELLOW" H 18200 10900 50  0000 R CNN
-F 2 "LED_SMD:LED_0805_2012Metric" H 18150 11050 50  0001 C CNN
-F 3 "https://lcsc.com/product-detail/Light-Emitting-Diodes-LED_Lite-On-LTST-C170KSKT_C125091.html" H 18150 11050 50  0001 C CNN
-F 4 "www.liteon.com" H 18150 11050 60  0001 C CNN "MNF1_URL"
-F 5 "LTST-C170KSKT" H 18150 11050 60  0001 C CNN "MPN"
-F 6 "https://lcsc.com/product-detail/Light-Emitting-Diodes-LED_Lite-On-LTST-C170KSKT_C125091.html" H 18150 11050 50  0001 C CNN "URL"
-	1    18150 11050
-	1    0    0    -1  
-$EndComp
-$Comp
-L power:+3V3 #PWR060
-U 1 1 61DC5D29
-P 19000 11050
-F 0 "#PWR060" H 19000 10900 50  0001 C CNN
-F 1 "+3V3" H 19015 11223 50  0000 C CNN
-F 2 "" H 19000 11050 50  0001 C CNN
-F 3 "" H 19000 11050 50  0001 C CNN
-	1    19000 11050
-	1    0    0    -1  
-$EndComp
-Text GLabel 17850 10750 0    50   Input ~ 0
-~AD1_3V3
-Text GLabel 17850 11050 0    50   Input ~ 0
-~AD0_3V3
-Wire Wire Line
-	12900 10750 12750 10750
-Wire Wire Line
-	13200 10750 13600 10750
-$Comp
-L Device:R R?
-U 1 1 61DE9DA5
-P 13750 10750
-AR Path="/5F6B165A/61DE9DA5" Ref="R?"  Part="1" 
-AR Path="/5F67E4B9/61DE9DA5" Ref="R?"  Part="1" 
-AR Path="/618E8C75/61DE9DA5" Ref="R?"  Part="1" 
-AR Path="/618F532C/61DE9DA5" Ref="R9"  Part="1" 
-F 0 "R9" V 13830 10750 50  0000 C CNN
-F 1 "549" V 13750 10750 50  0000 C CNN
-F 2 "Resistor_SMD:R_0603_1608Metric" V 13680 10750 50  0001 C CNN
-F 3 "" H 13750 10750 50  0000 C CNN
-F 4 "0603WAF5490T5E" V 13750 10750 50  0001 C CNN "MPN"
-F 5 "https://lcsc.com/product-detail/Chip-Resistor-Surface-Mount_UNI-ROYAL-Uniroyal-Elec-0603WAF5490T5E_C23079.html" V 13750 10750 50  0001 C CNN "URL"
-	1    13750 10750
-	0    1    1    0   
-$EndComp
-$Comp
-L Device:LED_ALT D?
-U 1 1 61DE9DAF
-P 13050 10750
-AR Path="/5F6B165A/61DE9DAF" Ref="D?"  Part="1" 
-AR Path="/5F67E4B9/61DE9DAF" Ref="D?"  Part="1" 
-AR Path="/618E8C75/61DE9DAF" Ref="D?"  Part="1" 
-AR Path="/618F532C/61DE9DAF" Ref="D4"  Part="1" 
-F 0 "D4" H 13050 10850 50  0000 C CNN
-F 1 "ORANGE" H 13100 10600 50  0000 R CNN
-F 2 "LED_SMD:LED_0805_2012Metric" H 13050 10750 50  0001 C CNN
-F 3 "https://www.lcsc.com/product-detail/Light-Emitting-Diodes-LED_Lite-On-LTST-C170KFKT_C284931.html" H 13050 10750 50  0001 C CNN
-F 4 "www.liteon.com" H 13050 10750 60  0001 C CNN "MNF1_URL"
-F 5 "LTST-C170KFKT" H 13050 10750 60  0001 C CNN "MPN"
-F 6 "https://www.lcsc.com/product-detail/Light-Emitting-Diodes-LED_Lite-On-LTST-C170KFKT_C284931.html" H 13050 10750 50  0001 C CNN "URL"
-	1    13050 10750
-	1    0    0    -1  
-$EndComp
-$Comp
-L power:+3V3 #PWR045
-U 1 1 61DE9DB6
-P 13900 10750
-F 0 "#PWR045" H 13900 10600 50  0001 C CNN
-F 1 "+3V3" H 13915 10923 50  0000 C CNN
-F 2 "" H 13900 10750 50  0001 C CNN
-F 3 "" H 13900 10750 50  0001 C CNN
-	1    13900 10750
-	1    0    0    -1  
-$EndComp
-Text GLabel 12750 10750 0    39   Input ~ 8
-ARB
-Wire Wire Line
-	12900 11150 12750 11150
-Wire Wire Line
-	13200 11150 13600 11150
-$Comp
-L Device:R R?
-U 1 1 61DEBB52
-P 13750 11150
-AR Path="/5F6B165A/61DEBB52" Ref="R?"  Part="1" 
-AR Path="/5F67E4B9/61DEBB52" Ref="R?"  Part="1" 
-AR Path="/618E8C75/61DEBB52" Ref="R?"  Part="1" 
-AR Path="/618F532C/61DEBB52" Ref="R10"  Part="1" 
-F 0 "R10" V 13830 11150 50  0000 C CNN
-F 1 "549" V 13750 11150 50  0000 C CNN
-F 2 "Resistor_SMD:R_0603_1608Metric" V 13680 11150 50  0001 C CNN
-F 3 "" H 13750 11150 50  0000 C CNN
-F 4 "0603WAF5490T5E" V 13750 11150 50  0001 C CNN "MPN"
-F 5 "https://lcsc.com/product-detail/Chip-Resistor-Surface-Mount_UNI-ROYAL-Uniroyal-Elec-0603WAF5490T5E_C23079.html" V 13750 11150 50  0001 C CNN "URL"
-	1    13750 11150
-	0    1    1    0   
-$EndComp
-$Comp
-L Device:LED_ALT D?
-U 1 1 61DEBB5C
-P 13050 11150
-AR Path="/5F6B165A/61DEBB5C" Ref="D?"  Part="1" 
-AR Path="/5F67E4B9/61DEBB5C" Ref="D?"  Part="1" 
-AR Path="/618E8C75/61DEBB5C" Ref="D?"  Part="1" 
-AR Path="/618F532C/61DEBB5C" Ref="D5"  Part="1" 
-F 0 "D5" H 13050 11250 50  0000 C CNN
-F 1 "ORANGE" H 13100 11000 50  0000 R CNN
-F 2 "LED_SMD:LED_0805_2012Metric" H 13050 11150 50  0001 C CNN
-F 3 "https://www.lcsc.com/product-detail/Light-Emitting-Diodes-LED_Lite-On-LTST-C170KFKT_C284931.html" H 13050 11150 50  0001 C CNN
-F 4 "www.liteon.com" H 13050 11150 60  0001 C CNN "MNF1_URL"
-F 5 "LTST-C170KFKT" H 13050 11150 60  0001 C CNN "MPN"
-F 6 "https://www.lcsc.com/product-detail/Light-Emitting-Diodes-LED_Lite-On-LTST-C170KFKT_C284931.html" H 13050 11150 50  0001 C CNN "URL"
-	1    13050 11150
-	1    0    0    -1  
-$EndComp
-$Comp
-L power:+3V3 #PWR046
-U 1 1 61DEBB63
-P 13900 11150
-F 0 "#PWR046" H 13900 11000 50  0001 C CNN
-F 1 "+3V3" H 13915 11323 50  0000 C CNN
-F 2 "" H 13900 11150 50  0001 C CNN
-F 3 "" H 13900 11150 50  0001 C CNN
-	1    13900 11150
-	1    0    0    -1  
-$EndComp
-Text GLabel 12750 11150 0    39   Input ~ 8
-GRANT
-Text Notes 12750 10450 0    50   ~ 0
-Internal signal tap leds
+Slot ID Leds\n(pull-ups are on the 5V side of the shifters)
 Text GLabel 3750 2500 2    50   Input ~ 0
 ~NMRQ_5V
-Text GLabel 8550 9000 0    50   Input ~ 0
-RQST_o_n
 Text GLabel 3450 3200 0    50   Input ~ 0
 RQST_o_n
 Text GLabel 3750 2950 2    50   Input ~ 0
 ~RQST_5V
-$Comp
-L Device:C C13
-U 1 1 61E28221
-P 11400 6600
-AR Path="/618F532C/61E28221" Ref="C13"  Part="1" 
-AR Path="/6193AB43/61E28221" Ref="C?"  Part="1" 
-F 0 "C13" H 11425 6700 50  0000 L CNN
-F 1 "1uF" H 11425 6500 50  0000 L CNN
-F 2 "Capacitor_SMD:C_0603_1608Metric" H 11438 6450 50  0001 C CNN
-F 3 "" H 11400 6600 50  0000 C CNN
-F 4 "www.yageo.com" H 11400 6600 50  0001 C CNN "MNF1_URL"
-F 5 "CC0603KRX7R8BB105" H 11400 6600 50  0001 C CNN "MPN"
-F 6 "603-CC603KRX7R8BB105" H 11400 6600 50  0001 C CNN "Mouser"
-F 7 "?" H 11400 6600 50  0001 C CNN "Digikey"
-F 8 "?" H 11400 6600 50  0001 C CNN "LCSC"
-F 9 "?" H 11400 6600 50  0001 C CNN "Koncar"
-F 10 "TB" H 11400 6600 50  0001 C CNN "Side"
-F 11 "https://lcsc.com/product-detail/Multilayer-Ceramic-Capacitors-MLCC-SMD-SMT_YAGEO-CC0603KRX7R8BB105_C106858.html" H 11400 6600 50  0001 C CNN "URL"
-	1    11400 6600
-	1    0    0    -1  
-$EndComp
-Wire Wire Line
-	11400 6450 11050 6450
-Connection ~ 11050 6450
-Wire Wire Line
-	11400 6750 11050 6750
-Connection ~ 11050 6750
-Text GLabel 8550 8000 0    50   Input ~ 0
+Text GLabel 12100 13700 2    50   Input ~ 0
 ~CLK_5V
 Wire Wire Line
-	7750 8800 7650 8800
-Connection ~ 10050 6450
-Connection ~ 10050 6750
-Connection ~ 10300 6450
-Connection ~ 10300 6750
-Wire Wire Line
-	9550 7000 9550 6450
-Wire Wire Line
-	9550 6450 9800 6450
-$Comp
-L Device:C C15
-U 1 1 61E88C18
-P 11650 6600
-F 0 "C15" H 11675 6700 50  0000 L CNN
-F 1 "10nF" H 11675 6500 50  0000 L CNN
-F 2 "Capacitor_SMD:C_0603_1608Metric" H 11688 6450 50  0001 C CNN
-F 3 "" H 11650 6600 50  0000 C CNN
-F 4 "www.yageo.com" H 11650 6600 50  0001 C CNN "MNF1_URL"
-F 5 "CC0603KRX7R8BB103" H 11650 6600 50  0001 C CNN "MPN"
-F 6 "603-CC603KRX7R8BB103" H 11650 6600 50  0001 C CNN "Mouser"
-F 7 "?" H 11650 6600 50  0001 C CNN "Digikey"
-F 8 "?" H 11650 6600 50  0001 C CNN "LCSC"
-F 9 "?" H 11650 6600 50  0001 C CNN "Koncar"
-F 10 "TB" H 11650 6600 50  0001 C CNN "Side"
-F 11 "https://lcsc.com/product-detail/Multilayer-Ceramic-Capacitors-MLCC-SMD-SMT_YAGEO-CC0603KRX7R8BB103_C327204.html" H 11650 6600 50  0001 C CNN "URL"
-	1    11650 6600
-	1    0    0    -1  
-$EndComp
-Wire Wire Line
-	11400 6450 11650 6450
-Wire Wire Line
-	11400 6750 11650 6750
-$Comp
-L Device:C C16
-U 1 1 61E88C28
-P 11900 6600
-F 0 "C16" H 11925 6700 50  0000 L CNN
-F 1 "100nF" H 11925 6500 50  0000 L CNN
-F 2 "Capacitor_SMD:C_0603_1608Metric" H 11938 6450 50  0001 C CNN
-F 3 "" H 11900 6600 50  0000 C CNN
-F 4 "www.yageo.com" H 11900 6600 50  0001 C CNN "MNF1_URL"
-F 5 "CC0603KRX7R8BB104" H 11900 6600 50  0001 C CNN "MPN"
-F 6 "603-CC603KRX7R8BB104" H 11900 6600 50  0001 C CNN "Mouser"
-F 7 "?" H 11900 6600 50  0001 C CNN "Digikey"
-F 8 "?" H 11900 6600 50  0001 C CNN "LCSC"
-F 9 "?" H 11900 6600 50  0001 C CNN "Koncar"
-F 10 "TB" H 11900 6600 50  0001 C CNN "Side"
-	1    11900 6600
-	1    0    0    -1  
-$EndComp
-Wire Wire Line
-	11650 6450 11900 6450
-Connection ~ 11650 6450
-Wire Wire Line
-	11650 6750 11900 6750
-Connection ~ 11650 6750
-Text GLabel 8550 8800 0    50   Input ~ 0
+	2350 14250 2250 14250
+Text GLabel 10500 13600 0    50   Input ~ 0
 ~ACK_3V3
 Wire Wire Line
-	8550 8400 7650 8400
+	3150 13850 2250 13850
 $Comp
 L Device:R R?
 U 1 1 61AF68A2
-P 7950 8650
+P 2550 14100
 AR Path="/5F6B165A/61AF68A2" Ref="R?"  Part="1" 
 AR Path="/5F679B53/61AF68A2" Ref="R?"  Part="1" 
 AR Path="/618F532C/61AF68A2" Ref="R8"  Part="1" 
-F 0 "R8" V 8030 8650 50  0000 C CNN
-F 1 "10k" V 7950 8650 50  0000 C CNN
-F 2 "Resistor_SMD:R_0603_1608Metric" V 7880 8650 50  0001 C CNN
-F 3 "" H 7950 8650 50  0000 C CNN
-F 4 "0603WAF1002T5E" V 7950 8050 50  0001 C CNN "MPN"
-	1    7950 8650
+F 0 "R8" V 2630 14100 50  0000 C CNN
+F 1 "10k" V 2550 14100 50  0000 C CNN
+F 2 "Resistor_SMD:R_0603_1608Metric" V 2480 14100 50  0001 C CNN
+F 3 "" H 2550 14100 50  0000 C CNN
+F 4 "0603WAF1002T5E" V 2550 13500 50  0001 C CNN "MPN"
+	1    2550 14100
 	-1   0    0    -1  
 $EndComp
 Wire Wire Line
-	7950 8100 7600 8100
+	2550 13550 2200 13550
 Wire Wire Line
-	7600 8200 7850 8200
+	2200 13650 2450 13650
 Wire Wire Line
-	7850 8500 7850 8200
-Connection ~ 7850 8200
+	2450 13950 2450 13650
+Connection ~ 2450 13650
 Wire Wire Line
-	7850 8200 8550 8200
+	2450 13650 3150 13650
 Wire Wire Line
-	7850 8800 7950 8800
-Connection ~ 7850 8800
+	2450 14250 2550 14250
+Connection ~ 2450 14250
 Text GLabel 4350 6850 2    50   Input ~ 0
 ~ARB3_5V
-Text GLabel 10150 7600 2    50   Input ~ 0
-ARB3_o_n
 Text GLabel 4350 7350 2    50   Input ~ 0
 ~ARB2_5V
-Text GLabel 10150 7400 2    50   Input ~ 0
-ARB2_o_n
 Text GLabel 4350 5900 2    50   Input ~ 0
 ~ARB0_5V
-Text GLabel 10150 7800 2    50   Input ~ 0
-ARB0_o_n
 Text GLabel 4350 6350 2    50   Input ~ 0
 ~ARB1_5V
-Text GLabel 10150 8000 2    50   Input ~ 0
-ARB1_o_n
 Text GLabel 4050 6150 0    50   Input ~ 0
 ARB0_o_n
 Text GLabel 4050 6600 0    50   Input ~ 0
@@ -2115,11 +1417,9 @@ Text GLabel 4050 7600 0    50   Input ~ 0
 ARB2_o_n
 Text GLabel 4050 7100 0    50   Input ~ 0
 ARB3_o_n
-Text GLabel 10150 9400 2    39   Input ~ 8
-fpga_to_cpld_signal_2
-Text GLabel 10150 9800 2    50   Input ~ 0
+Text GLabel 13350 13700 0    50   Input ~ 0
 ~TM2_3V3
-Text GLabel 8550 9300 0    50   Input ~ 0
+Text GLabel 7700 13350 2    50   Input ~ 0
 ~CLK2X_3V3
 $Comp
 L 74xx:74LVC125 U3
@@ -2374,99 +1674,13 @@ F 3 "" H 5050 2700 50  0001 C CNN
 	1    0    0    -1  
 $EndComp
 Connection ~ 5050 2700
-Wire Wire Line
-	15850 12800 15700 12800
-Wire Wire Line
-	16150 12800 16550 12800
-$Comp
-L Device:R R?
-U 1 1 62006A45
-P 16700 12800
-AR Path="/5F6B165A/62006A45" Ref="R?"  Part="1" 
-AR Path="/5F67E4B9/62006A45" Ref="R?"  Part="1" 
-AR Path="/618E8C75/62006A45" Ref="R?"  Part="1" 
-AR Path="/618F532C/62006A45" Ref="R15"  Part="1" 
-F 0 "R15" V 16780 12800 50  0000 C CNN
-F 1 "549" V 16700 12800 50  0000 C CNN
-F 2 "Resistor_SMD:R_0603_1608Metric" V 16630 12800 50  0001 C CNN
-F 3 "" H 16700 12800 50  0000 C CNN
-F 4 "0603WAF5490T5E" V 16700 12800 50  0001 C CNN "MPN"
-F 5 "https://lcsc.com/product-detail/Chip-Resistor-Surface-Mount_UNI-ROYAL-Uniroyal-Elec-0603WAF5490T5E_C23079.html" V 16700 12800 50  0001 C CNN "URL"
-	1    16700 12800
-	0    1    1    0   
-$EndComp
-$Comp
-L Device:LED_ALT D?
-U 1 1 62006A4F
-P 16000 12800
-AR Path="/5F6B165A/62006A4F" Ref="D?"  Part="1" 
-AR Path="/5F67E4B9/62006A4F" Ref="D?"  Part="1" 
-AR Path="/618E8C75/62006A4F" Ref="D?"  Part="1" 
-AR Path="/618F532C/62006A4F" Ref="D10"  Part="1" 
-F 0 "D10" H 16000 12900 50  0000 C CNN
-F 1 "YELLOW" H 16050 12650 50  0000 R CNN
-F 2 "LED_SMD:LED_0805_2012Metric" H 16000 12800 50  0001 C CNN
-F 3 "https://lcsc.com/product-detail/Light-Emitting-Diodes-LED_Lite-On-LTST-C170KSKT_C125091.html" H 16000 12800 50  0001 C CNN
-F 4 "www.liteon.com" H 16000 12800 60  0001 C CNN "MNF1_URL"
-F 5 "LTST-C170KSKT" H 16000 12800 60  0001 C CNN "MPN"
-F 6 "https://lcsc.com/product-detail/Light-Emitting-Diodes-LED_Lite-On-LTST-C170KSKT_C125091.html" H 16000 12800 50  0001 C CNN "URL"
-	1    16000 12800
-	1    0    0    -1  
-$EndComp
-$Comp
-L power:+3V3 #PWR054
-U 1 1 62006A56
-P 16850 12800
-F 0 "#PWR054" H 16850 12650 50  0001 C CNN
-F 1 "+3V3" H 16865 12973 50  0000 C CNN
-F 2 "" H 16850 12800 50  0001 C CNN
-F 3 "" H 16850 12800 50  0001 C CNN
-	1    16850 12800
-	1    0    0    -1  
-$EndComp
-Text GLabel 15700 12800 0    50   Input ~ 0
-~RESET_3V3
 Text Notes 2800 2750 2    50   ~ 0
 74LVT125 used for 'open collector'\n'Input' is tied low\n'/OE' is used as input\n'/OE' low -> enable -> output is low\n'/OE' high -> disable -> ouput is Z
 Wire Wire Line
-	7950 8500 7950 8100
-Wire Wire Line
-	7950 8100 8050 8100
-Wire Wire Line
-	8050 8100 8050 9200
-Wire Wire Line
-	8050 9200 8550 9200
-Connection ~ 7950 8100
+	2550 13950 2550 13550
+Connection ~ 2550 13550
 Text GLabel 3450 2750 0    50   Input ~ 0
 ~NMRQ_3V3
-Wire Wire Line
-	9250 7000 9350 7000
-Connection ~ 9350 7000
-Wire Wire Line
-	9450 7000 9550 7000
-Wire Wire Line
-	9350 7000 9450 7000
-Connection ~ 9450 7000
-Connection ~ 9550 7000
-Wire Wire Line
-	9250 10500 9350 10500
-Wire Wire Line
-	9350 10500 9450 10500
-Connection ~ 9350 10500
-$Comp
-L CPLD_Xilinx:XC9572XL-VQ64 U4
-U 1 1 61E36DA9
-P 9350 8700
-F 0 "U4" H 9350 10578 50  0000 C CNN
-F 1 "XC9572XL-VQ64" H 9350 10487 50  0000 C CNN
-F 2 "For_SeeedStudio:TQFP-64_10x10mm_P0.5mm_Xlinx" H 9350 8700 50  0001 C CNN
-F 3 "http://www.xilinx.com/support/documentation/data_sheets/ds057.pdf" H 9350 8700 50  0001 C CNN
-F 4 "https://www.xilinx.com/support/documentation/package_specs/vq64.pdf" H 9350 8700 50  0001 C CNN "Drawings"
-F 5 "https://eu.mouser.com/ProductDetail/Xilinx/XC9572XL-5VQ64C?qs=rrS6PyfT74eW60XLpVlI8A%3D%3D" H 9350 8700 50  0001 C CNN "URL"
-F 6 "XC9572XL-5VQ64C" H 9350 8700 50  0001 C CNN "MPN"
-	1    9350 8700
-	1    0    0    -1  
-$EndComp
 $Comp
 L power:GND #PWR021
 U 1 1 620D49FC
@@ -2522,14 +1736,6 @@ Text GLabel 3750 3400 2    50   Input ~ 0
 Text GLabel 3150 3400 0    50   Input ~ 0
 START_o_n
 Text GLabel 3450 3650 0    50   Input ~ 0
-START_oe_n
-Text GLabel 8550 7400 0    50   Input ~ 0
-ACK_o_n
-Text GLabel 8550 7300 0    50   Input ~ 0
-ACK_oe_n
-Text GLabel 8550 7700 0    50   Input ~ 0
-START_o_n
-Text GLabel 8550 7600 0    50   Input ~ 0
 START_oe_n
 $Comp
 L 74xx:74LVC125 U2
@@ -2658,12 +1864,6 @@ Text GLabel 3650 10400 0    50   Input ~ 0
 TMx_oe_n
 Text GLabel 3650 10850 0    50   Input ~ 0
 TMx_oe_n
-Text GLabel 10150 8700 2    50   Input ~ 0
-TMx_oe_n
-Text GLabel 10150 8400 2    50   Input ~ 0
-TM1_n_o
-Text GLabel 10150 8500 2    50   Input ~ 0
-TM0_n_o
 NoConn ~ 3950 11500
 Wire Wire Line
 	3650 11750 4350 11750
@@ -2709,10 +1909,6 @@ Text Notes 4500 11900 2    50   ~ 0
 disabled
 NoConn ~ 20050 2850
 NoConn ~ 20100 3000
-Text GLabel 10150 7300 2    50   Input ~ 0
-TM2_oe_n
-Text GLabel 10150 9000 2    50   Input ~ 0
-TM2_o_n
 Text GLabel 3350 11050 0    50   Input ~ 0
 TM2_o_n
 Wire Notes Line
@@ -3023,4 +2219,340 @@ Wire Notes Line
 	7850 6050 6750 6050
 Wire Notes Line
 	6750 6050 6750 5450
+$Comp
+L Device:C C30
+U 1 1 62BDDC49
+P 5150 13300
+F 0 "C30" H 5175 13400 50  0000 L CNN
+F 1 "100nF" H 5175 13200 50  0000 L CNN
+F 2 "Capacitor_SMD:C_0603_1608Metric" H 5188 13150 50  0001 C CNN
+F 3 "" H 5150 13300 50  0000 C CNN
+F 4 "www.yageo.com" H 5150 13300 50  0001 C CNN "MNF1_URL"
+F 5 "CC0603KRX7R8BB104" H 5150 13300 50  0001 C CNN "MPN"
+F 6 "603-CC603KRX7R8BB104" H 5150 13300 50  0001 C CNN "Mouser"
+F 7 "?" H 5150 13300 50  0001 C CNN "Digikey"
+F 8 "?" H 5150 13300 50  0001 C CNN "LCSC"
+F 9 "?" H 5150 13300 50  0001 C CNN "Koncar"
+F 10 "TB" H 5150 13300 50  0001 C CNN "Side"
+	1    5150 13300
+	-1   0    0    -1  
+$EndComp
+$Comp
+L power:+3V3 #PWR0112
+U 1 1 62BDEC70
+P 5150 13150
+F 0 "#PWR0112" H 5150 13000 50  0001 C CNN
+F 1 "+3V3" H 5165 13323 50  0000 C CNN
+F 2 "" H 5150 13150 50  0001 C CNN
+F 3 "" H 5150 13150 50  0001 C CNN
+	1    5150 13150
+	-1   0    0    -1  
+$EndComp
+Connection ~ 5150 13150
+$Comp
+L power:GND #PWR0113
+U 1 1 62BE9646
+P 5150 13450
+F 0 "#PWR0113" H 5150 13200 50  0001 C CNN
+F 1 "GND" H 5155 13277 50  0000 C CNN
+F 2 "" H 5150 13450 50  0001 C CNN
+F 3 "" H 5150 13450 50  0001 C CNN
+	1    5150 13450
+	-1   0    0    -1  
+$EndComp
+$Comp
+L power:GND #PWR0114
+U 1 1 62BE96F8
+P 4550 14550
+F 0 "#PWR0114" H 4550 14300 50  0001 C CNN
+F 1 "GND" H 4555 14377 50  0000 C CNN
+F 2 "" H 4550 14550 50  0001 C CNN
+F 3 "" H 4550 14550 50  0001 C CNN
+	1    4550 14550
+	1    0    0    -1  
+$EndComp
+$Comp
+L power:GND #PWR0115
+U 1 1 62BED35B
+P 3150 13350
+F 0 "#PWR0115" H 3150 13100 50  0001 C CNN
+F 1 "GND" H 3155 13177 50  0000 C CNN
+F 2 "" H 3150 13350 50  0001 C CNN
+F 3 "" H 3150 13350 50  0001 C CNN
+	1    3150 13350
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	2550 13550 3150 13550
+Text GLabel 4550 14350 2    50   Input ~ 0
+~ARB1_3V3
+Text GLabel 4550 14250 2    50   Input ~ 0
+~ARB0_3V3
+Text GLabel 4550 14150 2    50   Input ~ 0
+~ARB3_3V3
+Text GLabel 4550 14050 2    50   Input ~ 0
+~ARB2_3V3
+$Comp
+L ul_SN74CB3T3125PW:SN74CB3T3125PW U4
+U 1 1 62CEA001
+P 10500 13000
+F 0 "U4" H 11300 13387 60  0000 C CNN
+F 1 "SN74CB3T3125PWR" H 11300 13281 60  0000 C CNN
+F 2 "Package_SO:TSSOP-14_4.4x5mm_P0.65mm" H 11300 13240 60  0001 C CNN
+F 3 "" H 10500 13000 60  0000 C CNN
+F 4 "https://www.mouser.fr/ProductDetail/?qs=mE33ZKBHyE5AjFWEyhuB4Q%3D%3D" H 10500 13000 50  0001 C CNN "URL"
+F 5 "SN74CB3T3125PWR" H 10500 13000 50  0001 C CNN "MPN"
+	1    10500 13000
+	1    0    0    -1  
+$EndComp
+$Comp
+L Device:C C7
+U 1 1 62CF074C
+P 10200 14650
+F 0 "C7" H 10225 14750 50  0000 L CNN
+F 1 "100nF" H 10225 14550 50  0000 L CNN
+F 2 "Capacitor_SMD:C_0603_1608Metric" H 10238 14500 50  0001 C CNN
+F 3 "" H 10200 14650 50  0000 C CNN
+F 4 "www.yageo.com" H 10200 14650 50  0001 C CNN "MNF1_URL"
+F 5 "CC0603KRX7R8BB104" H 10200 14650 50  0001 C CNN "MPN"
+F 6 "603-CC603KRX7R8BB104" H 10200 14650 50  0001 C CNN "Mouser"
+F 7 "?" H 10200 14650 50  0001 C CNN "Digikey"
+F 8 "?" H 10200 14650 50  0001 C CNN "LCSC"
+F 9 "?" H 10200 14650 50  0001 C CNN "Koncar"
+F 10 "TB" H 10200 14650 50  0001 C CNN "Side"
+	1    10200 14650
+	1    0    0    -1  
+$EndComp
+$Comp
+L power:+3V3 #PWR0116
+U 1 1 62CF0753
+P 10200 14500
+F 0 "#PWR0116" H 10200 14350 50  0001 C CNN
+F 1 "+3V3" H 10215 14673 50  0000 C CNN
+F 2 "" H 10200 14500 50  0001 C CNN
+F 3 "" H 10200 14500 50  0001 C CNN
+	1    10200 14500
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	10200 14500 10500 14500
+Connection ~ 10200 14500
+$Comp
+L power:GND #PWR0117
+U 1 1 62CF075B
+P 10200 14800
+F 0 "#PWR0117" H 10200 14550 50  0001 C CNN
+F 1 "GND" H 10205 14627 50  0000 C CNN
+F 2 "" H 10200 14800 50  0001 C CNN
+F 3 "" H 10200 14800 50  0001 C CNN
+	1    10200 14800
+	1    0    0    -1  
+$EndComp
+$Comp
+L power:GND #PWR0118
+U 1 1 62CF1C96
+P 12100 13300
+F 0 "#PWR0118" H 12100 13050 50  0001 C CNN
+F 1 "GND" H 12105 13127 50  0000 C CNN
+F 2 "" H 12100 13300 50  0001 C CNN
+F 3 "" H 12100 13300 50  0001 C CNN
+	1    12100 13300
+	1    0    0    -1  
+$EndComp
+$Comp
+L power:GND #PWR0119
+U 1 1 62CF1D21
+P 10500 13300
+F 0 "#PWR0119" H 10500 13050 50  0001 C CNN
+F 1 "GND" H 10505 13127 50  0000 C CNN
+F 2 "" H 10500 13300 50  0001 C CNN
+F 3 "" H 10500 13300 50  0001 C CNN
+	1    10500 13300
+	1    0    0    -1  
+$EndComp
+Text Notes 9950 12900 0    50   ~ 0
+always enabled
+Connection ~ 10500 13100
+Wire Wire Line
+	10500 13000 10500 13100
+Connection ~ 10500 13200
+Connection ~ 10500 13300
+Wire Wire Line
+	10500 13200 10500 13100
+Wire Wire Line
+	10500 13300 10500 13200
+$Comp
+L ul_SN74CB3T3125PW:SN74CB3T3125PW U13
+U 1 1 62D44B8F
+P 13350 13000
+F 0 "U13" H 14150 13387 60  0000 C CNN
+F 1 "SN74CB3T3125PWR" H 14150 13281 60  0000 C CNN
+F 2 "Package_SO:TSSOP-14_4.4x5mm_P0.65mm" H 14150 13240 60  0001 C CNN
+F 3 "" H 13350 13000 60  0000 C CNN
+F 4 "https://www.mouser.fr/ProductDetail/?qs=mE33ZKBHyE5AjFWEyhuB4Q%3D%3D" H 13350 13000 50  0001 C CNN "URL"
+F 5 "SN74CB3T3125PWR" H 13350 13000 50  0001 C CNN "MPN"
+	1    13350 13000
+	1    0    0    -1  
+$EndComp
+$Comp
+L Device:C C8
+U 1 1 62D44B9D
+P 13050 14650
+F 0 "C8" H 13075 14750 50  0000 L CNN
+F 1 "100nF" H 13075 14550 50  0000 L CNN
+F 2 "Capacitor_SMD:C_0603_1608Metric" H 13088 14500 50  0001 C CNN
+F 3 "" H 13050 14650 50  0000 C CNN
+F 4 "www.yageo.com" H 13050 14650 50  0001 C CNN "MNF1_URL"
+F 5 "CC0603KRX7R8BB104" H 13050 14650 50  0001 C CNN "MPN"
+F 6 "603-CC603KRX7R8BB104" H 13050 14650 50  0001 C CNN "Mouser"
+F 7 "?" H 13050 14650 50  0001 C CNN "Digikey"
+F 8 "?" H 13050 14650 50  0001 C CNN "LCSC"
+F 9 "?" H 13050 14650 50  0001 C CNN "Koncar"
+F 10 "TB" H 13050 14650 50  0001 C CNN "Side"
+	1    13050 14650
+	1    0    0    -1  
+$EndComp
+$Comp
+L power:+3V3 #PWR0120
+U 1 1 62D44BA4
+P 13050 14500
+F 0 "#PWR0120" H 13050 14350 50  0001 C CNN
+F 1 "+3V3" H 13065 14673 50  0000 C CNN
+F 2 "" H 13050 14500 50  0001 C CNN
+F 3 "" H 13050 14500 50  0001 C CNN
+	1    13050 14500
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	13050 14500 13350 14500
+Connection ~ 13050 14500
+$Comp
+L power:GND #PWR0121
+U 1 1 62D44BAC
+P 13050 14800
+F 0 "#PWR0121" H 13050 14550 50  0001 C CNN
+F 1 "GND" H 13055 14627 50  0000 C CNN
+F 2 "" H 13050 14800 50  0001 C CNN
+F 3 "" H 13050 14800 50  0001 C CNN
+	1    13050 14800
+	1    0    0    -1  
+$EndComp
+$Comp
+L power:GND #PWR0122
+U 1 1 62D44BB2
+P 14950 13300
+F 0 "#PWR0122" H 14950 13050 50  0001 C CNN
+F 1 "GND" H 14955 13127 50  0000 C CNN
+F 2 "" H 14950 13300 50  0001 C CNN
+F 3 "" H 14950 13300 50  0001 C CNN
+	1    14950 13300
+	1    0    0    -1  
+$EndComp
+$Comp
+L power:GND #PWR0123
+U 1 1 62D44BB8
+P 13350 13300
+F 0 "#PWR0123" H 13350 13050 50  0001 C CNN
+F 1 "GND" H 13355 13127 50  0000 C CNN
+F 2 "" H 13350 13300 50  0001 C CNN
+F 3 "" H 13350 13300 50  0001 C CNN
+	1    13350 13300
+	1    0    0    -1  
+$EndComp
+Text Notes 12800 12900 0    50   ~ 0
+always enabled
+Connection ~ 13350 13100
+Wire Wire Line
+	13350 13000 13350 13100
+Connection ~ 13350 13200
+Connection ~ 13350 13300
+Wire Wire Line
+	13350 13200 13350 13100
+Wire Wire Line
+	13350 13300 13350 13200
+$Comp
+L SN74CB3T3245PWR:SN74CB3T3245PWR U14
+U 1 1 62BC5C66
+P 3850 13850
+F 0 "U14" H 3850 14820 50  0000 C CNN
+F 1 "SN74CB3T3245PWR" H 3850 14729 50  0000 C CNN
+F 2 "For_SeeedStudio:TSSOP-20_4.4x6.5mm_P0.65mm_ForSeeedStudio" H 3850 13850 50  0001 L BNN
+F 3 "" H 3850 13850 50  0001 L BNN
+F 4 "SN74CB3T3245PWR" H 3850 13850 50  0001 C CNN "MPN"
+F 5 "https://www.lcsc.com/product-detail/Signal-Switches-Encoders-Decoders-Multiplexers_Texas-Instruments-SN74CB3T3245PWR_C15298.html" H 3850 13850 50  0001 C CNN "URL"
+	1    3850 13850
+	1    0    0    -1  
+$EndComp
+Text Notes 2650 13250 0    50   ~ 0
+always enabled
+Wire Wire Line
+	4550 13150 5150 13150
+$Comp
+L 74xGxx:74CB3T1G125 U12
+U 1 1 62BF1613
+P 7450 13450
+F 0 "U12" H 7450 13767 50  0000 C CNN
+F 1 "74CB3T1G125DBVR" H 7450 13676 50  0000 C CNN
+F 2 "Package_TO_SOT_SMD:SOT-23-5" H 7450 13450 50  0001 C CNN
+F 3 "http://www.ti.com/lit/sg/scyt129e/scyt129e.pdf" H 7450 13450 50  0001 C CNN
+F 4 "74CB3T1G125DBVR" H 7450 13450 50  0001 C CNN "MPN"
+F 5 "https://www.lcsc.com/product-detail/Analog-Switches-Multiplexers_Texas-Instruments-SN74CB3T1G125DBVR_C134001.html" H 7450 13450 50  0001 C CNN "URL"
+	1    7450 13450
+	1    0    0    -1  
+$EndComp
+$Comp
+L power:GND #PWR0126
+U 1 1 62BF2804
+P 7200 13550
+F 0 "#PWR0126" H 7200 13300 50  0001 C CNN
+F 1 "GND" H 7205 13377 50  0000 C CNN
+F 2 "" H 7200 13550 50  0001 C CNN
+F 3 "" H 7200 13550 50  0001 C CNN
+	1    7200 13550
+	1    0    0    -1  
+$EndComp
+$Comp
+L Device:C C11
+U 1 1 62BF65EF
+P 7950 13850
+F 0 "C11" H 7975 13950 50  0000 L CNN
+F 1 "100nF" H 7975 13750 50  0000 L CNN
+F 2 "Capacitor_SMD:C_0603_1608Metric" H 7988 13700 50  0001 C CNN
+F 3 "" H 7950 13850 50  0000 C CNN
+F 4 "www.yageo.com" H 7950 13850 50  0001 C CNN "MNF1_URL"
+F 5 "CC0603KRX7R8BB104" H 7950 13850 50  0001 C CNN "MPN"
+F 6 "603-CC603KRX7R8BB104" H 7950 13850 50  0001 C CNN "Mouser"
+F 7 "?" H 7950 13850 50  0001 C CNN "Digikey"
+F 8 "?" H 7950 13850 50  0001 C CNN "LCSC"
+F 9 "?" H 7950 13850 50  0001 C CNN "Koncar"
+F 10 "TB" H 7950 13850 50  0001 C CNN "Side"
+	1    7950 13850
+	-1   0    0    -1  
+$EndComp
+$Comp
+L power:+3V3 #PWR0127
+U 1 1 62BF65F6
+P 7950 13700
+F 0 "#PWR0127" H 7950 13550 50  0001 C CNN
+F 1 "+3V3" H 7965 13873 50  0000 C CNN
+F 2 "" H 7950 13700 50  0001 C CNN
+F 3 "" H 7950 13700 50  0001 C CNN
+	1    7950 13700
+	-1   0    0    -1  
+$EndComp
+$Comp
+L power:GND #PWR0128
+U 1 1 62BF65FD
+P 7950 14000
+F 0 "#PWR0128" H 7950 13750 50  0001 C CNN
+F 1 "GND" H 7955 13827 50  0000 C CNN
+F 2 "" H 7950 14000 50  0001 C CNN
+F 3 "" H 7950 14000 50  0001 C CNN
+	1    7950 14000
+	-1   0    0    -1  
+$EndComp
+Text Notes 350  13400 0    50   ~ 0
+For ID, it's likely all Macs are using open/ground,\nso we could pull-up to +3V3 and avoid the level shifter entirely.
+Text Notes 6400 13700 0    50   ~ 0
+always enabled
 $EndSCHEMATC

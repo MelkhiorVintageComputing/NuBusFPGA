@@ -15,4 +15,6 @@
   (lib (name xc9536xl-vq44)(type Legacy)(uri ${KIPRJMOD}/xc9536xl-vq44.lib)(options "")(descr ""))
   (lib (name cb3t3306)(type Legacy)(uri /home/dolbeau/MAC/NuBusFPGA/nubus-to-ztex/cb3t3306.lib)(options "")(descr ""))
   (lib (name ad1580)(type Legacy)(uri /home/dolbeau/MAC/NuBusFPGA/nubus-to-ztex/ad1580.lib)(options "")(descr ""))
+  (lib (name SN74CB3T3245PWR)(type Legacy)(uri ${KIPRJMOD}/NuBus/SN74CB3T3245PWR.lib)(options "")(descr ""))
+  (lib (name RB1-125B8G1A)(type Legacy)(uri ${KIPRJMOD}/RB1-125B8G1A.lib)(options "")(descr ""))
 )

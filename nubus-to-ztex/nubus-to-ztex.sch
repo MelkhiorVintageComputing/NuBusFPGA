@@ -4,7 +4,7 @@ EELAYER 26 0
 EELAYER END
 $Descr A4 11693 8268
 encoding utf-8
-Sheet 1 7
+Sheet 1 9
 Title ""
 Date ""
 Rev ""
@@ -49,5 +49,17 @@ S 1000 1850 1000 500
 U 6193AB43
 F0 "vga" 50
 F1 "vga.sch" 50
+$EndSheet
+$Sheet
+S 1000 3300 1000 550 
+U 62D70B59
+F0 "sdcard" 50
+F1 "sdcard.sch" 50
+$EndSheet
+$Sheet
+S 2250 3300 1000 550 
+U 62CC4C0A
+F0 "pmod" 50
+F1 "pmod.sch" 50
 $EndSheet
 $EndSCHEMATC

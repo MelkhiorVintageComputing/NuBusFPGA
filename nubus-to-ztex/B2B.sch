@@ -4,7 +4,7 @@ EELAYER 26 0
 EELAYER END
 $Descr A4 11693 8268
 encoding utf-8
-Sheet 2 7
+Sheet 2 9
 Title "nubus-to-ztex B2B connector"
 Date ""
 Rev ""
@@ -331,9 +331,9 @@ Text GLabel 4100 2050 2    50   Input Italic 0
 ~CLK_3V3
 Text GLabel 1600 1350 0    50   Input ~ 0
 ~RQST_3V3
-Text GLabel 1600 1550 0    50   Input ~ 0
+Text GLabel 1600 1450 0    50   Input ~ 0
 ~START_3V3
-Text GLabel 4100 1550 2    50   Input ~ 0
+Text GLabel 4100 1450 2    50   Input ~ 0
 ~ACK_3V3
 Text GLabel 1600 2950 0    50   Input ~ 0
 ~AD21_3V3
@@ -359,11 +359,11 @@ Text GLabel 1600 2050 0    50   Input ~ 0
 ~AD31_3V3
 Text GLabel 4100 2150 2    50   Input ~ 0
 ~AD30_3V3
-Text GLabel 1600 1950 0    50   Input ~ 0
+Text GLabel 9900 3650 2    50   Input ~ 0
 ~RESET_3V3
-Text GLabel 4100 1450 2    50   Input ~ 0
+Text GLabel 9900 3050 2    50   Input ~ 0
 ~TM1_3V3
-Text GLabel 1600 1450 0    50   Input ~ 0
+Text GLabel 9900 2950 2    50   Input ~ 0
 ~TM0_3V3
 Text GLabel 1600 3950 0    50   Input ~ 0
 ~AD1_3V3
@@ -416,29 +416,29 @@ Text GLabel 7400 1550 0    50   Input ~ 0
 ~ID0_3V3
 Text GLabel 7400 1450 0    50   Input ~ 0
 ~ID3_3V3
-Text GLabel 7400 2150 0    50   Input ~ 0
+Text GLabel 7400 3450 0    50   Input ~ 0
 HDMI_CLK+
-Text GLabel 7400 2250 0    50   Input ~ 0
+Text GLabel 7400 3350 0    50   Input ~ 0
 HDMI_CLK-
-Text GLabel 9900 2350 2    50   Input ~ 0
+Text GLabel 7400 3550 0    50   Input ~ 0
 HDMI_D0+
-Text GLabel 9900 2250 2    50   Input ~ 0
+Text GLabel 7400 3650 0    50   Input ~ 0
 HDMI_D0-
-Text GLabel 7400 2450 0    50   Input ~ 0
+Text GLabel 7400 3750 0    50   Input ~ 0
 HDMI_D1+
-Text GLabel 7400 2350 0    50   Input ~ 0
+Text GLabel 7400 3850 0    50   Input ~ 0
 HDMI_D1-
-Text GLabel 9900 2550 2    50   Input ~ 0
+Text GLabel 7400 4050 0    50   Input ~ 0
 HDMI_D2+
-Text GLabel 9900 2450 2    50   Input ~ 0
+Text GLabel 7400 3950 0    50   Input ~ 0
 HDMI_D2-
-Text GLabel 7400 1750 0    50   Input ~ 0
+Text GLabel 7400 2950 0    50   Input ~ 0
 HDMI_HPD_A
-Text GLabel 7400 2050 0    50   Input ~ 0
+Text GLabel 7400 3250 0    50   Input ~ 0
 HDMI_CEC_A
-Text GLabel 7400 1950 0    50   Input ~ 0
+Text GLabel 7400 3150 0    50   Input ~ 0
 HDMI_SCL_A
-Text GLabel 7400 1850 0    50   Input ~ 0
+Text GLabel 7400 3050 0    50   Input ~ 0
 HDMI_SDA_A
 Wire Wire Line
 	850  5900 700  5900
@@ -544,9 +544,9 @@ F 3 "" H 700 6600 50  0001 C CNN
 $EndComp
 Text GLabel 1850 6400 2    60   Input ~ 12
 LED1
-Text GLabel 9900 1650 2    60   Input ~ 12
+Text GLabel 9900 3750 2    60   Input ~ 12
 LED0
-Text GLabel 9900 1750 2    60   Input ~ 12
+Text GLabel 9900 3850 2    60   Input ~ 12
 LED1
 Text GLabel 1600 4050 0    50   Input ~ 0
 USBH0_D+
@@ -595,29 +595,17 @@ F 3 "" H 3000 5900 50  0001 C CNN
 	1    3000 5900
 	1    0    0    -1  
 $EndComp
-Text GLabel 4750 7350 2    50   Input ~ 0
-CPLD_JTAG_TDI
 Text GLabel 3450 7050 2    50   Input ~ 0
 FPGA_JTAG_TMS
 Text GLabel 3450 7150 2    50   Input ~ 0
 FPGA_JTAG_TCK
-Text GLabel 4750 7250 2    50   Input ~ 0
-CPLD_JTAG_TDO
 Text GLabel 9900 4150 2    50   Input ~ 0
 FPGA_JTAG_TMS
 Text GLabel 4100 4150 2    50   Input ~ 0
 FPGA_JTAG_TCK
-Text GLabel 1600 1650 0    39   Input ~ 8
-GRANT
-Text GLabel 4100 1650 2    39   Input ~ 8
-ARB
 Text GLabel 9900 1450 2    50   Input ~ 0
 ~ID2_3V3
-Text GLabel 1600 1850 0    39   Input ~ 8
-NUBUS_MASTER_DIR
-Text GLabel 4100 1750 2    39   Input ~ 8
-fpga_to_cpld_clk
-Text GLabel 4100 1950 2    39   Input ~ 8
+Text GLabel 1600 1950 0    39   Input ~ 8
 NUBUS_AD_DIR
 Text GLabel 7400 4150 0    50   Input ~ 0
 FPGA_JTAG_TDO
@@ -627,83 +615,8 @@ Text GLabel 3450 7350 2    50   Input ~ 0
 FPGA_JTAG_TDI
 Text GLabel 3450 7250 2    50   Input ~ 0
 FPGA_JTAG_TDO
-Text GLabel 4750 7050 2    50   Input ~ 0
-CPLD_JTAG_TMS
-Text GLabel 4750 7150 2    50   Input ~ 0
-CPLD_JTAG_TCK
-$Comp
-L Connector_Generic:Conn_02x07_Odd_Even J2
-U 1 1 61CD2AB9
-P 4450 7250
-F 0 "J2" H 4500 7767 50  0000 C CNN
-F 1 "Conn_02x07_Odd_Even" H 4500 7676 50  0000 C CNN
-F 2 "For_SeeedStudio:PinHeader_2x07_P2.00mm_Vertical_For_SeeedStudio" H 4450 7250 50  0001 C CNN
-F 3 "https://www.molex.com/pdm_docs/sd/878331420_sd.pdf" H 4450 7250 50  0001 C CNN
-F 4 "87833-1420" H 4450 7250 50  0001 C CNN "MPN Right Angle"
-F 5 "A2005WR-N-2X7P-B" H 4450 7250 50  0001 C CNN "MPN-ALT Right Angle"
-F 6 "https://www2.mouser.com/ProductDetail/Molex/87833-1420?qs=%2Fha2pyFadujYFYCIYI1IvFCvLi7no9WQYzIL%2FpYxKhg%3D" H 4450 7250 50  0001 C CNN "URL Rihgt Angle"
-F 7 "87831-1420" H 4450 7250 50  0001 C CNN "MPN"
-F 8 "https://www2.mouser.com/ProductDetail/Molex/87831-1420?qs=QtQX4uD3c2VDCL534TqpVg%3D%3D" H 4450 7250 50  0001 C CNN "URL"
-	1    4450 7250
-	1    0    0    -1  
-$EndComp
-Wire Wire Line
-	4250 7350 4250 7450
-Connection ~ 4250 7450
-$Comp
-L power:GND #PWR012
-U 1 1 61CD2AC2
-P 4000 7550
-F 0 "#PWR012" H 4000 7300 50  0001 C CNN
-F 1 "GND" H 4005 7377 50  0000 C CNN
-F 2 "" H 4000 7550 50  0001 C CNN
-F 3 "" H 4000 7550 50  0001 C CNN
-	1    4000 7550
-	1    0    0    -1  
-$EndComp
-Wire Wire Line
-	4250 7450 4000 7450
-Wire Wire Line
-	4000 7450 4000 7550
-Text Notes 4150 7650 0    50   ~ 0
-PGND
-Text Notes 4800 7600 0    50   ~ 0
-HALT
-Text Notes 4800 7500 0    50   ~ 0
-NC
-Wire Wire Line
-	4250 7550 4250 7450
-Wire Wire Line
-	4250 7350 4250 7250
-Connection ~ 4250 7350
-Wire Wire Line
-	4250 7150 4250 7250
-Connection ~ 4250 7250
-Wire Wire Line
-	4250 7050 4250 7150
-Connection ~ 4250 7150
-Wire Wire Line
-	4250 6950 4250 7050
-Connection ~ 4250 7050
 NoConn ~ 3450 7550
 NoConn ~ 3450 7450
-NoConn ~ 4750 7550
-NoConn ~ 4750 7450
-$Comp
-L power:+3V3 #PWR013
-U 1 1 61CE94A3
-P 4750 6950
-F 0 "#PWR013" H 4750 6800 50  0001 C CNN
-F 1 "+3V3" V 4765 7078 50  0000 L CNN
-F 2 "" H 4750 6950 50  0001 C CNN
-F 3 "" H 4750 6950 50  0001 C CNN
-	1    4750 6950
-	0    1    1    0   
-$EndComp
-Text GLabel 7400 1650 0    39   Input ~ 8
-tmoen
-Text GLabel 1600 1750 0    39   Input ~ 8
-fpga_to_cpld_signal
 $Comp
 L Device:C C?
 U 1 1 61F08531
@@ -750,9 +663,7 @@ Text Notes 1200 5650 0    50   ~ 0
 User LEDS
 Text GLabel 4100 1350 2    50   Input ~ 0
 ~NMRQ_3V3
-Text GLabel 4100 1850 2    39   Input ~ 8
-fpga_to_cpld_signal_2
-Text GLabel 9900 1950 2    50   Input ~ 0
+Text GLabel 9900 3550 2    50   Input ~ 0
 ~TM2_3V3
 Text GLabel 9900 1850 2    50   Input Italic 0
 ~CLK2X_3V3
@@ -864,4 +775,176 @@ F 3 "" H 4000 5900 50  0001 C CNN
 $EndComp
 Text Notes 4250 5600 2    50   ~ 0
 Close to VIN\npins on AB
+Text GLabel 9900 1750 2    50   Input ~ 0
+~ARB1_3V3
+Text GLabel 7400 1750 0    50   Input ~ 0
+~ARB0_3V3
+Text GLabel 7400 1650 0    50   Input ~ 0
+~ARB3_3V3
+Text GLabel 9900 1650 2    50   Input ~ 0
+~ARB2_3V3
+Text GLabel 1600 1850 0    50   Input ~ 0
+ARB3_o_n
+Text GLabel 4100 1850 2    50   Input ~ 0
+ARB2_o_n
+Text GLabel 1600 1750 0    50   Input ~ 0
+ARB0_o_n
+Text GLabel 4100 1950 2    50   Input ~ 0
+ARB1_o_n
+Text GLabel 4100 1550 2    50   Input ~ 0
+RQST_o_n
+Text GLabel 4100 1750 2    50   Input ~ 0
+ACK_o_n
+Text GLabel 4100 1650 2    50   Input ~ 0
+ACK_oe_n
+Text GLabel 1600 1650 0    50   Input ~ 0
+START_o_n
+Text GLabel 1600 1550 0    50   Input ~ 0
+START_oe_n
+Text GLabel 9900 2550 2    50   Input ~ 0
+TMx_oe_n
+Text GLabel 9900 3150 2    50   Input ~ 0
+TM1_n_o
+Text GLabel 9900 3250 2    50   Input ~ 0
+TM0_n_o
+Text GLabel 9900 3350 2    50   Input ~ 0
+TM2_oe_n
+Text GLabel 9900 3450 2    50   Input ~ 0
+TM2_o_n
+Text GLabel 9900 2450 2    60   Input ~ 0
+SD_D2
+Text GLabel 9900 2350 2    60   Input ~ 0
+SD_D3
+Text GLabel 9900 2250 2    60   Input ~ 0
+SD_CMD
+Text GLabel 9900 2150 2    60   Input ~ 0
+SD_CLK
+Text GLabel 9900 2050 2    60   Input ~ 0
+SD_D0
+Text GLabel 9900 1950 2    60   Input ~ 0
+SD_D1
+Text GLabel 7400 1950 0    50   Input ~ 0
+PMOD-5
+Text GLabel 7400 2150 0    50   Input ~ 0
+PMOD-7
+Text GLabel 7400 2350 0    50   Input ~ 0
+PMOD-9
+Text GLabel 7400 2550 0    50   Input ~ 0
+PMOD-11
+Text GLabel 7400 2450 0    50   Input ~ 0
+PMOD-12
+Text GLabel 7400 1850 0    50   Input ~ 0
+PMOD-6
+Text GLabel 7400 2050 0    50   Input ~ 0
+PMOD-8
+Text GLabel 7400 2250 0    50   Input ~ 0
+PMOD-10
+Wire Wire Line
+	850  6900 700  6900
+Wire Wire Line
+	700  6900 700  7100
+Wire Wire Line
+	1150 6900 1550 6900
+$Comp
+L Device:R R?
+U 1 1 62CD698B
+P 1700 6900
+AR Path="/5F6B165A/62CD698B" Ref="R?"  Part="1" 
+AR Path="/5F67E4B9/62CD698B" Ref="R?"  Part="1" 
+AR Path="/618E8C75/62CD698B" Ref="R9"  Part="1" 
+F 0 "R9" V 1780 6900 50  0000 C CNN
+F 1 "549" V 1700 6900 50  0000 C CNN
+F 2 "Resistor_SMD:R_0603_1608Metric" V 1630 6900 50  0001 C CNN
+F 3 "" H 1700 6900 50  0000 C CNN
+F 4 "0603WAF5490T5E" V 1700 6900 50  0001 C CNN "MPN"
+F 5 "https://lcsc.com/product-detail/Chip-Resistor-Surface-Mount_UNI-ROYAL-Uniroyal-Elec-0603WAF5490T5E_C23079.html" V 1700 6900 50  0001 C CNN "URL"
+	1    1700 6900
+	0    1    1    0   
+$EndComp
+$Comp
+L Device:LED_ALT D?
+U 1 1 62CD6995
+P 1000 6900
+AR Path="/5F6B165A/62CD6995" Ref="D?"  Part="1" 
+AR Path="/5F67E4B9/62CD6995" Ref="D?"  Part="1" 
+AR Path="/618E8C75/62CD6995" Ref="D4"  Part="1" 
+F 0 "D4" H 1000 7000 50  0000 C CNN
+F 1 "RED" H 1050 6750 50  0000 R CNN
+F 2 "LED_SMD:LED_0805_2012Metric" H 1000 6900 50  0001 C CNN
+F 3 "https://optoelectronics.liteon.com/upload/download/DS-22-99-0150/LTST-C170KRKT.pdf" H 1000 6900 50  0001 C CNN
+F 4 "www.liteon.com" H 1000 6900 60  0001 C CNN "MNF1_URL"
+F 5 "LTST-C170KRKT" H 1000 6900 60  0001 C CNN "MPN"
+F 6 "https://www.lcsc.com/product-detail/Light-Emitting-Diodes-LED_Lite-On-LTST-C170KRKT_C94868.html" H 1000 6900 50  0001 C CNN "URL"
+	1    1000 6900
+	1    0    0    -1  
+$EndComp
+$Comp
+L power:GND #PWR0142
+U 1 1 62CD699C
+P 700 7100
+F 0 "#PWR0142" H 700 6850 50  0001 C CNN
+F 1 "GND" H 705 6927 50  0000 C CNN
+F 2 "" H 700 7100 50  0001 C CNN
+F 3 "" H 700 7100 50  0001 C CNN
+	1    700  7100
+	1    0    0    -1  
+$EndComp
+Text GLabel 1850 6900 2    60   Input ~ 12
+LED2
+Wire Wire Line
+	850  7400 700  7400
+Wire Wire Line
+	700  7400 700  7600
+Wire Wire Line
+	1150 7400 1550 7400
+$Comp
+L Device:R R?
+U 1 1 62CD69A8
+P 1700 7400
+AR Path="/5F6B165A/62CD69A8" Ref="R?"  Part="1" 
+AR Path="/5F67E4B9/62CD69A8" Ref="R?"  Part="1" 
+AR Path="/618E8C75/62CD69A8" Ref="R10"  Part="1" 
+F 0 "R10" V 1780 7400 50  0000 C CNN
+F 1 "549" V 1700 7400 50  0000 C CNN
+F 2 "Resistor_SMD:R_0603_1608Metric" V 1630 7400 50  0001 C CNN
+F 3 "" H 1700 7400 50  0000 C CNN
+F 4 "0603WAF5490T5E" V 1700 7400 50  0001 C CNN "MPN"
+F 5 "https://lcsc.com/product-detail/Chip-Resistor-Surface-Mount_UNI-ROYAL-Uniroyal-Elec-0603WAF5490T5E_C23079.html" V 1700 7400 50  0001 C CNN "URL"
+	1    1700 7400
+	0    1    1    0   
+$EndComp
+$Comp
+L Device:LED_ALT D?
+U 1 1 62CD69B2
+P 1000 7400
+AR Path="/5F6B165A/62CD69B2" Ref="D?"  Part="1" 
+AR Path="/5F67E4B9/62CD69B2" Ref="D?"  Part="1" 
+AR Path="/618E8C75/62CD69B2" Ref="D5"  Part="1" 
+F 0 "D5" H 1000 7500 50  0000 C CNN
+F 1 "RED" H 1050 7250 50  0000 R CNN
+F 2 "LED_SMD:LED_0805_2012Metric" H 1000 7400 50  0001 C CNN
+F 3 "https://optoelectronics.liteon.com/upload/download/DS-22-99-0150/LTST-C170KRKT.pdf" H 1000 7400 50  0001 C CNN
+F 4 "www.liteon.com" H 1000 7400 60  0001 C CNN "MNF1_URL"
+F 5 "LTST-C170KRKT" H 1000 7400 60  0001 C CNN "MPN"
+F 6 "https://www.lcsc.com/product-detail/Light-Emitting-Diodes-LED_Lite-On-LTST-C170KRKT_C94868.html" H 1000 7400 50  0001 C CNN "URL"
+	1    1000 7400
+	1    0    0    -1  
+$EndComp
+$Comp
+L power:GND #PWR0143
+U 1 1 62CD69B9
+P 700 7600
+F 0 "#PWR0143" H 700 7350 50  0001 C CNN
+F 1 "GND" H 705 7427 50  0000 C CNN
+F 2 "" H 700 7600 50  0001 C CNN
+F 3 "" H 700 7600 50  0001 C CNN
+	1    700  7600
+	1    0    0    -1  
+$EndComp
+Text GLabel 1850 7400 2    60   Input ~ 12
+LED3
+Text GLabel 9900 3950 2    60   Input ~ 12
+LED2
+Text GLabel 9900 4050 2    60   Input ~ 12
+LED3
 $EndSCHEMATC
