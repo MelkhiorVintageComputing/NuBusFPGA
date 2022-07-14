@@ -18,27 +18,31 @@ OSErr cNuBusFPGARAMDskOpen(IOParamPtr pb, /* DCtlPtr */ AuxDCEPtr dce)
 	SwapMMUMode ( &busMode ); // to32 // this likely won't work on older MacII ???
 
 	if (dce->dCtlDevBase == 0) { // for some unknown reason, we get an empty dCtlDevBase...
-		SpBlock				mySpBlock;
-		SInfoRecord			mySInfoRecord;
-		mySpBlock.spResult = (long)&mySInfoRecord;
-		
-		mySpBlock.spSlot = 0x9; // start at first
-		mySpBlock.spID = 0;
-		mySpBlock.spExtDev = 0;
-		mySpBlock.spCategory = catProto;
-		mySpBlock.spCType = 0x1000; // typeDrive;
-		mySpBlock.spDrvrSW = drSwApple;
-		mySpBlock.spDrvrHW = 0xbeee; // DrHwNuBusFPGADsk
-		mySpBlock.spTBMask = 0;
-		ret = SNextTypeSRsrc(&mySpBlock);
-		if (ret)
-			goto done;
-		slot = mySpBlock.spSlot;
+		if ((dce->dCtlSlot > 0xE) || (dce->dCtlSlot < 0x9)) { // safety net
+			SpBlock				mySpBlock;
+			SInfoRecord			mySInfoRecord;
+			mySpBlock.spResult = (long)&mySInfoRecord;
+			
+			mySpBlock.spSlot = 0x9; // start at first
+			mySpBlock.spID = 0;
+			mySpBlock.spExtDev = 0;
+			mySpBlock.spCategory = catProto;
+			mySpBlock.spCType = 0x1000; // typeDrive;
+			mySpBlock.spDrvrSW = drSwApple;
+			mySpBlock.spDrvrHW = 0xbeee; // DrHwNuBusFPGADsk
+			mySpBlock.spTBMask = 0;
+			ret = SNextTypeSRsrc(&mySpBlock);
+			if (ret)
+				goto done;
+			slot = mySpBlock.spSlot;
+		} else {
+			slot = dce->dCtlSlot;
+		}
 		dce->dCtlDevBase = 0xF0000000ul | ((unsigned long)slot << 24);
 	}
 	
 	/* write_reg(dce, GOBOFB_DEBUG, 0xDEAD0000); */
-	/* write_reg(dce, GOBOFB_DEBUG, dce->dCtlRefNum); */
+	/* write_reg(dce, GOBOFB_DEBUG, dce->dCtlSlot); */
 
 	if (dce->dCtlStorage == nil) {
 		DrvQElPtr dq;
