@@ -53,12 +53,15 @@ class NuBus(Module):
         # address rewriting
         # can change every cycle *on falling edge*
         processed_ad = Signal(32)
+        processed_super_ad = Signal(32)
         self.comb += [
             processed_ad[0:23].eq(sampled_ad[0:23]),
             If(~sampled_ad[23], # first 8 MiB of slot space: remap to last 8 Mib of SDRAM
                processed_ad[23:32].eq(Cat(Signal(1, reset=1), Signal(8, reset = 0x8f))), # 0x8f8...
             ).Else( # second 8 MiB: direct access
                 processed_ad[23:32].eq(Cat(sampled_ad[23], Signal(8, reset = 0xf0)))), # 24 bits, a.k.a 22 bits of words
+            processed_super_ad[0:28].eq(sampled_ad[0:28]),
+            processed_super_ad[28:32].eq(Signal(4, reset = 0x8)),
         ]
 
         # decoded signals, exposing decoded results from the sampled signals
@@ -69,6 +72,7 @@ class NuBus(Module):
         decoded_busy = Signal()
         # locally evaluated
         decoded_myslot = Signal()
+        decoded_mysuperslot = Signal()
         self.comb += [
             decoded_myslot.eq(
                 (sampled_ad[28:32] == 0xF) &
@@ -76,6 +80,11 @@ class NuBus(Module):
                 (sampled_ad[26] == ~id_i_n[2]) &
                 (sampled_ad[25] == ~id_i_n[1]) &
                 (sampled_ad[24] == ~id_i_n[0])),
+            decoded_mysuperslot.eq(
+                (sampled_ad[31] == ~id_i_n[3]) &
+                (sampled_ad[30] == ~id_i_n[2]) &
+                (sampled_ad[29] == ~id_i_n[1]) &
+                (sampled_ad[28] == ~id_i_n[0])),
             #led0.eq(decoded_block),
         ]
 
@@ -130,8 +139,12 @@ class NuBus(Module):
                       NextState("Idle")
         )
         slave_fsm.act("Idle",
-                      If(decoded_myslot & sampled_start & ~sampled_ack & ~sampled_tm1,# & ~decoded_block, # regular read (we always send back 32 bits, so don't worry about byte/word)
-                         NextValue(current_adr, processed_ad),
+                      If((decoded_myslot | decoded_mysuperslot) & sampled_start & ~sampled_ack & ~sampled_tm1,# & ~decoded_block, # regular read (we always send back 32 bits, so don't worry about byte/word)
+                         If(decoded_myslot,
+                            NextValue(current_adr, processed_ad),
+                         ).Else( # decoded_mysuperslot,
+                             NextValue(current_adr, processed_super_ad),
+                         ),
                          #NextValue(current_tm0, sampled_tm0),
                          #NextValue(current_tm1, sampled_tm1),
                          #NextValue(current_sel, decoded_sel),
@@ -140,8 +153,12 @@ class NuBus(Module):
                          #   NextValue(decoded_block_memory, 1),),
                          NextValue(read_ctr, read_ctr + 1),
                          NextState("WaitWBRead"),
-                      ).Elif(decoded_myslot & sampled_start & ~sampled_ack & sampled_tm1,# & ~decoded_block, # regular write
-                             NextValue(current_adr, processed_ad),
+                      ).Elif((decoded_myslot | decoded_mysuperslot) & sampled_start & ~sampled_ack & sampled_tm1,# & ~decoded_block, # regular write
+                             If(decoded_myslot,
+                                NextValue(current_adr, processed_ad),
+                             ).Else( # decoded_mysuperslot,
+                                 NextValue(current_adr, processed_super_ad),
+                             ),
                              #NextValue(current_tm0, sampled_tm0),
                              #NextValue(current_tm1, sampled_tm1),
                              NextValue(current_sel, decoded_sel),
@@ -172,39 +189,6 @@ class NuBus(Module):
                          NextState("Idle"),
                       )
         )
-        #slave_fsm.act("GetNubusWriteData",
-        #              NextValue(current_data, sampled_ad),
-        #              wb_read.cyc.eq(1),
-        #              wb_read.stb.eq(1),
-        #              wb_read.we.eq(1),
-        #              wb_read.sel.eq(current_sel),
-        #              wb_read.adr.eq(current_adr[2:32]),
-        #              wb_read.dat_w.eq(sampled_ad),
-        #              If(wb_read.ack,
-        #                 tmo_oe.eq(1),
-        #                 tm0_o_n.eq(0),
-        #                 tm1_o_n.eq(0),
-        #                 ack_o_n.eq(0),
-        #                 NextState("Idle"),
-        #              ).Else(
-        #                  NextState("WaitWBWrite"),
-        #              )
-        #)
-        #slave_fsm.act("WaitWBWrite",
-        #              wb_read.cyc.eq(1),
-        #              wb_read.stb.eq(1),
-        #              wb_read.we.eq(1),
-        #              wb_read.sel.eq(current_sel),
-        #              wb_read.adr.eq(current_adr[2:32]),
-        #              wb_read.dat_w.eq(current_data),
-        #              If(wb_read.ack,
-        #                 tmo_oe.eq(1),
-        #                 tm0_o_n.eq(0),
-        #                 tm1_o_n.eq(0),
-        #                 ack_o_n.eq(0),
-        #                 NextState("Idle"),
-        #              )
-        #)
         slave_fsm.act("NubusWriteDataToFIFO",
                       tmo_oe.eq(1),
                       tm0_o_n.eq(1),
