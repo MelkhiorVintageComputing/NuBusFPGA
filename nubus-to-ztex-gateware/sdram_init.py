@@ -18,7 +18,7 @@ dfii_command_wrdata = 0x10
 dfii_command_rddata = 0x20
 
 # /!\ keep up to date with csr /!\
-sdram_dfii_base = 0xf0a01000
+sdram_dfii_base = 0xf0a01800
 sdram_dfii_control =           sdram_dfii_base + 0x000
 sdram_dfii_pi0_command  =      sdram_dfii_base + 0x004
 sdram_dfii_pi0_command_issue = sdram_dfii_base + 0x008

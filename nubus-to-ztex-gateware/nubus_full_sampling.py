@@ -7,12 +7,16 @@ import litex
 from litex.soc.interconnect import wishbone
 
 class NuBus(Module):
-    def __init__(self, platform, wb_read, wb_write, wb_dma, cd_nubus="nubus", cd_nubus90="nubus90"):
+    def __init__(self, soc,
+                 burst_size, tosbus_fifo, fromsbus_fifo, fromsbus_req_fifo,
+                 wb_read, wb_write, wb_dma,
+                 cd_nubus="nubus", cd_nubus90="nubus90"):
 
+        platform = soc.platform
         self.add_sources(platform)
 
-        #led0 = platform.request("user_led", 0)
-        #led1 = platform.request("user_led", 1)
+        led0 = platform.request("user_led", 0)
+        led1 = platform.request("user_led", 1)
 
         nub_clk = ClockSignal(cd_nubus)
         nub_resetn = ~ResetSignal(cd_nubus)
@@ -321,16 +325,56 @@ class NuBus(Module):
         ]
         
         self.submodules.dma_fsm = dma_fsm = ClockDomainsRenamer(cd_nubus)(FSM(reset_state="Reset"))
+        ctr = Signal(2) # burst counter
+        burst = Signal()
+        burst_we = Signal()
+        
+        data_width = burst_size * 4
+        data_width_bits = burst_size * 32
+        blk_addr_width = 32 - log2_int(data_width) # 27 for burst_size == 8, 28 for burst_size == 4
+        fifo_addr = Signal(blk_addr_width)
+        fifo_blk_addr = Signal(blk_addr_width)
+        fifo_buffer = Signal(data_width_bits)
+        
+        tosbus_fifo_dout = Record(soc.tosbus_layout)
+        self.comb += tosbus_fifo_dout.raw_bits().eq(tosbus_fifo.dout)
+        
+        fromsbus_req_fifo_dout = Record(soc.fromsbus_req_layout)
+        self.comb += fromsbus_req_fifo_dout.raw_bits().eq(fromsbus_req_fifo.dout)
+        
+        fromsbus_fifo_din = Record(soc.fromsbus_layout)
+        self.comb += fromsbus_fifo.din.eq(fromsbus_fifo_din.raw_bits())
+        
         dma_fsm.act("Reset",
                     NextState("Idle")
         )
         dma_fsm.act("Idle",
                     If(wb_dma.cyc & wb_dma.stb & ~sampled_rqst, # we need the bus and it's not being requested
+                       NextValue(burst, 0),
                        If(owning_bus, # we own the bus, skip arbitration
                           NextState("AdrCycle"),
                        ).Else(        # go for arbitration
                            NextState("Arbitration"),
                        ),
+                    ).Elif(tosbus_fifo.readable & ~sampled_rqst,
+                           NextValue(burst, 1),
+                           NextValue(burst_we, 1),
+                           NextValue(fifo_addr, tosbus_fifo_dout.address[(32-blk_addr_width):32]),
+                           If(owning_bus, # we own the bus, skip arbitration
+                              NextState("Burst4AdrCycle"),
+                           ).Else(        # go for arbitration
+                               NextState("Arbitration"),
+                           )
+                    ).Elif(fromsbus_req_fifo.readable & fromsbus_fifo.writable & ~sampled_rqst,
+                           NextValue(burst, 1),
+                           NextValue(burst_we, 0),
+                           NextValue(fifo_addr, fromsbus_req_fifo_dout.dmaaddress[(32-blk_addr_width):32]),
+                           NextValue(fifo_blk_addr, fromsbus_req_fifo_dout.blkaddress),
+                           If(owning_bus, # we own the bus, skip arbitration
+                              NextState("Burst4AdrCycle"),
+                           ).Else(        # go for arbitration
+                               NextState("Arbitration"),
+                           )
                     )
         )
         dma_fsm.act("Arbitration",
@@ -345,7 +389,11 @@ class NuBus(Module):
                     rqst_o_n.eq(0),
                     If(grant & ~decoded_busy, # I'm now 'owner'
                        NextValue(owning_bus, 1),
-                       NextState("AdrCycle"),
+                       If(burst,
+                          NextState("Burst4AdrCycle"),
+                       ).Else(
+                           NextState("AdrCycle"),
+                       ),
                     )
         )
         dma_fsm.act("AdrCycle",
@@ -374,6 +422,7 @@ class NuBus(Module):
                     If(sampled_ack,
                        wb_dma.ack.eq(1),
                        # fixme: check status ??? (tm0 and tm1 should be active for no-error)
+                       NextValue(led0, (~sampled_tm0 | ~sampled_tm1)),
                        NextState("FinishCycle"),
                     )
         )
@@ -393,6 +442,101 @@ class NuBus(Module):
                     If(sampled_ack,
                        wb_dma.ack.eq(1),
                        # fixme: check status ??? (tm0 and tm1 should be active for no-error)
+                       NextValue(led0, (~sampled_tm0 | ~sampled_tm1)),
+                       NextState("FinishCycle"),
+                    )
+        )
+
+        dma_fsm.act("Burst4AdrCycle",
+                    start_arbitration.eq(0),
+                    master_oe.eq(1), # for start
+                    tmo_oe.eq(1), # for tm0, tm1, ack
+                    ad_oe.eq(1), # for write address
+                    start_o_n.eq(0),
+                    tm0_o_n.eq(1), # burst
+                    tm1_o_n.eq(~burst_we),
+                    ad_o_n[0].eq(1), # burst
+                    ad_o_n[1].eq(0), # burst
+                    ad_o_n[2].eq(0), # burst  == 4
+                    ad_o_n[3].eq(1), # burst  == 4
+                    ad_o_n[4:32].eq(~fifo_addr),
+                    ack_o_n.eq(1),
+                    NextValue(ctr, 0),
+                    If(burst_we,
+                       NextState("Burst4DatCycleTM0"),
+                    ).Else(
+                        NextState("Burst4ReadWaitForTM0"),
+                    )
+        )
+        dma_fsm.act("Burst4ReadWaitForTM0",
+                    master_oe.eq(1), # for start
+                    start_o_n.eq(1), # start finished, but still need to be driven
+                    If(sampled_ack, # oups
+                       fromsbus_req_fifo.re.eq(1), # remove request to avoid infinite repeat
+                       NextValue(led0, 1),
+                       NextValue(led1, 1),
+                       NextState("FinishCycle"),
+                    ).Elif(sampled_tm0,
+                           Case(ctr, {
+                               0x0: NextValue(fifo_buffer[ 0: 32], sampled_ad),
+                               0x1: NextValue(fifo_buffer[32: 64], sampled_ad),
+                               0x2: NextValue(fifo_buffer[64: 96], sampled_ad),
+                               #0x3: NextValue(fifo_buffer[96:128], sampled_ad),
+                           }),
+                           NextValue(ctr, ctr + 1),
+                           If(ctr == 0x2, # burst next-to-last
+                              NextState("Burst4ReadWaitForAck"),
+                           ).Else(
+                               NextState("Burst4ReadWaitForTM0"),
+                           )
+                    )
+        )
+        dma_fsm.act("Burst4ReadWaitForAck",
+                    master_oe.eq(1), # for start
+                    start_o_n.eq(1), # start finished, but still need to be driven
+                    If(sampled_ack,
+                       fromsbus_req_fifo.re.eq(1), # remove request
+                       fromsbus_fifo.we.eq(1),
+                       fromsbus_fifo_din.blkaddress.eq(fifo_blk_addr),
+                       fromsbus_fifo_din.data.eq(Cat(fifo_buffer[0:96], sampled_ad)), # we use sampled_ad directly for 96:128
+                       # fixme: check status ??? (tm0 and tm1 should be active for no-error)
+                       NextValue(led0, (~sampled_tm0 | ~sampled_tm1)),
+                       NextState("FinishCycle"),
+                    )
+        )
+        dma_fsm.act("Burst4DatCycleTM0",
+                    master_oe.eq(1), # for start
+                    ad_oe.eq(1), # for write data
+                    start_o_n.eq(1), # start finished, but still need to be driven
+                    Case(ctr, {
+                        0x0: ad_o_n.eq(~tosbus_fifo_dout.data[ 0: 32]),
+                        0x1: ad_o_n.eq(~tosbus_fifo_dout.data[32: 64]),
+                        0x2: ad_o_n.eq(~tosbus_fifo_dout.data[64: 96]),
+                        #0x3: ad_o_n.eq(~tosbus_fifo_dout.data[96:128]),
+                    }),
+                    If(sampled_ack, # oups
+                       NextValue(led0, 1),
+                       NextValue(led1, 1),
+                       tosbus_fifo.re.eq(1), # remove FIFO entry to avoid infinite repeat
+                       NextState("FinishCycle"),
+                    ).Elif(sampled_tm0,
+                        NextValue(ctr, ctr + 1),
+                       If(ctr == 0x2, # burst next-to-last
+                          NextState("Burst4DatCycleAck"),
+                       ).Else(
+                           NextState("Burst4DatCycleTM0"),
+                       )
+                    )
+        )
+        dma_fsm.act("Burst4DatCycleAck",
+                    master_oe.eq(1), # for start
+                    ad_oe.eq(1), # for write data
+                    start_o_n.eq(1), # start finished, but still need to be driven
+                    ad_o_n.eq(~tosbus_fifo_dout.data[96:128]), # last word
+                    If(sampled_ack,
+                       tosbus_fifo.re.eq(1), # remove FIFO entry at last
+                       # fixme: check status ??? (tm0 and tm1 should be active for no-error)
+                       NextValue(led0, (~sampled_tm0 | ~sampled_tm1)),
                        NextState("FinishCycle"),
                     )
         )

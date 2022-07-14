@@ -37,6 +37,7 @@ import goblin_accel
 
 # Wishbone stuff
 from sbus_wb import WishboneDomainCrossingMaster
+from sbus_to_fpga_blk_dma import *
 from nubus_mem_wb import NuBus2Wishbone
 from nubus_memfifo_wb import NuBus2WishboneFIFO
 from nubus_cpu_wb import Wishbone2NuBus
@@ -322,12 +323,56 @@ class NuBusFPGA(SoCCore):
             nubus_writemaster_sys = wishbone.Interface(data_width=self.bus.data_width)
             wishbone_slave_nubus = wishbone.Interface(data_width=self.bus.data_width)
             self.submodules.wishbone_slave_sys = WishboneDomainCrossingMaster(platform=self.platform, slave=wishbone_slave_nubus, cd_master="sys", cd_slave="nubus", force_delay=6) # force delay needed to avoid back-to-back transaction running into issue https://github.com/alexforencich/verilog-wishbone/issues/4
-            self.submodules.nubus = nubus_full_sampling.NuBus(platform=platform,
+
+
+            burst_size=4
+            
+            data_width = burst_size * 4
+            data_width_bits = burst_size * 32
+            blk_addr_width = 32 - log2_int(data_width)
+            
+            self.tosbus_layout = [
+                ("address", 32),
+                ("data", data_width_bits),
+            ]
+            self.fromsbus_layout = [
+                ("blkaddress", blk_addr_width),
+                ("data", data_width_bits),
+            ]
+            self.fromsbus_req_layout = [
+                ("blkaddress", blk_addr_width),
+                ("dmaaddress", 32),
+            ]
+        
+            self.submodules.tosbus_fifo = ClockDomainsRenamer({"read": "nubus", "write": "sys"})(AsyncFIFOBuffered(width=layout_len(self.tosbus_layout), depth=burst_size))
+            self.submodules.fromsbus_fifo = ClockDomainsRenamer({"write": "nubus", "read": "sys"})(AsyncFIFOBuffered(width=layout_len(self.fromsbus_layout), depth=burst_size))
+            self.submodules.fromsbus_req_fifo = ClockDomainsRenamer({"read": "nubus", "write": "sys"})(AsyncFIFOBuffered(width=layout_len(self.fromsbus_req_layout), depth=burst_size))
+            
+            self.submodules.exchange_with_mem = ExchangeWithMem(soc=self,
+                                                                platform=platform,
+                                                                tosbus_fifo=self.tosbus_fifo,
+                                                                fromsbus_fifo=self.fromsbus_fifo,
+                                                                fromsbus_req_fifo=self.fromsbus_req_fifo,
+                                                                dram_native_r=self.sdram.crossbar.get_port(mode="read", data_width=data_width_bits),
+                                                                dram_native_w=self.sdram.crossbar.get_port(mode="write", data_width=data_width_bits),
+                                                                mem_size=avail_sdram//1048576,
+                                                                burst_size=burst_size,
+                                                                do_checksum = False)
+
+            self.submodules.nubus = nubus_full_sampling.NuBus(soc=self,
+                                                              burst_size=burst_size,
+                                                              tosbus_fifo=self.tosbus_fifo,
+                                                              fromsbus_fifo=self.fromsbus_fifo,
+                                                              fromsbus_req_fifo=self.fromsbus_req_fifo,
                                                               wb_read=wishbone_master_sys,
                                                               wb_write=nubus_writemaster_sys,
                                                               wb_dma=wishbone_slave_nubus,
                                                               cd_nubus="nubus")
-            #self.submodules.nubus = nubus_full.NuBus(platform=platform,
+            #self.submodules.nubus = nubus_full.NuBus(soc=self,
+            #                                         burst_size=burst_size,
+            #                                         tosbus_fifo=self.tosbus_fifo,
+            #                                         fromsbus_fifo=self.fromsbus_fifo,
+            #                                         fromsbus_req_fifo=self.fromsbus_req_fifo,
             #                                         wb_read=self.wishbone_master_nubus,
             #                                         wb_write=nubus_writemaster_sys,
             #                                         wb_dma=wishbone_slave_nubus,
