@@ -56,6 +56,7 @@ _io = [
 
 # NuBusFPGA I/O
 
+# I/O
 _nubus_io_v1_0 = [
     ## leds on the NuBus board
     ("user_led", 0, Pins("V5"),  IOStandard("lvcmos33")), #LED0
@@ -99,6 +100,42 @@ _nubus_io_v1_0 = [
     ),
     ]
 
+_nubus_io_v1_2 = [
+    ## leds on the NuBus board
+    ("user_led", 0, Pins("N2"),  IOStandard("lvcmos33")), #LED0
+    ("user_led", 1, Pins("N1"),  IOStandard("lvcmos33")), #LED1
+    ("user_led", 2, Pins("M1"),  IOStandard("lvcmos33")), #LED2
+    ("user_led", 3, Pins("L1"),  IOStandard("lvcmos33")), #LED3
+    ## serial header for console
+    ("serial", 0,
+     Subsignal("tx", Pins("V9")), # FIXME: might be the other way round
+     Subsignal("rx", Pins("U9")),
+     IOStandard("LVCMOS33")
+    ),
+    ## USB
+    ("usb", 0,
+     Subsignal("dp", Pins("B11")),
+     Subsignal("dm", Pins("A11")),
+     IOStandard("LVCMOS33")
+    ),
+    ## HDMI
+    ("hdmi", 0,
+        Subsignal("clk_p",   Pins("M4"), IOStandard("TMDS_33")),
+        Subsignal("clk_n",   Pins("N4"), IOStandard("TMDS_33")),
+        Subsignal("data0_p", Pins("M3"), IOStandard("TMDS_33")),
+        Subsignal("data0_n", Pins("M2"), IOStandard("TMDS_33")),
+        Subsignal("data1_p", Pins("K5"), IOStandard("TMDS_33")),
+        Subsignal("data1_n", Pins("L4"), IOStandard("TMDS_33")),
+        Subsignal("data2_p", Pins("K3"), IOStandard("TMDS_33")),
+        Subsignal("data2_n", Pins("L3"), IOStandard("TMDS_33")),
+        Subsignal("hpd",     Pins("N6"), IOStandard("LVCMOS33")),
+        Subsignal("sda",     Pins("M6"), IOStandard("LVCMOS33")),
+        Subsignal("scl",     Pins("L6"), IOStandard("LVCMOS33")),
+        Subsignal("cec",     Pins("L5"), IOStandard("LVCMOS33")),
+    ),
+    ]
+
+# NuBus
 _nubus_nubus_v1_0 = [
     ("clk_3v3_n",          0, Pins("H16"), IOStandard("lvttl")),
     ("clk2x_3v3_n",        0, Pins("T5"),  IOStandard("lvttl")),
@@ -128,6 +165,39 @@ _nubus_nubus_v1_0 = [
     ("fpga_to_cpld_signal_2",0, Pins("G14"), IOStandard("lvttl")),
 ]
 
+_nubus_nubus_v1_2 = [
+    ("clk_3v3_n",          0, Pins("H16"), IOStandard("lvttl")),
+    ("clk2x_3v3_n",        0, Pins("T5"),  IOStandard("lvttl")),
+    ("ack_3v3_n",          0, Pins("J17"), IOStandard("lvttl")),
+    ("ack_o_n",            0, Pins("H14"), IOStandard("lvttl")),
+    ("ack_oe_n",           0, Pins("J13"), IOStandard("lvttl")),
+    ("nmrq_3v3_n",         0, Pins("J18"), IOStandard("lvttl")),
+    ("reset_3v3_n",        0, Pins("P2"),  IOStandard("lvttl")),
+    ("rqst_3v3_n"  ,       0, Pins("K16"), IOStandard("lvttl")),
+    ("rqst_o_n"  ,         0, Pins("K13"), IOStandard("lvttl")),
+    ("start_3v3_n",        0, Pins("K15"), IOStandard("lvttl")),
+    ("start_o_n",          0, Pins("H15"), IOStandard("lvttl")),
+    ("start_oe_n",         0, Pins("J15"), IOStandard("lvttl")),
+    ("ad_3v3_n",           0, Pins("A13 A14 C12 B12 B13 B14 A15 A16 "
+                                   "D12 D13 D14 C14 B16 B17 D15 C15 "
+                                   "B18 A18 C16 C17 E15 E16 F14 F13 "
+                                   "D17 D18 E17 E18 F15 F18 F16 G18 "), IOStandard("lvttl")),
+    ("arb_3v3_n",          0, Pins("T8 V4 V5 U6"), IOStandard("lvttl")),
+    ("arb_o_n",            0, Pins("J14 G16 G14 H17"), IOStandard("lvttl")),
+    ("id_3v3_n",           0, Pins("U7 V6 V7 U8"), IOStandard("lvttl")),
+    ("tm0_3v3_n",          0, Pins("P5"), IOStandard("lvttl")),
+    ("tm0_o_n",            0, Pins("P3"), IOStandard("lvttl")),
+    ("tm1_3v3_n",          0, Pins("N5"), IOStandard("lvttl")),
+    ("tm1_o_n",            0, Pins("P4"), IOStandard("lvttl")),
+    ("tmx_oe_n",           0, Pins("R3"), IOStandard("lvttl")),
+    ("tm2_3v3_n",          0, Pins("R2"),  IOStandard("lvttl")),
+    ("tm2_o_n",            0, Pins("R1"),  IOStandard("lvttl")),
+    ("tm2_oe_n",           0, Pins("T1"),  IOStandard("lvttl")),
+    
+    ("nubus_oe",           0, Pins("G13"), IOStandard("lvttl")),
+    ("nubus_ad_dir",       0, Pins("G17"), IOStandard("lvttl"))),
+]
+
 # Connectors ---------------------------------------------------------------------------------------
 connectors = [
     ]
@@ -148,9 +218,11 @@ class Platform(XilinxPlatform):
         }[variant]
         nubus_io = {
             "V1.0" : _nubus_io_v1_0,
+            "V1.2" : _nubus_io_v1_2,
         }[version]
         nubus_nubus = {
             "V1.0" : _nubus_nubus_v1_0,
+            "V1.2" : _nubus_nubus_v1_2,
         }[version]
         self.speedgrade = -1
         if (device[-1] == '2'):

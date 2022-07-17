@@ -2555,4 +2555,14 @@ Text Notes 350  13400 0    50   ~ 0
 For ID, it's likely all Macs are using open/ground,\nso we could pull-up to +3V3 and avoid the level shifter entirely.
 Text Notes 6400 13700 0    50   ~ 0
 always enabled
+Wire Notes Line
+	6950 8450 7850 8450
+Wire Notes Line
+	7850 8450 7850 9300
+Wire Notes Line
+	7850 9300 6950 9300
+Wire Notes Line
+	6950 9300 6950 8450
+Text Notes 6750 8450 0    50   ~ 0
+signals formerly from FPGA to CPLD\nTBC they are no longer needed
 $EndSCHEMATC
