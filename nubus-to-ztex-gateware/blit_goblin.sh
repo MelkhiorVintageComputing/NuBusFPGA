@@ -21,8 +21,8 @@ ARCH=rv32im_zba_zbb_zbt
 PARAM="-DBASE_FB=${BASE_FB}"
 
 if test "x$1" != "xASM"; then
-	$GCC $OPT -S -o blit.s $PARAM -march=$ARCH -mabi=ilp32 -mstrict-align -fno-builtin-memset -nostdlib -ffreestanding -nostartfiles blit.c
+	$GCC $OPT -S -o blit_goblin.s $PARAM -march=$ARCH -mabi=ilp32 -mstrict-align -fno-builtin-memset -nostdlib -ffreestanding -nostartfiles blit_goblin.c
 fi
-$GCC     $OPT -c -o blit.o $PARAM -march=$ARCH -mabi=ilp32 -mstrict-align -fno-builtin-memset -nostdlib -ffreestanding -nostartfiles blit.s &&
-$GCCLINK $OPT    -o blit   $PARAM -march=$ARCH -mabi=ilp32 -T blit.lds  -nostartfiles blit.o &&
-$OBJCOPY  -O binary -j .text -j .rodata blit blit.raw
+$GCC     $OPT -c -o blit_goblin.o $PARAM -march=$ARCH -mabi=ilp32 -mstrict-align -fno-builtin-memset -nostdlib -ffreestanding -nostartfiles blit_goblin.s &&
+$GCCLINK $OPT    -o blit_goblin   $PARAM -march=$ARCH -mabi=ilp32 -T blit_goblin.lds  -nostartfiles blit_goblin.o &&
+$OBJCOPY  -O binary -j .text -j .rodata blit_goblin blit_goblin.raw
