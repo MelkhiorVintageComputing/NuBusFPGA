@@ -122,4 +122,8 @@ UInt32 Primary(SEBlock* block);
 
 #define         Check32QDTrap               0xAB03
 
+static inline UInt32 revb(UInt32 d) {
+	return ((d&0xFFul)<<24) | ((d&0xFF00ul)<<8) | ((d&0xFF0000ul)>>8) | ((d&0xFF000000ul)>>24);
+}
+
 #endif

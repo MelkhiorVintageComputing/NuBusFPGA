@@ -41,11 +41,11 @@ class NuBus(Module):
         # slave
         tmo_oe = Signal() # output enable
         tm0_i_n = Signal()
-        tm0_o_n = Signal()
+        tm0_o_n = Signal(reset = 1)
         tm1_i_n = Signal()
-        tm1_o_n = Signal()
+        tm1_o_n = Signal(reset = 1)
         ack_i_n = Signal()
-        ack_o_n = Signal()
+        ack_o_n = Signal(reset = 1)
 
         ad_oe = Signal()
         ad_i_n = Signal(32)
@@ -54,12 +54,12 @@ class NuBus(Module):
         id_i_n = Signal(4)
 
         start_i_n = Signal()
-        start_o_n = Signal() # master via master_oe
+        start_o_n = Signal(reset = 1) # master via master_oe
 
         # master
         rqst_oe = Signal()
         rqst_i_n = Signal()
-        rqst_o_n = Signal()
+        rqst_o_n = Signal(reset = 1)
 
         # sampled signals, exposing the value of the register acquired on the falling edge
         # they can change every cycle *on falling edge*
@@ -69,6 +69,7 @@ class NuBus(Module):
         sampled_start = Signal()
         sampled_ack = Signal()
         sampled_ad = Signal(32)
+        sampled_ad_byterev = Signal(32)
 
         # master
         sampled_rqst = Signal()
@@ -85,6 +86,10 @@ class NuBus(Module):
                 processed_ad[23:32].eq(Cat(sampled_ad[23], Signal(8, reset = 0xf0)))), # 24 bits, a.k.a 22 bits of words
             processed_super_ad[0:28].eq(sampled_ad[0:28]),
             processed_super_ad[28:32].eq(Signal(4, reset = 0x8)),
+            sampled_ad_byterev[ 0: 8].eq(sampled_ad[24:32]),
+            sampled_ad_byterev[ 8:16].eq(sampled_ad[16:24]),
+            sampled_ad_byterev[16:24].eq(sampled_ad[ 8:16]),
+            sampled_ad_byterev[24:32].eq(sampled_ad[ 0: 8]),
         ]
 
         # decoded signals, exposing decoded results from the sampled signals
@@ -338,6 +343,9 @@ class NuBus(Module):
         
         tosbus_fifo_dout = Record(soc.tosbus_layout)
         self.comb += tosbus_fifo_dout.raw_bits().eq(tosbus_fifo.dout)
+        tosbus_fifo_dout_data_byterev = Signal(data_width_bits)
+        tosbus_fifo_dout_bytereversal_stmts = [ tosbus_fifo_dout_data_byterev[k*32+j*8:k*32+j*8+8].eq(tosbus_fifo_dout.data[k*32+32-j*8-8:k*32+32-j*8])  for k in range(burst_size) for j in range(4) ]   
+        self.comb += tosbus_fifo_dout_bytereversal_stmts
         
         fromsbus_req_fifo_dout = Record(soc.fromsbus_req_layout)
         self.comb += fromsbus_req_fifo_dout.raw_bits().eq(fromsbus_req_fifo.dout)
@@ -422,7 +430,7 @@ class NuBus(Module):
                     If(sampled_ack,
                        wb_dma.ack.eq(1),
                        # fixme: check status ??? (tm0 and tm1 should be active for no-error)
-                       NextValue(led0, (~sampled_tm0 | ~sampled_tm1)),
+                       #NextValue(led0, (~sampled_tm0 | ~sampled_tm1)),
                        NextState("FinishCycle"),
                     )
         )
@@ -442,7 +450,7 @@ class NuBus(Module):
                     If(sampled_ack,
                        wb_dma.ack.eq(1),
                        # fixme: check status ??? (tm0 and tm1 should be active for no-error)
-                       NextValue(led0, (~sampled_tm0 | ~sampled_tm1)),
+                       #NextValue(led0, (~sampled_tm0 | ~sampled_tm1)),
                        NextState("FinishCycle"),
                     )
         )
@@ -473,15 +481,19 @@ class NuBus(Module):
                     start_o_n.eq(1), # start finished, but still need to be driven
                     If(sampled_ack, # oups
                        fromsbus_req_fifo.re.eq(1), # remove request to avoid infinite repeat
-                       NextValue(led0, 1),
-                       NextValue(led1, 1),
+                       #NextValue(led0, 1),
+                       #NextValue(led1, 1),
                        NextState("FinishCycle"),
                     ).Elif(sampled_tm0,
                            Case(ctr, {
-                               0x0: NextValue(fifo_buffer[ 0: 32], sampled_ad),
-                               0x1: NextValue(fifo_buffer[32: 64], sampled_ad),
-                               0x2: NextValue(fifo_buffer[64: 96], sampled_ad),
-                               #0x3: NextValue(fifo_buffer[96:128], sampled_ad),
+                               #0x0: NextValue(fifo_buffer[ 0: 32], sampled_ad),
+                               #0x1: NextValue(fifo_buffer[32: 64], sampled_ad),
+                               #0x2: NextValue(fifo_buffer[64: 96], sampled_ad),
+                               ##0x3: NextValue(fifo_buffer[96:128], sampled_ad),
+                               0x0: NextValue(fifo_buffer[ 0: 32], sampled_ad_byterev),
+                               0x1: NextValue(fifo_buffer[32: 64], sampled_ad_byterev),
+                               0x2: NextValue(fifo_buffer[64: 96], sampled_ad_byterev),
+                               #0x3: NextValue(fifo_buffer[96:128], sampled_ad_byterev),
                            }),
                            NextValue(ctr, ctr + 1),
                            If(ctr == 0x2, # burst next-to-last
@@ -498,9 +510,10 @@ class NuBus(Module):
                        fromsbus_req_fifo.re.eq(1), # remove request
                        fromsbus_fifo.we.eq(1),
                        fromsbus_fifo_din.blkaddress.eq(fifo_blk_addr),
-                       fromsbus_fifo_din.data.eq(Cat(fifo_buffer[0:96], sampled_ad)), # we use sampled_ad directly for 96:128
+                       #fromsbus_fifo_din.data.eq(Cat(fifo_buffer[0:96], sampled_ad)), # we use sampled_ad directly for 96:128
+                       fromsbus_fifo_din.data.eq(Cat(fifo_buffer[0:96], sampled_ad_byterev)), # we use sampled_ad directly for 96:128
                        # fixme: check status ??? (tm0 and tm1 should be active for no-error)
-                       NextValue(led0, (~sampled_tm0 | ~sampled_tm1)),
+                       #NextValue(led0, (~sampled_tm0 | ~sampled_tm1)),
                        NextState("FinishCycle"),
                     )
         )
@@ -509,14 +522,18 @@ class NuBus(Module):
                     ad_oe.eq(1), # for write data
                     start_o_n.eq(1), # start finished, but still need to be driven
                     Case(ctr, {
-                        0x0: ad_o_n.eq(~tosbus_fifo_dout.data[ 0: 32]),
-                        0x1: ad_o_n.eq(~tosbus_fifo_dout.data[32: 64]),
-                        0x2: ad_o_n.eq(~tosbus_fifo_dout.data[64: 96]),
-                        #0x3: ad_o_n.eq(~tosbus_fifo_dout.data[96:128]),
+                        #0x0: ad_o_n.eq(~tosbus_fifo_dout.data[ 0: 32]),
+                        #0x1: ad_o_n.eq(~tosbus_fifo_dout.data[32: 64]),
+                        #0x2: ad_o_n.eq(~tosbus_fifo_dout.data[64: 96]),
+                        ##0x3: ad_o_n.eq(~tosbus_fifo_dout.data[96:128]),
+                        0x0: ad_o_n.eq(~tosbus_fifo_dout_data_byterev[ 0: 32]),
+                        0x1: ad_o_n.eq(~tosbus_fifo_dout_data_byterev[32: 64]),
+                        0x2: ad_o_n.eq(~tosbus_fifo_dout_data_byterev[64: 96]),
+                        #0x3: ad_o_n.eq(~tosbus_fifo_dout_data_byterev[96:128]),
                     }),
                     If(sampled_ack, # oups
-                       NextValue(led0, 1),
-                       NextValue(led1, 1),
+                       #NextValue(led0, 1),
+                       #NextValue(led1, 1),
                        tosbus_fifo.re.eq(1), # remove FIFO entry to avoid infinite repeat
                        NextState("FinishCycle"),
                     ).Elif(sampled_tm0,
@@ -532,14 +549,21 @@ class NuBus(Module):
                     master_oe.eq(1), # for start
                     ad_oe.eq(1), # for write data
                     start_o_n.eq(1), # start finished, but still need to be driven
-                    ad_o_n.eq(~tosbus_fifo_dout.data[96:128]), # last word
+                    #ad_o_n.eq(~tosbus_fifo_dout.data[96:128]), # last word
+                    ad_o_n.eq(~tosbus_fifo_dout_data_byterev[96:128]), # last word
                     If(sampled_ack,
                        tosbus_fifo.re.eq(1), # remove FIFO entry at last
                        # fixme: check status ??? (tm0 and tm1 should be active for no-error)
-                       NextValue(led0, (~sampled_tm0 | ~sampled_tm1)),
+                       #NextValue(led0, (~sampled_tm0 | ~sampled_tm1)),
                        NextState("FinishCycle"),
                     )
         )
+
+        self.comb += [
+            led0.eq(~dma_fsm.ongoing("Idle")), 
+            #led1.eq(dma_fsm.ongoing("Burst4DatCycleAck") | dma_fsm.ongoing("Burst4DatCycleTM0") ),
+            led1.eq(sampled_rqst | wb_dma.cyc),
+        ]
         
         # stuff at this end so we don't use the signals inadvertantly
 

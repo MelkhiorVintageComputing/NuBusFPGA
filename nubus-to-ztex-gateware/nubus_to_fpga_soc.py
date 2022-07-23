@@ -344,9 +344,9 @@ class NuBusFPGA(SoCCore):
                 ("dmaaddress", 32),
             ]
         
-            self.submodules.tosbus_fifo = ClockDomainsRenamer({"read": "nubus", "write": "sys"})(AsyncFIFOBuffered(width=layout_len(self.tosbus_layout), depth=burst_size))
-            self.submodules.fromsbus_fifo = ClockDomainsRenamer({"write": "nubus", "read": "sys"})(AsyncFIFOBuffered(width=layout_len(self.fromsbus_layout), depth=burst_size))
-            self.submodules.fromsbus_req_fifo = ClockDomainsRenamer({"read": "nubus", "write": "sys"})(AsyncFIFOBuffered(width=layout_len(self.fromsbus_req_layout), depth=burst_size))
+            self.submodules.tosbus_fifo = ClockDomainsRenamer({"read": "nubus", "write": "sys"})(AsyncFIFOBuffered(width=layout_len(self.tosbus_layout), depth=1024//data_width))
+            self.submodules.fromsbus_fifo = ClockDomainsRenamer({"write": "nubus", "read": "sys"})(AsyncFIFOBuffered(width=layout_len(self.fromsbus_layout), depth=512//data_width))
+            self.submodules.fromsbus_req_fifo = ClockDomainsRenamer({"read": "nubus", "write": "sys"})(AsyncFIFOBuffered(width=layout_len(self.fromsbus_req_layout), depth=512//data_width))
             
             self.submodules.exchange_with_mem = ExchangeWithMem(soc=self,
                                                                 platform=platform,
@@ -357,7 +357,8 @@ class NuBusFPGA(SoCCore):
                                                                 dram_native_w=self.sdram.crossbar.get_port(mode="write", data_width=data_width_bits),
                                                                 mem_size=avail_sdram//1048576,
                                                                 burst_size=burst_size,
-                                                                do_checksum = False)
+                                                                do_checksum = False,
+                                                                clock_domain="nubus")
 
             self.submodules.nubus = nubus_full_sampling.NuBus(soc=self,
                                                               burst_size=burst_size,

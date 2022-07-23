@@ -95,6 +95,22 @@ OSErr cNuBusFPGARAMDskOpen(IOParamPtr pb, /* DCtlPtr */ AuxDCEPtr dce)
 
 		// add the drive
 		MyAddDrive(dsptr->dQRefNum, drvnum, (DrvQElPtr)&dsptr->qLink);
+		
+#ifdef ENABLE_DMA
+		ctx->dma_blk_size = revb( read_reg(dce, DMA_BLK_SIZE) );
+		ctx->dma_blk_size_mask = ctx->dma_blk_size - 1; // size is Po2
+		ctx->dma_blk_size_shift = 0;
+		while ((1 << ctx->dma_blk_size_shift) < ctx->dma_blk_size)
+			   ctx->dma_blk_size_shift++;
+		ctx->dma_blk_base = revb( read_reg(dce, DMA_BLK_BASE) );
+		ctx->dma_mem_size = revb( read_reg(dce, DMA_MEM_SIZE) );
+		/* write_reg(dce, GOBOFB_DEBUG, 0xD1580002); */
+		/* write_reg(dce, GOBOFB_DEBUG, ctx->dma_blk_size); */
+		/* write_reg(dce, GOBOFB_DEBUG, ctx->dma_blk_size_mask); */
+		/* write_reg(dce, GOBOFB_DEBUG, ctx->dma_blk_size_shift); */
+		/* write_reg(dce, GOBOFB_DEBUG, ctx->dma_blk_base); */
+		/* write_reg(dce, GOBOFB_DEBUG, ctx->dma_mem_size); */
+#endif
 
 		// auto-mount
 		{
@@ -102,6 +118,8 @@ OSErr cNuBusFPGARAMDskOpen(IOParamPtr pb, /* DCtlPtr */ AuxDCEPtr dce)
 			pbr.volumeParam.ioVRefNum = dsptr->dQDrive;
 			ret = PBMountVol(&pbr);
 		}
+
+		
 	}
 		
 	SwapMMUMode ( &busMode ); 
