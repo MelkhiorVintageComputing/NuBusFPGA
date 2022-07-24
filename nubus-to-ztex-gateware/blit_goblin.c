@@ -9,13 +9,21 @@
 #warning "Using default BASE_FB"
 #endif
 
+#if defined(GOBLIN_NUBUS)
 #define BASE_ROM 0xF0910000 // FIXME : should be generated ; 4-64 KiB of Wishbone ROM ? ; also in the LDS file ; also in the Vex config
-
 #define BASE_RAM 0xF0902000 // FIXME : should be generated : 4-64 KiB of Wishbone SRAM ? ; also in _start
 #define BASE_RAM_SIZE 0x00001000 // FIXME : should be generated : 4-64 KiB of Wishbone SRAM ? ; also in _start
-
 #define BASE_BT_REGS    0xF0900000
 #define BASE_ACCEL_REGS 0xF0901000
+#elif defined(GOBLIN_SBUS)
+#define BASE_ROM 0x00410000 // FIXME : should be generated ; 4-64 KiB of Wishbone ROM ? ; also in the LDS file ; also in the Vex config
+#define BASE_RAM 0x00420000 // FIXME : should be generated : 4-64 KiB of Wishbone SRAM ? ; also in _start
+#define BASE_RAM_SIZE 0x00001000 // FIXME : should be generated : 4-64 KiB of Wishbone SRAM ? ; also in _start
+#define BASE_BT_REGS    0x00200000
+#define BASE_ACCEL_REGS 0x000c0000
+#else
+#error "Must define GOBLIN_NUBUS or GOBLIN_SBUS"
+#endif
 
 //typedef void (*boot_t)(void);
 //typedef void (*start_t)(unsigned short, unsigned short, unsigned short, unsigned short, unsigned short, unsigned short, unsigned short, unsigned short);
@@ -173,7 +181,13 @@ asm(".global _start\n"
 	//"slli a0,a0,12\n" // 0x00001000, BASE_RAM_SIZE
 	//"add sp,sp,a0\n" // SP at the end of the SRAM
 	"nop\n"
+#if defined(GOBLIN_NUBUS)
 	"li sp, 0xF0902ffc\n" // SP at the end of the SRAM
+#elif defined(GOBLIN_SBUS)
+	"li sp, 0x00420ffc\n" // SP at the end of the SRAM
+#else
+#error "Must define GOBLIN_NUBUS or GOBLIN_SBUS"
+#endif
 	//"li a0, 0x00700968\n" // @ of r5_cmd
 	//"li a1, 0x00C0FFEE\n"
 	//"sw a1, 0(a0)\n"

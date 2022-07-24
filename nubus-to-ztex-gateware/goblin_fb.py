@@ -27,12 +27,12 @@ omap_layout = [
     ("data", 8),
 ]
 
-def goblin_rounded_size(hres, vres):
+def goblin_rounded_size(hres, vres, bus="NuBus"):
     mib = int(ceil(((hres * vres) + 0) / 1048576))
-    if (mib > 0 and mib < 8): # FIXME : NuBus
+    if (mib > 0 and mib < 8 and (bus == "NuBus")): # FIXME : NuBus
         mib = 8
-    #if (mib > 0 and mib < 16): # FIXME : SBus
-    #    mib = 16
+    if (mib > 0 and mib < 16 and (bus == "SBus")): # FIXME : SBus
+        mib = 16
     if (mib > 16 or mib < 1):
         print(f"{mib} mebibytes framebuffer not supported")
         assert(False)
@@ -438,6 +438,9 @@ class goblin(Module, AutoCSR):
         soc.add_constant("VIDEO_FRAMEBUFFER_HRES", hres)
         soc.add_constant("VIDEO_FRAMEBUFFER_VRES", vres)
 
+        # Wishbone
+        self.bus = bus = wishbone.Interface()
+
         # HW Cursor
 
         if (hwcursor):
@@ -450,8 +453,6 @@ class goblin(Module, AutoCSR):
             ]
         else:
             handle_hwcursor = [ ]
-
-        self.bus = bus = wishbone.Interface()
 
         # current cmap logic for the goblin, similar to the cg6, minus the HW cursor
         

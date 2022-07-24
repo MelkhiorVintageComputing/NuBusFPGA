@@ -18,7 +18,7 @@ OBJCOPY=${GCCDIR}/bin/${GCCPFX}objcopy
 OPT=-O3 #-fno-inline
 ARCH=rv32im_zba_zbb_zbt
 
-PARAM="-DBASE_FB=${BASE_FB}"
+PARAM="-DBASE_FB=${BASE_FB} -DGOBLIN_NUBUS"
 
 if test "x$1" != "xASM"; then
 	$GCC $OPT -S -o blit_goblin.s $PARAM -march=$ARCH -mabi=ilp32 -mstrict-align -fno-builtin-memset -nostdlib -ffreestanding -nostartfiles blit_goblin.c
