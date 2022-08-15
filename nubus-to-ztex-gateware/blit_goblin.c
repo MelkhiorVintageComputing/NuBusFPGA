@@ -221,7 +221,14 @@ void from_reset(void) {
 	struct goblin_bt_regs* fbt = (struct goblin_bt_regs*)BASE_BT_REGS;
 	unsigned int cmd = fbc->reg_r5_cmd;
 	uint32_t srcx, wi, dstx;
-	switch ((fbt->mode>>24) & 0xFF) { // mode is 8 bits wrong-endian (all fbt is wrong-endian)
+#if defined(GOBLIN_NUBUS)
+	switch ((fbt->mode>>24) & 0xFF)  // mode is 8 bits wrong-endian (all fbt is wrong-endian in NuBus version)
+#elif defined(GOBLIN_SBUS)
+	switch (fbt->mode & 0xFF)
+#else
+#error "Must define GOBLIN_NUBUS or GOBLIN_SBUS"
+#endif
+		{
 	case mode_32bit:
 		srcx = fbc->reg_bitblt_src_x << 2;
 		wi   = fbc->reg_width        << 2;

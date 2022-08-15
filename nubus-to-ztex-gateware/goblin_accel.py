@@ -134,7 +134,7 @@ class GoblinAccel(Module): # AutoCSR ?
         FUN_PATT_BIT = 2
         FUN_TEST_BIT = 3
         # to hold the Vex in reset
-        local_reset = Signal(reset = 1)
+        self.local_reset = local_reset = Signal(reset = 1)
 
         self.sync += [
             If(reg_r5_cmd[FUN_DONE_BIT],
@@ -168,9 +168,7 @@ class GoblinAccel(Module): # AutoCSR ?
                    #timeout.eq(timeout_rst),
             )
         ]
-
-        #led0 = platform.request("user_led", 0)
-        #self.comb += led0.eq(~local_reset)        # Vex connection to the primary bus
+        
         self.ibus = ibus = wishbone.Interface()
         #self.dbus = dbus = wishbone.Interface()
         vex_reset = Signal()
@@ -288,5 +286,13 @@ class GoblinAccel(Module): # AutoCSR ?
     def get_netlist_name(self):
         return "VexRiscv"
 
+class GoblinAccelNuBus(GoblinAccel):
     def add_sources(self, platform):
-        platform.add_source("/home/dolbeau/NuBusFPGA/nubus-to-ztex-gateware/VexRiscv_FbAccel.v", "verilog")
+        platform.add_source("/home/dolbeau/NuBusFPGA/nubus-to-ztex-gateware/VexRiscv_GoblinAccel_NuBus.v", "verilog")
+
+
+class GoblinAccelSBus(GoblinAccel):
+    def add_sources(self, platform):
+        led0 = platform.request("SBUS_DATA_OE_LED")
+        self.comb += [ led0.eq(~self.local_reset), ]
+        platform.add_source("/home/dolbeau/NuBusFPGA/nubus-to-ztex-gateware/VexRiscv_GoblinAccel_SBus.v", "verilog")

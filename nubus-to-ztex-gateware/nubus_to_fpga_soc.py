@@ -399,7 +399,7 @@ class NuBusFPGA(SoCCore):
             #self.comb += pad_user_led_0.eq(self.goblin.video_framebuffer.underflow)
             #self.comb += pad_user_led_1.eq(self.goblin.video_framebuffer.fb_dma.enable)
             if (True):
-                self.submodules.goblin_accel = goblin_accel.GoblinAccel(soc = self)
+                self.submodules.goblin_accel = goblin_accel.GoblinAccelNuBus(soc = self)
                 self.bus.add_slave("goblin_accel", self.goblin_accel.bus, SoCRegion(origin=self.mem_map.get("goblin_accel", None), size=0x1000, cached=False))
                 self.bus.add_master(name="goblin_accel_r5_i", master=self.goblin_accel.ibus)
                 self.bus.add_master(name="goblin_accel_r5_d", master=self.goblin_accel.dbus)
