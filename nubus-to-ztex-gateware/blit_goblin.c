@@ -848,6 +848,21 @@ static void bitblit_fwd_fwd_copy(const unsigned_param_type xs,
 					sptr_elt_al += 4;
 				}
 				sptr_elt = sptr_elt_al + ((unsigned int)sptr_elt & 0x3);
+			} else if ((xs & 0x7) != (xd & 0x7)) {
+				/* off-hy-4, can't use 64 ld/sd but still can use 32-bits */
+				const unsigned int u32pm = (unsigned int)pm | ((unsigned int)pm)<<8 | ((unsigned int)pm)<<16 | ((unsigned int)pm)<<24;
+				const unsigned char* dptr_elt_end = dptr_elt + wi;
+				/* align dest & src (they are aligned the same here up to 0x3) */
+				for ( ; (dptr_elt < dptr_elt_last) && ((unsigned int)dptr_elt&0x3)!=0; ) {
+					dptr_elt[0] = sptr_elt[0];
+					dptr_elt ++;
+					sptr_elt ++;
+				}
+				for ( ; (dptr_elt < (dptr_elt_last-3)) ; ) {
+					((unsigned int*)dptr_elt)[0] = ((unsigned int*)sptr_elt)[0];
+					dptr_elt += 4;
+					sptr_elt += 4;
+				}
 			} else {
 				const unsigned int u32pm = (unsigned int)pm | ((unsigned int)pm)<<8 | ((unsigned int)pm)<<16 | ((unsigned int)pm)<<24;
 				const unsigned char* dptr_elt_end = dptr_elt + wi;
