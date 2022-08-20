@@ -1305,6 +1305,7 @@ static void bitblit_src32_dst32_fwd_fwd(const unsigned char op,
 /* 
    3210
    0321 // fsr by 8 ; could be rot
+   1230 // rev8
 */
 
 static inline uint32_t pixelswap(const uint32_t p) {
@@ -1312,7 +1313,7 @@ static inline uint32_t pixelswap(const uint32_t p) {
 	/* asm("fsr %0, %1, %2, %3\n" : "=r"(r) : "r"(r), "r"(r), "r"(8)); */
 	uint32_t r;
 	asm("fsr %0, %1, %2, %3\n" : "=r"(r) : "r"(p), "r"(p), "r"(8));
-	return r;
+	return __builtin_bswap32(r);
 }
 
 #define TRFOVERh(d,m,s) (d) = (ufma8vlv(pixelswap(s), (m), ufma8vlv((d), (0xffffffff^(m)), 0)))
