@@ -20,11 +20,11 @@ class GoblinAccel(Module): # AutoCSR ?
         reg_status = Signal(32) # 0
         reg_cmd = Signal(32) # 1
         reg_r5_cmd = Signal(32) # 2, to communicate with Vex
-        # 3 resv0
+        reg_op = Signal(8) # 3, X11 op or (0x80 | Render op)
         reg_width = Signal(COORD_BITS) # 4
         reg_height = Signal(COORD_BITS) # 5
         reg_fgcolor = Signal(32) # 6
-        # 7 resv2
+        reg_depth = Signal(8) # 7, depth (0 is native)
         reg_bitblt_src_x = Signal(COORD_BITS) # 8
         reg_bitblt_src_y = Signal(COORD_BITS) # 9
         reg_bitblt_dst_x = Signal(COORD_BITS) # 10
@@ -34,17 +34,26 @@ class GoblinAccel(Module): # AutoCSR ?
         reg_src_ptr = Signal(32) # 14
         reg_dst_ptr = Signal(32) # 15
         
+        reg_bitblt_msk_x = Signal(COORD_BITS) # 16
+        reg_bitblt_msk_y = Signal(COORD_BITS) # 17
+        reg_msk_stride = Signal(COORD_BITS) # 18
+        reg_msk_ptr = Signal(32) # 19
+        
         # do-some-work flags
         do_blit = Signal()
         do_fill = Signal()
         do_patt = Signal()
-        do_test = Signal()
+        do_rsmsk8dst32 = Signal()
+        do_rsrc32msk32dst32 = Signal()
+        do_rsrc32dst32 = Signal()
 
         # cmd register reg_cmd
         DO_BLIT_BIT = 0
         DO_FILL_BIT = 1
         DO_PATT_BIT = 2
-        DO_TEST_BIT = 3
+        DO_RSMSK8DST32_BIT = 3
+        DO_RSRC32MSK32DST32_BIT = 4
+        DO_RSRC32DST32_BIT = 5
         
         # global status register reg_status
         WORK_IN_PROGRESS_BIT = 0
@@ -83,14 +92,16 @@ class GoblinAccel(Module): # AutoCSR ?
                                       NextValue(do_blit, bus_dat_w_endian[DO_BLIT_BIT] & ~reg_status[WORK_IN_PROGRESS_BIT]),
                                       NextValue(do_fill, bus_dat_w_endian[DO_FILL_BIT] & ~reg_status[WORK_IN_PROGRESS_BIT]),
                                       NextValue(do_patt, bus_dat_w_endian[DO_PATT_BIT] & ~reg_status[WORK_IN_PROGRESS_BIT]),
-                                      NextValue(do_test, bus_dat_w_endian[DO_TEST_BIT] & ~reg_status[WORK_IN_PROGRESS_BIT]),
+                                      NextValue(do_rsmsk8dst32,      bus_dat_w_endian[DO_RSMSK8DST32_BIT]      & ~reg_status[WORK_IN_PROGRESS_BIT]),
+                                      NextValue(do_rsrc32msk32dst32, bus_dat_w_endian[DO_RSRC32MSK32DST32_BIT] & ~reg_status[WORK_IN_PROGRESS_BIT]),
+                                      NextValue(do_rsrc32dst32,      bus_dat_w_endian[DO_RSRC32DST32_BIT]      & ~reg_status[WORK_IN_PROGRESS_BIT]),
                                 ],
                                 2:  [ NextValue(reg_r5_cmd, bus_dat_w_endian) ],
-                                # 3
+                                3:  [ NextValue(reg_op, bus_dat_w_endian) ],
                                 4:  [ NextValue(reg_width, bus_dat_w_endian) ],
                                 5:  [ NextValue(reg_height, bus_dat_w_endian) ],
                                 6:  [ NextValue(reg_fgcolor, bus_dat_w_endian) ],
-                                # 7
+                                7:  [ NextValue(reg_depth, bus_dat_w_endian) ],
                                 8:  [ NextValue(reg_bitblt_src_x, bus_dat_w_endian) ],
                                 9:  [ NextValue(reg_bitblt_src_y, bus_dat_w_endian) ],
                                 10: [ NextValue(reg_bitblt_dst_x, bus_dat_w_endian) ],
@@ -99,6 +110,11 @@ class GoblinAccel(Module): # AutoCSR ?
                                 13: [ NextValue(reg_dst_stride, bus_dat_w_endian) ],
                                 14: [ NextValue(reg_src_ptr, bus_dat_w_endian) ],
                                 15: [ NextValue(reg_dst_ptr, bus_dat_w_endian) ],
+                                
+                                16: [ NextValue(reg_bitblt_msk_x, bus_dat_w_endian) ],
+                                17: [ NextValue(reg_bitblt_msk_y, bus_dat_w_endian) ],
+                                18: [ NextValue(reg_msk_stride, bus_dat_w_endian) ],
+                                19: [ NextValue(reg_msk_ptr, bus_dat_w_endian) ],
                             }),
                             NextValue(bus.ack, 1),
                             ).Elif(bus.cyc & bus.stb & ~bus.we & ~bus.ack, #read
@@ -107,11 +123,11 @@ class GoblinAccel(Module): # AutoCSR ?
                                        0:  [ NextValue(bus_dat_r_endian, reg_status) ],
                                        1:  [ NextValue(bus_dat_r_endian, reg_cmd) ],
                                        2:  [ NextValue(bus_dat_r_endian, reg_r5_cmd) ],
-                                       # 3
+                                       3:  [ NextValue(bus_dat_r_endian, reg_op) ],
                                        4:  [ NextValue(bus_dat_r_endian, reg_width) ],
                                        5:  [ NextValue(bus_dat_r_endian, reg_height) ],
                                        6:  [ NextValue(bus_dat_r_endian, reg_fgcolor) ],
-                                       # 7
+                                       7:  [ NextValue(bus_dat_r_endian, reg_depth) ],
                                        8:  [ NextValue(bus_dat_r_endian, reg_bitblt_src_x) ],
                                        9:  [ NextValue(bus_dat_r_endian, reg_bitblt_src_y) ],
                                        10: [ NextValue(bus_dat_r_endian, reg_bitblt_dst_x) ],
@@ -120,6 +136,11 @@ class GoblinAccel(Module): # AutoCSR ?
                                        13: [ NextValue(bus_dat_r_endian, reg_dst_stride) ],
                                        14: [ NextValue(bus_dat_r_endian, reg_src_ptr) ],
                                        15: [ NextValue(bus_dat_r_endian, reg_dst_ptr) ],
+                                       
+                                       16: [ NextValue(bus_dat_r_endian, reg_bitblt_msk_x) ],
+                                       17: [ NextValue(bus_dat_r_endian, reg_bitblt_msk_y) ],
+                                       18: [ NextValue(bus_dat_r_endian, reg_msk_stride) ],
+                                       19: [ NextValue(bus_dat_r_endian, reg_msk_ptr) ],
                                    }),
                                    NextValue(bus.ack, 1),
                             ).Else(
@@ -132,7 +153,9 @@ class GoblinAccel(Module): # AutoCSR ?
         FUN_BLIT_BIT = 0
         FUN_FILL_BIT = 1
         FUN_PATT_BIT = 2
-        FUN_TEST_BIT = 3
+        FUN_RSMSK8DST32_BIT = 3
+        FUN_RSRC32MSK32DST32_BIT = 4
+        FUN_RSRC32DST32_BIT = 5
         # to hold the Vex in reset
         self.local_reset = local_reset = Signal(reset = 1)
 
@@ -160,9 +183,21 @@ class GoblinAccel(Module): # AutoCSR ?
                    reg_status[WORK_IN_PROGRESS_BIT].eq(1),
                    local_reset.eq(0),
                    #timeout.eq(timeout_rst),
-            ).Elif(do_test & ~reg_status[WORK_IN_PROGRESS_BIT],
-                   do_test.eq(0),
-                   reg_r5_cmd[FUN_TEST_BIT].eq(1),
+            ).Elif(do_rsmsk8dst32 & ~reg_status[WORK_IN_PROGRESS_BIT],
+                   do_rsmsk8dst32.eq(0),
+                   reg_r5_cmd[FUN_RSMSK8DST32_BIT].eq(1),
+                   reg_status[WORK_IN_PROGRESS_BIT].eq(1),
+                   local_reset.eq(0),
+                   #timeout.eq(timeout_rst),
+            ).Elif(do_rsrc32msk32dst32 & ~reg_status[WORK_IN_PROGRESS_BIT],
+                   do_rsrc32msk32dst32.eq(0),
+                   reg_r5_cmd[FUN_RSRC32MSK32DST32_BIT].eq(1),
+                   reg_status[WORK_IN_PROGRESS_BIT].eq(1),
+                   local_reset.eq(0),
+                   #timeout.eq(timeout_rst),
+            ).Elif(do_rsrc32dst32 & ~reg_status[WORK_IN_PROGRESS_BIT],
+                   do_rsrc32dst32.eq(0),
+                   reg_r5_cmd[FUN_RSRC32DST32_BIT].eq(1),
                    reg_status[WORK_IN_PROGRESS_BIT].eq(1),
                    local_reset.eq(0),
                    #timeout.eq(timeout_rst),

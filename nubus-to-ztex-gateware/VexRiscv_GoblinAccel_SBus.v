@@ -3830,7 +3830,7 @@ module VexRiscv (
   assign IBusCachedPlugin_mmuBus_rsp_allowRead = 1'b1;
   assign IBusCachedPlugin_mmuBus_rsp_allowWrite = 1'b1;
   assign IBusCachedPlugin_mmuBus_rsp_allowExecute = 1'b1;
-  assign IBusCachedPlugin_mmuBus_rsp_isIoAccess = (((IBusCachedPlugin_mmuBus_rsp_physicalAddress[31 : 28] != 4'b1000) && (IBusCachedPlugin_mmuBus_rsp_physicalAddress[31 : 12] != 20'hf0902)) && (IBusCachedPlugin_mmuBus_rsp_physicalAddress[31 : 16] != 16'hf091));
+  assign IBusCachedPlugin_mmuBus_rsp_isIoAccess = (((IBusCachedPlugin_mmuBus_rsp_physicalAddress[31 : 28] != 4'b1000) && (IBusCachedPlugin_mmuBus_rsp_physicalAddress[31 : 16] != 16'h0042)) && (IBusCachedPlugin_mmuBus_rsp_physicalAddress[31 : 16] != 16'h0041));
   assign IBusCachedPlugin_mmuBus_rsp_isPaging = 1'b0;
   assign IBusCachedPlugin_mmuBus_rsp_exception = 1'b0;
   assign IBusCachedPlugin_mmuBus_rsp_refilling = 1'b0;
@@ -3839,7 +3839,7 @@ module VexRiscv (
   assign DBusCachedPlugin_mmuBus_rsp_allowRead = 1'b1;
   assign DBusCachedPlugin_mmuBus_rsp_allowWrite = 1'b1;
   assign DBusCachedPlugin_mmuBus_rsp_allowExecute = 1'b1;
-  assign DBusCachedPlugin_mmuBus_rsp_isIoAccess = (((DBusCachedPlugin_mmuBus_rsp_physicalAddress[31 : 28] != 4'b1000) && (DBusCachedPlugin_mmuBus_rsp_physicalAddress[31 : 12] != 20'hf0902)) && (DBusCachedPlugin_mmuBus_rsp_physicalAddress[31 : 16] != 16'hf091));
+  assign DBusCachedPlugin_mmuBus_rsp_isIoAccess = (((DBusCachedPlugin_mmuBus_rsp_physicalAddress[31 : 28] != 4'b1000) && (DBusCachedPlugin_mmuBus_rsp_physicalAddress[31 : 16] != 16'h0042)) && (DBusCachedPlugin_mmuBus_rsp_physicalAddress[31 : 16] != 16'h0041));
   assign DBusCachedPlugin_mmuBus_rsp_isPaging = 1'b0;
   assign DBusCachedPlugin_mmuBus_rsp_exception = 1'b0;
   assign DBusCachedPlugin_mmuBus_rsp_refilling = 1'b0;
@@ -4872,7 +4872,7 @@ module VexRiscv (
   assign dBus_rsp_payload_error = 1'b0;
   always @(posedge clk or posedge reset) begin
     if(reset) begin
-      IBusCachedPlugin_fetchPc_pcReg <= 32'hf0910000;
+      IBusCachedPlugin_fetchPc_pcReg <= 32'h00410000;
       IBusCachedPlugin_fetchPc_correctionReg <= 1'b0;
       IBusCachedPlugin_fetchPc_booted <= 1'b0;
       IBusCachedPlugin_fetchPc_inc <= 1'b0;

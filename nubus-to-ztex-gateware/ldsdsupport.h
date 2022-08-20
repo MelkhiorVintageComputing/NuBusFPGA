@@ -72,8 +72,8 @@ asm(".set regnum_t6  , 31");
 				 : "r" (base)											\
 				 );														\
 	
-#define ld(base, imm12, o1, o2) opcode_ld(0x03, 0x03, base, imm12, o1, o2)
-#define ldu(base, imm12, o1, o2) opcode_ld(0x03, 0x07, base, imm12, o1, o2)
+#define _custom_ld(base, imm12, o1, o2) opcode_ld(0x03, 0x03, base, imm12, o1, o2)
+#define _custom_ldu(base, imm12, o1, o2) opcode_ld(0x03, 0x07, base, imm12, o1, o2)
 
 #define opcode_sd(opcode, func3, base, imm04, imm511, i1, i2)			\
 	asm volatile(".word ((" #opcode ") | (" #imm04 " << 7) | (regnum_%0 << 15) | (regnum_%1 << 20) | (" #imm511 " << 25) | ((" #func3 ") << 12));" \
@@ -81,4 +81,43 @@ asm(".set regnum_t6  , 31");
 				 : "r" (base), "r" (i1), "r" (i2)						\
 				 );														\
  
-#define sd(base, imm04, imm511, i1, i2) opcode_sd(0x23, 0x03, base, imm04, imm511, i1, i2)
+#define _custom_sd(base, imm04, imm511, i1, i2) opcode_sd(0x23, 0x03, base, imm04, imm511, i1, i2)
+
+
+#define opcode_p(opcode, func3, func7, rd, rs1, rs2)					\
+	asm volatile(".word ((" #opcode ") | (regnum_%0 << 7) | (regnum_%1 << 15) | (regnum_%2 << 20) | ((" #func3 ") << 12) | ((" #func7 ") << 25));" \
+				 : "=r" (rd)											\
+				 : "r" (rs1), "r" (rs2)									\
+				 );
+#define opcode_p_ter(opcode, func3, func7, rd, rs1, rs2)					\
+	asm volatile(".word ((" #opcode ") | (regnum_%0 << 7) | (regnum_%1 << 15) | (regnum_%2 << 20) | ((" #func3 ") << 12) | ((" #func7 ") << 25));" \
+				 : "+r" (rd)											\
+				 : "r" (rs1), "r" (rs2)									\
+				 );
+
+#define _ukadd8(rd, rs1, rs2)      opcode_p(0x00000077, 0x00, 0x1c, rd, rs1, rs2)
+#define _uksub8(rd, rs1, rs2)      opcode_p(0x00000077, 0x00, 0x1d, rd, rs1, rs2)
+#define _ufma8vhv(rd, rs1, rs2)      opcode_p_ter(0x00000077, 0x00, 0x64, rd, rs1, rs2)
+#define _ufma8vlv(rd, rs1, rs2)      opcode_p_ter(0x00000077, 0x00, 0x66, rd, rs1, rs2)
+
+static inline unsigned int ukadd8(const unsigned int a, const unsigned int b) {
+	unsigned int r;
+	_ukadd8(r, a, b);
+	return r;
+}
+static inline unsigned int uksub8(const unsigned int a, const unsigned int b) {
+	unsigned int r;
+	_uksub8(r, a, b);
+	return r;
+}
+
+static inline unsigned int ufma8vhv(const unsigned int a, const unsigned int b, const unsigned int c) {
+	unsigned int r = c;
+	_ufma8vhv(r, a, b);
+	return r;
+}
+static inline unsigned int ufma8vlv(const unsigned int a, const unsigned int b, const unsigned int c) {
+	unsigned int r = c;
+	_ufma8vlv(r, a, b);
+	return r;
+}
