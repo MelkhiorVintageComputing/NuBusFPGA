@@ -1441,7 +1441,7 @@ BLITSM8D32_FWD_FWD(over, TROVERl, TROVERl4)
 				dptr_elt ++;											\
 				mptr_elt ++;											\
 			}															\
-			sptr_line += dst_stride;									\
+			sptr_line += src_stride;									\
 			mptr_line += msk_stride;									\
 			dptr_line += dst_stride;									\
 		}																\
@@ -1494,7 +1494,7 @@ BLITS32M32D32_FWD_FWD(over, TROVERh, TROVERh4)
 				sptr_elt ++;											\
 				dptr_elt ++;											\
 			}															\
-			sptr_line += dst_stride;									\
+			sptr_line += src_stride;									\
 			dptr_line += dst_stride;									\
 		}																\
 	}
