@@ -406,7 +406,7 @@ void from_reset(void) {
 	} break;
 	case FUN_RSMSK8DST32: {
 		bitblit_solid_msk8_dst32_fwd_fwd(op,
-										  fbc->reg_bitblt_msk_x, // unscaled
+										  fbc->reg_bitblt_msk_x, // unscaled, 8 bits
 										  fbc->reg_bitblt_msk_y,
 										  fbc->reg_width, // NOT scaled here, we assume depth == 32 here
 										  fbc->reg_height,
@@ -420,24 +420,24 @@ void from_reset(void) {
 	} break;
 	case FUN_RSRC32MSK32DST32: {
 		bitblit_src32_msk32_dst32_fwd_fwd(op,
-										   fbc->reg_bitblt_src_x, // unscaled
-										   fbc->reg_bitblt_src_y,
-										   fbc->reg_bitblt_msk_x, // unscaled
-										   fbc->reg_bitblt_msk_y,
-										   fbc->reg_width, // NOT scaled here, we assume depth == 32 here
-										   fbc->reg_height,
-										   dstx, // still scaled for the PTR calculation ...
-										   fbc->reg_bitblt_dst_y,
-										   fbc->reg_src_ptr ? (unsigned char*)fbc->reg_src_ptr : (unsigned char*)BASE_FB,
-										   fbc->reg_msk_ptr ? (unsigned char*)fbc->reg_msk_ptr : (unsigned char*)BASE_FB,
-										   fbc->reg_dst_ptr ? (unsigned char*)fbc->reg_dst_ptr : (unsigned char*)BASE_FB,
-										   fbc->reg_src_stride, // assumed to be scaled already
-										   fbc->reg_msk_stride, // assumed to be scaled already
-										   fbc->reg_dst_stride); // assumed to be scaled already
+										  srcx, // still scaled for the PTR calculation ...
+										  fbc->reg_bitblt_src_y,
+										  fbc->reg_bitblt_msk_x << 2, // assume 32 bits // still scaled for the PTR calculation ...
+										  fbc->reg_bitblt_msk_y,
+										  fbc->reg_width, // NOT scaled here, we assume depth == 32 here
+										  fbc->reg_height,
+										  dstx, // still scaled for the PTR calculation ...
+										  fbc->reg_bitblt_dst_y,
+										  fbc->reg_src_ptr ? (unsigned char*)fbc->reg_src_ptr : (unsigned char*)BASE_FB,
+										  fbc->reg_msk_ptr ? (unsigned char*)fbc->reg_msk_ptr : (unsigned char*)BASE_FB,
+										  fbc->reg_dst_ptr ? (unsigned char*)fbc->reg_dst_ptr : (unsigned char*)BASE_FB,
+										  fbc->reg_src_stride, // assumed to be scaled already
+										  fbc->reg_msk_stride, // assumed to be scaled already
+										  fbc->reg_dst_stride); // assumed to be scaled already
 	} break;
 	case FUN_RSRC32DST32: {
 		bitblit_src32_dst32_fwd_fwd(op,
-									fbc->reg_bitblt_src_x, // unscaled
+									srcx,
 									fbc->reg_bitblt_src_y,
 									fbc->reg_width, // NOT scaled here, we assume depth == 32 here
 									fbc->reg_height,
@@ -1250,6 +1250,9 @@ static void bitblit_src32_msk32_dst32_fwd_fwd(const unsigned char op,
 	case PictOpOver:
 		bitblit_src32_msk32_dst32_fwd_fwd_over(xs, ys, xm, ym, wi, re, xd, yd, src_ptr, msk_ptr, dst_ptr, src_stride, msk_stride, dst_stride);
 		break;
+	case PictOpFlipOver:
+		bitblit_src32_msk32_dst32_fwd_fwd_fover(xs, ys, xm, ym, wi, re, xd, yd, src_ptr, msk_ptr, dst_ptr, src_stride, msk_stride, dst_stride);
+		break;
 	default:
 		break;
 	}
@@ -1336,16 +1339,16 @@ static inline uint32_t pixelswap(const uint32_t p) {
 
 #define BLITSM8D32_FWD_FWD(NAME, TOP, TOP4)								\
 	static void bitblit_solid_msk8_dst32_fwd_fwd_##NAME(const unsigned_param_type xm, \
-														 const unsigned_param_type ym, \
-														 const unsigned_param_type wi, \
-														 const unsigned_param_type re, \
-														 const unsigned_param_type xd, \
-														 const unsigned_param_type yd, \
-														 const unsigned int fgcolor, \
-														 unsigned char* msk_ptr, \
-														 unsigned char* dst_ptr, \
-														 const unsigned_param_type msk_stride, \
-														 const unsigned_param_type dst_stride) { \
+														const unsigned_param_type ym, \
+														const unsigned_param_type wi, \
+														const unsigned_param_type re, \
+														const unsigned_param_type xd, \
+														const unsigned_param_type yd, \
+														const unsigned int fgcolor, \
+														unsigned char* msk_ptr, \
+														unsigned char* dst_ptr, \
+														const unsigned_param_type msk_stride, \
+														const unsigned_param_type dst_stride) { \
 		unsigned int i, j;												\
 		unsigned char *mptr = (msk_ptr + (ym * msk_stride) + xm);		\
 		unsigned char *dptr = (dst_ptr + (yd * dst_stride) + xd);		\
@@ -1449,8 +1452,7 @@ BLITSM8D32_FWD_FWD(over, TROVERl, TROVERl4)
 	
 
 BLITS32M32D32_FWD_FWD(over, TROVERh, TROVERh4)
-	
-
+BLITS32M32D32_FWD_FWD(fover, TRFOVERh, TRFOVERh4)
 	
 #define BLITS32D32_FWD_FWD(NAME, TOP, TOP4)								\
 	static void bitblit_src32_dst32_fwd_fwd_##NAME(const unsigned_param_type xs, \
