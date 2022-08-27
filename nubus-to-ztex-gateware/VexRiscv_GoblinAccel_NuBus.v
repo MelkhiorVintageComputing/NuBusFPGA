@@ -136,14 +136,14 @@ module VexRiscv (
   wire       [15:0]   dataCache_1_io_mem_cmd_payload_mask;
   wire       [2:0]    dataCache_1_io_mem_cmd_payload_size;
   wire                dataCache_1_io_mem_cmd_payload_last;
-  wire       [7:0]    _zz_memory_Goblin2c_FINAL_OUTPUT_9;
-  wire       [7:0]    _zz_memory_Goblin2c_FINAL_OUTPUT_10;
-  wire       [7:0]    _zz_memory_Goblin2c_FINAL_OUTPUT_11;
-  wire       [7:0]    _zz_memory_Goblin2c_FINAL_OUTPUT_12;
   wire       [7:0]    _zz_memory_Goblin2c_FINAL_OUTPUT_13;
   wire       [7:0]    _zz_memory_Goblin2c_FINAL_OUTPUT_14;
   wire       [7:0]    _zz_memory_Goblin2c_FINAL_OUTPUT_15;
   wire       [7:0]    _zz_memory_Goblin2c_FINAL_OUTPUT_16;
+  wire       [7:0]    _zz_memory_Goblin2c_FINAL_OUTPUT_17;
+  wire       [7:0]    _zz_memory_Goblin2c_FINAL_OUTPUT_18;
+  wire       [7:0]    _zz_memory_Goblin2c_FINAL_OUTPUT_19;
+  wire       [7:0]    _zz_memory_Goblin2c_FINAL_OUTPUT_20;
   wire       [51:0]   _zz_memory_MUL_LOW;
   wire       [51:0]   _zz_memory_MUL_LOW_1;
   wire       [51:0]   _zz_memory_MUL_LOW_2;
@@ -153,14 +153,10 @@ module VexRiscv (
   wire       [49:0]   _zz_memory_MUL_LOW_6;
   wire       [51:0]   _zz_memory_MUL_LOW_7;
   wire       [49:0]   _zz_memory_MUL_LOW_8;
-  wire       [15:0]   _zz_execute_Goblin2c_INTERMEDIATE_UFMA8VxV64_1;
-  wire       [15:0]   _zz_execute_Goblin2c_INTERMEDIATE_UFMA8VxV64_2;
-  wire       [15:0]   _zz_execute_Goblin2c_INTERMEDIATE_UFMA8VxV64_3;
-  wire       [15:0]   _zz_execute_Goblin2c_INTERMEDIATE_UFMA8VxV64_4;
-  wire       [15:0]   _zz_execute_Goblin2c_INTERMEDIATE_UFMA8VxV64_5;
-  wire       [15:0]   _zz_execute_Goblin2c_INTERMEDIATE_UFMA8VxV64_6;
-  wire       [15:0]   _zz_execute_Goblin2c_INTERMEDIATE_UFMA8VxV64_7;
-  wire       [15:0]   _zz_execute_Goblin2c_INTERMEDIATE_UFMA8VxV64_8;
+  wire       [15:0]   _zz_execute_Goblin2c_INTERMEDIATE_UFMA8VxV96_1;
+  wire       [15:0]   _zz_execute_Goblin2c_INTERMEDIATE_UFMA8VxV96_2;
+  wire       [15:0]   _zz_execute_Goblin2c_INTERMEDIATE_UFMA8VxV96_3;
+  wire       [15:0]   _zz_execute_Goblin2c_INTERMEDIATE_UFMA8VxV96_4;
   wire       [31:0]   _zz_execute_SHIFT_RIGHT;
   wire       [32:0]   _zz_execute_SHIFT_RIGHT_1;
   wire       [32:0]   _zz_execute_SHIFT_RIGHT_2;
@@ -402,6 +398,34 @@ module VexRiscv (
   wire       [0:0]    _zz_execute_GoblinPlugin_val_pdpikadd8_39;
   wire       [0:0]    _zz_execute_GoblinPlugin_val_pdpikadd8_40;
   wire       [7:0]    _zz_execute_GoblinPlugin_val_pdpikadd8_41;
+  wire       [23:0]   _zz__zz_memory_Goblin2c_FINAL_OUTPUT_5;
+  wire       [23:0]   _zz__zz_memory_Goblin2c_FINAL_OUTPUT_5_1;
+  wire       [23:0]   _zz__zz_memory_Goblin2c_FINAL_OUTPUT_5_2;
+  wire       [23:0]   _zz__zz_memory_Goblin2c_FINAL_OUTPUT_5_3;
+  wire       [15:0]   _zz__zz_memory_Goblin2c_FINAL_OUTPUT_5_4;
+  wire       [23:0]   _zz__zz_memory_Goblin2c_FINAL_OUTPUT_5_5;
+  wire       [8:0]    _zz__zz_memory_Goblin2c_FINAL_OUTPUT_5_6;
+  wire       [23:0]   _zz__zz_memory_Goblin2c_FINAL_OUTPUT_7;
+  wire       [23:0]   _zz__zz_memory_Goblin2c_FINAL_OUTPUT_7_1;
+  wire       [23:0]   _zz__zz_memory_Goblin2c_FINAL_OUTPUT_7_2;
+  wire       [23:0]   _zz__zz_memory_Goblin2c_FINAL_OUTPUT_7_3;
+  wire       [15:0]   _zz__zz_memory_Goblin2c_FINAL_OUTPUT_7_4;
+  wire       [23:0]   _zz__zz_memory_Goblin2c_FINAL_OUTPUT_7_5;
+  wire       [8:0]    _zz__zz_memory_Goblin2c_FINAL_OUTPUT_7_6;
+  wire       [23:0]   _zz__zz_memory_Goblin2c_FINAL_OUTPUT_9;
+  wire       [23:0]   _zz__zz_memory_Goblin2c_FINAL_OUTPUT_9_1;
+  wire       [23:0]   _zz__zz_memory_Goblin2c_FINAL_OUTPUT_9_2;
+  wire       [23:0]   _zz__zz_memory_Goblin2c_FINAL_OUTPUT_9_3;
+  wire       [15:0]   _zz__zz_memory_Goblin2c_FINAL_OUTPUT_9_4;
+  wire       [23:0]   _zz__zz_memory_Goblin2c_FINAL_OUTPUT_9_5;
+  wire       [8:0]    _zz__zz_memory_Goblin2c_FINAL_OUTPUT_9_6;
+  wire       [23:0]   _zz__zz_memory_Goblin2c_FINAL_OUTPUT_11;
+  wire       [23:0]   _zz__zz_memory_Goblin2c_FINAL_OUTPUT_11_1;
+  wire       [23:0]   _zz__zz_memory_Goblin2c_FINAL_OUTPUT_11_2;
+  wire       [23:0]   _zz__zz_memory_Goblin2c_FINAL_OUTPUT_11_3;
+  wire       [15:0]   _zz__zz_memory_Goblin2c_FINAL_OUTPUT_11_4;
+  wire       [23:0]   _zz__zz_memory_Goblin2c_FINAL_OUTPUT_11_5;
+  wire       [8:0]    _zz__zz_memory_Goblin2c_FINAL_OUTPUT_11_6;
   wire       [19:0]   _zz__zz_execute_BranchPlugin_missAlignedTarget_2;
   wire       [11:0]   _zz__zz_execute_BranchPlugin_missAlignedTarget_4;
   wire       [31:0]   _zz__zz_execute_BranchPlugin_missAlignedTarget_6;
@@ -418,7 +442,7 @@ module VexRiscv (
   wire       [51:0]   memory_MUL_LOW;
   wire       [31:0]   execute_BRANCH_CALC;
   wire                execute_BRANCH_DO;
-  wire       [63:0]   execute_Goblin2c_INTERMEDIATE_UFMA8VxV64;
+  wire       [95:0]   execute_Goblin2c_INTERMEDIATE_UFMA8VxV96;
   wire       [31:0]   execute_Goblin_FINAL_OUTPUT;
   wire       [31:0]   execute_CG6_FINAL_OUTPUT;
   wire       [31:0]   execute_SHIFT_RIGHT;
@@ -532,7 +556,7 @@ module VexRiscv (
   reg        [31:0]   decode_RS1;
   wire       [31:0]   writeBack_Goblin2c_FINAL_OUTPUT;
   wire                writeBack_IS_Goblin2c;
-  wire       [63:0]   memory_Goblin2c_INTERMEDIATE_UFMA8VxV64;
+  wire       [95:0]   memory_Goblin2c_INTERMEDIATE_UFMA8VxV96;
   wire       [31:0]   memory_Goblin_FINAL_OUTPUT;
   wire                memory_IS_Goblin;
   wire       [0:0]    execute_GoblinCtrlpdpikadd8;
@@ -1011,21 +1035,25 @@ module VexRiscv (
   wire       [9:0]    _zz_execute_GoblinPlugin_val_pdpikadd8_15;
   reg        [31:0]   execute_GoblinPlugin_val_pdpikadd8;
   wire                when_Goblin_l591;
-  wire       [7:0]    _zz_execute_Goblin2c_INTERMEDIATE_UFMA8VxV64;
+  wire       [7:0]    _zz_execute_Goblin2c_INTERMEDIATE_UFMA8VxV96;
   wire       [31:0]   _zz_memory_Goblin2c_FINAL_OUTPUT;
-  wire       [8:0]    _zz_memory_Goblin2c_FINAL_OUTPUT_1;
-  reg        [7:0]    _zz_memory_Goblin2c_FINAL_OUTPUT_2;
-  wire                when_UInt_l119_4;
-  wire       [8:0]    _zz_memory_Goblin2c_FINAL_OUTPUT_3;
-  reg        [7:0]    _zz_memory_Goblin2c_FINAL_OUTPUT_4;
-  wire                when_UInt_l119_5;
+  wire       [15:0]   _zz_memory_Goblin2c_FINAL_OUTPUT_1;
+  wire       [15:0]   _zz_memory_Goblin2c_FINAL_OUTPUT_2;
+  wire       [15:0]   _zz_memory_Goblin2c_FINAL_OUTPUT_3;
+  wire       [15:0]   _zz_memory_Goblin2c_FINAL_OUTPUT_4;
   wire       [8:0]    _zz_memory_Goblin2c_FINAL_OUTPUT_5;
   reg        [7:0]    _zz_memory_Goblin2c_FINAL_OUTPUT_6;
-  wire                when_UInt_l119_6;
+  wire                when_UInt_l119_4;
   wire       [8:0]    _zz_memory_Goblin2c_FINAL_OUTPUT_7;
   reg        [7:0]    _zz_memory_Goblin2c_FINAL_OUTPUT_8;
+  wire                when_UInt_l119_5;
+  wire       [8:0]    _zz_memory_Goblin2c_FINAL_OUTPUT_9;
+  reg        [7:0]    _zz_memory_Goblin2c_FINAL_OUTPUT_10;
+  wire                when_UInt_l119_6;
+  wire       [8:0]    _zz_memory_Goblin2c_FINAL_OUTPUT_11;
+  reg        [7:0]    _zz_memory_Goblin2c_FINAL_OUTPUT_12;
   wire                when_UInt_l119_7;
-  wire                when_Goblin2c_l115;
+  wire                when_Goblin2c_l139;
   reg                 HazardSimplePlugin_src0Hazard;
   reg                 HazardSimplePlugin_src1Hazard;
   reg                 HazardSimplePlugin_src2Hazard;
@@ -1255,7 +1283,7 @@ module VexRiscv (
   wire                when_Pipeline_l124_67;
   reg        [31:0]   execute_to_memory_Goblin_FINAL_OUTPUT;
   wire                when_Pipeline_l124_68;
-  reg        [63:0]   execute_to_memory_Goblin2c_INTERMEDIATE_UFMA8VxV64;
+  reg        [95:0]   execute_to_memory_Goblin2c_INTERMEDIATE_UFMA8VxV96;
   wire                when_Pipeline_l124_69;
   reg                 execute_to_memory_BRANCH_DO;
   wire                when_Pipeline_l124_70;
@@ -1399,14 +1427,14 @@ module VexRiscv (
   (* ram_style = "distributed" *) reg [31:0] RegFileOddEvenPlugin_regFileEven [0:15] /* verilator public */ ;
   (* ram_style = "distributed" *) reg [31:0] RegFileOddEvenPlugin_regFileOdd [0:15] /* verilator public */ ;
 
-  assign _zz_memory_Goblin2c_FINAL_OUTPUT_10 = _zz_memory_Goblin2c_FINAL_OUTPUT_8;
-  assign _zz_memory_Goblin2c_FINAL_OUTPUT_9 = _zz_memory_Goblin2c_FINAL_OUTPUT_10;
-  assign _zz_memory_Goblin2c_FINAL_OUTPUT_12 = _zz_memory_Goblin2c_FINAL_OUTPUT_6;
-  assign _zz_memory_Goblin2c_FINAL_OUTPUT_11 = _zz_memory_Goblin2c_FINAL_OUTPUT_12;
-  assign _zz_memory_Goblin2c_FINAL_OUTPUT_14 = _zz_memory_Goblin2c_FINAL_OUTPUT_4;
+  assign _zz_memory_Goblin2c_FINAL_OUTPUT_14 = _zz_memory_Goblin2c_FINAL_OUTPUT_12;
   assign _zz_memory_Goblin2c_FINAL_OUTPUT_13 = _zz_memory_Goblin2c_FINAL_OUTPUT_14;
-  assign _zz_memory_Goblin2c_FINAL_OUTPUT_16 = _zz_memory_Goblin2c_FINAL_OUTPUT_2;
+  assign _zz_memory_Goblin2c_FINAL_OUTPUT_16 = _zz_memory_Goblin2c_FINAL_OUTPUT_10;
   assign _zz_memory_Goblin2c_FINAL_OUTPUT_15 = _zz_memory_Goblin2c_FINAL_OUTPUT_16;
+  assign _zz_memory_Goblin2c_FINAL_OUTPUT_18 = _zz_memory_Goblin2c_FINAL_OUTPUT_8;
+  assign _zz_memory_Goblin2c_FINAL_OUTPUT_17 = _zz_memory_Goblin2c_FINAL_OUTPUT_18;
+  assign _zz_memory_Goblin2c_FINAL_OUTPUT_20 = _zz_memory_Goblin2c_FINAL_OUTPUT_6;
+  assign _zz_memory_Goblin2c_FINAL_OUTPUT_19 = _zz_memory_Goblin2c_FINAL_OUTPUT_20;
   assign _zz_memory_MUL_LOW = ($signed(_zz_memory_MUL_LOW_1) + $signed(_zz_memory_MUL_LOW_5));
   assign _zz_memory_MUL_LOW_1 = ($signed(_zz_memory_MUL_LOW_2) + $signed(_zz_memory_MUL_LOW_3));
   assign _zz_memory_MUL_LOW_2 = 52'h0;
@@ -1416,14 +1444,10 @@ module VexRiscv (
   assign _zz_memory_MUL_LOW_5 = {{2{_zz_memory_MUL_LOW_6[49]}}, _zz_memory_MUL_LOW_6};
   assign _zz_memory_MUL_LOW_8 = ({16'd0,memory_MUL_HL} <<< 16);
   assign _zz_memory_MUL_LOW_7 = {{2{_zz_memory_MUL_LOW_8[49]}}, _zz_memory_MUL_LOW_8};
-  assign _zz_execute_Goblin2c_INTERMEDIATE_UFMA8VxV64_1 = _zz_execute_Goblin2c_INTERMEDIATE_UFMA8VxV64_2;
-  assign _zz_execute_Goblin2c_INTERMEDIATE_UFMA8VxV64_2 = (execute_SRC1[31 : 24] * _zz_execute_Goblin2c_INTERMEDIATE_UFMA8VxV64);
-  assign _zz_execute_Goblin2c_INTERMEDIATE_UFMA8VxV64_3 = _zz_execute_Goblin2c_INTERMEDIATE_UFMA8VxV64_4;
-  assign _zz_execute_Goblin2c_INTERMEDIATE_UFMA8VxV64_4 = (execute_SRC1[23 : 16] * _zz_execute_Goblin2c_INTERMEDIATE_UFMA8VxV64);
-  assign _zz_execute_Goblin2c_INTERMEDIATE_UFMA8VxV64_5 = _zz_execute_Goblin2c_INTERMEDIATE_UFMA8VxV64_6;
-  assign _zz_execute_Goblin2c_INTERMEDIATE_UFMA8VxV64_6 = (execute_SRC1[15 : 8] * _zz_execute_Goblin2c_INTERMEDIATE_UFMA8VxV64);
-  assign _zz_execute_Goblin2c_INTERMEDIATE_UFMA8VxV64_7 = _zz_execute_Goblin2c_INTERMEDIATE_UFMA8VxV64_8;
-  assign _zz_execute_Goblin2c_INTERMEDIATE_UFMA8VxV64_8 = (execute_SRC1[7 : 0] * _zz_execute_Goblin2c_INTERMEDIATE_UFMA8VxV64);
+  assign _zz_execute_Goblin2c_INTERMEDIATE_UFMA8VxV96_1 = (execute_SRC1[31 : 24] * _zz_execute_Goblin2c_INTERMEDIATE_UFMA8VxV96);
+  assign _zz_execute_Goblin2c_INTERMEDIATE_UFMA8VxV96_2 = (execute_SRC1[23 : 16] * _zz_execute_Goblin2c_INTERMEDIATE_UFMA8VxV96);
+  assign _zz_execute_Goblin2c_INTERMEDIATE_UFMA8VxV96_3 = (execute_SRC1[15 : 8] * _zz_execute_Goblin2c_INTERMEDIATE_UFMA8VxV96);
+  assign _zz_execute_Goblin2c_INTERMEDIATE_UFMA8VxV96_4 = (execute_SRC1[7 : 0] * _zz_execute_Goblin2c_INTERMEDIATE_UFMA8VxV96);
   assign _zz_execute_SHIFT_RIGHT_1 = ($signed(_zz_execute_SHIFT_RIGHT_2) >>> execute_FullBarrelShifterPlugin_amplitude);
   assign _zz_execute_SHIFT_RIGHT = _zz_execute_SHIFT_RIGHT_1[31 : 0];
   assign _zz_execute_SHIFT_RIGHT_2 = {((execute_SHIFT_CTRL == ShiftCtrlEnum_SRA_1) && execute_FullBarrelShifterPlugin_reversed[31]),execute_FullBarrelShifterPlugin_reversed};
@@ -1479,6 +1503,34 @@ module VexRiscv (
   assign _zz_execute_GoblinPlugin_val_pdpikadd8_31 = _zz_execute_GoblinPlugin_val_pdpikadd8_12[7 : 0];
   assign _zz_execute_GoblinPlugin_val_pdpikadd8_37 = _zz_execute_GoblinPlugin_val_pdpikadd8_9[7 : 0];
   assign _zz_execute_GoblinPlugin_val_pdpikadd8_41 = _zz_execute_GoblinPlugin_val_pdpikadd8_6[7 : 0];
+  assign _zz__zz_memory_Goblin2c_FINAL_OUTPUT_5 = _zz__zz_memory_Goblin2c_FINAL_OUTPUT_5_1;
+  assign _zz__zz_memory_Goblin2c_FINAL_OUTPUT_5_1 = (_zz__zz_memory_Goblin2c_FINAL_OUTPUT_5_2 + _zz__zz_memory_Goblin2c_FINAL_OUTPUT_5_5);
+  assign _zz__zz_memory_Goblin2c_FINAL_OUTPUT_5_2 = ({_zz_memory_Goblin2c_FINAL_OUTPUT_4,8'h0} + _zz__zz_memory_Goblin2c_FINAL_OUTPUT_5_3);
+  assign _zz__zz_memory_Goblin2c_FINAL_OUTPUT_5_4 = _zz_memory_Goblin2c_FINAL_OUTPUT_4;
+  assign _zz__zz_memory_Goblin2c_FINAL_OUTPUT_5_3 = {8'd0, _zz__zz_memory_Goblin2c_FINAL_OUTPUT_5_4};
+  assign _zz__zz_memory_Goblin2c_FINAL_OUTPUT_5_6 = _zz_memory_Goblin2c_FINAL_OUTPUT_4[15 : 7];
+  assign _zz__zz_memory_Goblin2c_FINAL_OUTPUT_5_5 = {15'd0, _zz__zz_memory_Goblin2c_FINAL_OUTPUT_5_6};
+  assign _zz__zz_memory_Goblin2c_FINAL_OUTPUT_7 = _zz__zz_memory_Goblin2c_FINAL_OUTPUT_7_1;
+  assign _zz__zz_memory_Goblin2c_FINAL_OUTPUT_7_1 = (_zz__zz_memory_Goblin2c_FINAL_OUTPUT_7_2 + _zz__zz_memory_Goblin2c_FINAL_OUTPUT_7_5);
+  assign _zz__zz_memory_Goblin2c_FINAL_OUTPUT_7_2 = ({_zz_memory_Goblin2c_FINAL_OUTPUT_3,8'h0} + _zz__zz_memory_Goblin2c_FINAL_OUTPUT_7_3);
+  assign _zz__zz_memory_Goblin2c_FINAL_OUTPUT_7_4 = _zz_memory_Goblin2c_FINAL_OUTPUT_3;
+  assign _zz__zz_memory_Goblin2c_FINAL_OUTPUT_7_3 = {8'd0, _zz__zz_memory_Goblin2c_FINAL_OUTPUT_7_4};
+  assign _zz__zz_memory_Goblin2c_FINAL_OUTPUT_7_6 = _zz_memory_Goblin2c_FINAL_OUTPUT_3[15 : 7];
+  assign _zz__zz_memory_Goblin2c_FINAL_OUTPUT_7_5 = {15'd0, _zz__zz_memory_Goblin2c_FINAL_OUTPUT_7_6};
+  assign _zz__zz_memory_Goblin2c_FINAL_OUTPUT_9 = _zz__zz_memory_Goblin2c_FINAL_OUTPUT_9_1;
+  assign _zz__zz_memory_Goblin2c_FINAL_OUTPUT_9_1 = (_zz__zz_memory_Goblin2c_FINAL_OUTPUT_9_2 + _zz__zz_memory_Goblin2c_FINAL_OUTPUT_9_5);
+  assign _zz__zz_memory_Goblin2c_FINAL_OUTPUT_9_2 = ({_zz_memory_Goblin2c_FINAL_OUTPUT_2,8'h0} + _zz__zz_memory_Goblin2c_FINAL_OUTPUT_9_3);
+  assign _zz__zz_memory_Goblin2c_FINAL_OUTPUT_9_4 = _zz_memory_Goblin2c_FINAL_OUTPUT_2;
+  assign _zz__zz_memory_Goblin2c_FINAL_OUTPUT_9_3 = {8'd0, _zz__zz_memory_Goblin2c_FINAL_OUTPUT_9_4};
+  assign _zz__zz_memory_Goblin2c_FINAL_OUTPUT_9_6 = _zz_memory_Goblin2c_FINAL_OUTPUT_2[15 : 7];
+  assign _zz__zz_memory_Goblin2c_FINAL_OUTPUT_9_5 = {15'd0, _zz__zz_memory_Goblin2c_FINAL_OUTPUT_9_6};
+  assign _zz__zz_memory_Goblin2c_FINAL_OUTPUT_11 = _zz__zz_memory_Goblin2c_FINAL_OUTPUT_11_1;
+  assign _zz__zz_memory_Goblin2c_FINAL_OUTPUT_11_1 = (_zz__zz_memory_Goblin2c_FINAL_OUTPUT_11_2 + _zz__zz_memory_Goblin2c_FINAL_OUTPUT_11_5);
+  assign _zz__zz_memory_Goblin2c_FINAL_OUTPUT_11_2 = ({_zz_memory_Goblin2c_FINAL_OUTPUT_1,8'h0} + _zz__zz_memory_Goblin2c_FINAL_OUTPUT_11_3);
+  assign _zz__zz_memory_Goblin2c_FINAL_OUTPUT_11_4 = _zz_memory_Goblin2c_FINAL_OUTPUT_1;
+  assign _zz__zz_memory_Goblin2c_FINAL_OUTPUT_11_3 = {8'd0, _zz__zz_memory_Goblin2c_FINAL_OUTPUT_11_4};
+  assign _zz__zz_memory_Goblin2c_FINAL_OUTPUT_11_6 = _zz_memory_Goblin2c_FINAL_OUTPUT_1[15 : 7];
+  assign _zz__zz_memory_Goblin2c_FINAL_OUTPUT_11_5 = {15'd0, _zz__zz_memory_Goblin2c_FINAL_OUTPUT_11_6};
   assign _zz__zz_execute_BranchPlugin_missAlignedTarget_2 = {{{execute_INSTRUCTION[31],execute_INSTRUCTION[19 : 12]},execute_INSTRUCTION[20]},execute_INSTRUCTION[30 : 21]};
   assign _zz__zz_execute_BranchPlugin_missAlignedTarget_4 = {{{execute_INSTRUCTION[31],execute_INSTRUCTION[7]},execute_INSTRUCTION[30 : 25]},execute_INSTRUCTION[11 : 8]};
   assign _zz__zz_execute_BranchPlugin_missAlignedTarget_6 = {_zz_execute_BranchPlugin_missAlignedTarget_1,execute_INSTRUCTION[31 : 20]};
@@ -2810,11 +2862,11 @@ module VexRiscv (
   end
   `endif
 
-  assign memory_Goblin2c_FINAL_OUTPUT = {{{_zz_memory_Goblin2c_FINAL_OUTPUT_9,_zz_memory_Goblin2c_FINAL_OUTPUT_11},_zz_memory_Goblin2c_FINAL_OUTPUT_13},_zz_memory_Goblin2c_FINAL_OUTPUT_15};
+  assign memory_Goblin2c_FINAL_OUTPUT = {{{_zz_memory_Goblin2c_FINAL_OUTPUT_13,_zz_memory_Goblin2c_FINAL_OUTPUT_15},_zz_memory_Goblin2c_FINAL_OUTPUT_17},_zz_memory_Goblin2c_FINAL_OUTPUT_19};
   assign memory_MUL_LOW = ($signed(_zz_memory_MUL_LOW) + $signed(_zz_memory_MUL_LOW_7));
   assign execute_BRANCH_CALC = {execute_BranchPlugin_branchAdder[31 : 1],1'b0};
   assign execute_BRANCH_DO = ((execute_PREDICTION_HAD_BRANCHED2 != execute_BRANCH_COND_RESULT) || execute_BranchPlugin_missAlignedTarget);
-  assign execute_Goblin2c_INTERMEDIATE_UFMA8VxV64 = {{{{execute_SRC3,_zz_execute_Goblin2c_INTERMEDIATE_UFMA8VxV64_1[15 : 8]},_zz_execute_Goblin2c_INTERMEDIATE_UFMA8VxV64_3[15 : 8]},_zz_execute_Goblin2c_INTERMEDIATE_UFMA8VxV64_5[15 : 8]},_zz_execute_Goblin2c_INTERMEDIATE_UFMA8VxV64_7[15 : 8]};
+  assign execute_Goblin2c_INTERMEDIATE_UFMA8VxV96 = {{{{execute_SRC3,_zz_execute_Goblin2c_INTERMEDIATE_UFMA8VxV96_1},_zz_execute_Goblin2c_INTERMEDIATE_UFMA8VxV96_2},_zz_execute_Goblin2c_INTERMEDIATE_UFMA8VxV96_3},_zz_execute_Goblin2c_INTERMEDIATE_UFMA8VxV96_4};
   assign execute_Goblin_FINAL_OUTPUT = execute_GoblinPlugin_val_pdpikadd8;
   assign execute_CG6_FINAL_OUTPUT = _zz_execute_CG6_FINAL_OUTPUT;
   assign execute_SHIFT_RIGHT = _zz_execute_SHIFT_RIGHT;
@@ -3053,7 +3105,7 @@ module VexRiscv (
 
   assign writeBack_Goblin2c_FINAL_OUTPUT = memory_to_writeBack_Goblin2c_FINAL_OUTPUT;
   assign writeBack_IS_Goblin2c = memory_to_writeBack_IS_Goblin2c;
-  assign memory_Goblin2c_INTERMEDIATE_UFMA8VxV64 = execute_to_memory_Goblin2c_INTERMEDIATE_UFMA8VxV64;
+  assign memory_Goblin2c_INTERMEDIATE_UFMA8VxV96 = execute_to_memory_Goblin2c_INTERMEDIATE_UFMA8VxV96;
   assign memory_Goblin_FINAL_OUTPUT = execute_to_memory_Goblin_FINAL_OUTPUT;
   assign memory_IS_Goblin = execute_to_memory_IS_Goblin;
   assign execute_GoblinCtrlpdpikadd8 = _zz_execute_GoblinCtrlpdpikadd8;
@@ -3164,7 +3216,7 @@ module VexRiscv (
         end
       endcase
     end
-    if(when_Goblin2c_l115) begin
+    if(when_Goblin2c_l139) begin
       _zz_decode_RS3_5 = writeBack_Goblin2c_FINAL_OUTPUT;
     end
   end
@@ -4308,49 +4360,53 @@ module VexRiscv (
   end
 
   assign when_Goblin_l591 = (memory_arbitration_isValid && memory_IS_Goblin);
-  assign _zz_execute_Goblin2c_INTERMEDIATE_UFMA8VxV64 = ((execute_INSTRUCTION[26] == 1'b1) ? execute_SRC2[7 : 0] : execute_SRC2[31 : 24]);
-  assign _zz_memory_Goblin2c_FINAL_OUTPUT = memory_Goblin2c_INTERMEDIATE_UFMA8VxV64[63 : 32];
-  assign _zz_memory_Goblin2c_FINAL_OUTPUT_1 = ({1'b0,memory_Goblin2c_INTERMEDIATE_UFMA8VxV64[7 : 0]} + {1'b0,_zz_memory_Goblin2c_FINAL_OUTPUT[7 : 0]});
-  assign when_UInt_l119_4 = (|_zz_memory_Goblin2c_FINAL_OUTPUT_1[8 : 8]);
+  assign _zz_execute_Goblin2c_INTERMEDIATE_UFMA8VxV96 = ((execute_INSTRUCTION[26] == 1'b1) ? execute_SRC2[7 : 0] : execute_SRC2[31 : 24]);
+  assign _zz_memory_Goblin2c_FINAL_OUTPUT = memory_Goblin2c_INTERMEDIATE_UFMA8VxV96[95 : 64];
+  assign _zz_memory_Goblin2c_FINAL_OUTPUT_1 = memory_Goblin2c_INTERMEDIATE_UFMA8VxV96[63 : 48];
+  assign _zz_memory_Goblin2c_FINAL_OUTPUT_2 = memory_Goblin2c_INTERMEDIATE_UFMA8VxV96[47 : 32];
+  assign _zz_memory_Goblin2c_FINAL_OUTPUT_3 = memory_Goblin2c_INTERMEDIATE_UFMA8VxV96[31 : 16];
+  assign _zz_memory_Goblin2c_FINAL_OUTPUT_4 = memory_Goblin2c_INTERMEDIATE_UFMA8VxV96[15 : 0];
+  assign _zz_memory_Goblin2c_FINAL_OUTPUT_5 = ({1'b0,_zz__zz_memory_Goblin2c_FINAL_OUTPUT_5[23 : 16]} + {1'b0,_zz_memory_Goblin2c_FINAL_OUTPUT[7 : 0]});
+  assign when_UInt_l119_4 = (|_zz_memory_Goblin2c_FINAL_OUTPUT_5[8 : 8]);
   always @(*) begin
     if(when_UInt_l119_4) begin
-      _zz_memory_Goblin2c_FINAL_OUTPUT_2 = 8'hff;
-    end else begin
-      _zz_memory_Goblin2c_FINAL_OUTPUT_2 = _zz_memory_Goblin2c_FINAL_OUTPUT_1[7 : 0];
-    end
-  end
-
-  assign _zz_memory_Goblin2c_FINAL_OUTPUT_3 = ({1'b0,memory_Goblin2c_INTERMEDIATE_UFMA8VxV64[15 : 8]} + {1'b0,_zz_memory_Goblin2c_FINAL_OUTPUT[15 : 8]});
-  assign when_UInt_l119_5 = (|_zz_memory_Goblin2c_FINAL_OUTPUT_3[8 : 8]);
-  always @(*) begin
-    if(when_UInt_l119_5) begin
-      _zz_memory_Goblin2c_FINAL_OUTPUT_4 = 8'hff;
-    end else begin
-      _zz_memory_Goblin2c_FINAL_OUTPUT_4 = _zz_memory_Goblin2c_FINAL_OUTPUT_3[7 : 0];
-    end
-  end
-
-  assign _zz_memory_Goblin2c_FINAL_OUTPUT_5 = ({1'b0,memory_Goblin2c_INTERMEDIATE_UFMA8VxV64[23 : 16]} + {1'b0,_zz_memory_Goblin2c_FINAL_OUTPUT[23 : 16]});
-  assign when_UInt_l119_6 = (|_zz_memory_Goblin2c_FINAL_OUTPUT_5[8 : 8]);
-  always @(*) begin
-    if(when_UInt_l119_6) begin
       _zz_memory_Goblin2c_FINAL_OUTPUT_6 = 8'hff;
     end else begin
       _zz_memory_Goblin2c_FINAL_OUTPUT_6 = _zz_memory_Goblin2c_FINAL_OUTPUT_5[7 : 0];
     end
   end
 
-  assign _zz_memory_Goblin2c_FINAL_OUTPUT_7 = ({1'b0,memory_Goblin2c_INTERMEDIATE_UFMA8VxV64[31 : 24]} + {1'b0,_zz_memory_Goblin2c_FINAL_OUTPUT[31 : 24]});
-  assign when_UInt_l119_7 = (|_zz_memory_Goblin2c_FINAL_OUTPUT_7[8 : 8]);
+  assign _zz_memory_Goblin2c_FINAL_OUTPUT_7 = ({1'b0,_zz__zz_memory_Goblin2c_FINAL_OUTPUT_7[23 : 16]} + {1'b0,_zz_memory_Goblin2c_FINAL_OUTPUT[15 : 8]});
+  assign when_UInt_l119_5 = (|_zz_memory_Goblin2c_FINAL_OUTPUT_7[8 : 8]);
   always @(*) begin
-    if(when_UInt_l119_7) begin
+    if(when_UInt_l119_5) begin
       _zz_memory_Goblin2c_FINAL_OUTPUT_8 = 8'hff;
     end else begin
       _zz_memory_Goblin2c_FINAL_OUTPUT_8 = _zz_memory_Goblin2c_FINAL_OUTPUT_7[7 : 0];
     end
   end
 
-  assign when_Goblin2c_l115 = (writeBack_arbitration_isValid && writeBack_IS_Goblin2c);
+  assign _zz_memory_Goblin2c_FINAL_OUTPUT_9 = ({1'b0,_zz__zz_memory_Goblin2c_FINAL_OUTPUT_9[23 : 16]} + {1'b0,_zz_memory_Goblin2c_FINAL_OUTPUT[23 : 16]});
+  assign when_UInt_l119_6 = (|_zz_memory_Goblin2c_FINAL_OUTPUT_9[8 : 8]);
+  always @(*) begin
+    if(when_UInt_l119_6) begin
+      _zz_memory_Goblin2c_FINAL_OUTPUT_10 = 8'hff;
+    end else begin
+      _zz_memory_Goblin2c_FINAL_OUTPUT_10 = _zz_memory_Goblin2c_FINAL_OUTPUT_9[7 : 0];
+    end
+  end
+
+  assign _zz_memory_Goblin2c_FINAL_OUTPUT_11 = ({1'b0,_zz__zz_memory_Goblin2c_FINAL_OUTPUT_11[23 : 16]} + {1'b0,_zz_memory_Goblin2c_FINAL_OUTPUT[31 : 24]});
+  assign when_UInt_l119_7 = (|_zz_memory_Goblin2c_FINAL_OUTPUT_11[8 : 8]);
+  always @(*) begin
+    if(when_UInt_l119_7) begin
+      _zz_memory_Goblin2c_FINAL_OUTPUT_12 = 8'hff;
+    end else begin
+      _zz_memory_Goblin2c_FINAL_OUTPUT_12 = _zz_memory_Goblin2c_FINAL_OUTPUT_11[7 : 0];
+    end
+  end
+
+  assign when_Goblin2c_l139 = (writeBack_arbitration_isValid && writeBack_IS_Goblin2c);
   always @(*) begin
     HazardSimplePlugin_src0Hazard = 1'b0;
     if(when_HazardSimplePlugin_l91) begin
@@ -5242,7 +5298,7 @@ module VexRiscv (
       execute_to_memory_Goblin_FINAL_OUTPUT <= execute_Goblin_FINAL_OUTPUT;
     end
     if(when_Pipeline_l124_68) begin
-      execute_to_memory_Goblin2c_INTERMEDIATE_UFMA8VxV64 <= execute_Goblin2c_INTERMEDIATE_UFMA8VxV64;
+      execute_to_memory_Goblin2c_INTERMEDIATE_UFMA8VxV96 <= execute_Goblin2c_INTERMEDIATE_UFMA8VxV96;
     end
     if(when_Pipeline_l124_69) begin
       execute_to_memory_BRANCH_DO <= execute_BRANCH_DO;
