@@ -118,7 +118,7 @@ class VideoFrameBufferMultiDepth(Module, AutoCSR):
         source_out_b = Signal(8)
         
         # # #
-        # First the Color Look-up Table (for all but 1 bit & 32 bits)
+        # First the Color Look-up Table (for all but 1 bit & 16/32 bits)
         # updated from the FIFO
         # 8-and-less-than-8-bits mode used the 2^x first entries
         ### clut = Array(Array(Signal(8, reset = (255-i)) for i in range(0, 256)) for j in range(0, 3))
@@ -172,9 +172,9 @@ class VideoFrameBufferMultiDepth(Module, AutoCSR):
             
             if (endian == "big"): # this starts to _really_ mean "i'm in the SBusFPGA"...
                 handle_truecolor_databuf = [ Case(self.indexed_mode, {
-                    0x0: [ data_buf_direct[0].eq(self.conv32.source.data[24:32]),
+                    0x0: [ data_buf_direct[2].eq(self.conv32.source.data[24:32]),
                            data_buf_direct[1].eq(self.conv32.source.data[16:24]),
-                           data_buf_direct[2].eq(self.conv32.source.data[8:16]), ],
+                           data_buf_direct[0].eq(self.conv32.source.data[8:16]), ],
                     0x1: [ data_buf_direct[0].eq(Cat(Signal(3, reset = 0), self.conv16.source.data[0:5])), # fixme: 16-bits in X11 ??? (this is QD32)
                            data_buf_direct[1].eq(Cat(Signal(3, reset = 0), self.conv16.source.data[5:10])),
                            data_buf_direct[2].eq(Cat(Signal(3, reset = 0), self.conv16.source.data[10:15])), ]
