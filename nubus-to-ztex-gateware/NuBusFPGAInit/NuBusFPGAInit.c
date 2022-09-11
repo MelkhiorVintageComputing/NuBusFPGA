@@ -226,6 +226,9 @@ int hwblit(char* stack, char* p_fb_base, /* short dstshift, */ short mode, Patte
 #else
 		WAIT_FOR_HW_LE(accel_le);
 		
+		accel_le->reg_op = 0x3; // GXcopy
+		accel_le->reg_depth = 0; // current
+		
 		accel_le->reg_width = (width); // pixels
 		accel_le->reg_height = (height);
 		accel_le->reg_bitblt_dst_x = (dstv.left); // pixels
