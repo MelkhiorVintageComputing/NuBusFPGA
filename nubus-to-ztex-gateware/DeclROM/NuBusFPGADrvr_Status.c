@@ -232,15 +232,15 @@ OSErr cNuBusFPGAStatus(CntrlParamPtr pb, /* DCtlPtr */ AuxDCEPtr dce)
 				  break;
 			  case secondVidMode:
 				  vdres->csDisplayModeID = kDisplayModeIDNoMoreResolutions;
-				  vdres->csHorizontalPixels = HRES;
-				  vdres->csVerticalLines = VRES;
+				  vdres->csHorizontalPixels = dStore->hres;
+				  vdres->csVerticalLines = dStore->vres;
 				  vdres->csRefreshRate = 60 << 16; /* Fixed 16+16 */
 				  vdres->csMaxDepthMode = kDepthMode6;
 				  break;
 			  case kDisplayModeIDFindFirstResolution:
 				  vdres->csDisplayModeID = firstVidMode;
-				  vdres->csHorizontalPixels = HRES; // ?
-				  vdres->csVerticalLines = VRES; // ?
+				  vdres->csHorizontalPixels = dStore->hres; // ?
+				  vdres->csVerticalLines = dStore->vres; // ?
 				  vdres->csRefreshRate = 60 << 16; /* Fixed 16+16 */
 				  vdres->csMaxDepthMode = kDepthMode6;
 				  break;
@@ -248,8 +248,8 @@ OSErr cNuBusFPGAStatus(CntrlParamPtr pb, /* DCtlPtr */ AuxDCEPtr dce)
 				  vdres->csDisplayModeID = dStore->curMode;
 				  switch (dStore->curMode) {
 				  case firstVidMode:
-					  vdres->csHorizontalPixels = HRES; // ?
-					  vdres->csVerticalLines = VRES; // ?
+					  vdres->csHorizontalPixels = dStore->hres; // ?
+					  vdres->csVerticalLines = dStore->vres; // ?
 					  break;
 				  case secondVidMode:
 					  vdres->csHorizontalPixels = 640; // ?
@@ -298,8 +298,8 @@ OSErr cNuBusFPGAStatus(CntrlParamPtr pb, /* DCtlPtr */ AuxDCEPtr dce)
 		  switch (mode) {
 		  default:
 		  case firstVidMode:
-			  vpblock->vpBounds.right = HRES;
-			  vpblock->vpBounds.bottom = VRES;
+			  vpblock->vpBounds.right = dStore->hres;
+			  vpblock->vpBounds.bottom = dStore->vres;
 			  break;
 		  case secondVidMode:
 			  vpblock->vpBounds.right = 640;

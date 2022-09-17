@@ -17,9 +17,17 @@ CSRC_RAMDSK=NuBusFPGARAMDskDrvr_OpenClose.c NuBusFPGARAMDskDrvr_Ctrl.c NuBusFPGA
 CSRC=${CSRC_VIDEO} ${CSRC_RAMDSK}
 CSRC_ASM=${CSRC:.c=.s}
 
+GEN_ASM=VidRomDef.s VidRomDir.s VidRomName.s VidRomRes.s VidRomRsrcDir.s
+
+gen_mode: gen_mode.c
+	$(HOSTCC) -Wall -O2 $^ -o $@
+
+${GEN_ASM}: gen_mode
+	./gen_mode ${HRES} ${VRES}
+
 all: vid_decl_rom.bin vid_decl_rom.srec
 
-vid_decl_rom.o: vid_decl_rom.s NuBusFPGAPrimaryInit.s NuBusFPGAPrimaryInit_Primary.s NuBusFPGASecondaryInit.s NuBusFPGASecondaryInit_Secondary.s NuBusFPGADrvr.s ${APPLEINCS} ${CSRC_ASM} DepVideo.inc
+vid_decl_rom.o: vid_decl_rom.s NuBusFPGAPrimaryInit.s NuBusFPGAPrimaryInit_Primary.s NuBusFPGASecondaryInit.s NuBusFPGASecondaryInit_Secondary.s NuBusFPGADrvr.s ${APPLEINCS} ${CSRC_ASM} DepVideo.inc ${GEN_ASM}
 	rm -f res.inc
 	echo -e "HRES=${HRES}\nVRES=${VRES}\n" | tee res.inc
 	${AS} -march=68020 -mcpu=68020 -I${NS816DECLROMDIR} $< -o $@ -a > vid_decl_rom.l
@@ -96,7 +104,7 @@ vid_decl_rom.bin: vid_decl_rom.dir
 	dd if=dump.cpr of=vid_decl_rom.bin bs=1 conv=notrunc
 
 clean:
-	rm -f res.inc ${CSRC_ASM} *.o vid_decl_rom.srec vid_decl_rom.raw vid_decl_rom.dir vid_decl_rom.l
+	rm -f res.inc ${CSRC_ASM} *.o vid_decl_rom.srec vid_decl_rom.raw vid_decl_rom.dir vid_decl_rom.l VidRom*.s
 
 append_romdir: append_romdir.c
 	${HOSTCC} $< -o $@

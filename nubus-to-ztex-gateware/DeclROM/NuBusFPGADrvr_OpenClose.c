@@ -31,6 +31,10 @@ OSErr cNuBusFPGAOpen(IOParamPtr pb, /* DCtlPtr */ AuxDCEPtr dce)
 			(*dStoreHdl)->gray = 0;
 			(*dStoreHdl)->irqen = 0;
 			(*dStoreHdl)->slot = dce->dCtlSlot;
+
+			/* Get the HW setting for native resolution */
+			(*dStoreHdl)->hres = __builtin_bswap32((unsigned int)read_reg(dce, GOBOFB_HRES)); // fixme: endianness
+			(*dStoreHdl)->vres = __builtin_bswap32((unsigned int)read_reg(dce, GOBOFB_VRES)); // fixme: endianness
 			
 			SlotIntQElement *siqel = (SlotIntQElement *)NewPtrSysClear(sizeof(SlotIntQElement));
 			if (siqel == NULL) {

@@ -237,7 +237,7 @@ OSErr cNuBusFPGACtl(CntrlParamPtr pb, /* DCtlPtr */ AuxDCEPtr dce)
 		   const UInt32 a32 = dce->dCtlDevBase;
 		   UInt32 a32_l0, a32_l1;
 		   UInt32 a32_4p0, a32_4p1;
-		   const uint32_t wb = HRES >> idx;
+		   const uint32_t wb = dStore->hres >> idx;
 		   unsigned short j, i;
 		   
 		   if (vPInfo->csPage != 0)
@@ -249,7 +249,7 @@ OSErr cNuBusFPGACtl(CntrlParamPtr pb, /* DCtlPtr */ AuxDCEPtr dce)
 			   /* grey the screen */
 			   a32_l0 = a32;
 			   a32_l1 = a32 + wb;
-			   for (j = 0 ; j < VRES ; j+= 2) {
+			   for (j = 0 ; j < dStore->vres ; j+= 2) {
 				   a32_4p0 = a32_l0;
 				   a32_4p1 = a32_l1;
 				   for (i = 0 ; i < wb ; i += 4) {
@@ -264,18 +264,18 @@ OSErr cNuBusFPGACtl(CntrlParamPtr pb, /* DCtlPtr */ AuxDCEPtr dce)
 		   } else {
 			   /* testing */
 			   a32_l0 = a32;
-			   a32_l1 = a32 + HRES*4;
-			   for (j = 0 ; j < VRES ; j+= 2) {
+			   a32_l1 = a32 + dStore->hres*4;
+			   for (j = 0 ; j < dStore->vres ; j+= 2) {
 				   a32_4p0 = a32_l0;
 				   a32_4p1 = a32_l1;
-				   for (i = 0 ; i < HRES ; i ++ ) {
+				   for (i = 0 ; i < dStore->hres ; i ++ ) {
 					   *((UInt32*)a32_4p0) = (i&0xFF);//(i&0xFF) | (i&0xFF)<<8 | (i&0xff)<<24;
 					   *((UInt32*)a32_4p1) = (i&0xFF)<<16;//(i&0xFF) | (i&0xFF)<<8 | (i&0xff)<<24;
 					   a32_4p0 += 4;
 					   a32_4p1 += 4;
 				   }
-				   a32_l0 += 2*HRES*4;
-				   a32_l1 += 2*HRES*4;
+				   a32_l0 += 2*dStore->hres*4;
+				   a32_l1 += 2*dStore->hres*4;
 			   }
 		   }
 #else
@@ -289,8 +289,8 @@ OSErr cNuBusFPGACtl(CntrlParamPtr pb, /* DCtlPtr */ AuxDCEPtr dce)
 		   switch (dStore->curMode) {
 		   default:
 		   case firstVidMode:
-			   accel_le->reg_width = HRES; // pixels
-			   accel_le->reg_height = VRES;
+			   accel_le->reg_width = dStore->hres; // pixels
+			   accel_le->reg_height = dStore->vres;
 			   break;
 		   case secondVidMode:
 			   accel_le->reg_width = 640; // pixels
@@ -380,13 +380,13 @@ OSErr cNuBusFPGACtl(CntrlParamPtr pb, /* DCtlPtr */ AuxDCEPtr dce)
 			  /* write_reg(dce, GOBOFB_VIDEOCTRL, 0); */
 			  write_reg(dce, GOBOFB_HRES_START, 0);
 			  write_reg(dce, GOBOFB_VRES_START, 0);
-			  write_reg(dce, GOBOFB_HRES_END, __builtin_bswap32(HRES)); // fixme: endianess (along with HW)
-			  write_reg(dce, GOBOFB_VRES_END, __builtin_bswap32(VRES)); // fixme: endianess (along with HW)
+			  write_reg(dce, GOBOFB_HRES_END, __builtin_bswap32(dStore->hres)); // fixme: endianess (along with HW)
+			  write_reg(dce, GOBOFB_VRES_END, __builtin_bswap32(dStore->vres)); // fixme: endianess (along with HW)
 			  /* write_reg(dce, GOBOFB_VIDEOCTRL, 1); */
 		  } break;
 		  case secondVidMode: {
-			  unsigned int ho = ((HRES - 640) / 2);
-			  unsigned int vo = ((VRES - 480) / 2);
+			  unsigned int ho = ((dStore->hres - 640) / 2);
+			  unsigned int vo = ((dStore->vres - 480) / 2);
 			   /* write_reg(dce, GOBOFB_VIDEOCTRL, 0); */
 			  write_reg(dce, GOBOFB_HRES_START, __builtin_bswap32(ho));
 			  write_reg(dce, GOBOFB_VRES_START, __builtin_bswap32(vo));

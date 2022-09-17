@@ -3,7 +3,9 @@
 #include <Traps.h>
 
 #define PRIM_WRITEREG(reg, val) \
-	*((volatile UInt32*)(a32+GOBOFB_BASE+reg)) = (UInt32)val;
+	*((volatile UInt32*)(a32+GOBOFB_BASE+reg)) = (UInt32)val
+#define PRIM_READREG(reg) \
+	(*((volatile UInt32*)(a32+GOBOFB_BASE+reg)))
 
 UInt32 Primary(SEBlock* seblock) {
 	UInt32 a32 = 0xF0000000 | ((UInt32)seblock->seSlot << 24);
@@ -12,7 +14,7 @@ UInt32 Primary(SEBlock* seblock) {
 	SpBlock spblock;
 	UInt8 pram[8];
 	OSErr err;
-	UInt16 i,j;
+	UInt16 i,j, hres, vres;
 	char busMode;
 	UniversalProcPtr qd32ptr, unimpptr;
 	
@@ -23,21 +25,24 @@ UInt32 Primary(SEBlock* seblock) {
 	
 	/* PRIM_WRITEREG(GOBOFB_DEBUG, busMode);// trace */
 
+	hres = __builtin_bswap32((UInt32)PRIM_READREG(GOBOFB_HRES)); // fixme: endianness
+	vres = __builtin_bswap32((UInt32)PRIM_READREG(GOBOFB_VRES)); // fixme: endianness
+
 	/* grey the screen */
 	/* should switch to HW ? */
 	a32_l0 = a32;
-	a32_l1 = a32 + HRES;
-	for (j = 0 ; j < VRES ; j+= 2) {
+	a32_l1 = a32 + hres;
+	for (j = 0 ; j < vres ; j+= 2) {
 		a32_4p0 = a32_l0;
 		a32_4p1 = a32_l1;
-		for (i = 0 ; i < HRES ; i += 4) {
+		for (i = 0 ; i < hres ; i += 4) {
 			*((UInt32*)a32_4p0) = 0xAAAAAAAA;
 			*((UInt32*)a32_4p1) = 0x55555555;
 			a32_4p0 += 4;
 			a32_4p1 += 4;
 		}
-		a32_l0 += 2*HRES;
-		a32_l1 += 2*HRES;
+		a32_l0 += 2*hres;
+		a32_l1 += 2*hres;
 	}
 	
 	SwapMMUMode ( &busMode ); // restore

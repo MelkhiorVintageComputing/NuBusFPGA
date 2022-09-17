@@ -8,15 +8,6 @@
 #include <MacMemory.h>
 #include <Video.h>
 
-#ifndef HRES
-#define HRES 1152
-#warning "Using default HRES"
-#endif
-#ifndef VRES
-#define VRES 870
-#warning "Using default VRES"
-#endif
-
 #define GOBOFB_BASE     0x00900000
 #define GOBOFB_ACCEL    0x00901000
 #define GOBOFB_ACCEL_LE 0x00901800
@@ -97,6 +88,8 @@ struct NuBusFPGADriverGlobals {
 	//unsigned char shadowClut[768];
 	unsigned short curMode; /* mode include depth in <= 7.1 ROM-based mode */
 	unsigned short curDepth; /* depth separate from mode in >= 7.5 driver-based mode */
+	unsigned short hres; /* HW max */
+	unsigned short vres; /* HW max */
 	char gray;
 	char irqen;
 	char slot;
