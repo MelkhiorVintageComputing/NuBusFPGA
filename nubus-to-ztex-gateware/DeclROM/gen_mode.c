@@ -148,7 +148,7 @@ int main(int argc, char **argv) {
 				fprintf(fd, "_%sModes: /* id 0x%02x */\n", modename, id-1);
 				fprintf(fd, "\tOSLstEntry\tmVidParams,_%sParms\t/* offset to vid parameters */\n", modename);
 				fprintf(fd, "\tDatLstEntry\tmPageCnt,1\t/* number of video pages */\n");
-				fprintf(fd, "\tDatLstEntry\tmDevType,clutType\t/* device type */\n");
+				fprintf(fd, "\tDatLstEntry\tmDevType,%s\t/* device type */\n", depth <= 8 ? "clutType" : "directType");
 				fprintf(fd, "\t.long\tEndOfList\t/* end of list */\n");
 				fprintf(fd, "_%sParms:\n", modename);
 				fprintf(fd, "\t.long\t_End%sParms-_%sParms\t/* physical block size */\n", modename, modename);
@@ -160,7 +160,7 @@ int main(int argc, char **argv) {
 				fprintf(fd, "\t.long\t0\t/* packSize not used ; vpPackSize */\n");
 				fprintf(fd, "\t.long\tdefmHRes\t/* bmHRes */\n");
 				fprintf(fd, "\t.long\tdefmVRes\t/* bmVRes */\n");
-				fprintf(fd, "\t.word\tChunkyIndexed\t/* bmPixelType */\n");
+				fprintf(fd, "\t.word\t%s\t/* bmPixelType */\n", depth <= 8 ? "ChunkyIndexed" : "ChunkyDirect");
 				fprintf(fd, "\t.word\t%d\t/* bmPixelSize */\n", depth);
 				fprintf(fd, "\t.word\t%d\t/* bmCmpCount */\n", depth <= 8 ? 1 : 3);
 				fprintf(fd, "\t.word\t%d\t/* bmCmpSize */\n", depth <= 8 ? depth : (depth == 32 ? 8 : 5));
