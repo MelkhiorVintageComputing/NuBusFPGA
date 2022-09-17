@@ -34,11 +34,18 @@
 #define GOBOFB_DEBUG          0x1c
 //#define GOBOFB_CURSOR_LUT     0x20
 //#define GOBOFB_CURSOR_XY      0x24
+#define GOBOFB_HRES           0x40
+#define GOBOFB_VRES           0x44
+#define GOBOFB_HRES_START     0x48
+#define GOBOFB_VRES_START     0x4C
+#define GOBOFB_HRES_END       0x50
+#define GOBOFB_VRES_END       0x54
 //#define GOBOFB_MASK_BASE      0x80
 //#define GOBOFB_BITS_BASE      0x100
 
 #define GOBOFB_INTR_VBL       0x1
 
+// for GOBOFB_MODE
 #define GOBOFB_MODE_1BIT  0x0
 #define GOBOFB_MODE_2BIT  0x1
 #define GOBOFB_MODE_4BIT  0x2
@@ -62,7 +69,7 @@ struct goblin_accel_regs {
 	u_int32_t reg_bitblt_dst_y;
 	u_int32_t reg_src_stride; // 12
 	u_int32_t reg_dst_stride;
-	u_int32_t reg_src_ptr; // 12
+	u_int32_t reg_src_ptr; // 14
 	u_int32_t reg_dst_ptr;
 };
 
@@ -92,6 +99,7 @@ struct NuBusFPGADriverGlobals {
 	unsigned short curDepth; /* depth separate from mode in >= 7.5 driver-based mode */
 	char gray;
 	char irqen;
+	char slot;
 	struct MyGammaTbl gamma;
 };
 typedef struct NuBusFPGADriverGlobals NuBusFPGADriverGlobals;

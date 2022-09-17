@@ -8,12 +8,15 @@
 
 sRsrc_Board = 1 /*  board sResource (>0 & <128) */
 sRsrc_GoboFB = 0x80 /*  functional sResources */
-sRsrc_RAMDsk = 0x81 /*  functional sResources */
+sRsrc_GoboFB_13 = 0x81 /*  functional sResources */
+sRsrc_RAMDsk = 0x90 /*  functional sResources */
+sRsrc_GoboFB_HiRes = 0x80 /*  functional sResources */
 
 _sRsrcDir:
 	OSLstEntry  sRsrc_Board,_sRsrc_Board       /*  board sRsrc List */
     OSLstEntry  sRsrc_GoboFB,_sRsrc_GoboFB     /*  video sRsrc List */
-    OSLstEntry  sRsrc_RAMDsk,_sRsrc_RAMDsk     /*  video sRsrc List */
+    OSLstEntry  sRsrc_GoboFB_13,_sRsrc_GoboFB_13     /*  video sRsrc List */
+/*    OSLstEntry  sRsrc_RAMDsk,_sRsrc_RAMDsk     /*  video sRsrc List */
 	.long EndOfList
 
 _sRsrc_Board:	
@@ -23,7 +26,7 @@ _sRsrc_Board:
     OSLstEntry  primaryInit,_sPInitRec     /*  offset to PrimaryInit exec blk */
     OSLstEntry  vendorInfo,_VendorInfo     /*  offset to vendor info record */
 	OSLstEntry  secondaryInit,_sSInitRec  /* offset to SecondaryInit block	 */
-	OSLstEntry	sRsrcVidNames, _VModeName
+	OSLstEntry	sRsrcVidNames, _VModeName /* video name directory */
 	.long EndOfList
 
 _BoardType:	
@@ -76,15 +79,23 @@ _Date:
 	ALIGN 2
 	
 _VModeName:	
-	OSLstEntry	sRsrc_GoboFB, _ScreenNameGoboFB
-	DatLstEntry	endOfList,	0	
+	OSLstEntry	sRsrc_GoboFB, _ScreenNameGoboFBHiRes
+	OSLstEntry	sRsrc_GoboFB_13, _ScreenNameGoboFB13
+	DatLstEntry	endOfList,	0
 
 	ALIGN 2
-_ScreenNameGoboFB:	
-	.long		_ScreenNameGoboFBEnd - _ScreenNameGoboFB
+_ScreenNameGoboFBHiRes:	
+	.long		_ScreenNameGoboFBHiResEnd - _ScreenNameGoboFBHiRes
 	.word		0
 	.string		"GoblinFB Native\0"
-_ScreenNameGoboFBEnd:	
+_ScreenNameGoboFBHiResEnd:
+	
+	ALIGN 2
+_ScreenNameGoboFB13:	
+	.long		_ScreenNameGoboFB13End - _ScreenNameGoboFB13
+	.word		0
+	.string		"GoblinFB 640x480WB\0"
+_ScreenNameGoboFB13End:
 
 	ALIGN 2
 _sRsrc_GoboFB:	
@@ -102,8 +113,28 @@ _sRsrc_GoboFB:
     OSLstEntry  thirdVidMode,_HiRes2Modes        /*  offset to 2 Bit Mode parms */
     OSLstEntry  fourthVidMode,_HiRes1Modes        /*  offset to 1 Bit Mode parms */
     OSLstEntry  fifthVidMode,_HiRes24Modes        /*  offset to 24/32 Bit Mode parms */
-    OSLstEntry  sixthVidMode,_HiRes15Modes        /*  offset to 1516 Bit Mode parms */
+    OSLstEntry  sixthVidMode,_HiRes15Modes        /*  offset to 15/16 Bit Mode parms */
     .long EndOfList               /*  end of list */
+
+	ALIGN 2
+_sRsrc_GoboFB_13:	
+	OSLstEntry  sRsrcType,_GoboFBType      /*  video type descriptor */
+    OSLstEntry  sRsrcName,_GoboFBName      /*  offset to driver name string */
+    OSLstEntry  sRsrcDrvrDir,_GoboFBDrvrDir /* offset to driver directory */
+	DatLstEntry  sRsrcFlags,6    /* force 32 bits mode & open */
+    DatLstEntry sRsrcHWDevId,1           /*  hardware device ID */
+    OSLstEntry  MinorBaseOS,_MinorBase    /*  offset to frame buffer array */
+    OSLstEntry  MinorLength,_MinorLength  /*  offset to frame buffer length */
+    /* OSLstEntry  sGammaDir,_GammaDirS      /*  directory for 640x480 monitor */
+/*  Parameters */
+    OSLstEntry  firstVidMode,_M13_8Modes        /*  offset to 8 Bit Mode parms */
+    OSLstEntry  secondVidMode,_M13_4Modes        /*  offset to 4 Bit Mode parms */
+    OSLstEntry  thirdVidMode,_M13_2Modes        /*  offset to 2 Bit Mode parms */
+    OSLstEntry  fourthVidMode,_M13_1Modes        /*  offset to 1 Bit Mode parms */
+    OSLstEntry  fifthVidMode,_M13_24Modes        /*  offset to 24/32 Bit Mode parms */
+    OSLstEntry  sixthVidMode,_M13_15Modes        /*  offset to 15/16 Bit Mode parms */
+    .long EndOfList               /*  end of list */
+
 
 	ALIGN 2
 _GoboFBType:	
@@ -132,172 +163,10 @@ _GoboFBDrvrMacOS68020:
 	.text
 _GoboFBEnd020Drvr:
 
-/* 	ALIGN 2 */
-/* _GammaDirS: */
-/*             OSLstEntry  128,_SmallGamma */
-/*             .long EndOfList */
-/* _SmallGamma: */	
-/*             .long        _EndSmallGamma-_SmallGamma */
-/*             .short        SGammaResID */
-/*             .string        "Small Gamma"                /*  Monitors name */
-/*             ALIGN       2 */
-/*             .short        0x0000                        /*  gVersion */
-/*             .short        DrHwNuBusFPGA                   /*  gType */
-/*             .short        0x0000                        /*  gFormulaSize */
-/*             .short        0x0001                        /*  gChanCnt */
-/*             .short        0x0100                        /*  gDataCnt */
-/*             .short        0x0008                        /*  gChanWidth */
-/*             .long        0x0005090B,0x0E101315,0x17191B1D,0x1E202224
-             .long        0x2527282A,0x2C2D2F30,0x31333436,0x37383A3B
-             .long        0x3C3E3F40,0x42434445,0x4748494A,0x4B4D4E4F
-             .long        0x50515254,0x55565758,0x595A5B5C,0x5E5F6061
-             .long        0x62636465,0x66676869,0x6A6B6C6D,0x6E6F7071
-             .long        0x72737475,0x76777879,0x7A7B7C7D,0x7E7F8081
-             .long        0x81828384,0x85868788,0x898A8B8C,0x8C8D8E8F
-             .long 0x90919293,0x94959596,0x9798999A,0x9B9B9C9D
-             .long 0x9E9FA0A1,0xA1A2A3A4,0xA5A6A6A7,0xA8A9AAAB
-             .long 0xABACADAE,0xAFB0B0B1,0xB2B3B4B4,0xB5B6B7B8
-             .long 0xB8B9BABB,0xBCBCBDBE,0xBFC0C0C1,0xC2C3C3C4
-             .long 0xC5C6C7C7,0xC8C9CACA,0xCBCCCDCD,0xCECFD0D0
-             .long 0xD1D2D3D3,0xD4D5D6D6,0xD7D8D9D9,0xDADBDCDC
-             .long 0xDDDEDFDF,0xE0E1E1E2,0xE3E4E4E5,0xE6E7E7E8
-             .long 0xE9B9EAEB,0xECECEDEE,0xEEEFF0F1,0xF1F2F3F3
-             .long 0xF4F5F5F6,0xF7F8F8F9,0xFAFAFBFC,0xFCFDFEFF */
-/* _EndSmallGamma: */
-
-	ALIGN 2
-_HiRes8Modes:	
-             OSLstEntry    mVidParams,_HRV8Parms         /*  offset to vid parameters */
-             DatLstEntry   mPageCnt,Pages8s             /*  number of video pages */
-             DatLstEntry   mDevType,clutType         /*  device type */
-             .long   EndOfList                  /*  end of list */
-_HRV8Parms:	
-             .long          _EndHRV8Parms-_HRV8Parms      /*  physical block size  */
-             .long          defmBaseOffset              /*  QuickDraw base offset ; vpBaseOffset */
-             .word          RB8s                        /*  physRowBytes ; vpRowBytes */
-             .word          defmBounds_Ts,defmBounds_Ls,defmBounds_Bs,defmBounds_Rs /*  vpBounds */
-             .word          defVersion                  /*  bmVersion ; vpVersion */
-             .word	   0				/*  packType not used ; vpPackType */
-             .long	   0 				/*  packSize not used ; vpPackSize */
-             .long          defmHRes                    /*  bmHRes  */
-             .long          defmVRes                    /*  bmVRes */
-             .word          ChunkyIndexed               /*  bmPixelType */
-             .word          8                           /*  bmPixelSize */
-             .word          1                           /*  bmCmpCount */
-             .word          8                           /*  bmCmpSize */
-             .long          defmPlaneBytes              /*  bmPlaneBytes */
-_EndHRV8Parms:	
-	ALIGN 2
-_HiRes4Modes:	
-             OSLstEntry    mVidParams,_HRV4Parms         /*  offset to vid parameters */
-             DatLstEntry   mPageCnt,Pages4s             /*  number of video pages */
-             DatLstEntry   mDevType,clutType         /*  device type */
-             .long   EndOfList                  /*  end of list */
-_HRV4Parms:	
-             .long          _EndHRV4Parms-_HRV4Parms      /*  physical block size  */
-             .long          defmBaseOffset              /*  QuickDraw base offset ; vpBaseOffset */
-             .word          RB4s                        /*  physRowBytes ; vpRowBytes */
-             .word          defmBounds_Ts,defmBounds_Ls,defmBounds_Bs,defmBounds_Rs /*  vpBounds */
-             .word          defVersion                  /*  bmVersion ; vpVersion */
-             .word	   0				/*  packType not used ; vpPackType */
-             .long	   0 				/*  packSize not used ; vpPackSize */
-             .long          defmHRes                    /*  bmHRes  */
-             .long          defmVRes                    /*  bmVRes */
-             .word          ChunkyIndexed               /*  bmPixelType */
-             .word          4                           /*  bmPixelSize */
-             .word          1                           /*  bmCmpCount */
-             .word          4                           /*  bmCmpSize */
-             .long          defmPlaneBytes              /*  bmPlaneBytes */
-_EndHRV4Parms:
-	ALIGN 2
-_HiRes2Modes:	
-             OSLstEntry    mVidParams,_HRV2Parms         /*  offset to vid parameters */
-             DatLstEntry   mPageCnt,Pages2s             /*  number of video pages */
-             DatLstEntry   mDevType,clutType         /*  device type */
-             .long   EndOfList                  /*  end of list */
-_HRV2Parms:	
-             .long          _EndHRV2Parms-_HRV2Parms      /*  physical block size  */
-             .long          defmBaseOffset              /*  QuickDraw base offset ; vpBaseOffset */
-             .word          RB2s                        /*  physRowBytes ; vpRowBytes */
-             .word          defmBounds_Ts,defmBounds_Ls,defmBounds_Bs,defmBounds_Rs /*  vpBounds */
-             .word          defVersion                  /*  bmVersion ; vpVersion */
-             .word	   0				/*  packType not used ; vpPackType */
-             .long	   0 				/*  packSize not used ; vpPackSize */
-             .long          defmHRes                    /*  bmHRes  */
-             .long          defmVRes                    /*  bmVRes */
-             .word          ChunkyIndexed               /*  bmPixelType */
-             .word          2                           /*  bmPixelSize */
-             .word          1                           /*  bmCmpCount */
-             .word          2                           /*  bmCmpSize */
-             .long          defmPlaneBytes              /*  bmPlaneBytes */
-_EndHRV2Parms:
-	ALIGN 2
-_HiRes1Modes:	
-             OSLstEntry    mVidParams,_HRV1Parms         /*  offset to vid parameters */
-             DatLstEntry   mPageCnt,Pages1s             /*  number of video pages */
-             DatLstEntry   mDevType,clutType         /*  device type */
-             .long   EndOfList                  /*  end of list */
-_HRV1Parms:	
-             .long          _EndHRV1Parms-_HRV1Parms      /*  physical block size  */
-             .long          defmBaseOffset              /*  QuickDraw base offset ; vpBaseOffset */
-             .word          RB1s                        /*  physRowBytes ; vpRowBytes */
-             .word          defmBounds_Ts,defmBounds_Ls,defmBounds_Bs,defmBounds_Rs /*  vpBounds */
-             .word          defVersion                  /*  bmVersion ; vpVersion */
-             .word	   0				/*  packType not used ; vpPackType */
-             .long	   0 				/*  packSize not used ; vpPackSize */
-             .long          defmHRes                    /*  bmHRes  */
-             .long          defmVRes                    /*  bmVRes */
-             .word          ChunkyIndexed               /*  bmPixelType */
-             .word          1                           /*  bmPixelSize */
-             .word          1                           /*  bmCmpCount */
-             .word          1                           /*  bmCmpSize */
-             .long          defmPlaneBytes              /*  bmPlaneBytes */
-_EndHRV1Parms:	
-	ALIGN 2
-_HiRes24Modes:	
-             OSLstEntry    mVidParams,_HRV24Parms         /*  offset to vid parameters */
-             DatLstEntry   mPageCnt,Pages24s             /*  number of video pages */
-             DatLstEntry   mDevType,directType         /*  device type */
-             .long   EndOfList                  /*  end of list */
-_HRV24Parms:	
-             .long          _EndHRV24Parms-_HRV24Parms      /*  physical block size  */
-             .long          defmBaseOffset              /*  QuickDraw base offset ; vpBaseOffset */
-             .word          RB24s                        /*  physRowBytes ; vpRowBytes */
-             .word          defmBounds_Ts,defmBounds_Ls,defmBounds_Bs,defmBounds_Rs /*  vpBounds */
-             .word          defVersion                  /*  bmVersion ; vpVersion */
-             .word	   0				/*  packType not used ; vpPackType */
-             .long	   0 				/*  packSize not used ; vpPackSize */
-             .long          defmHRes                    /*  bmHRes  */
-             .long          defmVRes                    /*  bmVRes */
-             .word          ChunkyDirect                /*  bmPixelType */
-             .word          32                          /*  bmPixelSize */
-             .word          3                           /*  bmCmpCount */
-             .word          8                           /*  bmCmpSize */
-             .long          defmPlaneBytes              /*  bmPlaneBytes */
-_EndHRV24Parms:	
-	ALIGN 2
-_HiRes15Modes:	
-             OSLstEntry    mVidParams,_HRV15Parms         /*  offset to vid parameters */
-             DatLstEntry   mPageCnt,Pages15s             /*  number of video pages */
-             DatLstEntry   mDevType,directType         /*  device type */
-             .long   EndOfList                  /*  end of list */
-_HRV15Parms:	
-             .long          _EndHRV15Parms-_HRV15Parms      /*  physical block size  */
-             .long          defmBaseOffset              /*  QuickDraw base offset ; vpBaseOffset */
-             .word          RB15s                        /*  physRowBytes ; vpRowBytes */
-             .word          defmBounds_Ts,defmBounds_Ls,defmBounds_Bs,defmBounds_Rs /*  vpBounds */
-             .word          defVersion                  /*  bmVersion ; vpVersion */
-             .word	   0				/*  packType not used ; vpPackType */
-             .long	   0 				/*  packSize not used ; vpPackSize */
-             .long          defmHRes                    /*  bmHRes  */
-             .long          defmVRes                    /*  bmVRes */
-             .word          ChunkyDirect                /*  bmPixelType */
-             .word          16                          /*  bmPixelSize */
-             .word          3                           /*  bmCmpCount */
-             .word          5                           /*  bmCmpSize */
-             .long          defmPlaneBytes              /*  bmPlaneBytes */
-_EndHRV15Parms:	
-
+	.include "vid_decl_rom_hires.s"
+	
+	.include "vid_decl_rom_13.s"
+	
 	ALIGN 2
 _sRsrc_RAMDsk:	
 	OSLstEntry  sRsrcType,_RAMDskType      /*  video type descriptor */

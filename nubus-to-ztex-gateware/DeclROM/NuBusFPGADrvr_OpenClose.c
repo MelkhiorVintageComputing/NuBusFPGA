@@ -30,6 +30,7 @@ OSErr cNuBusFPGAOpen(IOParamPtr pb, /* DCtlPtr */ AuxDCEPtr dce)
 			
 			(*dStoreHdl)->gray = 0;
 			(*dStoreHdl)->irqen = 0;
+			(*dStoreHdl)->slot = dce->dCtlSlot;
 			
 			SlotIntQElement *siqel = (SlotIntQElement *)NewPtrSysClear(sizeof(SlotIntQElement));
 			if (siqel == NULL) {
@@ -44,6 +45,9 @@ OSErr cNuBusFPGAOpen(IOParamPtr pb, /* DCtlPtr */ AuxDCEPtr dce)
 			siqel->sqAddr = sqAddr;
 			siqel->sqParm = (long)dce->dCtlDevBase;
 			(*dStoreHdl)->siqel = siqel;
+
+			(*dStoreHdl)->curMode = firstVidMode;
+			(*dStoreHdl)->curDepth = kDepthMode1;
 			
 			linearGamma(*dStoreHdl);
 			

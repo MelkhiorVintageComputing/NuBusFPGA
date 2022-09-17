@@ -97,14 +97,17 @@ typedef volatile unsigned int u_int32_t;
 #define FUN_DONE             (1<<FUN_DONE_BIT)
 
 struct goblin_bt_regs {
-	u_int32_t mode;
+	u_int32_t mode; /* 0x0 */
 	u_int32_t vbl_mask;
 	u_int32_t videoctrl;
 	u_int32_t intr_clear;
-	u_int32_t reset;
+	u_int32_t reset; /* 0x10 */
 	u_int32_t lut_addr;
 	u_int32_t lut;
 	u_int32_t debug;
+	u_int32_t cursor_lut; /* 0x20 */
+	u_int32_t cursor_xy; /* 0x24 */
+	/* ... : 7 resv then 6 vres/hres for windowboxed resolution */
 };
 
 enum goblin_bt_mode {

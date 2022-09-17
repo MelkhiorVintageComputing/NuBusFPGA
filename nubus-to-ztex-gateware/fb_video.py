@@ -57,6 +57,11 @@ class FBVideoTimingGenerator(Module, AutoCSR):
         self._vsync_end   = CSRStorage(vbits, vt["v_active"] + vt["v_sync_offset"] + vt["v_sync_width"])
         self._vscan       = CSRStorage(vbits, vt["v_active"] + vt["v_blanking"])
 
+        self._hres_start  = Signal(hbits, reset = 0)
+        self._hres_end    = Signal(hbits, reset = vt["h_active"])
+        self._vres_start  = Signal(hbits, reset = 0)
+        self._vres_end    = Signal(hbits, reset = vt["v_active"])
+
         # Video Timing Source
         if (hwcursor):
             self.source = source = stream.Endpoint(video_timing_hwcursor_layout)
@@ -91,6 +96,15 @@ class FBVideoTimingGenerator(Module, AutoCSR):
         self.specials += MultiReg(self._vsync_end.storage,   vsync_end)
         self.specials += MultiReg(self._vscan.storage,       vscan)
 
+        self.hres_start  = hres_start  = Signal(hbits)
+        self.hres_end    = hres_end    = Signal(hbits)
+        self.vres_start  = vres_start  = Signal(vbits)
+        self.vres_end    = vres_end    = Signal(vbits)
+        self.specials += MultiReg(self._hres_start, hres_start)
+        self.specials += MultiReg(self._hres_end,   hres_end)
+        self.specials += MultiReg(self._vres_start, vres_start)
+        self.specials += MultiReg(self._vres_end,   vres_end)
+
         # Generate timings.
         hactive = Signal()
         vactive = Signal()
@@ -116,8 +130,8 @@ class FBVideoTimingGenerator(Module, AutoCSR):
                 # Increment HCount.
                 NextValue(source.hcount, source.hcount + 1),
                 # Generate HActive / HSync.
-                If(source.hcount == 0,           NextValue(hactive,      1)), # Start of HActive.
-                If(source.hcount == hres,        NextValue(hactive,      0)), # End of HActive.
+                If(source.hcount == hres_start,  NextValue(hactive,      1)), # Start of HActive.
+                If(source.hcount == hres_end,    NextValue(hactive,      0)), # End of HActive.
                 If(source.hcount == hsync_start, NextValue(source.hsync, 1)), # Start of HSync.
                 If(source.hcount == hsync_end,   NextValue(source.hsync, 0)), # End of HSync.
                 # End of HScan.
@@ -127,8 +141,8 @@ class FBVideoTimingGenerator(Module, AutoCSR):
                     # Increment VCount.
                     NextValue(source.vcount, source.vcount + 1),
                     # Generate VActive / VSync.
-                    If(source.vcount == 0,           NextValue(vactive,      1)), # Start of VActive.
-                    If(source.vcount == vres,        NextValue(vactive,      0)), # End of HActive.
+                    If(source.vcount == vres_start,  NextValue(vactive,      1)), # Start of VActive.
+                    If(source.vcount == vres_end,    NextValue(vactive,      0)), # End of HActive.
                     If(source.vcount == vsync_start, NextValue(source.vsync, 1)), # Start of VSync.
                     If(source.vcount == vsync_end,   NextValue(source.vsync, 0)), # End of VSync.
                     # End of VScan.
@@ -141,10 +155,19 @@ class FBVideoTimingGenerator(Module, AutoCSR):
         )
 
 
+        # fixme: likely more efficient to have two bits (X, Y) to check if we're in the area, rather than two compare...
+        #        could also handle the offsets w/o two subtractions
+        #        but how to deal with changing value ??? copy them at the beginning of frame ?
         if (hwcursor):
-            self.sync += source.hwcursor.eq((source.hcount >= _hwcursor_x) &
-                                            (source.hcount < (_hwcursor_x+32)) &
-                                            (source.vcount >= _hwcursor_y) &
-                                            (source.vcount < (_hwcursor_y+32)))
-            self.sync += source.hwcursorx.eq(_hwcursor_x - source.hcount)
-            self.sync += source.hwcursory.eq(_hwcursor_y - source.vcount)
+            h_offset = Signal(hbits)
+            v_offset = Signal(vbits)
+            self.comb += [
+                h_offset.eq(source.hcount - hres_start),
+                v_offset.eq(source.vcount - vres_start),
+            ]
+            self.sync += source.hwcursor.eq((h_offset >= _hwcursor_x) &
+                                            (h_offset < (_hwcursor_x+32)) &
+                                            (v_offset >= _hwcursor_y) &
+                                            (v_offset < (_hwcursor_y+32)))
+            self.sync += source.hwcursorx.eq(_hwcursor_x - h_offset)
+            self.sync += source.hwcursory.eq(_hwcursor_y - v_offset)

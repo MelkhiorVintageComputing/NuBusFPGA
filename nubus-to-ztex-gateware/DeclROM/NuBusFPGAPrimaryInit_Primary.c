@@ -41,6 +41,17 @@ UInt32 Primary(SEBlock* seblock) {
 	}
 	
 	SwapMMUMode ( &busMode ); // restore
+
+#if 1
+	{ // disable spurious entries
+		SpBlock spb;
+		spb.spParamData = 1; /* disable */
+		spb.spSlot = seblock->seSlot;
+		spb.spID = 0x81; // 640x480 entries; fixme
+		spb.spExtDev = 0;
+		SetSRsrcState(&spb);
+	}
+#endif
 	
 #if 0
 

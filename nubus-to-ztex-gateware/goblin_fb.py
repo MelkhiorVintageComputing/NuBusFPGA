@@ -46,7 +46,7 @@ class VideoFrameBufferMultiDepth(Module, AutoCSR):
         
         vga_sync = getattr(self.sync, clock_domain)
         
-        npixels = hres * vres
+        npixels = hres * vres # default to max
 
         # if 0, 32-bits mode
         # should only be changed while in reset
@@ -144,9 +144,6 @@ class VideoFrameBufferMultiDepth(Module, AutoCSR):
                                                      fifo_depth     = fifo_depth//(dram_port.data_width//8),
                                                      default_base   = base,
                                                      default_length = npixels)
-        ##self.submodules.fb_dma = ResetInserter()(self._fb_dma)
-        ##self.fb_dma_reset = Signal(reset = 0)
-        ##self.comb += self.fb_dma.reset.eq(self.fb_dma_reset)
         
         # If DRAM Data Width > 8-bit and Video clock is faster than sys_clk:
         # actually always use that case to simplify the design
@@ -424,8 +421,6 @@ class goblin(Module, AutoCSR):
                                          endian = endian,
         )
         setattr(self.submodules, name, vfb)
-        ##dma_reset = Signal(reset = 0)
-        ##self.comb += self.video_framebuffer.fb_dma_reset.eq(dma_reset)
 
         # Connect Video Timing Generator to Video FrameBuffer.
         self.comb += vtg.source.connect(vfb.vtg_sink)
@@ -446,6 +441,8 @@ class goblin(Module, AutoCSR):
         if (hwcursor):
             hwcursor_x = Signal(12)
             hwcursor_y = Signal(12)
+            # HW cursor lut in reg 0x20
+            # HW cursor XY in reg 0x24
             self.comb += vtg.hwcursor_x.eq(hwcursor_x)
             self.comb += vtg.hwcursor_y.eq(hwcursor_y)
             handle_hwcursor = [ NextValue(hwcursor_x, bus.dat_w[16:28]), # FIXME: endianess
@@ -455,15 +452,20 @@ class goblin(Module, AutoCSR):
             handle_hwcursor = [ ]
 
         # current cmap logic for the goblin, similar to the cg6, minus the HW cursor
-        
-        bt_mode = Signal(8, reset = 0x3) # bit depth is 2^x ; 0x10 is direct mode (32 bits)
-        bt_addr = Signal(8, reset = 0)
-        bt_cmap_state = Signal(2, reset = 0)
-        m_vbl_disable = Signal(reset = 1)
+        bt_mode = Signal(8, reset = 0x3) # bit depth is 2^x ; 0x10 is direct mode (32 bits) # reg 0x0
+        bt_addr = Signal(8, reset = 0) # reg 0x14 ; lut itself in reg 0x18
+        bt_cmap_state = Signal(2, reset = 0) 
+        m_vbl_disable = Signal(reset = 1) # reg 0x4
 
-        videoctrl = Signal()
+        # for sub-resolution
+        hres_start = Signal(hbits, reset = 0)
+        hres_end   = Signal(hbits, reset = hres)
+        vres_start = Signal(vbits, reset = 0)
+        vres_end   = Signal(vbits, reset = vres)
+
+        videoctrl = Signal() # reg 0x8
         
-        vbl_signal = Signal(reset = 0)
+        vbl_signal = Signal(reset = 0) # reg 0xC
         self.comb += irq_line.eq(~vbl_signal | m_vbl_disable) # active low
 
         if (endian == "big"):
@@ -490,7 +492,7 @@ class goblin(Module, AutoCSR):
                                 0x2: [ NextValue(videoctrl, bus.dat_w[low_bit]), ],
                                 # clear irq
                                 0x3: [ NextValue(vbl_signal, 0), ],
-                                # 0x4: rest in SW
+                                # 0x4: reset in SW
                                 # gobofb_lut_addr
                                 0x5: [ NextValue(bt_addr, bus.dat_w[low_byte]),
                                        NextValue(bt_cmap_state, 0),
@@ -522,8 +524,15 @@ class goblin(Module, AutoCSR):
                                 ],
                                 # hw cursor x/y
                                 0x9: [ *handle_hwcursor ],
+                                # resolution handling
+                                # 0x10: hres (r/o)
+                                # 0x11: vres (r/o)
+                                0x12: [ NextValue(hres_start, bus.dat_w), ], # hres_start
+                                0x13: [ NextValue(vres_start, bus.dat_w), ], # vres_start
+                                0x14: [ NextValue(hres_end,   bus.dat_w), ], # hres_end
+                                0x15: [ NextValue(vres_end,   bus.dat_w), ], # vres_end
                             }),
-                            Case(bus.adr[5:18], {
+                            Case(bus.adr[5:18], { # mask and bits in registers from 0x80 and 0x100
                                 "default": [], # fixme: hwcursor for 0x1/0x2
                                 0x1 : [ upd_overlay_fifo.we.eq(1), # 1*32 = 32..63 / 0x20..0x3F
                                         upd_overlay_fifo.din.eq(Cat(Signal(1, reset = 0), 31-bus.adr[0:5], bus.dat_w)) # FIXME: endianess
@@ -539,6 +548,12 @@ class goblin(Module, AutoCSR):
                                     0x0: [ NextValue(bus.dat_r[low_byte], bt_mode), ],
                                     0x2: [ NextValue(bus.dat_r[low_byte], videoctrl), ],
                                     "default": [ NextValue(bus.dat_r, 0xDEADBEEF)],
+                                    0x10: [ NextValue(bus.dat_r, hres), ], # hres (r/o) # FIXME: endianess
+                                    0x11: [ NextValue(bus.dat_r, vres), ], # vres (r/o) # FIXME: endianess
+                                    0x12: [ NextValue(bus.dat_r, hres_start), ], # hres_start # FIXME: endianess
+                                    0x13: [ NextValue(bus.dat_r, vres_start), ], # vres_start # FIXME: endianess
+                                    0x14: [ NextValue(bus.dat_r, hres_end), ], # hres_end # FIXME: endianess
+                                    0x15: [ NextValue(bus.dat_r, vres_end), ], # vres_end # FIXME: endianess
                                 }),
                                 NextValue(bus.ack, 1),
                          ).Else(
@@ -546,12 +561,22 @@ class goblin(Module, AutoCSR):
                          ),
         )
         # mode switch logic
-        npixels = hres * vres
+        #npixels = hres * vres
+        npixels = Signal(hbits + vbits +1, reset = (hres * vres))
         old_bt_mode = Signal(8) # different from bt_mode
         in_reset = Signal()
         post_reset_ctr = Signal(3)
         previous_videoctrl = Signal()
+        
+        old_vres_end   = Signal(vbits, reset = vres)
 
+        hwidth  = Signal(hbits)
+        vheight = Signal(vbits)
+        self.sync += [
+            hwidth.eq(hres_end - hres_start),
+            vheight.eq(vres_end - vres_start),
+            npixels.eq(hwidth * vheight),
+        ]
         if (truecolor):
             handle_truecolor_bit = [ self.video_framebuffer.use_indexed.eq(~bt_mode[4:5]) ]
         else:
@@ -559,33 +584,35 @@ class goblin(Module, AutoCSR):
             
         # this has grown complicated and should be a FSM...
         self.sync += [ old_bt_mode.eq(bt_mode),
-                       If(old_bt_mode != bt_mode,
+                       old_vres_end.eq(vres_end),
+                       If((old_bt_mode != bt_mode) | (old_vres_end != vres_end),
                           in_reset.eq(1),
                           videoctrl.eq(0), # start a disabling cycle, or stay disabled
                           previous_videoctrl.eq(videoctrl), # preserve old state for restoration later
                        ),
-                       If(in_reset & ~vtg_enable, # we asked for a reset and by now, the VTG has been turned off (or was off) so we reset the DMA and change the parameters
-                          ##dma_reset.eq(1), # hpefully this will clear the FIFO as well
-                          self.video_framebuffer.indexed_mode.eq(bt_mode[0:2]), #  & ~(Replicate(bt_mode[4:5], 2))
+                       If(in_reset & ~vtg_enable, # we asked for a reset and by now, the VTG has been turned off (or was off)
+                          self.video_framebuffer.indexed_mode.eq(bt_mode[0:2]),
                           *handle_truecolor_bit,
                           in_reset.eq(0),
                           post_reset_ctr.eq(7),
+                          # reconfigure the VTG
+                          vtg._hres_start.eq(hres_start),
+                          vtg._hres_end.eq(  hres_end),
+                          vtg._vres_start.eq(vres_start),
+                          vtg._vres_end.eq(  vres_end),
                        ),
-                       ##If(post_reset_ctr == 5, # take DMA out of reset
-                       ##   dma_reset.eq(0),
-                       ##),
                        If(post_reset_ctr == 4, # now reconfigure the DMA
                           If(bt_mode[4:5],
-                              Case(bt_mode[0:2], { # fixme: truecolor
-                                  0x0: self.video_framebuffer.fb_dma.length.eq(npixels * 4),
-                                  0x1: self.video_framebuffer.fb_dma.length.eq(npixels * 2),
+                              Case(bt_mode[0:2], {
+                                  0x0: self.video_framebuffer.fb_dma.length.eq(npixels << 2),
+                                  0x1: self.video_framebuffer.fb_dma.length.eq(npixels << 1),
                               }),
                           ).Else(
                               Case(bt_mode[0:2], {
-                                  3: self.video_framebuffer.fb_dma.length.eq(npixels   ),
-                                  2: self.video_framebuffer.fb_dma.length.eq(npixels//2),
-                                  1: self.video_framebuffer.fb_dma.length.eq(npixels//4),
-                                  0: self.video_framebuffer.fb_dma.length.eq(npixels//8),
+                                  3: self.video_framebuffer.fb_dma.length.eq(npixels     ),
+                                  2: self.video_framebuffer.fb_dma.length.eq(npixels >> 1),
+                                  1: self.video_framebuffer.fb_dma.length.eq(npixels >> 2),
+                                  0: self.video_framebuffer.fb_dma.length.eq(npixels >> 3),
                               }),
                           ),
                        ),

@@ -56,7 +56,7 @@ OSErr cNuBusFPGAStatus(CntrlParamPtr pb, /* DCtlPtr */ AuxDCEPtr dce)
    case cscGetMode: /* 2 */
 	   {
 		   VDPageInfo	*vPInfo = (VDPageInfo *)*(long *)pb->csParam;
-		   vPInfo->csMode = dStore->curMode; /* checkme: PCI says depth, 7.5+ doesn't call anyway? */ 
+		   vPInfo->csMode = dStore->curDepth; /* checkme: PCI says depth, 7.5+ doesn't call anyway? */ 
 		   vPInfo->csPage = 0;
 		   vPInfo->csBaseAddr = 0;
 		   ret = noErr;
@@ -137,6 +137,9 @@ OSErr cNuBusFPGAStatus(CntrlParamPtr pb, /* DCtlPtr */ AuxDCEPtr dce)
    case cscGetCurMode: /* 0xa */
 	   {
 		  VDSwitchInfoRec	*vdswitch = *(VDSwitchInfoRec **)(long *)pb->csParam;
+		  /* write_reg(dce, GOBOFB_DEBUG, 0xBEEF0022); */
+		  /* write_reg(dce, GOBOFB_DEBUG, (unsigned int)dStore->curDepth); */
+		  /* write_reg(dce, GOBOFB_DEBUG, (unsigned int)dStore->curMode); */
 		  vdswitch->csMode = dStore->curDepth;
 		  vdswitch->csData = dStore->curMode;
 		  vdswitch->csPage = 0;
@@ -156,7 +159,7 @@ OSErr cNuBusFPGAStatus(CntrlParamPtr pb, /* DCtlPtr */ AuxDCEPtr dce)
 		   vdconn->csDisplayType = kGenericLCD;
 		   vdconn->csConnectTaggedType = 0;
 		   vdconn->csConnectTaggedData = 0;
-		   vdconn->csConnectFlags = (1<<kTaggingInfoNonStandard) | (1<<kIsMonoDev) | (1<<kAllModesSafe) | (1<<kAllModesValid);
+		   vdconn->csConnectFlags = (1<<kTaggingInfoNonStandard) | (1<<kAllModesSafe) | (1<<kAllModesValid);
 		   vdconn->csDisplayComponent = 0;
 		   ret = noErr;
 	   }
@@ -165,14 +168,34 @@ OSErr cNuBusFPGAStatus(CntrlParamPtr pb, /* DCtlPtr */ AuxDCEPtr dce)
    case cscGetModeTiming: /* 0xd */
 	   {
 		   VDTimingInfoRec *vdtim = *(VDTimingInfoRec **)(long *)pb->csParam;
-		  ret = noErr;
 		  if ((vdtim->csTimingMode != firstVidMode) &&
+			  (vdtim->csTimingMode != secondVidMode) &&
 			  (vdtim->csTimingMode != kDisplayModeIDFindFirstResolution) &&
 			  (vdtim->csTimingMode != kDisplayModeIDCurrent))
 			  return paramErr;
-		  vdtim->csTimingFormat = kDeclROMtables;
-		  vdtim->csTimingData = 0;
-		  vdtim->csTimingFlags = kModeDefault; 
+		  unsigned int mode = vdtim->csTimingMode;
+		  if (mode == kDisplayModeIDFindFirstResolution)
+			  mode = firstVidMode;
+		  if (mode == kDisplayModeIDCurrent)
+			  mode = dStore->curMode;
+		  
+		  /* write_reg(dce, GOBOFB_DEBUG, 0xBEEF0022); */
+		  /* write_reg(dce, GOBOFB_DEBUG, (unsigned int)vdtim->csTimingMode); */
+		  /* write_reg(dce, GOBOFB_DEBUG, (unsigned int)mode); */
+		  
+		  switch (mode) {
+		  case firstVidMode:
+			  vdtim->csTimingFormat = kDeclROMtables;
+			  vdtim->csTimingData = 0;
+			  vdtim->csTimingFlags = 1<<kModeValid | 1<<kModeSafe | 1<<kModeDefault;
+			  break;
+		  case secondVidMode:
+			  vdtim->csTimingFormat = kDeclROMtables;//kDetailedTimingFormat;
+			  vdtim->csTimingData = 0;
+			  vdtim->csTimingFlags = 1<<kModeValid | 1<<kModeSafe;
+			  break;
+		  }
+		  ret = noErr;
 	   }
 	   break;
 
@@ -198,20 +221,42 @@ OSErr cNuBusFPGAStatus(CntrlParamPtr pb, /* DCtlPtr */ AuxDCEPtr dce)
    case cscGetNextResolution: /* 0x11 */
 	   {
 		  VDResolutionInfoRec	*vdres = *(VDResolutionInfoRec **)(long *)pb->csParam;
-		  vdres->csHorizontalPixels = HRES;
-		  vdres->csVerticalLines = VRES;
-		  vdres->csRefreshRate = 60 << 16; /* Fixed 16+16 */
 		  switch (vdres->csPreviousDisplayModeID)
 			  {
 			  case firstVidMode:
+				  vdres->csDisplayModeID = secondVidMode;
+				  vdres->csHorizontalPixels = 640;
+				  vdres->csVerticalLines = 480;
+				  vdres->csRefreshRate = 60 << 16; /* Fixed 16+16 */
+				  vdres->csMaxDepthMode = kDepthMode6;
+				  break;
+			  case secondVidMode:
 				  vdres->csDisplayModeID = kDisplayModeIDNoMoreResolutions;
+				  vdres->csHorizontalPixels = HRES;
+				  vdres->csVerticalLines = VRES;
+				  vdres->csRefreshRate = 60 << 16; /* Fixed 16+16 */
+				  vdres->csMaxDepthMode = kDepthMode6;
 				  break;
 			  case kDisplayModeIDFindFirstResolution:
 				  vdres->csDisplayModeID = firstVidMode;
+				  vdres->csHorizontalPixels = HRES; // ?
+				  vdres->csVerticalLines = VRES; // ?
+				  vdres->csRefreshRate = 60 << 16; /* Fixed 16+16 */
 				  vdres->csMaxDepthMode = kDepthMode6;
 				  break;
 			  case kDisplayModeIDCurrent:
-				  vdres->csDisplayModeID = firstVidMode;
+				  vdres->csDisplayModeID = dStore->curMode;
+				  switch (dStore->curMode) {
+				  case firstVidMode:
+					  vdres->csHorizontalPixels = HRES; // ?
+					  vdres->csVerticalLines = VRES; // ?
+					  break;
+				  case secondVidMode:
+					  vdres->csHorizontalPixels = 640; // ?
+					  vdres->csVerticalLines = 480; // ?
+					  break;
+				  }
+				  vdres->csRefreshRate = 60 << 16; /* Fixed 16+16 */
 				  vdres->csMaxDepthMode = kDepthMode6;
 				  break;
 			  default:
@@ -224,7 +269,8 @@ OSErr cNuBusFPGAStatus(CntrlParamPtr pb, /* DCtlPtr */ AuxDCEPtr dce)
    case cscGetVideoParameters: /* 0x12 */
 	   {
 		  VDVideoParametersInfoRec	*vdparam = *(VDVideoParametersInfoRec **)(long *)pb->csParam;
-		  if ((vdparam->csDisplayModeID != firstVidMode) &&
+		  if ((vdparam->csDisplayModeID != firstVidMode) && /* native */
+			  (vdparam->csDisplayModeID != secondVidMode) && /* 640 x 480 */
 			  (vdparam->csDisplayModeID != kDisplayModeIDFindFirstResolution) &&
 			  (vdparam->csDisplayModeID != kDisplayModeIDCurrent))
 			  return paramErr;
@@ -235,14 +281,31 @@ OSErr cNuBusFPGAStatus(CntrlParamPtr pb, /* DCtlPtr */ AuxDCEPtr dce)
 			  (vdparam->csDepthMode != kDepthMode5) &&
 			  (vdparam->csDepthMode != kDepthMode6)) 
 			  return paramErr;
+		  /* write_reg(dce, GOBOFB_DEBUG, 0xBEEF0022); */
+		  /* write_reg(dce, GOBOFB_DEBUG, (unsigned int)vdparam->csDisplayModeID); */
+		  /* write_reg(dce, GOBOFB_DEBUG, (unsigned int)vdparam->csDepthMode); */
 		  VPBlock* vpblock = vdparam->csVPBlockPtr;
+		  unsigned int mode = vdparam->csDisplayModeID;
+		  if (mode == kDisplayModeIDFindFirstResolution)
+			  mode = firstVidMode;
+		  if (mode == kDisplayModeIDCurrent)
+			  mode = dStore->curMode;
 		  /* basically the same as the EBVParms ? */
 		  vdparam->csPageCount = 0;
 		  vpblock->vpBaseOffset = 0;
 		  vpblock->vpBounds.left = 0;
 		  vpblock->vpBounds.top = 0;
-		  vpblock->vpBounds.right = HRES;
-		  vpblock->vpBounds.bottom = VRES;
+		  switch (mode) {
+		  default:
+		  case firstVidMode:
+			  vpblock->vpBounds.right = HRES;
+			  vpblock->vpBounds.bottom = VRES;
+			  break;
+		  case secondVidMode:
+			  vpblock->vpBounds.right = 640;
+			  vpblock->vpBounds.bottom = 480;
+			  break;
+		  }
 		  vpblock->vpVersion = 0;
 		  vpblock->vpPackType = 0;
 		  vpblock->vpPackSize = 0;
@@ -250,37 +313,37 @@ OSErr cNuBusFPGAStatus(CntrlParamPtr pb, /* DCtlPtr */ AuxDCEPtr dce)
 		  vpblock->vpVRes = 0x480000;
 		  vpblock->vpPixelType = chunky; // checkme?
 		  if (vdparam->csDepthMode == kDepthMode1) {
-			  vpblock->vpRowBytes = HRES;
+			  vpblock->vpRowBytes = vpblock->vpBounds.right;
 			  vdparam->csDeviceType = clutType;
 			  vpblock->vpPixelSize = 8;
 			  vpblock->vpCmpCount = 1;
 			  vpblock->vpCmpSize = 8;
 		  } else if (vdparam->csDepthMode == kDepthMode2) {
-			  vpblock->vpRowBytes = HRES/2;
+			  vpblock->vpRowBytes = vpblock->vpBounds.right/2;
 			  vdparam->csDeviceType = clutType;
 			  vpblock->vpPixelSize = 4;
 			  vpblock->vpCmpCount = 1;
 			  vpblock->vpCmpSize = 4;
 		  } else if (vdparam->csDepthMode == kDepthMode3) {
-			  vpblock->vpRowBytes = HRES/4;
+			  vpblock->vpRowBytes = vpblock->vpBounds.right/4;
 			  vdparam->csDeviceType = clutType;
 			  vpblock->vpPixelSize = 2;
 			  vpblock->vpCmpCount = 1;
 			  vpblock->vpCmpSize = 2;
 		  } else if (vdparam->csDepthMode == kDepthMode4) {
-			  vpblock->vpRowBytes = HRES/8;
+			  vpblock->vpRowBytes = vpblock->vpBounds.right/8;
 			  vdparam->csDeviceType = clutType;
 			  vpblock->vpPixelSize = 1;
 			  vpblock->vpCmpCount = 1;
 			  vpblock->vpCmpSize = 1;
 		  } else if (vdparam->csDepthMode == kDepthMode5) {
-			  vpblock->vpRowBytes = HRES*4;
+			  vpblock->vpRowBytes = vpblock->vpBounds.right*4;
 			  vdparam->csDeviceType = directType;
 			  vpblock->vpPixelSize = 32;
 			  vpblock->vpCmpCount = 3;
 			  vpblock->vpCmpSize = 8;
 		  } else if (vdparam->csDepthMode == kDepthMode6) {
-			  vpblock->vpRowBytes = HRES*2;
+			  vpblock->vpRowBytes = vpblock->vpBounds.right*2;
 			  vdparam->csDeviceType = directType;
 			  vpblock->vpPixelSize = 16;
 			  vpblock->vpCmpCount = 3;
