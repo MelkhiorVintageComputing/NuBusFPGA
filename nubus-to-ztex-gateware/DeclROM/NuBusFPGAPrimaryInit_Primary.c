@@ -13,7 +13,7 @@ UInt32 Primary(SEBlock* seblock) {
 	UInt32 a32_l0, a32_l1;
 	UInt32 a32_4p0, a32_4p1;
 	SpBlock spblock;
-	UInt8 pram[8];
+	/* UInt8 pram[8]; */
 	OSErr err;
 	UInt16 i,j, hres, vres;
 	char busMode;

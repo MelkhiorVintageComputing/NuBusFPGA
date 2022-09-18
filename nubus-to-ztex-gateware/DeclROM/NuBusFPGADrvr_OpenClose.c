@@ -22,21 +22,22 @@ OSErr cNuBusFPGAOpen(IOParamPtr pb, /* DCtlPtr */ AuxDCEPtr dce)
 				return(openErr);
 			HLock(dce->dCtlStorage);
 			NuBusFPGADriverGlobalsHdl dStoreHdl = (NuBusFPGADriverGlobalsHdl)dce->dCtlStorage;
+			NuBusFPGADriverGlobalsPtr dStore = *dStoreHdl;
 			/* (*dStore)->dce = dce; */
 			
 			/* for (i = 0 ; i < 256 ; i++) { */
-			/* 	(*dStoreHdl)->shadowClut[i*3+0] = i; */
-			/* 	(*dStoreHdl)->shadowClut[i*3+1] = i; */
-			/* 	(*dStoreHdl)->shadowClut[i*3+2] = i; */
+			/* 	dStore->shadowClut[i*3+0] = i; */
+			/* 	dStore->shadowClut[i*3+1] = i; */
+			/* 	dStore->shadowClut[i*3+2] = i; */
 			/* } */
 			
-			(*dStoreHdl)->gray = 0;
-			(*dStoreHdl)->irqen = 0;
-			(*dStoreHdl)->slot = dce->dCtlSlot;
+			dStore->gray = 0;
+			dStore->irqen = 0;
+			dStore->slot = dce->dCtlSlot;
 
 			/* Get the HW setting for native resolution */
-			(*dStoreHdl)->hres[0] = __builtin_bswap32((unsigned int)read_reg(dce, GOBOFB_HRES)); // fixme: endianness
-			(*dStoreHdl)->vres[0] = __builtin_bswap32((unsigned int)read_reg(dce, GOBOFB_VRES)); // fixme: endianness
+			dStore->hres[0] = __builtin_bswap32((unsigned int)read_reg(dce, GOBOFB_HRES)); // fixme: endianness
+			dStore->vres[0] = __builtin_bswap32((unsigned int)read_reg(dce, GOBOFB_VRES)); // fixme: endianness
 			
 			SlotIntQElement *siqel = (SlotIntQElement *)NewPtrSysClear(sizeof(SlotIntQElement));
 			if (siqel == NULL) {
@@ -50,10 +51,11 @@ OSErr cNuBusFPGAOpen(IOParamPtr pb, /* DCtlPtr */ AuxDCEPtr dce)
 			asm("lea %%pc@(interruptRoutine),%0\n" : "=a"(sqAddr));
 			siqel->sqAddr = sqAddr;
 			siqel->sqParm = (long)dce->dCtlDevBase;
-			(*dStoreHdl)->siqel = siqel;
+			dStore->siqel = siqel;
 
-			(*dStoreHdl)->curMode = nativeVidMode;
-			(*dStoreHdl)->curDepth = kDepthMode1;
+			dStore->curPage = 0;
+			dStore->curMode = nativeVidMode;
+			dStore->curDepth = kDepthMode1;
 
 			{
 				OSErr err = noErr;
@@ -84,16 +86,16 @@ OSErr cNuBusFPGAOpen(IOParamPtr pb, /* DCtlPtr */ AuxDCEPtr dce)
 						max = spb.spID;
 					err = SGetTypeSRsrc(&spb);
 				}
-				(*dStoreHdl)->maxMode = max;
+				dStore->maxMode = max;
 			}
 	/* write_reg(dce, GOBOFB_DEBUG, 0xBEEF0000); */
-	/* write_reg(dce, GOBOFB_DEBUG, (*dStoreHdl)->maxMode); */
+	/* write_reg(dce, GOBOFB_DEBUG, dStore->maxMode); */
 			{
 				OSErr err = noErr;
 				SpBlock spb;
 				/* check for resolution */
 				UInt8 id;
-				for (id = nativeVidMode; id <= (*dStoreHdl)->maxMode ; id ++) {
+				for (id = nativeVidMode; id <= dStore->maxMode ; id ++) {
 					/* try every resource, enabled or not */
 					spb.spParamData = 1<<fall; /* wants disabled */
 					spb.spCategory = catDisplay;
@@ -115,18 +117,29 @@ OSErr cNuBusFPGAOpen(IOParamPtr pb, /* DCtlPtr */ AuxDCEPtr dce)
 							const unsigned long offset = *(unsigned long*)spb.spsPointer & 0x00FFFFFF;
 							VPBlockPtr vpblock = (VPBlockPtr)(spb.spsPointer + offset + sizeof(long));
 							UInt8 idx = id - nativeVidMode;
-							(*dStoreHdl)->hres[idx] = vpblock->vpBounds.right;
-							(*dStoreHdl)->vres[idx] = vpblock->vpBounds.bottom;
+							dStore->hres[idx] = vpblock->vpBounds.right;
+							dStore->vres[idx] = vpblock->vpBounds.bottom;
 						}
 					}
 				}
 				
 			}
 				
-			linearGamma(*dStoreHdl);
-			
-			write_reg(dce, GOBOFB_MODE, GOBOFB_MODE_8BIT);
+			linearGamma(dStore);
 
+			/* now check the content of PRAM */
+			if (0) {
+				SpBlock spb;
+				NuBusFPGAPramRecord pram;
+				OSErr err;
+				spb.spSlot = dce->dCtlSlot;
+				spb.spResult = (UInt32)&pram;
+				err = SReadPRAMRec(&spb);
+				if (err == noErr) {
+					err = reconfHW(dce, pram.mode, pram.depth, pram.page);
+				}
+			}
+				
 			write_reg(dce, GOBOFB_VIDEOCTRL, 1);
 			
 			ret = changeIRQ(dce, 1, openErr);

@@ -20,7 +20,7 @@ OSErr changeIRQ(AuxDCEPtr dce, char en, OSErr err) {
    NuBusFPGADriverGlobalsPtr dStore = *dStoreHdl;
    char busMode = 1;
    if (en != dStore->irqen) {
-	   /* write_reg(dce, GOBOFB_DEBUG, 0xBEEF000F); */
+	   /* write_reg(dce, GOBOFB_DEBUG, 0xBEEF0005); */
 	   /* write_reg(dce, GOBOFB_DEBUG, en); */
 	   
 	   if (en) {
@@ -81,8 +81,8 @@ OSErr cNuBusFPGACtl(CntrlParamPtr pb, /* DCtlPtr */ AuxDCEPtr dce)
    short ret = -1;
    char	busMode = 1;
 
-   /* write_reg(dce, GOBOFB_DEBUG, 0xBEEF0001); */
-   /* write_reg(dce, GOBOFB_DEBUG, pb->csCode); */
+   write_reg(dce, GOBOFB_DEBUG, 0xBEEF0001);
+   write_reg(dce, GOBOFB_DEBUG, pb->csCode);
    
 #if 1
   switch (pb->csCode)
@@ -108,36 +108,11 @@ OSErr cNuBusFPGACtl(CntrlParamPtr pb, /* DCtlPtr */ AuxDCEPtr dce)
   case cscSetMode: /* 2 */
 	   {
 		   VDPageInfo	*vPInfo = (VDPageInfo *)*(long *)pb->csParam;
-		   if (vPInfo->csPage != 0)
-			   return paramErr;
-		   SwapMMUMode ( &busMode );
-		   switch (vPInfo->csMode) {
-		   case kDepthMode1:
-			   write_reg(dce, GOBOFB_MODE, GOBOFB_MODE_8BIT);
-			   break;
-		   case kDepthMode2:
-			   write_reg(dce, GOBOFB_MODE, GOBOFB_MODE_4BIT);
-		   	   break;
-		   case kDepthMode3:
-			   write_reg(dce, GOBOFB_MODE, GOBOFB_MODE_2BIT);
-		   	   break;
-		   case kDepthMode4:
-			   write_reg(dce, GOBOFB_MODE, GOBOFB_MODE_1BIT);
-		   	   break;
-		   case kDepthMode5:
-			   write_reg(dce, GOBOFB_MODE, GOBOFB_MODE_24BIT);
-		   	   break;
-		   case kDepthMode6:
-			   write_reg(dce, GOBOFB_MODE, GOBOFB_MODE_15BIT);
-		   	   break;
-		   default:
-			   SwapMMUMode ( &busMode );
-			   return paramErr;
-		   }
-		   dStore->curDepth = vPInfo->csMode;
-		   SwapMMUMode ( &busMode );
-		   vPInfo->csBaseAddr = 0;
-		   ret = noErr;
+
+		   ret = reconfHW(dce, dStore->curMode, vPInfo->csMode, vPInfo->csPage);
+   
+		  if (ret == noErr)
+			  vPInfo->csBaseAddr = (void*)(vPInfo->csPage * 1024 * 1024 * 4);
 	   }
 	  break;
   case cscSetEntries: /* 3 */
@@ -234,14 +209,16 @@ OSErr cNuBusFPGACtl(CntrlParamPtr pb, /* DCtlPtr */ AuxDCEPtr dce)
 	   {
 		   VDPageInfo	*vPInfo = (VDPageInfo *)*(long *)pb->csParam;
 		   const uint8_t idx = dStore->curMode % 4; // checkme
-		   const UInt32 a32 = dce->dCtlDevBase;
+		   UInt32 a32 = dce->dCtlDevBase;
 		   UInt32 a32_l0, a32_l1;
 		   UInt32 a32_4p0, a32_4p1;
 		   const uint32_t wb = dStore->hres[0] >> idx;
 		   unsigned short j, i;
-		   
-		   if (vPInfo->csPage != 0)
+		   short npage = (vPInfo->csMode == kDepthMode5) ? 1 : 2;
+		   if (vPInfo->csPage >= npage)
 			   return paramErr;
+
+		   a32 += vPInfo->csPage * 1024 * 1024 * 4; /* fixme */
 		   
 		   SwapMMUMode ( &busMode );
 #if 0
@@ -326,115 +303,28 @@ OSErr cNuBusFPGACtl(CntrlParamPtr pb, /* DCtlPtr */ AuxDCEPtr dce)
   case cscSetDefaultMode: /* 9 */
 	  { /* fixme: NVRAM */
 		   VDDefMode	*vddefm = (VDDefMode *)*(long *)pb->csParam;
-		   if ((((UInt8)vddefm->csID) < nativeVidMode) ||
-			   (((UInt8)vddefm->csID) > dStore->maxMode))
-			   return paramErr;
-		   ret = noErr;
-	   }
+
+		   ret = updatePRAM(dce, vddefm->csID, dStore->curDepth, 0);
+	  }
 	  break;
 
   case cscSwitchMode: /* 0xa */
 	  {
 		  VDSwitchInfoRec	*vdswitch = *(VDSwitchInfoRec **)(long *)pb->csParam;
-		  if (vdswitch->csPage != 0)
-			  return paramErr;
-		  if ((vdswitch->csData == dStore->curMode) &&
-			  (vdswitch->csMode == dStore->curDepth)) {
-			  return noErr;
-		  }
 
-		  unsigned short i;
-		  for (i = nativeVidMode ; i <= dStore->maxMode ; i++) {
-			  // disable spurious resources, enable only the right one
-			  SpBlock spb;
-			  spb.spParamData = (i != vdswitch->csData ? 1 : 0); /* disable/enable */
-			  spb.spSlot = dStore->slot;
-			  spb.spID = i;
-			  spb.spExtDev = 0;
-			  SetSRsrcState(&spb);
-		  }
-		  dce->dCtlSlotId = vdswitch->csData; // where is that explained ? cscSwitchMode is not in DCDMF3, and you should'nt do that anymore says PDCD...
-		  
-		   /* write_reg(dce, GOBOFB_DEBUG, 0xBEEF0021); */
-		   /* write_reg(dce, GOBOFB_DEBUG, vdswitch->csMode); */
-		   /* write_reg(dce, GOBOFB_DEBUG, vdswitch->csData); */
-		  SwapMMUMode ( &busMode );
-		  if (vdswitch->csData != dStore->curMode) {
-			  UInt8 id = ((UInt8)vdswitch->csData) - nativeVidMode;
-			  unsigned int ho = ((dStore->hres[0] - dStore->hres[id]) / 2);
-			  unsigned int vo = ((dStore->vres[0] - dStore->vres[id]) / 2);
-			   /* write_reg(dce, GOBOFB_VIDEOCTRL, 0); */
-			  write_reg(dce, GOBOFB_HRES_START, __builtin_bswap32(ho));
-			  write_reg(dce, GOBOFB_VRES_START, __builtin_bswap32(vo));
-			  write_reg(dce, GOBOFB_HRES_END, __builtin_bswap32(ho + dStore->hres[id]));
-			  write_reg(dce, GOBOFB_VRES_END, __builtin_bswap32(vo + dStore->vres[id]));
-			  /* write_reg(dce, GOBOFB_VIDEOCTRL, 1); */
-		  }
-		  if (vdswitch->csMode != dStore->curDepth) {
-			  switch (vdswitch->csMode) {
-			  case kDepthMode1:
-				  write_reg(dce, GOBOFB_MODE, GOBOFB_MODE_8BIT);
-				  break;
-			  case kDepthMode2:
-				  write_reg(dce, GOBOFB_MODE, GOBOFB_MODE_4BIT);
-				  break;
-			  case kDepthMode3:
-				  write_reg(dce, GOBOFB_MODE, GOBOFB_MODE_2BIT);
-				  break;
-			  case kDepthMode4:
-				  write_reg(dce, GOBOFB_MODE, GOBOFB_MODE_1BIT);
-				  break;
-			  case kDepthMode5:
-				  write_reg(dce, GOBOFB_MODE, GOBOFB_MODE_24BIT);
-				  break;
-			  case kDepthMode6:
-				  write_reg(dce, GOBOFB_MODE, GOBOFB_MODE_15BIT);
-				  break;
-			  default:
-				  SwapMMUMode ( &busMode );
-				  return paramErr;
-			  }
-		  }
-		  dStore->curMode = vdswitch->csData;
-		  dStore->curDepth = vdswitch->csMode;
-		  SwapMMUMode ( &busMode );
-		  vdswitch->csBaseAddr = 0;
-		  ret = noErr;
+		  ret = reconfHW(dce, vdswitch->csData, vdswitch->csMode, vdswitch->csPage);
+   
+		  if (ret == noErr)
+			  vdswitch->csBaseAddr = (void*)(vdswitch->csPage * 1024 * 1024 * 4);
 	  }
 	  break;
 
   case cscSavePreferredConfiguration: /* 0x10 */
-	   // is that ony for PCI drivers?
-#if 1
 	   {
 		  VDSwitchInfoRec	*vdswitch = *(VDSwitchInfoRec **)(long *)pb->csParam;
-		   if ((((UInt8)vdswitch->csData) < nativeVidMode) ||
-			   (((UInt8)vdswitch->csData) > dStore->maxMode))
-			   return paramErr;
-		   switch (vdswitch->csMode) {
-		   case kDepthMode1:
-			   break;
-		   case kDepthMode2:
-		   	   break;
-		   case kDepthMode3:
-		   	   break;
-		   case kDepthMode4:
-		   	   break;
-		   case kDepthMode5:
-		   	   break;
-		   case kDepthMode6:
-		   	   break;
-		   default:
-			   return paramErr;
-		   }
-		  if (vdswitch->csPage != 0)
-			  return paramErr;
-		  vdswitch->csBaseAddr = 0;
-		  ret = noErr;
+
+		  ret = updatePRAM(dce, vdswitch->csData, vdswitch->csMode, 0);
 	   }
-#else
-	  ret = controlErr;
-#endif
 	  break;
 	  
   default: /* always return controlErr for unknown csCode */
@@ -444,4 +334,150 @@ OSErr cNuBusFPGACtl(CntrlParamPtr pb, /* DCtlPtr */ AuxDCEPtr dce)
   }
 #endif
   return ret;
+}
+
+OSErr reconfHW(AuxDCEPtr dce, unsigned char mode, unsigned char depth, unsigned short page) {
+	NuBusFPGADriverGlobalsHdl dStoreHdl = (NuBusFPGADriverGlobalsHdl)dce->dCtlStorage;
+	NuBusFPGADriverGlobalsPtr dStore = *dStoreHdl;
+	const short npage = (depth == kDepthMode5) ? 1 : 2;
+	OSErr err = noErr;
+	char busMode = 1;
+
+	write_reg(dce, GOBOFB_DEBUG, 0xBEEF0031);
+	write_reg(dce, GOBOFB_DEBUG, mode);
+	write_reg(dce, GOBOFB_DEBUG, depth);
+	write_reg(dce, GOBOFB_DEBUG, page);
+	
+	if ((mode == dStore->curMode) &&
+		(depth == dStore->curDepth) &&
+		(page == dStore->curPage)) {
+		return noErr;
+	}
+		  
+	if (page >= npage)
+		return paramErr;
+
+	if ((mode < nativeVidMode) ||
+		(mode > dStore->maxMode))
+		return paramErr;
+		  
+	switch (depth) {
+	case kDepthMode1:
+		break;
+	case kDepthMode2:
+		break;
+	case kDepthMode3:
+		break;
+	case kDepthMode4:
+		break;
+	case kDepthMode5:
+		break;
+	case kDepthMode6:
+		break;
+	default:
+		return paramErr;
+	}
+	
+	SwapMMUMode ( &busMode );
+	if (mode != dStore->curMode) {
+		unsigned short i;
+		for (i = nativeVidMode ; i <= dStore->maxMode ; i++) {
+			// disable spurious resources, enable only the right one
+			SpBlock spb;
+			spb.spParamData = (i != mode ? 1 : 0); /* disable/enable */
+			spb.spSlot = dStore->slot;
+			spb.spID = i;
+			spb.spExtDev = 0;
+			SetSRsrcState(&spb);
+		}
+		dce->dCtlSlotId = mode; // where is that explained ? cscSwitchMode is not in DCDMF3, and you should'nt do that anymore says PDCD...
+		
+		UInt8 id = mode - nativeVidMode;
+		unsigned int ho = ((dStore->hres[0] - dStore->hres[id]) / 2);
+		unsigned int vo = ((dStore->vres[0] - dStore->vres[id]) / 2);
+		/* write_reg(dce, GOBOFB_VIDEOCTRL, 0); */
+		write_reg(dce, GOBOFB_HRES_START, __builtin_bswap32(ho));
+		write_reg(dce, GOBOFB_VRES_START, __builtin_bswap32(vo));
+		write_reg(dce, GOBOFB_HRES_END, __builtin_bswap32(ho + dStore->hres[id]));
+		write_reg(dce, GOBOFB_VRES_END, __builtin_bswap32(vo + dStore->vres[id]));
+		/* write_reg(dce, GOBOFB_VIDEOCTRL, 1); */
+	}
+	if (depth != dStore->curDepth) {
+		switch (depth) {
+		case kDepthMode1:
+			write_reg(dce, GOBOFB_MODE, GOBOFB_MODE_8BIT);
+			break;
+		case kDepthMode2:
+			write_reg(dce, GOBOFB_MODE, GOBOFB_MODE_4BIT);
+			break;
+		case kDepthMode3:
+			write_reg(dce, GOBOFB_MODE, GOBOFB_MODE_2BIT);
+			break;
+		case kDepthMode4:
+			write_reg(dce, GOBOFB_MODE, GOBOFB_MODE_1BIT);
+			break;
+		case kDepthMode5:
+			write_reg(dce, GOBOFB_MODE, GOBOFB_MODE_24BIT);
+			break;
+		case kDepthMode6:
+			write_reg(dce, GOBOFB_MODE, GOBOFB_MODE_15BIT);
+			break;
+		default:
+			SwapMMUMode ( &busMode );
+			return paramErr;
+		}
+	}
+	dStore->curMode = mode;
+	dStore->curDepth = depth;
+	dStore->curPage = page; /* FIXME: HW */
+		  
+	SwapMMUMode ( &busMode );
+
+	return err;
+}
+
+OSErr updatePRAM(AuxDCEPtr dce, unsigned char mode, unsigned char depth, unsigned short page) {
+	NuBusFPGADriverGlobalsHdl dStoreHdl = (NuBusFPGADriverGlobalsHdl)dce->dCtlStorage;
+	NuBusFPGADriverGlobalsPtr dStore = *dStoreHdl;
+	const short npage = (depth == kDepthMode5) ? 1 : 2;
+	SpBlock spb;
+	NuBusFPGAPramRecord pram;
+	OSErr err;
+		  
+	if (page >= npage)
+		return paramErr;
+
+	if ((mode < nativeVidMode) ||
+		(mode > dStore->maxMode))
+		return paramErr;
+		  
+	switch (depth) {
+	case kDepthMode1:
+		break;
+	case kDepthMode2:
+		break;
+	case kDepthMode3:
+		break;
+	case kDepthMode4:
+		break;
+	case kDepthMode5:
+		break;
+	case kDepthMode6:
+		break;
+	default:
+		return paramErr;
+	}
+
+	spb.spSlot = dce->dCtlSlot;
+	spb.spResult = (UInt32)&pram;
+	err = SReadPRAMRec(&spb);
+	if (err == noErr) {
+		pram.mode = mode;
+		pram.depth = depth;
+		pram.page = page;
+		spb.spSlot = dce->dCtlSlot;
+		spb.spsPointer = &pram;
+		err = SPutPRAMRec(&spb);
+	}
+	return err;
 }

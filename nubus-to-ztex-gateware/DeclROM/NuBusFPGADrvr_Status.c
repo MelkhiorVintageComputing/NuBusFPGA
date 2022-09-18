@@ -39,8 +39,8 @@ OSErr cNuBusFPGAStatus(CntrlParamPtr pb, /* DCtlPtr */ AuxDCEPtr dce)
    NuBusFPGADriverGlobalsPtr dStore = *dStoreHdl;
    short ret = -1;
    
-   /* write_reg(dce, GOBOFB_DEBUG, 0xBEEF0002); */
-   /* write_reg(dce, GOBOFB_DEBUG, pb->csCode); */
+   write_reg(dce, GOBOFB_DEBUG, 0xBEEF0002);
+   write_reg(dce, GOBOFB_DEBUG, pb->csCode);
    
 #if 1
    switch (pb->csCode)
@@ -57,33 +57,45 @@ OSErr cNuBusFPGAStatus(CntrlParamPtr pb, /* DCtlPtr */ AuxDCEPtr dce)
 	   {
 		   VDPageInfo	*vPInfo = (VDPageInfo *)*(long *)pb->csParam;
 		   vPInfo->csMode = dStore->curDepth; /* checkme: PCI says depth, 7.5+ doesn't call anyway? */ 
-		   vPInfo->csPage = 0;
-		   vPInfo->csBaseAddr = 0;
+		   vPInfo->csPage = dStore->curPage;
+		   vPInfo->csBaseAddr = dStore->curPage * 1024 * 1024 * 4; /* fixme */
 		   ret = noErr;
 	   }
 	   break;
    case cscGetEntries: /* 3 */
 	   /* FIXME: TODO */
+	   /* never called in >= 7.1 ? */
 		 asm volatile(".word 0xfe16\n");
          ret = noErr;
 	   break;
    case cscGetPageCnt: /* 4 == cscGetPages */
 	   {
 		   VDPageInfo	*vPInfo = (VDPageInfo *)*(long *)pb->csParam;
-		   if ((((UInt8)vPInfo->csMode) < nativeVidMode) ||
-			   (((UInt8)vPInfo->csMode) > dStore->maxMode))
-			   return paramErr;
-		   vPInfo->csPage = 0;
+		  if ((vPInfo->csMode != kDepthMode1) &&
+			  (vPInfo->csMode != kDepthMode2) &&
+			  (vPInfo->csMode != kDepthMode3) &&
+			  (vPInfo->csMode != kDepthMode4) &&
+			  (vPInfo->csMode != kDepthMode5) &&
+			  (vPInfo->csMode != kDepthMode6)) 
+			  return paramErr;
+		  vPInfo->csPage = (vPInfo->csMode == kDepthMode5) ? 1 : 2;
+		  ret = noErr;
 	   }
-		 asm volatile(".word 0xfe16\n");
-         ret = noErr;
 	   break;
    case cscGetPageBase: /* 5 == cscGetBaseAddr */
 	   {
 		   VDPageInfo	*vPInfo = (VDPageInfo *)*(long *)pb->csParam;
-		   if (vPInfo->csPage != 0)
+		  if ((vPInfo->csMode != kDepthMode1) &&
+			  (vPInfo->csMode != kDepthMode2) &&
+			  (vPInfo->csMode != kDepthMode3) &&
+			  (vPInfo->csMode != kDepthMode4) &&
+			  (vPInfo->csMode != kDepthMode5) &&
+			  (vPInfo->csMode != kDepthMode6)) 
+			  return paramErr;
+		   short npage = (vPInfo->csMode == kDepthMode5) ? 1 : 2;
+		   if (vPInfo->csPage >= npage)
 			   return paramErr;
-		   vPInfo->csBaseAddr = 0;
+		   vPInfo->csBaseAddr = vPInfo->csPage * 1024 * 1024 * 4; /* fixme for > 2 pages ? */
 		   ret = noErr;
 	   }
 		 asm volatile(".word 0xfe16\n");
@@ -114,10 +126,16 @@ OSErr cNuBusFPGAStatus(CntrlParamPtr pb, /* DCtlPtr */ AuxDCEPtr dce)
 	   break;
    case cscGetDefaultMode: /* 9 */
 	   { /* obsolete in PCI, not called >= 7.5 */
-		   /* fixme for 7.1: store in NVRAM */
 		   VDDefMode	*vddefm = (VDDefMode *)*(long *)pb->csParam;
-		   vddefm->csID = nativeVidMode;
-		   ret = noErr;
+		   SpBlock spb;
+		   NuBusFPGAPramRecord pram;
+		   OSErr err;
+		   spb.spSlot = dce->dCtlSlot;
+		   spb.spResult = (UInt32)&pram;
+		   ret = SReadPRAMRec(&spb);
+		   if (ret == noErr) {
+			   vddefm->csID = pram.mode;
+		   }
 	   }
 	   break;
 
@@ -129,8 +147,8 @@ OSErr cNuBusFPGAStatus(CntrlParamPtr pb, /* DCtlPtr */ AuxDCEPtr dce)
 		  /* write_reg(dce, GOBOFB_DEBUG, (unsigned int)dStore->curMode); */
 		  vdswitch->csMode = dStore->curDepth;
 		  vdswitch->csData = dStore->curMode;
-		  vdswitch->csPage = 0;
-		  vdswitch->csBaseAddr = 0;
+		  vdswitch->csPage = dStore->curPage;
+		  vdswitch->csBaseAddr = dStore->curPage * 1024 * 1024 * 4; /* fixme */
 		  ret = noErr;
 	   }
 	   break;
@@ -198,6 +216,16 @@ OSErr cNuBusFPGAStatus(CntrlParamPtr pb, /* DCtlPtr */ AuxDCEPtr dce)
 		  vdswitch->csMode = kDepthMode1; //dStore->curDepth; /* fixme: prefered not current / default */
 		  vdswitch->csData = nativeVidMode; //dStore->curMode;
 		  ret = noErr;
+		   SpBlock spb;
+		   NuBusFPGAPramRecord pram;
+		   OSErr err;
+		   spb.spSlot = dce->dCtlSlot;
+		   spb.spResult = (UInt32)&pram;
+		   ret = SReadPRAMRec(&spb);
+		   if (ret == noErr) {
+			   vdswitch->csMode = pram.depth;
+			   vdswitch->csData = pram.mode;
+		   }
 	   }
 	   break;
 
@@ -263,7 +291,7 @@ OSErr cNuBusFPGAStatus(CntrlParamPtr pb, /* DCtlPtr */ AuxDCEPtr dce)
 		  if (mode == kDisplayModeIDCurrent)
 			  mode = dStore->curMode;
 		  /* basically the same as the EBVParms ? */
-		  vdparam->csPageCount = 0;
+		  vdparam->csPageCount = (vdparam->csDepthMode == kDepthMode5) ? 1 : 2;
 		  vpblock->vpBaseOffset = 0;
 		  vpblock->vpBounds.left = 0;
 		  vpblock->vpBounds.top = 0;

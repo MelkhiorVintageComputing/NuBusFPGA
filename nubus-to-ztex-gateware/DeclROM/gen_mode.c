@@ -35,7 +35,7 @@ static struct one_res res_db[NUM_RES] = {
 static struct one_res res_db[NUM_RES] = {
 							 { 1920, 1080 },
 							 { 1600,  900 },
-							 {  640,  480 },
+							 /* {  640,  480 }, */
 							 {    0,    0}
 };
 #endif
@@ -86,7 +86,7 @@ int main(int argc, char **argv) {
 				fprintf(fd, "\tALIGN 2\n");
 				fprintf(fd, "_%sModes: /* id 0x%02x */\n", modename, id-1);
 				fprintf(fd, "\tOSLstEntry\tmVidParams,_%sParms\t/* offset to vid parameters */\n", modename);
-				fprintf(fd, "\tDatLstEntry\tmPageCnt,1\t/* number of video pages */\n");
+				fprintf(fd, "\tDatLstEntry\tmPageCnt,%d\t/* number of video pages */\n", (depth == 32) ? 1 : 2);
 				fprintf(fd, "\tDatLstEntry\tmDevType,%s\t/* device type */\n", depth <= 8 ? "clutType" : "directType");
 				fprintf(fd, "\t.long\tEndOfList\t/* end of list */\n");
 				fprintf(fd, "_%sParms:\n", modename);

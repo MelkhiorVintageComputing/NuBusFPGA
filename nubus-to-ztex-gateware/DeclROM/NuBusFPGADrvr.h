@@ -92,6 +92,7 @@ struct NuBusFPGADriverGlobals {
 	//unsigned char shadowClut[768];
 	unsigned short hres[16]; /* HW max in 0 */
 	unsigned short vres[16]; /* HW max in 0 */
+	unsigned short curPage;
 	unsigned char maxMode;
 	unsigned char curMode; /* mode ; this is resolution (which can't be changed in 7.1 except via reboot ?) */
 	unsigned char curDepth; /* depth */
@@ -103,6 +104,17 @@ struct NuBusFPGADriverGlobals {
 typedef struct NuBusFPGADriverGlobals NuBusFPGADriverGlobals;
 typedef struct NuBusFPGADriverGlobals *NuBusFPGADriverGlobalsPtr;
 typedef struct NuBusFPGADriverGlobals **NuBusFPGADriverGlobalsHdl;
+
+typedef struct NuBusFPGAPramRecord { /* slot parameter RAM record, derived from  SPRAMRecord  */
+	short    boardID;         /* Apple-defined card ID */
+	char     vendorUse1;      /* reserved for vendor use */ /* DCDMF3 p210 says reserved for system ... */
+	unsigned char     mode;      /* vendorUse2 */
+	unsigned char     depth;      /* vendorUse3 */
+	unsigned char     page;      /* vendorUse4 */
+	char     vendorUse5;      /* reserved for vendor use */
+	char     vendorUse6;      /* reserved for vendor use */
+} NuBusFPGAPramRecord;
+typedef struct NuBusFPGAPramRecord *NuBusFPGAPramRecordPtr;
 
 static inline void write_reg(AuxDCEPtr dce, unsigned int reg, unsigned int val) {
 	*((volatile unsigned int*)(dce->dCtlDevBase+GOBOFB_BASE+reg)) = val;
@@ -117,6 +129,8 @@ extern SlotIntServiceProcPtr interruptRoutine;
 void linearGamma(NuBusFPGADriverGlobalsPtr dStore);
 OSErr changeIRQ(AuxDCEPtr dce, char en, OSErr err);
 OSErr cNuBusFPGACtl(CntrlParamPtr pb, /* DCtlPtr */ AuxDCEPtr dce);
+OSErr reconfHW(AuxDCEPtr dce, unsigned char mode, unsigned char depth, unsigned short page);
+OSErr updatePRAM(AuxDCEPtr dce, unsigned char mode, unsigned char depth, unsigned short page);
 /* status */
 OSErr cNuBusFPGAStatus(CntrlParamPtr pb, /* DCtlPtr */ AuxDCEPtr dce);
 /* open close */
