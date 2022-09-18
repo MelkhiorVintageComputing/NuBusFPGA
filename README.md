@@ -6,7 +6,7 @@ The goal of this repository is to be able to interface a modern (2021 era) [FPGA
 
 ## Current status
 
-First prototype is working in a Quadra 650. It implements a basic single-resolution, depth-switchable (1/2/4/8/16/32 bits) framebuffer over HDMI. The framebuffer can be used as secondary/primary/only framebuffer in the machine running OS8.1. Qemu tests indicate this should work with 7.1 & 7.5/7.6 as well.
+First prototype is working in a Quadra 650. It implements a single-screen-resolution, windowboxed multi-resolution, depth-switchable (1/2/4/8/16/32 bits) framebuffer over DVI-in-HDMI-connector (will work with any HDMI-compliant monitor). The framebuffer can be used as secondary/primary/only framebuffer in the machine running OS8.1. Qemu tests indicate this should work with 7.1 & 7.5/7.6 as well.
 
 Some basic acceleration now exists for 8/16/32 bits, doing rectangle screen-to-screen blits and pattern rectangle fills. 1/2/4 bits also has some acceleration, ut only for byte-aligned cases.
 
