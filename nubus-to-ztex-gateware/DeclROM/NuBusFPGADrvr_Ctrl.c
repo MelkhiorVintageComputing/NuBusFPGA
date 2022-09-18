@@ -93,9 +93,9 @@ OSErr cNuBusFPGACtl(CntrlParamPtr pb, /* DCtlPtr */ AuxDCEPtr dce)
   case cscReset:
 	   {
 		   VDPageInfo	*vPInfo = (VDPageInfo *)*(long *)pb->csParam;
-		   dStore->curMode = firstVidMode;
+		   dStore->curMode = nativeVidMode;
 		   dStore->curDepth = kDepthMode1; /* 8-bit */
-		   vPInfo->csMode = firstVidMode;
+		   vPInfo->csMode = nativeVidMode;
 		   vPInfo->csPage = 0;
 		   vPInfo->csBaseAddr = 0;
 		   ret = noErr;
@@ -237,7 +237,7 @@ OSErr cNuBusFPGACtl(CntrlParamPtr pb, /* DCtlPtr */ AuxDCEPtr dce)
 		   const UInt32 a32 = dce->dCtlDevBase;
 		   UInt32 a32_l0, a32_l1;
 		   UInt32 a32_4p0, a32_4p1;
-		   const uint32_t wb = dStore->hres >> idx;
+		   const uint32_t wb = dStore->hres[0] >> idx;
 		   unsigned short j, i;
 		   
 		   if (vPInfo->csPage != 0)
@@ -249,7 +249,7 @@ OSErr cNuBusFPGACtl(CntrlParamPtr pb, /* DCtlPtr */ AuxDCEPtr dce)
 			   /* grey the screen */
 			   a32_l0 = a32;
 			   a32_l1 = a32 + wb;
-			   for (j = 0 ; j < dStore->vres ; j+= 2) {
+			   for (j = 0 ; j < dStore->vres[0] ; j+= 2) {
 				   a32_4p0 = a32_l0;
 				   a32_4p1 = a32_l1;
 				   for (i = 0 ; i < wb ; i += 4) {
@@ -264,18 +264,18 @@ OSErr cNuBusFPGACtl(CntrlParamPtr pb, /* DCtlPtr */ AuxDCEPtr dce)
 		   } else {
 			   /* testing */
 			   a32_l0 = a32;
-			   a32_l1 = a32 + dStore->hres*4;
-			   for (j = 0 ; j < dStore->vres ; j+= 2) {
+			   a32_l1 = a32 + dStore->hres[0]*4;
+			   for (j = 0 ; j < dStore->vres[0] ; j+= 2) {
 				   a32_4p0 = a32_l0;
 				   a32_4p1 = a32_l1;
-				   for (i = 0 ; i < dStore->hres ; i ++ ) {
+				   for (i = 0 ; i < dStore->hres[0] ; i ++ ) {
 					   *((UInt32*)a32_4p0) = (i&0xFF);//(i&0xFF) | (i&0xFF)<<8 | (i&0xff)<<24;
 					   *((UInt32*)a32_4p1) = (i&0xFF)<<16;//(i&0xFF) | (i&0xFF)<<8 | (i&0xff)<<24;
 					   a32_4p0 += 4;
 					   a32_4p1 += 4;
 				   }
-				   a32_l0 += 2*dStore->hres*4;
-				   a32_l1 += 2*dStore->hres*4;
+				   a32_l0 += 2*dStore->hres[0]*4;
+				   a32_l1 += 2*dStore->hres[0]*4;
 			   }
 		   }
 #else
@@ -286,17 +286,8 @@ OSErr cNuBusFPGACtl(CntrlParamPtr pb, /* DCtlPtr */ AuxDCEPtr dce)
 		   const UInt32 fgcolor = 0; // FIXME: per-depth?
 		   struct goblin_accel_regs* accel_le = (struct goblin_accel_regs*)(dce->dCtlDevBase+GOBOFB_ACCEL_LE);
 		   WAIT_FOR_HW_LE(accel_le);
-		   switch (dStore->curMode) {
-		   default:
-		   case firstVidMode:
-			   accel_le->reg_width = dStore->hres; // pixels
-			   accel_le->reg_height = dStore->vres;
-			   break;
-		   case secondVidMode:
-			   accel_le->reg_width = 640; // pixels
-			   accel_le->reg_height = 480;
-			   break;
-		   }
+		   accel_le->reg_width = dStore->hres[dStore->curMode - nativeVidMode]; // pixels
+		   accel_le->reg_height = dStore->vres[dStore->curMode - nativeVidMode];
 		   accel_le->reg_bitblt_dst_x = 0; // pixels
 		   accel_le->reg_bitblt_dst_y = 0;
 		   accel_le->reg_dst_ptr = 0;
@@ -333,18 +324,11 @@ OSErr cNuBusFPGACtl(CntrlParamPtr pb, /* DCtlPtr */ AuxDCEPtr dce)
 	  break;
 
   case cscSetDefaultMode: /* 9 */
-	   {
+	  { /* fixme: NVRAM */
 		   VDDefMode	*vddefm = (VDDefMode *)*(long *)pb->csParam;
-		   
-		   switch (vddefm->csID) {
-		   case firstVidMode:
-			   break;
-		   case secondVidMode:
-			   break;
-		   default:
+		   if ((((UInt8)vddefm->csID) < nativeVidMode) ||
+			   (((UInt8)vddefm->csID) > dStore->maxMode))
 			   return paramErr;
-		   }
-		   
 		   ret = noErr;
 	   }
 	  break;
@@ -360,7 +344,7 @@ OSErr cNuBusFPGACtl(CntrlParamPtr pb, /* DCtlPtr */ AuxDCEPtr dce)
 		  }
 
 		  unsigned short i;
-		  for (i = firstVidMode ; i <= secondVidMode ; i++) {
+		  for (i = nativeVidMode ; i <= dStore->maxMode ; i++) {
 			  // disable spurious resources, enable only the right one
 			  SpBlock spb;
 			  spb.spParamData = (i != vdswitch->csData ? 1 : 0); /* disable/enable */
@@ -375,51 +359,41 @@ OSErr cNuBusFPGACtl(CntrlParamPtr pb, /* DCtlPtr */ AuxDCEPtr dce)
 		   /* write_reg(dce, GOBOFB_DEBUG, vdswitch->csMode); */
 		   /* write_reg(dce, GOBOFB_DEBUG, vdswitch->csData); */
 		  SwapMMUMode ( &busMode );
-		  switch (vdswitch->csData) {
-		  case firstVidMode: {
-			  /* write_reg(dce, GOBOFB_VIDEOCTRL, 0); */
-			  write_reg(dce, GOBOFB_HRES_START, 0);
-			  write_reg(dce, GOBOFB_VRES_START, 0);
-			  write_reg(dce, GOBOFB_HRES_END, __builtin_bswap32(dStore->hres)); // fixme: endianess (along with HW)
-			  write_reg(dce, GOBOFB_VRES_END, __builtin_bswap32(dStore->vres)); // fixme: endianess (along with HW)
-			  /* write_reg(dce, GOBOFB_VIDEOCTRL, 1); */
-		  } break;
-		  case secondVidMode: {
-			  unsigned int ho = ((dStore->hres - 640) / 2);
-			  unsigned int vo = ((dStore->vres - 480) / 2);
+		  if (vdswitch->csData != dStore->curMode) {
+			  UInt8 id = ((UInt8)vdswitch->csData) - nativeVidMode;
+			  unsigned int ho = ((dStore->hres[0] - dStore->hres[id]) / 2);
+			  unsigned int vo = ((dStore->vres[0] - dStore->vres[id]) / 2);
 			   /* write_reg(dce, GOBOFB_VIDEOCTRL, 0); */
 			  write_reg(dce, GOBOFB_HRES_START, __builtin_bswap32(ho));
 			  write_reg(dce, GOBOFB_VRES_START, __builtin_bswap32(vo));
-			  write_reg(dce, GOBOFB_HRES_END, __builtin_bswap32(ho + 640));
-			  write_reg(dce, GOBOFB_VRES_END, __builtin_bswap32(vo + 480));
+			  write_reg(dce, GOBOFB_HRES_END, __builtin_bswap32(ho + dStore->hres[id]));
+			  write_reg(dce, GOBOFB_VRES_END, __builtin_bswap32(vo + dStore->vres[id]));
 			  /* write_reg(dce, GOBOFB_VIDEOCTRL, 1); */
-		  } break;
-		  default:
-			  SwapMMUMode ( &busMode );
-			  return paramErr;
 		  }
-		  switch (vdswitch->csMode) {
-		  case kDepthMode1:
-			   write_reg(dce, GOBOFB_MODE, GOBOFB_MODE_8BIT);
-			  break;
-		  case kDepthMode2:
-			   write_reg(dce, GOBOFB_MODE, GOBOFB_MODE_4BIT);
-			  break;
-		  case kDepthMode3:
-			   write_reg(dce, GOBOFB_MODE, GOBOFB_MODE_2BIT);
-			  break;
-		  case kDepthMode4:
-			   write_reg(dce, GOBOFB_MODE, GOBOFB_MODE_1BIT);
-			  break;
-		  case kDepthMode5:
-			   write_reg(dce, GOBOFB_MODE, GOBOFB_MODE_24BIT);
-			  break;
-		  case kDepthMode6:
-			   write_reg(dce, GOBOFB_MODE, GOBOFB_MODE_15BIT);
-			  break;
-		  default:
-			  SwapMMUMode ( &busMode );
-			  return paramErr;
+		  if (vdswitch->csMode != dStore->curDepth) {
+			  switch (vdswitch->csMode) {
+			  case kDepthMode1:
+				  write_reg(dce, GOBOFB_MODE, GOBOFB_MODE_8BIT);
+				  break;
+			  case kDepthMode2:
+				  write_reg(dce, GOBOFB_MODE, GOBOFB_MODE_4BIT);
+				  break;
+			  case kDepthMode3:
+				  write_reg(dce, GOBOFB_MODE, GOBOFB_MODE_2BIT);
+				  break;
+			  case kDepthMode4:
+				  write_reg(dce, GOBOFB_MODE, GOBOFB_MODE_1BIT);
+				  break;
+			  case kDepthMode5:
+				  write_reg(dce, GOBOFB_MODE, GOBOFB_MODE_24BIT);
+				  break;
+			  case kDepthMode6:
+				  write_reg(dce, GOBOFB_MODE, GOBOFB_MODE_15BIT);
+				  break;
+			  default:
+				  SwapMMUMode ( &busMode );
+				  return paramErr;
+			  }
 		  }
 		  dStore->curMode = vdswitch->csData;
 		  dStore->curDepth = vdswitch->csMode;
@@ -434,38 +408,25 @@ OSErr cNuBusFPGACtl(CntrlParamPtr pb, /* DCtlPtr */ AuxDCEPtr dce)
 #if 1
 	   {
 		  VDSwitchInfoRec	*vdswitch = *(VDSwitchInfoRec **)(long *)pb->csParam;
-		  switch (vdswitch->csMode) { // checkme: really mode?
-		  case firstVidMode:
-			  break;
-		  case secondVidMode:
-			  break;
-		   case thirdVidMode:
+		   if ((((UInt8)vdswitch->csData) < nativeVidMode) ||
+			   (((UInt8)vdswitch->csData) > dStore->maxMode))
+			   return paramErr;
+		   switch (vdswitch->csMode) {
+		   case kDepthMode1:
 			   break;
-		   case fourthVidMode:
-			   break;
-		   case fifthVidMode:
-			   break;
-		   case sixthVidMode:
-			   break;
-		  default:
-			  return paramErr;
-		  }
-		  switch (vdswitch->csData) { // checkme: really mode?
-		  case firstVidMode:
-			  break;
-		  case secondVidMode:
-			  break;
-		   case thirdVidMode:
-			   break;
-		   case fourthVidMode:
-			   break;
-		   case fifthVidMode:
-			   break;
-		   case sixthVidMode:
-			   break;
-		  default:
-			  return paramErr;
-		  }
+		   case kDepthMode2:
+		   	   break;
+		   case kDepthMode3:
+		   	   break;
+		   case kDepthMode4:
+		   	   break;
+		   case kDepthMode5:
+		   	   break;
+		   case kDepthMode6:
+		   	   break;
+		   default:
+			   return paramErr;
+		   }
 		  if (vdswitch->csPage != 0)
 			  return paramErr;
 		  vdswitch->csBaseAddr = 0;

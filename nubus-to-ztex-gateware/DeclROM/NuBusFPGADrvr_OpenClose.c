@@ -1,5 +1,7 @@
 #include "NuBusFPGADrvr.h"
 
+#include "ROMDefs.h"
+
 OSErr cNuBusFPGAOpen(IOParamPtr pb, /* DCtlPtr */ AuxDCEPtr dce)
 {
 	OSErr ret = noErr;
@@ -33,8 +35,8 @@ OSErr cNuBusFPGAOpen(IOParamPtr pb, /* DCtlPtr */ AuxDCEPtr dce)
 			(*dStoreHdl)->slot = dce->dCtlSlot;
 
 			/* Get the HW setting for native resolution */
-			(*dStoreHdl)->hres = __builtin_bswap32((unsigned int)read_reg(dce, GOBOFB_HRES)); // fixme: endianness
-			(*dStoreHdl)->vres = __builtin_bswap32((unsigned int)read_reg(dce, GOBOFB_VRES)); // fixme: endianness
+			(*dStoreHdl)->hres[0] = __builtin_bswap32((unsigned int)read_reg(dce, GOBOFB_HRES)); // fixme: endianness
+			(*dStoreHdl)->vres[0] = __builtin_bswap32((unsigned int)read_reg(dce, GOBOFB_VRES)); // fixme: endianness
 			
 			SlotIntQElement *siqel = (SlotIntQElement *)NewPtrSysClear(sizeof(SlotIntQElement));
 			if (siqel == NULL) {
@@ -50,9 +52,77 @@ OSErr cNuBusFPGAOpen(IOParamPtr pb, /* DCtlPtr */ AuxDCEPtr dce)
 			siqel->sqParm = (long)dce->dCtlDevBase;
 			(*dStoreHdl)->siqel = siqel;
 
-			(*dStoreHdl)->curMode = firstVidMode;
+			(*dStoreHdl)->curMode = nativeVidMode;
 			(*dStoreHdl)->curDepth = kDepthMode1;
-			
+
+			{
+				OSErr err = noErr;
+				SpBlock spb;
+				UInt8 max = nativeVidMode;
+				
+				spb.spParamData = 1<<fall|1<<foneslot;
+				spb.spCategory = catDisplay;
+				spb.spCType = typeVideo;
+				spb.spDrvrSW = drSwApple;
+				spb.spDrvrHW = 0xBEEF;
+				spb.spTBMask = 0; /* match everything above */
+				spb.spSlot = dce->dCtlSlot;
+				spb.spID = nativeVidMode;
+				spb.spExtDev = 0;
+				err = SGetTypeSRsrc(&spb);
+				while ((err == noErr) &&
+					   (spb.spSlot == dce->dCtlSlot) &&
+					   (((UInt8)spb.spID) > (UInt8)0x80) &&
+					   (((UInt8)spb.spID) < (UInt8)0x90)) {
+					/* write_reg(dce, GOBOFB_DEBUG, 0xBEEF0020); */
+					/* write_reg(dce, GOBOFB_DEBUG, spb.spID); */
+					/* write_reg(dce, GOBOFB_DEBUG, err); */
+
+					if (((UInt8)spb.spID) == max) // should not happen
+						err = smNoMoresRsrcs;
+					if (((UInt8)spb.spID) > max)
+						max = spb.spID;
+					err = SGetTypeSRsrc(&spb);
+				}
+				(*dStoreHdl)->maxMode = max;
+			}
+	/* write_reg(dce, GOBOFB_DEBUG, 0xBEEF0000); */
+	/* write_reg(dce, GOBOFB_DEBUG, (*dStoreHdl)->maxMode); */
+			{
+				OSErr err = noErr;
+				SpBlock spb;
+				/* check for resolution */
+				UInt8 id;
+				for (id = nativeVidMode; id <= (*dStoreHdl)->maxMode ; id ++) {
+					/* try every resource, enabled or not */
+					spb.spParamData = 1<<fall; /* wants disabled */
+					spb.spCategory = catDisplay;
+					spb.spCType = typeVideo;
+					spb.spDrvrSW = drSwApple;
+					spb.spDrvrHW = 0xBEEF;
+					spb.spTBMask = 0;
+					spb.spSlot = dce->dCtlSlot;
+					spb.spID = id;
+					spb.spExtDev = 0;
+					err = SGetSRsrc(&spb);
+						
+					if (err == noErr) {
+						spb.spID = kDepthMode1;
+						err = SFindStruct(&spb); /* that will give us the Parms block ... */
+						
+						if (err == noErr) {
+							/* take the Parms pointer, add the offset to the Modes block and then skip the block size at the beginning to get the structure pointer ... */
+							const unsigned long offset = *(unsigned long*)spb.spsPointer & 0x00FFFFFF;
+							VPBlockPtr vpblock = (VPBlockPtr)(spb.spsPointer + offset + sizeof(long));
+							UInt8 idx = id - nativeVidMode;
+							(*dStoreHdl)->hres[idx] = vpblock->vpBounds.right;
+							(*dStoreHdl)->vres[idx] = vpblock->vpBounds.bottom;
+						}
+					}
+				}
+				
+			}
+				
 			linearGamma(*dStoreHdl);
 			
 			write_reg(dce, GOBOFB_MODE, GOBOFB_MODE_8BIT);

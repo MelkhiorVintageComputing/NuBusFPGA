@@ -1,6 +1,7 @@
 #include "NuBusFPGADrvr.h"
 
 #include <Traps.h>
+#include <ROMDefs.h>
 
 #define PRIM_WRITEREG(reg, val) \
 	*((volatile UInt32*)(a32+GOBOFB_BASE+reg)) = (UInt32)val
@@ -47,16 +48,34 @@ UInt32 Primary(SEBlock* seblock) {
 	
 	SwapMMUMode ( &busMode ); // restore
 
-#if 1
-	{ // disable spurious entries
+	{ // disable non-default entries
 		SpBlock spb;
-		spb.spParamData = 1; /* disable */
-		spb.spSlot = seblock->seSlot;
-		spb.spID = 0x81; // 640x480 entries; fixme
-		spb.spExtDev = 0;
-		SetSRsrcState(&spb);
+		err = noErr;
+		do {
+			spb.spParamData = 1<<foneslot|1<<fnext;
+			spb.spCategory = catDisplay;
+			spb.spCType = typeVideo;
+			spb.spDrvrSW = drSwApple;
+			spb.spDrvrHW = 0xBEEF;
+			spb.spTBMask = 0; /* match everything above */
+			spb.spSlot = seblock->seSlot;
+			spb.spID = nativeVidMode; /* skip over the 'good' one; we can reset as SNextTypeSRsrc skips disabled */
+			spb.spExtDev = 0;
+			err = SNextTypeSRsrc(&spb);
+			
+			if ((err == noErr) &&
+				(spb.spSlot == seblock->seSlot) &&
+				(((UInt8)spb.spID) > (UInt8)nativeVidMode) &&
+				(((UInt8)spb.spID) < (UInt8)diskResource)) {
+				spb.spParamData = 1; /* disable */
+				spb.spSlot = seblock->seSlot;
+				spb.spExtDev = 0;
+				SetSRsrcState(&spb);
+				/* PRIM_WRITEREG(GOBOFB_DEBUG, 0xBEEF000F); */
+				/* PRIM_WRITEREG(GOBOFB_DEBUG, spb.spID); */
+			}
+		} while (err == noErr);
 	}
-#endif
 	
 #if 0
 

@@ -3,74 +3,13 @@
 #include <string.h>
 #include <stdint.h>
 
-#if 0
-	ALIGN 2
-_HiRes8Modes:	
-             OSLstEntry    mVidParams,_HRV8Parms         /*  offset to vid parameters */
-             DatLstEntry   mPageCnt,Pages8s             /*  number of video pages */
-             DatLstEntry   mDevType,clutType         /*  device type */
-             .long   EndOfList                  /*  end of list */
-_HRV8Parms:	
-             .long          _EndHRV8Parms-_HRV8Parms      /*  physical block size  */
-             .long          defmBaseOffset              /*  QuickDraw base offset ; vpBaseOffset */
-             .word          RB8s                        /*  physRowBytes ; vpRowBytes */
-             .word          defmBounds_Ts,defmBounds_Ls,defmBounds_Bs,defmBounds_Rs /*  vpBounds */
-             .word          defVersion                  /*  bmVersion ; vpVersion */
-             .word	   0				/*  packType not used ; vpPackType */
-             .long	   0 				/*  packSize not used ; vpPackSize */
-             .long          defmHRes                    /*  bmHRes  */
-             .long          defmVRes                    /*  bmVRes */
-             .word          ChunkyIndexed               /*  bmPixelType */
-             .word          8                           /*  bmPixelSize */
-             .word          1                           /*  bmCmpCount */
-             .word          8                           /*  bmCmpSize */
-             .long          defmPlaneBytes              /*  bmPlaneBytes */
-_EndHRV8Parms:
-
-
-		
-
-	ALIGN 2
-_sRsrc_GoboFB:	
-	OSLstEntry  sRsrcType,_GoboFBType      /*  video type descriptor */
-    OSLstEntry  sRsrcName,_GoboFBName      /*  offset to driver name string */
-    OSLstEntry  sRsrcDrvrDir,_GoboFBDrvrDir /* offset to driver directory */
-	DatLstEntry  sRsrcFlags,6    /* force 32 bits mode & open */
-    DatLstEntry sRsrcHWDevId,1           /*  hardware device ID */
-    OSLstEntry  MinorBaseOS,_MinorBase    /*  offset to frame buffer array */
-    OSLstEntry  MinorLength,_MinorLength  /*  offset to frame buffer length */
-    /* OSLstEntry  sGammaDir,_GammaDirS      /*  directory for 640x480 monitor */
-/*  Parameters */
-    OSLstEntry  firstVidMode,_HiRes8Modes        /*  offset to 8 Bit Mode parms */
-    OSLstEntry  secondVidMode,_HiRes4Modes        /*  offset to 4 Bit Mode parms */
-    OSLstEntry  thirdVidMode,_HiRes2Modes        /*  offset to 2 Bit Mode parms */
-    OSLstEntry  fourthVidMode,_HiRes1Modes        /*  offset to 1 Bit Mode parms */
-    OSLstEntry  fifthVidMode,_HiRes24Modes        /*  offset to 24/32 Bit Mode parms */
-    OSLstEntry  sixthVidMode,_HiRes15Modes        /*  offset to 15/16 Bit Mode parms */
-    .long EndOfList               /*  end of list */
-
-		
-	ALIGN 2
-_VModeName:	
-	OSLstEntry	sRsrc_GoboFB, _ScreenNameGoboFBHiRes
-	OSLstEntry	sRsrc_GoboFB_13, _ScreenNameGoboFB13
-	DatLstEntry	endOfList,	0
-
-	ALIGN 2
-_ScreenNameGoboFBHiRes:	
-	.long		_ScreenNameGoboFBHiResEnd - _ScreenNameGoboFBHiRes
-	.word		0
-	.string		"GoblinFB Native\0"
-_ScreenNameGoboFBHiResEnd:
-#endif
-
 struct one_res {
 				  const unsigned short hres;
 				  const unsigned short vres;
 };
 
 #define NUM_RES 16
-#if 0
+#if 1
 static struct one_res res_db[NUM_RES] = {
 							 { 1920, 1080 },
 							 { 1680, 1050 }, // should be unsuitable

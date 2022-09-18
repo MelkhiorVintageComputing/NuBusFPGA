@@ -82,14 +82,19 @@ struct MyGammaTbl {
   char                gFormulaData[3][256];        /*data for formulas followed by gamma values*/
 };
 
+#define nativeVidMode ((unsigned char)0x80)
+/* alternate resolution in 0x81...0x8f */
+#define diskResource ((unsigned char)0x90)
+
 struct NuBusFPGADriverGlobals {
 	AuxDCEPtr	dce; // unused
 	SlotIntQElement *siqel;
 	//unsigned char shadowClut[768];
-	unsigned short curMode; /* mode include depth in <= 7.1 ROM-based mode */
-	unsigned short curDepth; /* depth separate from mode in >= 7.5 driver-based mode */
-	unsigned short hres; /* HW max */
-	unsigned short vres; /* HW max */
+	unsigned short hres[16]; /* HW max in 0 */
+	unsigned short vres[16]; /* HW max in 0 */
+	unsigned char maxMode;
+	unsigned char curMode; /* mode ; this is resolution (which can't be changed in 7.1 except via reboot ?) */
+	unsigned char curDepth; /* depth */
 	char gray;
 	char irqen;
 	char slot;
