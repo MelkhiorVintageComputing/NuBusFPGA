@@ -462,6 +462,7 @@ class goblin(Module, AutoCSR):
         hres_end   = Signal(hbits, reset = hres)
         vres_start = Signal(vbits, reset = 0)
         vres_end   = Signal(vbits, reset = vres)
+        vres_upd = Signal()
 
         videoctrl = Signal() # reg 0x8
         
@@ -530,7 +531,9 @@ class goblin(Module, AutoCSR):
                                 0x12: [ NextValue(hres_start, bus.dat_w), ], # hres_start
                                 0x13: [ NextValue(vres_start, bus.dat_w), ], # vres_start
                                 0x14: [ NextValue(hres_end,   bus.dat_w), ], # hres_end
-                                0x15: [ NextValue(vres_end,   bus.dat_w), ], # vres_end
+                                0x15: [ NextValue(vres_end,   bus.dat_w),
+                                        NextValue(vres_upd, 1),
+                                ], # vres_end
                             }),
                             Case(bus.adr[5:18], { # mask and bits in registers from 0x80 and 0x100
                                 "default": [], # fixme: hwcursor for 0x1/0x2
@@ -567,8 +570,6 @@ class goblin(Module, AutoCSR):
         in_reset = Signal()
         post_reset_ctr = Signal(3)
         previous_videoctrl = Signal()
-        
-        old_vres_end   = Signal(vbits, reset = vres)
 
         hwidth  = Signal(hbits)
         vheight = Signal(vbits)
@@ -584,8 +585,8 @@ class goblin(Module, AutoCSR):
             
         # this has grown complicated and should be a FSM...
         self.sync += [ old_bt_mode.eq(bt_mode),
-                       old_vres_end.eq(vres_end),
-                       If((old_bt_mode != bt_mode) | (old_vres_end != vres_end),
+                       If((old_bt_mode != bt_mode) | vres_upd,
+                          vres_upd.eq(0),
                           in_reset.eq(1),
                           videoctrl.eq(0), # start a disabling cycle, or stay disabled
                           previous_videoctrl.eq(videoctrl), # preserve old state for restoration later
