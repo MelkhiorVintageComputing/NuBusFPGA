@@ -138,7 +138,7 @@ OSErr cNuBusFPGARAMDskClose(IOParamPtr pb, /* DCtlPtr */ AuxDCEPtr dce)
 	/* write_reg(dce, GOBOFB_DEBUG, 0xDEAD0001); */
 	
 	if (dce->dCtlStorage) {
-		HUnlock(dce->dCtlStorage);
+		/* HUnlock(dce->dCtlStorage); */ /* not needed before DisposeHandle */
 		DisposeHandle(dce->dCtlStorage);
 		dce->dCtlStorage = NULL;
 	}

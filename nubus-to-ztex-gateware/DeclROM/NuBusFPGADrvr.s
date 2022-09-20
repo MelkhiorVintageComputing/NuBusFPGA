@@ -82,9 +82,7 @@ interruptRoutine:
 	movel %a1,%d0
 	roll #8,%d0
 	andiw #15,%d0
-	moveal #0xd28,%a0 /*  JVBLTask */
-	/* other codes don't need the intermediate moveal, what's the proper syntax ? */
-	moveal (%a0),%a0
+	moveal 0xd28,%a0 /*  JVBLTask */
 	jsr (%a0)
 	moveq #1,%d0
 	rts
