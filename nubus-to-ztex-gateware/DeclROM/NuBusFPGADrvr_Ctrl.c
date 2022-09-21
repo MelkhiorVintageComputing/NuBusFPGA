@@ -90,7 +90,7 @@ OSErr cNuBusFPGACtl(CntrlParamPtr pb, /* DCtlPtr */ AuxDCEPtr dce)
   case -1:
 	  asm volatile(".word 0xfe16\n");
   	  break;
-  case cscReset:
+  case cscReset: /* 0x0 */
 	   {
 		   VDPageInfo	*vPInfo = (VDPageInfo *)*(long *)pb->csParam;
 		   dStore->curMode = nativeVidMode;
@@ -101,11 +101,11 @@ OSErr cNuBusFPGACtl(CntrlParamPtr pb, /* DCtlPtr */ AuxDCEPtr dce)
 		   ret = noErr;
 	   }
   	  break;
-  case cscKillIO:
+  case cscKillIO: /* 0x1 */
 	  asm volatile(".word 0xfe16\n");
 	  ret = noErr;
 	  break;
-  case cscSetMode: /* 2 */
+  case cscSetMode: /* 0x2 */
 	   {
 		   VDPageInfo	*vPInfo = (VDPageInfo *)*(long *)pb->csParam;
 
@@ -115,7 +115,7 @@ OSErr cNuBusFPGACtl(CntrlParamPtr pb, /* DCtlPtr */ AuxDCEPtr dce)
 			  vPInfo->csBaseAddr = (void*)(vPInfo->csPage * 1024 * 1024 * 4);
 	   }
 	  break;
-  case cscSetEntries: /* 3 */
+  case cscSetEntries: /* 0x3 */
 	  if (1) {
 		  VDSetEntryRecord	**vdentry = (VDSetEntryRecord **)(long *)pb->csParam;
 		  int csCount = (*vdentry)->csCount;
@@ -163,7 +163,7 @@ OSErr cNuBusFPGACtl(CntrlParamPtr pb, /* DCtlPtr */ AuxDCEPtr dce)
 	  }
 	  cscSetMode_done:
 	  break;
-  case cscSetGamma: /* 4 */
+  case cscSetGamma: /* 0x4 */
 	  {
 		   VDGammaRecord	*vdgamma = (VDGammaRecord *)*(long *)pb->csParam;
 		   GammaTbl	*gammaTbl = (GammaTbl*)vdgamma->csGTable;
@@ -205,7 +205,7 @@ OSErr cNuBusFPGACtl(CntrlParamPtr pb, /* DCtlPtr */ AuxDCEPtr dce)
  		   ret = noErr;
 	   }
 	  break;
-  case cscGrayPage: /* 5 == cscGrayScreen */
+  case cscGrayPage: /* 0x5 == cscGrayScreen */
 	   {
 		   VDPageInfo	*vPInfo = (VDPageInfo *)*(long *)pb->csParam;
 		   const uint8_t idx = dStore->curMode % 4; // checkme
@@ -280,7 +280,7 @@ OSErr cNuBusFPGACtl(CntrlParamPtr pb, /* DCtlPtr */ AuxDCEPtr dce)
 		   ret = noErr;
 	   }
 	  break;
-  case cscSetGray: /* 6 */
+  case cscSetGray: /* 0x6 */
 	   {
 		   VDGrayRecord	*vGInfo = (VDGrayRecord *)*(long *)pb->csParam;
 		   dStore->gray = vGInfo->csMode;
@@ -288,20 +288,20 @@ OSErr cNuBusFPGACtl(CntrlParamPtr pb, /* DCtlPtr */ AuxDCEPtr dce)
 	   }
 	  break;
 	  
-  case cscSetInterrupt: /* 7 */
+  case cscSetInterrupt: /* 0x7 */
 	   {
 		   VDFlagRecord	*vdflag = (VDFlagRecord *)*(long *)pb->csParam;
 		   ret = changeIRQ(dce, 1 - vdflag->csMode, controlErr);
 	   }
   	  break;
 
-  case cscDirectSetEntries: /* 8 */
+  case cscDirectSetEntries: /* 0x8 */
 	  asm volatile(".word 0xfe16\n");
 	  return controlErr;
 	  break;
 
-  case cscSetDefaultMode: /* 9 */
-	  { /* fixme: NVRAM */
+  case cscSetDefaultMode: /* 0x9 */
+	  {
 		   VDDefMode	*vddefm = (VDDefMode *)*(long *)pb->csParam;
 
 		   ret = updatePRAM(dce, vddefm->csID, dStore->curDepth, 0);
@@ -319,6 +319,9 @@ OSErr cNuBusFPGACtl(CntrlParamPtr pb, /* DCtlPtr */ AuxDCEPtr dce)
 	  }
 	  break;
 
+	  /* cscSetSync */ /* 0xb */
+	  /* 0xc ... 0xf : undefined */
+
   case cscSavePreferredConfiguration: /* 0x10 */
 	   {
 		  VDSwitchInfoRec	*vdswitch = *(VDSwitchInfoRec **)(long *)pb->csParam;
@@ -326,6 +329,22 @@ OSErr cNuBusFPGACtl(CntrlParamPtr pb, /* DCtlPtr */ AuxDCEPtr dce)
 		  ret = updatePRAM(dce, vdswitch->csData, vdswitch->csMode, 0);
 	   }
 	  break;
+
+	  /* 0x11 .. 0x15 : undefined */
+
+	  /* cscSetHardwareCursor */ /* 0x16 */
+	  /* cscDrawHardwareCursor */ /* 0x17 */
+	  /* cscSetConvolution */ /* 0x18 */
+	  /* cscSetPowerState */ /* 0x19 */
+	  /* cscPrivateControlCall */ /* 0x1a */
+	  /* 0x1b : undefined */
+	  /* cscSetMultiConnect */ /* 0x1c */
+	  /* cscSetClutBehavior */ /* 0x1d */
+	  /* 0x1e : undefined */
+	  /* cscSetDetailedTiming */ /* 0x1f */
+	  /* 0x20 : undefined */
+	  /* cscDoCommunication */ /* 0x21 */ 
+	  /* cscProbeConnection */ /* 0x22 */
 	  
   default: /* always return controlErr for unknown csCode */
 	  asm volatile(".word 0xfe16\n");
@@ -343,10 +362,10 @@ OSErr reconfHW(AuxDCEPtr dce, unsigned char mode, unsigned char depth, unsigned 
 	OSErr err = noErr;
 	char busMode = 1;
 
-	write_reg(dce, GOBOFB_DEBUG, 0xBEEF0031);
-	write_reg(dce, GOBOFB_DEBUG, mode);
-	write_reg(dce, GOBOFB_DEBUG, depth);
-	write_reg(dce, GOBOFB_DEBUG, page);
+	/* write_reg(dce, GOBOFB_DEBUG, 0xBEEF0031); */
+	/* write_reg(dce, GOBOFB_DEBUG, mode); */
+	/* write_reg(dce, GOBOFB_DEBUG, depth); */
+	/* write_reg(dce, GOBOFB_DEBUG, page); */
 	
 	if ((mode == dStore->curMode) &&
 		(depth == dStore->curDepth) &&

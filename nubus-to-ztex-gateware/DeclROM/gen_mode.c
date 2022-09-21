@@ -4,39 +4,40 @@
 #include <stdint.h>
 
 struct one_res {
-				  const unsigned short hres;
-				  const unsigned short vres;
+	const unsigned short hres;
+	const unsigned short vres;
+	const unsigned char native_only;
 };
 
 #define NUM_RES 16
 #if 1
 static struct one_res res_db[NUM_RES] = {
-							 { 1920, 1080 },
-							 { 1680, 1050 }, // should be unsuitable
-							 { 1600,  900 },
-							 { 1440,  900 },
-							 
-							 { 1280, 1024 },
-							 { 1280,  960 },
-							 { 1280,  800 },
-							 { 1152,  870 },
-							 
-							 { 1152,  864 },
-							 { 1024,  768 },
-							 {  832,  624 },
-							 {  800,  600 },
-							 
-							 {  768,  576 },
-							 {  640,  480 },
-							 {  512,  384 },
-							 {    0,    0 }			 
+										 { 1920, 1080, 0 },
+										 { 1680, 1050, 0 }, // should be unsuitable
+										 { 1600,  900, 1  }, // freaks out my monitor on 1920x1080, it thinks it's 1680x1050...
+										 { 1440,  900, 0 },
+										 
+										 { 1280, 1024, 0 },
+										 { 1280,  960, 0 },
+										 { 1280,  800, 0 },
+										 { 1152,  870, 0 },
+										 
+										 { 1152,  864, 0 },
+										 { 1024,  768, 0 },
+										 {  832,  624, 0 },
+										 {  800,  600, 0 },
+										 
+										 {  768,  576, 0 },
+										 {  640,  480, 0 },
+										 {  512,  384, 0 },
+										 {    0,    0, 0 }			 
 };
 #else
 static struct one_res res_db[NUM_RES] = {
-							 { 1920, 1080 },
-							 { 1600,  900 },
-							 /* {  640,  480 }, */
-							 {    0,    0}
+										 { 1920, 1080, 0 },
+										 { 1600,  900, 1 },
+										 /* {  640,  480, 0 }, */
+										 {    0,    0, 0}
 };
 #endif
 
@@ -64,7 +65,10 @@ int main(int argc, char **argv) {
 		const unsigned short vres = res_db[i].vres;
 		FILE *fd;
 
-		if ((hres * vres) % 128) // unsuitable
+		if ((hres * vres) % 128) // unsuitable, safety net
+			continue;
+
+		if (res_db[i].native_only && ((hres != maxhres) || (vres != maxvres)))
 			continue;
 		
 		snprintf(filename, 512, "VidRomRes_%hux%hu.s", hres, vres);	
@@ -264,6 +268,7 @@ int main(int argc, char **argv) {
 				fprintf(fd, "\tOSLstEntry\tsRsrc_GoboFB_R%hux%hu,_sRsrc_GoboFB_R%hux%hu/* video sRsrc List */\n", hres, vres, hres, vres);
 			}
 		}
+		/* fprintf(fd, "\tOSLstEntry\tsRsrc_RAMDsk,_sRsrc_RAMDsk\n"); */
 		fprintf(fd, "\tDatLstEntry	endOfList,	0\n");
 		
 		fclose(fd);

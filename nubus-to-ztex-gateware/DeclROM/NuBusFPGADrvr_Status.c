@@ -210,6 +210,8 @@ OSErr cNuBusFPGAStatus(CntrlParamPtr pb, /* DCtlPtr */ AuxDCEPtr dce)
 	   ret = noErr;
 	   break;
 
+	   /* cscGetScanProc */ /* 0xf*/ /* undocumented ? could be called according to #mac68k */
+
    case cscGetPreferredConfiguration: /* 0x10 */
 	   { /* fixme: NVRAM */
 		  VDSwitchInfoRec	*vdswitch = *(VDSwitchInfoRec **)(long *)pb->csParam;
@@ -351,18 +353,31 @@ OSErr cNuBusFPGAStatus(CntrlParamPtr pb, /* DCtlPtr */ AuxDCEPtr dce)
 	   ret = statusErr;
 	   break;
 
-   case cscRetrieveGammaTable: /* 0x17 */
+   case cscRetrieveGammaTable: /* 0x15 */
 	   asm volatile(".word 0xfe16\n");
 	   ret = statusErr;
 	   break;
 
+	   /* cscSupportsHardwareCursor */ /* 0x16 */ /* never called, unfortunately */
+
+	   /* cscGetHardwareCursorDrawState */ /* 0x17 */ /* never called, unfortunately */
+
    case cscGetConvolution: /* 0x18 */
 	   ret = statusErr;
-	   break;	   
+	   break;
+
+	   /* cscGetPowerState */ /* 0x19 */
+	   /* cscPrivateStatusCall */ /* 0x1a */
+	   /* cscGetDDCBlock */ /* 0x1b */
 
    case cscGetMultiConnect: /* 0x1c */
 	   ret = statusErr;
 	   break;
+
+	   /* cscGetClutBehavior */ /* 0x1d */
+	   /* cscGetTimingRanges */ /* 0x1e */
+	   /* cscGetDetailedTiming */ /* 0x1f */
+	   /* cscGetCommunicationInfo */ /* 0x20 */
 	   
    default: /* always return statusErr for unknown csCode */
 	   asm volatile(".word 0xfe16\n");
