@@ -11,12 +11,12 @@ class NuBus(Module):
                  burst_size, tosbus_fifo, fromsbus_fifo, fromsbus_req_fifo,
                  wb_read, wb_write, wb_dma,
                  cd_nubus="nubus", cd_nubus90="nubus90"):
-
+        
         platform = soc.platform
         self.add_sources(platform)
 
-        led0 = platform.request("user_led", 0)
-        led1 = platform.request("user_led", 1)
+        #led0 = platform.request("user_led", 0)
+        #led1 = platform.request("user_led", 1)
 
         nub_clk = ClockSignal(cd_nubus)
         nub_resetn = ~ResetSignal(cd_nubus)
@@ -430,7 +430,6 @@ class NuBus(Module):
                     If(sampled_ack,
                        wb_dma.ack.eq(1),
                        # fixme: check status ??? (tm0 and tm1 should be active for no-error)
-                       #NextValue(led0, (~sampled_tm0 | ~sampled_tm1)),
                        NextState("FinishCycle"),
                     )
         )
@@ -450,7 +449,6 @@ class NuBus(Module):
                     If(sampled_ack,
                        wb_dma.ack.eq(1),
                        # fixme: check status ??? (tm0 and tm1 should be active for no-error)
-                       #NextValue(led0, (~sampled_tm0 | ~sampled_tm1)),
                        NextState("FinishCycle"),
                     )
         )
@@ -559,11 +557,11 @@ class NuBus(Module):
                     )
         )
 
-        self.comb += [
-            led0.eq(~dma_fsm.ongoing("Idle")), 
-            #led1.eq(dma_fsm.ongoing("Burst4DatCycleAck") | dma_fsm.ongoing("Burst4DatCycleTM0") ),
-            led1.eq(sampled_rqst | wb_dma.cyc),
-        ]
+        #self.comb += [
+        #    led0.eq(~dma_fsm.ongoing("Idle")), 
+        #    #led1.eq(dma_fsm.ongoing("Burst4DatCycleAck") | dma_fsm.ongoing("Burst4DatCycleTM0") ),
+        #    led1.eq(sampled_rqst | wb_dma.cyc),
+        #]
         
         # stuff at this end so we don't use the signals inadvertantly
 
