@@ -220,8 +220,8 @@ class NuBusFPGA(SoCCore):
 
         ## add our custom timings after the clocks have been defined
         xdc_timings_filename = None;
-        if (version == "V1.0"):
-            xdc_timings_filename = "/home/dolbeau/nubus-to-ztex-gateware/nubus_fpga_V1_0_timings.xdc"
+        #if (version == "V1.0"):
+        #    xdc_timings_filename = "/home/dolbeau/nubus-to-ztex-gateware/nubus_fpga_V1_0_timings.xdc"
 
         if (xdc_timings_filename != None):
             xdc_timings_file = open(xdc_timings_filename)
@@ -318,8 +318,10 @@ class NuBusFPGA(SoCCore):
             self.submodules.wishbone_slave_sys = WishboneDomainCrossingMaster(platform=self.platform, slave=wishbone_slave_nubus, cd_master="sys", cd_slave="nubus")
             self.bus.add_slave("DMA", self.wishbone_slave_sys, SoCRegion(origin=self.mem_map.get("master", None), size=0x40000000, cached=False))
         else:
+            sampling = 1
             wishbone_master_sys = wishbone.Interface(data_width=self.bus.data_width)
-            #self.submodules.wishbone_master_nubus = WishboneDomainCrossingMaster(platform=self.platform, slave=wishbone_master_sys, cd_master="nubus", cd_slave="sys") # for non-sampling only
+            if (not sampling):
+                self.submodules.wishbone_master_nubus = WishboneDomainCrossingMaster(platform=self.platform, slave=wishbone_master_sys, cd_master="nubus", cd_slave="sys") # for non-sampling only
             nubus_writemaster_sys = wishbone.Interface(data_width=self.bus.data_width)
             wishbone_slave_nubus = wishbone.Interface(data_width=self.bus.data_width)
             self.submodules.wishbone_slave_sys = WishboneDomainCrossingMaster(platform=self.platform, slave=wishbone_slave_nubus, cd_master="sys", cd_slave="nubus", force_delay=6) # force delay needed to avoid back-to-back transaction running into issue https://github.com/alexforencich/verilog-wishbone/issues/4
@@ -360,24 +362,26 @@ class NuBusFPGA(SoCCore):
                                                                 do_checksum = False,
                                                                 clock_domain="nubus")
 
-            self.submodules.nubus = nubus_full_sampling.NuBus(soc=self,
-                                                              burst_size=burst_size,
-                                                              tosbus_fifo=self.tosbus_fifo,
-                                                              fromsbus_fifo=self.fromsbus_fifo,
-                                                              fromsbus_req_fifo=self.fromsbus_req_fifo,
-                                                              wb_read=wishbone_master_sys,
-                                                              wb_write=nubus_writemaster_sys,
-                                                              wb_dma=wishbone_slave_nubus,
-                                                              cd_nubus="nubus")
-            #self.submodules.nubus = nubus_full.NuBus(soc=self,
-            #                                         burst_size=burst_size,
-            #                                         tosbus_fifo=self.tosbus_fifo,
-            #                                         fromsbus_fifo=self.fromsbus_fifo,
-            #                                         fromsbus_req_fifo=self.fromsbus_req_fifo,
-            #                                         wb_read=self.wishbone_master_nubus,
-            #                                         wb_write=nubus_writemaster_sys,
-            #                                         wb_dma=wishbone_slave_nubus,
-            #                                         cd_nubus="nubus")
+            if (sampling):
+                self.submodules.nubus = nubus_full_sampling.NuBus(soc=self,
+                                                                  burst_size=burst_size,
+                                                                  tosbus_fifo=self.tosbus_fifo,
+                                                                  fromsbus_fifo=self.fromsbus_fifo,
+                                                                  fromsbus_req_fifo=self.fromsbus_req_fifo,
+                                                                  wb_read=wishbone_master_sys,
+                                                                  wb_write=nubus_writemaster_sys,
+                                                                  wb_dma=wishbone_slave_nubus,
+                                                                  cd_nubus="nubus")
+            else:
+                self.submodules.nubus = nubus_full.NuBus(soc=self,
+                                                         burst_size=burst_size,
+                                                         tosbus_fifo=self.tosbus_fifo,
+                                                         fromsbus_fifo=self.fromsbus_fifo,
+                                                         fromsbus_req_fifo=self.fromsbus_req_fifo,
+                                                         wb_read=self.wishbone_master_nubus,
+                                                         wb_write=nubus_writemaster_sys,
+                                                         wb_dma=wishbone_slave_nubus,
+                                                         cd_nubus="nubus")
             self.bus.add_master(name="NuBusBridgeToWishbone", master=wishbone_master_sys)
             self.bus.add_slave("DMA", self.wishbone_slave_sys, SoCRegion(origin=self.mem_map.get("master", None), size=0x40000000, cached=False))
             self.bus.add_master(name="NuBusBridgeToWishboneWrite", master=nubus_writemaster_sys)
