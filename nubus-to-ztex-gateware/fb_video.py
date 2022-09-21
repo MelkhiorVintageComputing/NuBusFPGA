@@ -12,11 +12,26 @@ from litex.build.io import SDROutput, DDROutput
 
 from litex.soc.cores.video import *
 
+
+video_timing_nohwcursor_layout = [
+    # Synchronization signals.
+    ("hsync", 1),
+    ("vsync", 1),
+    ("de",    1),
+    ("inframe", 1),
+    # Extended/Optional synchronization signals.
+    ("hres",   hbits),
+    ("vres",   vbits),
+    ("hcount", hbits),
+    ("vcount", vbits),
+]
+
 video_timing_hwcursor_layout = [
     # Synchronization signals.
     ("hsync", 1),
     ("vsync", 1),
     ("de",    1),
+    ("inframe",  1),
     ("hwcursor", 1),
     ("hwcursorx", 5),
     ("hwcursory", 5),
@@ -72,7 +87,7 @@ class FBVideoTimingGenerator(Module, AutoCSR):
             self.specials += MultiReg(self.hwcursor_x, _hwcursor_x)
             self.specials += MultiReg(self.hwcursor_y, _hwcursor_y)
         else:
-            self.source = source = stream.Endpoint(video_timing_layout)
+            self.source = source = stream.Endpoint(video_timing_nohwcursor_layout)
 
         # # #
 
@@ -106,8 +121,12 @@ class FBVideoTimingGenerator(Module, AutoCSR):
         self.specials += MultiReg(self._vres_end,   vres_end)
 
         # Generate timings.
+        # whether we're in the visible frame
         hactive = Signal()
         vactive = Signal()
+        # whether we're in the picture (including non-visible part of frame for windowboxing)
+        hinframe = Signal()
+        vinframe = Signal()
         fsm = FSM(reset_state="IDLE")
         fsm = ResetInserter()(fsm)
         self.submodules.fsm = fsm
@@ -115,6 +134,8 @@ class FBVideoTimingGenerator(Module, AutoCSR):
         fsm.act("IDLE",
             NextValue(hactive, 0),
             NextValue(vactive, 0),
+            NextValue(hinframe, 0),
+            NextValue(vinframe, 0),
             NextValue(source.hres, hres),
             NextValue(source.vres, vres),
             NextValue(source.hcount,  0),
@@ -122,6 +143,7 @@ class FBVideoTimingGenerator(Module, AutoCSR):
             NextState("RUN")
         )
         self.comb += source.de.eq(hactive & vactive) # DE when both HActive and VActive.
+        self.comb += source.inframe.eq(hinframe & vinframe) # InFrame when both HInFrame and VInFrame.
         self.sync += source.first.eq((source.hcount ==     0) & (source.vcount ==     0)),
         self.sync += source.last.eq( (source.hcount == hscan) & (source.vcount == vscan)),
         fsm.act("RUN",
@@ -132,6 +154,8 @@ class FBVideoTimingGenerator(Module, AutoCSR):
                 # Generate HActive / HSync.
                 If(source.hcount == hres_start,  NextValue(hactive,      1)), # Start of HActive.
                 If(source.hcount == hres_end,    NextValue(hactive,      0)), # End of HActive.
+                If(source.hcount == 0,           NextValue(hinframe,     1)), # Start of HInFrame.
+                If(source.hcount == hres,        NextValue(hinframe,     0)), # End of HInFrame.
                 If(source.hcount == hsync_start, NextValue(source.hsync, 1)), # Start of HSync.
                 If(source.hcount == hsync_end,   NextValue(source.hsync, 0)), # End of HSync.
                 # End of HScan.
@@ -142,7 +166,9 @@ class FBVideoTimingGenerator(Module, AutoCSR):
                     NextValue(source.vcount, source.vcount + 1),
                     # Generate VActive / VSync.
                     If(source.vcount == vres_start,  NextValue(vactive,      1)), # Start of VActive.
-                    If(source.vcount == vres_end,    NextValue(vactive,      0)), # End of HActive.
+                    If(source.vcount == vres_end,    NextValue(vactive,      0)), # End of VActive.
+                    If(source.vcount == 0,           NextValue(vinframe,     1)), # Start of VInFrame.
+                    If(source.vcount == vres,        NextValue(vinframe,     0)), # End of VInFrame.
                     If(source.vcount == vsync_start, NextValue(source.vsync, 1)), # Start of VSync.
                     If(source.vcount == vsync_end,   NextValue(source.vsync, 0)), # End of VSync.
                     # End of VScan.

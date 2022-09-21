@@ -79,7 +79,7 @@ class VideoFrameBufferMultiDepth(Module, AutoCSR):
                 )
             ]
         else:
-            self.vtg_sink  = vtg_sink = stream.Endpoint(video_timing_layout)
+            self.vtg_sink  = vtg_sink = stream.Endpoint(video_timing_nohwcursor_layout)
 
 
         
@@ -89,6 +89,7 @@ class VideoFrameBufferMultiDepth(Module, AutoCSR):
         #source_buf_ready = Signal()
         source_buf_valid = Signal()
         source_buf_de = Signal()
+        source_buf_inframe = Signal()
         source_buf_hsync = Signal()
         source_buf_vsync = Signal()
         data_buf_index = Signal(8)
@@ -100,6 +101,7 @@ class VideoFrameBufferMultiDepth(Module, AutoCSR):
         
         source_buf_b_valid = Signal()
         source_buf_b_de = Signal()
+        source_buf_b_inframe = Signal()
         source_buf_b_hsync = Signal()
         source_buf_b_vsync = Signal()
         data_buf_b_index = Signal(8)
@@ -111,6 +113,7 @@ class VideoFrameBufferMultiDepth(Module, AutoCSR):
         #source_out_ready = Signal()
         source_out_valid = Signal()
         source_out_de = Signal()
+        source_out_inframe = Signal()
         source_out_hsync = Signal()
         source_out_vsync = Signal()
         source_out_r = Signal(8)
@@ -264,6 +267,7 @@ class VideoFrameBufferMultiDepth(Module, AutoCSR):
                vtg_sink.ready.eq(source_buf_valid & source.ready),
             ),
             source_buf_de.eq(vtg_sink.de),
+            source_buf_inframe.eq(vtg_sink.inframe),
             source_buf_hsync.eq(vtg_sink.hsync),
             source_buf_vsync.eq(vtg_sink.vsync),
             Case(self.indexed_mode, {
@@ -284,8 +288,10 @@ class VideoFrameBufferMultiDepth(Module, AutoCSR):
                 hwcursorx_buf.eq(vtg_sink.hwcursorx),
                 hwcursory_buf.eq(vtg_sink.hwcursory),
             ]
+        
         vga_sync += [
             source_buf_b_de.eq(source_buf_de),
+            source_buf_b_inframe.eq(source_buf_inframe),
             source_buf_b_hsync.eq(source_buf_hsync),
             source_buf_b_vsync.eq(source_buf_vsync),
             source_buf_b_valid.eq(source_buf_valid),
@@ -303,6 +309,7 @@ class VideoFrameBufferMultiDepth(Module, AutoCSR):
             
         vga_sync += [
             source_out_de.eq(source_buf_b_de),
+            source_out_inframe.eq(source_buf_b_inframe),
             source_out_hsync.eq(source_buf_b_hsync),
             source_out_vsync.eq(source_buf_b_vsync),
             source_out_valid.eq(source_buf_b_valid),
@@ -344,7 +351,7 @@ class VideoFrameBufferMultiDepth(Module, AutoCSR):
             ]
             
         self.comb += [
-            source.de.eq(source_out_de),
+            source.de.eq(source_out_inframe), # inframe, not de
             source.hsync.eq(source_out_hsync),
             source.vsync.eq(source_out_vsync),
             source.valid.eq(source_out_valid),
