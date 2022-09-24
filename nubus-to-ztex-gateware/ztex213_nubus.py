@@ -171,9 +171,9 @@ _nubus_nubus_v1_2 = [
     ("ack_3v3_n",          0, Pins("J17"), IOStandard("lvttl")),
     ("ack_o_n",            0, Pins("H14"), IOStandard("lvttl")),
     ("ack_oe_n",           0, Pins("J13"), IOStandard("lvttl")),
-    ("nmrq_3v3_n",         0, Pins("J18"), IOStandard("lvttl")),
-    ("reset_3v3_n",        0, Pins("P2"),  IOStandard("lvttl")),
-    ("rqst_3v3_n"  ,       0, Pins("K16"), IOStandard("lvttl")),
+    ("nmrq_3v3_n",         0, Pins("J18"), IOStandard("lvttl")), # 'irq' line, Output only direct to 74LVT125
+    ("reset_3v3_n",        0, Pins("P2"),  IOStandard("lvttl")), # Input only
+    ("rqst_3v3_n"  ,       0, Pins("K16"), IOStandard("lvttl")), # Open Collector
     ("rqst_o_n"  ,         0, Pins("K13"), IOStandard("lvttl")),
     ("start_3v3_n",        0, Pins("K15"), IOStandard("lvttl")),
     ("start_o_n",          0, Pins("H15"), IOStandard("lvttl")),
@@ -182,7 +182,7 @@ _nubus_nubus_v1_2 = [
                                    "D12 D13 D14 C14 B16 B17 D15 C15 "
                                    "B18 A18 C16 C17 E15 E16 F14 F13 "
                                    "D17 D18 E17 E18 F15 F18 F16 G18 "), IOStandard("lvttl")),
-    ("arb_3v3_n",          0, Pins("T8 V4 V5 U6"), IOStandard("lvttl")),
+    ("arb_3v3_n",          0, Pins("T8 V4 V5 U6"), IOStandard("lvttl")), # Open Collector
     ("arb_o_n",            0, Pins("J14 G16 G14 H17"), IOStandard("lvttl")),
     ("id_3v3_n",           0, Pins("U7 V6 V7 U8"), IOStandard("lvttl")),
     ("tm0_3v3_n",          0, Pins("P5"), IOStandard("lvttl")),
