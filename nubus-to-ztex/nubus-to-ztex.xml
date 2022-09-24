@@ -2,7 +2,7 @@
 <export version="D">
   <design>
     <source>/home/dolbeau/MAC/NuBusFPGA.V1_2/nubus-to-ztex/nubus-to-ztex.sch</source>
-    <date>Thu Jun 30 13:02:30 2022</date>
+    <date>Sat Sep 24 08:03:41 2022</date>
     <tool>Eeschema 5.0.2+dfsg1-1~bpo9+1</tool>
     <sheet number="1" name="/" tstamps="/">
       <title_block>
@@ -127,7 +127,8 @@
       <value>ZTEX_AB-ztex_AB</value>
       <footprint>For_SeeedStudio:PinHeader_2x32_P2.54mm_Vertical_For_SeeedStudio</footprint>
       <fields>
-        <field name="MPN">10-89-7642</field>
+        <field name="MPN">X6521WV-2x32H-C30D60</field>
+        <field name="MPN-ALT">10-89-7642</field>
         <field name="URL">https://www2.mouser.com/ProductDetail/Molex/10-89-7642?qs=%2Fha2pyFadugCxzQFZUdvioDcljDVidgd4vXrOFuSRYM%3D</field>
       </fields>
       <libsource lib="ztex_AB" part="ZTEX_AB" description=""/>
@@ -152,7 +153,8 @@
       <value>ZTEX_CD-ztex_CD</value>
       <footprint>For_SeeedStudio:PinHeader_2x32_P2.54mm_Vertical_For_SeeedStudio</footprint>
       <fields>
-        <field name="MPN">10-89-7642</field>
+        <field name="MPN">X6521WV-2x32H-C30D60</field>
+        <field name="MPN-ALT">10-89-7642</field>
         <field name="URL">https://www2.mouser.com/ProductDetail/Molex/10-89-7642?qs=%2Fha2pyFadugCxzQFZUdvioDcljDVidgd4vXrOFuSRYM%3D</field>
       </fields>
       <libsource lib="ztex_CD" part="ZTEX_CD" description=""/>
@@ -371,10 +373,11 @@
       <footprint>For_SeeedStudio:DIN41612_C_3x32_Male_Horizontal_THT</footprint>
       <datasheet> ~</datasheet>
       <fields>
-        <field name="MPN">85003-0567</field>
+        <field name="MPN">0850030567</field>
         <field name="MPN (3M)">DIN-096CPC-RR1-HM</field>
         <field name="MPN (Harting 2)">09033966921</field>
         <field name="MPN (Harting)">09033967921</field>
+        <field name="MPN alias">85003-0567</field>
         <field name="Notes (3M)">RR1L would also work (for .062 PCBs)</field>
         <field name="URL">https://www.mouser.fr/ProductDetail/Molex/85003-0567?qs=U4pz39agNJB6P1oBpJ4bJA%3D%3D</field>
       </fields>
@@ -888,11 +891,11 @@
       <tstamp>62BC5C66</tstamp>
     </comp>
     <comp ref="U12">
-      <value>74CB3T1G125DBVR</value>
+      <value>SN74CB3T1G125DBVR</value>
       <footprint>Package_TO_SOT_SMD:SOT-23-5</footprint>
       <datasheet>http://www.ti.com/lit/sg/scyt129e/scyt129e.pdf</datasheet>
       <fields>
-        <field name="MPN">74CB3T1G125DBVR</field>
+        <field name="MPN">SN74CB3T1G125DBVR</field>
         <field name="URL">https://www.lcsc.com/product-detail/Analog-Switches-Multiplexers_Texas-Instruments-SN74CB3T1G125DBVR_C134001.html</field>
       </fields>
       <libsource lib="74xGxx" part="74CB3T1G125" description="Single FET Bus Switch"/>
@@ -984,7 +987,7 @@
       <footprint>For_SeeedStudio:HDMI_A_Amphenol_10029449-111</footprint>
       <datasheet>https://en.wikipedia.org/wiki/HDMI</datasheet>
       <fields>
-        <field name="MPN">10029449-111</field>
+        <field name="MPN">10029449-111RLF</field>
         <field name="URL">https://lcsc.com/product-detail/D-Sub-DVI-HDMI-Connectors_Amphenol-ICC-10029449-111RLF_C427307.html</field>
         <field name="URL-ALT">https://www2.mouser.com/ProductDetail/Amphenol-FCI/10029449-111RLF?qs=fmpTyLOWOey0HPdD9%2F%2FaXA%3D%3D</field>
       </fields>
@@ -1283,6 +1286,7 @@
       <datasheet>https://www.molex.com/webdocs/datasheets/pdf/en-us/0472192001_MEMORY_CARD_SOCKET.pdf</datasheet>
       <fields>
         <field name="MPN">47219-2001</field>
+        <field name="URL">https://eu.mouser.com/ProductDetail/Molex/47219-2001?qs=6kT3pPPHxnVaoXw6Dd7beQ%3D%3D</field>
       </fields>
       <libsource lib="47219-2001" part="47219-2001" description=""/>
       <sheetpath names="/sdcard/" tstamps="/62D70B59/"/>

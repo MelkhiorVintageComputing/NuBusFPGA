@@ -25,8 +25,9 @@ F 0 "JAB1" H 1825 4375 50  0000 C CNN
 F 1 "ZTEX_AB-ztex_AB" H 1825 4284 50  0000 C CNN
 F 2 "For_SeeedStudio:PinHeader_2x32_P2.54mm_Vertical_For_SeeedStudio" H 1800 2650 50  0001 C CNN
 F 3 "" H 1800 2650 50  0001 C CNN
-F 4 "10-89-7642" H 1800 2650 50  0001 C CNN "MPN"
+F 4 "10-89-7642" H 1800 2650 50  0001 C CNN "MPN-ALT"
 F 5 "https://www2.mouser.com/ProductDetail/Molex/10-89-7642?qs=%2Fha2pyFadugCxzQFZUdvioDcljDVidgd4vXrOFuSRYM%3D" H 1800 2650 50  0001 C CNN "URL"
+F 6 "X6521WV-2x32H-C30D60" H 1800 2650 50  0001 C CNN "MPN"
 	1    1800 2650
 	1    0    0    -1  
 $EndComp
@@ -96,8 +97,9 @@ F 0 "JCD1" H 7650 4375 50  0000 C CNN
 F 1 "ZTEX_CD-ztex_CD" H 7650 4284 50  0000 C CNN
 F 2 "For_SeeedStudio:PinHeader_2x32_P2.54mm_Vertical_For_SeeedStudio" H 7600 2650 50  0001 C CNN
 F 3 "" H 7600 2650 50  0001 C CNN
-F 4 "10-89-7642" H 7600 2650 50  0001 C CNN "MPN"
+F 4 "10-89-7642" H 7600 2650 50  0001 C CNN "MPN-ALT"
 F 5 "https://www2.mouser.com/ProductDetail/Molex/10-89-7642?qs=%2Fha2pyFadugCxzQFZUdvioDcljDVidgd4vXrOFuSRYM%3D" H 7600 2650 50  0001 C CNN "URL"
+F 6 "X6521WV-2x32H-C30D60" H 7600 2650 50  0001 C CNN "MPN"
 	1    7600 2650
 	1    0    0    -1  
 $EndComp

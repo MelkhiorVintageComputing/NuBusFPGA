@@ -1,12 +1,12 @@
 G04 #@! TF.GenerationSoftware,KiCad,Pcbnew,5.0.2+dfsg1-1~bpo9+1*
-G04 #@! TF.CreationDate,2022-06-30T13:02:46+02:00*
+G04 #@! TF.CreationDate,2022-09-24T08:05:06+02:00*
 G04 #@! TF.ProjectId,nubus-to-ztex,6e756275-732d-4746-9f2d-7a7465782e6b,rev?*
 G04 #@! TF.SameCoordinates,Original*
 G04 #@! TF.FileFunction,Copper,L4,Bot*
 G04 #@! TF.FilePolarity,Positive*
 %FSLAX46Y46*%
 G04 Gerber Fmt 4.6, Leading zero omitted, Abs format (unit mm)*
-G04 Created by KiCad (PCBNEW 5.0.2+dfsg1-1~bpo9+1) date Thu Jun 30 13:02:46 2022*
+G04 Created by KiCad (PCBNEW 5.0.2+dfsg1-1~bpo9+1) date Sat Sep 24 08:05:06 2022*
 %MOMM*%
 %LPD*%
 G01*
@@ -1101,6 +1101,9 @@ X195480000Y-15062500D03*
 X185500000Y-15052500D03*
 X168650000Y-91575000D03*
 X118534670Y-98720000D03*
+X240200000Y-27500000D03*
+X117200000Y-72200000D03*
+X168357500Y-78180000D03*
 G04 #@! TO.N,+3V3*
 X135450000Y-74225000D03*
 X248080000Y-63750000D03*

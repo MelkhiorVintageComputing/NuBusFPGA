@@ -1,4 +1,4 @@
-## Footprint report - date Thu Jun 30 13:03:03 2022
+## Footprint report - date Sat Sep 24 08:04:53 2022
 ## Created by Pcbnew version kicad 5.0.2+dfsg1-1~bpo9+1
 ## Unit = mm, Angle = deg.
 
@@ -218,7 +218,7 @@ $EndMODULE  C11
 
 $MODULE "U12"
 reference "U12"
-value "74CB3T1G125DBVR"
+value "SN74CB3T1G125DBVR"
 footprint "Package_TO_SOT_SMD:SOT-23-5"
 attribut smd
 position 149.900000 48.500000  orientation 90.00

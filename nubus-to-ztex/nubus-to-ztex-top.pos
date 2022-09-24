@@ -1,4 +1,4 @@
-### Module positions - created on Thu Jun 30 13:02:56 2022 ###
+### Module positions - created on Sat Sep 24 08:04:37 2022 ###
 ### Printed by Pcbnew version kicad 5.0.2+dfsg1-1~bpo9+1
 ## Unit = mm, Angle = deg.
 ## Side : top
@@ -83,7 +83,7 @@ U7        74LVT245BPW,118     TSSOP-20_4.4x6.5mm_P0.65mm_ForSeeedStudio   177.00
 U8        74LVT245BPW,118     TSSOP-20_4.4x6.5mm_P0.65mm_ForSeeedStudio   192.0000   -78.5000   90.0000  top
 U10       SN65220             SOT-23-6                                    265.4000   -79.3550  180.0000  top
 U11       TPS2051C            SOT-23-5                                    252.9000   -85.2100  270.0000  top
-U12       74CB3T1G125DBVR     SOT-23-5                                    149.9000   -48.5000   90.0000  top
+U12       SN74CB3T1G125DBVR   SOT-23-5                                    149.9000   -48.5000   90.0000  top
 U13       SN74CB3T3125PWR     TSSOP-14_4.4x5mm_P0.65mm                    186.6250   -50.7500    0.0000  top
 U14       SN74CB3T3245PWR     TSSOP-20_4.4x6.5mm_P0.65mm_ForSeeedStudio   142.2000   -48.8000   90.0000  top
 ## End
