@@ -1,4 +1,4 @@
-### Module positions - created on Sat Sep 24 08:04:37 2022 ###
+### Module positions - created on Mon Sep 26 19:03:07 2022 ###
 ### Printed by Pcbnew version kicad 5.0.2+dfsg1-1~bpo9+1
 ## Unit = mm, Angle = deg.
 ## Side : top
@@ -23,7 +23,7 @@ C20       10nF                C_0603_1608Metric                           253.82
 C21       47uF_10V+           C_0805_2012Metric                           259.5400   -53.8100  180.0000  top
 C22       100nF               C_0603_1608Metric                           256.2900   -54.6000   90.0000  top
 C23       100nF               C_0603_1608Metric                           244.8600   -61.0900   90.0000  top
-C24       100nF               C_0603_1608Metric                           262.0300   -66.5700  270.0000  top
+C24       100nF               C_0603_1608Metric                           263.0300   -66.5700  270.0000  top
 C25       150uF               C_1206_3216Metric                           257.4100   -86.3600  180.0000  top
 C26       100nF               C_0603_1608Metric                           254.6300   -89.0600    0.0000  top
 C27       100nF               C_0603_1608Metric                           253.0500   -81.4600  180.0000  top
@@ -35,12 +35,17 @@ D2        RED                 LED_0805_2012Metric                         189.37
 D3        BLUE                LED_0805_2012Metric                         114.8000   -15.5000   90.0000  top
 D4        RED                 LED_0805_2012Metric                         191.6233   -16.0000  270.0000  top
 D5        RED                 LED_0805_2012Metric                         193.8750   -16.0000  270.0000  top
+D6        YELLOW              LED_0805_2012Metric                         134.8800   -20.0603   90.0000  top
+D7        YELLOW              LED_0805_2012Metric                         137.4100   -20.0603   90.0000  top
+D8        YELLOW              LED_0805_2012Metric                         122.6100   -69.1500  180.0000  top
+D9        YELLOW              LED_0805_2012Metric                         175.7215   -20.0971   90.0000  top
+D10       YELLOW              LED_0805_2012Metric                         178.2615   -20.0971   90.0000  top
 D11       GREEN               LED_0805_2012Metric                         122.9026   -45.8770  180.0000  top
 D12       GREEN               LED_0805_2012Metric                         122.9026   -42.9104  180.0000  top
 D13       GREEN               LED_0805_2012Metric                         122.9026   -39.9437  180.0000  top
 D14       GREEN               LED_0805_2012Metric                         122.9026   -36.9770  180.0000  top
 FB1       Ferrite_Bead_Small  L_0805_2012Metric                           257.8700   -84.0700    0.0000  top
-J5        HDMI_A              HDMI_A_Amphenol_10029449-111                267.9000   -62.3000   90.0000  top
+J5        HDMI_A              HDMI_A_Amphenol_10029449-111                268.9000   -62.3000   90.0000  top
 J6        USB_micro-B         USB_Micro-B_Molex-105017-0001               270.6600   -79.0700   90.0000  top
 R1        549                 R_0603_1608Metric                           187.1200   -19.5800   90.0000  top
 R2        549                 R_0603_1608Metric                           189.3717   -19.5800   90.0000  top
@@ -52,6 +57,11 @@ R7        10k                 R_0603_1608Metric                           129.89
 R8        10k                 R_0603_1608Metric                           128.0978   -86.0071  270.0000  top
 R9        549                 R_0603_1608Metric                           191.6233   -19.6000   90.0000  top
 R10       549                 R_0603_1608Metric                           193.8750   -19.6500   90.0000  top
+R11       549                 R_0603_1608Metric                           134.8800   -16.0603  270.0000  top
+R12       549                 R_0603_1608Metric                           137.4200   -16.0603  270.0000  top
+R13       549                 R_0603_1608Metric                           118.6100   -69.1500    0.0000  top
+R14       549                 R_0603_1608Metric                           175.7215   -16.2171  270.0000  top
+R15       549                 R_0603_1608Metric                           178.2615   -16.2171  270.0000  top
 R16       549                 R_0603_1608Metric                           119.0526   -45.8770    0.0000  top
 R17       549                 R_0603_1608Metric                           119.0526   -42.9104    0.0000  top
 R18       549                 R_0603_1608Metric                           119.0526   -39.9437    0.0000  top

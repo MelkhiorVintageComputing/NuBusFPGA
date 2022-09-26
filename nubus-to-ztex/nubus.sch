@@ -2566,4 +2566,286 @@ Wire Notes Line
 	6950 9300 6950 8450
 Text Notes 6750 8450 0    50   ~ 0
 signals formerly from FPGA to CPLD\nTBC they are no longer needed
+Text Notes 12750 7300 0    50   ~ 0
+Signals Tap Leds
+Wire Wire Line
+	12850 7750 12700 7750
+Wire Wire Line
+	13150 7750 13550 7750
+$Comp
+L Device:R R?
+U 1 1 6332F9A9
+P 13700 7750
+AR Path="/5F6B165A/6332F9A9" Ref="R?"  Part="1" 
+AR Path="/5F67E4B9/6332F9A9" Ref="R?"  Part="1" 
+AR Path="/618E8C75/6332F9A9" Ref="R?"  Part="1" 
+AR Path="/618F532C/6332F9A9" Ref="R11"  Part="1" 
+AR Path="/6332A9A8/6332F9A9" Ref="R?"  Part="1" 
+F 0 "R11" V 13780 7750 50  0000 C CNN
+F 1 "549" V 13700 7750 50  0000 C CNN
+F 2 "Resistor_SMD:R_0603_1608Metric" V 13630 7750 50  0001 C CNN
+F 3 "" H 13700 7750 50  0000 C CNN
+F 4 "0603WAF5490T5E" V 13700 7750 50  0001 C CNN "MPN"
+F 5 "https://lcsc.com/product-detail/Chip-Resistor-Surface-Mount_UNI-ROYAL-Uniroyal-Elec-0603WAF5490T5E_C23079.html" V 13700 7750 50  0001 C CNN "URL"
+	1    13700 7750
+	0    1    1    0   
+$EndComp
+$Comp
+L Device:LED_ALT D?
+U 1 1 6332F9B3
+P 13000 7750
+AR Path="/5F6B165A/6332F9B3" Ref="D?"  Part="1" 
+AR Path="/5F67E4B9/6332F9B3" Ref="D?"  Part="1" 
+AR Path="/618E8C75/6332F9B3" Ref="D?"  Part="1" 
+AR Path="/618F532C/6332F9B3" Ref="D6"  Part="1" 
+AR Path="/6332A9A8/6332F9B3" Ref="D?"  Part="1" 
+F 0 "D6" H 13000 7850 50  0000 C CNN
+F 1 "YELLOW" H 13050 7600 50  0000 R CNN
+F 2 "LED_SMD:LED_0805_2012Metric" H 13000 7750 50  0001 C CNN
+F 3 "https://lcsc.com/product-detail/Light-Emitting-Diodes-LED_Lite-On-LTST-C170KSKT_C125091.html" H 13000 7750 50  0001 C CNN
+F 4 "www.liteon.com" H 13000 7750 60  0001 C CNN "MNF1_URL"
+F 5 "LTST-C170KSKT" H 13000 7750 60  0001 C CNN "MPN"
+F 6 "https://lcsc.com/product-detail/Light-Emitting-Diodes-LED_Lite-On-LTST-C170KSKT_C125091.html" H 13000 7750 50  0001 C CNN "URL"
+	1    13000 7750
+	1    0    0    -1  
+$EndComp
+$Comp
+L power:+3V3 #PWR?
+U 1 1 6332F9BA
+P 13850 7750
+AR Path="/6332A9A8/6332F9BA" Ref="#PWR?"  Part="1" 
+AR Path="/618F532C/6332F9BA" Ref="#PWR0144"  Part="1" 
+F 0 "#PWR0144" H 13850 7600 50  0001 C CNN
+F 1 "+3V3" H 13865 7923 50  0000 C CNN
+F 2 "" H 13850 7750 50  0001 C CNN
+F 3 "" H 13850 7750 50  0001 C CNN
+	1    13850 7750
+	1    0    0    -1  
+$EndComp
+Text GLabel 12700 7750 0    50   Input ~ 0
+~ACK_3V3
+Wire Wire Line
+	12850 9000 12700 9000
+Wire Wire Line
+	13150 9000 13550 9000
+$Comp
+L Device:R R?
+U 1 1 6334203F
+P 13700 9000
+AR Path="/5F6B165A/6334203F" Ref="R?"  Part="1" 
+AR Path="/5F67E4B9/6334203F" Ref="R?"  Part="1" 
+AR Path="/618E8C75/6334203F" Ref="R?"  Part="1" 
+AR Path="/618F532C/6334203F" Ref="R14"  Part="1" 
+AR Path="/6332A9A8/6334203F" Ref="R?"  Part="1" 
+F 0 "R14" V 13780 9000 50  0000 C CNN
+F 1 "549" V 13700 9000 50  0000 C CNN
+F 2 "Resistor_SMD:R_0603_1608Metric" V 13630 9000 50  0001 C CNN
+F 3 "" H 13700 9000 50  0000 C CNN
+F 4 "0603WAF5490T5E" V 13700 9000 50  0001 C CNN "MPN"
+F 5 "https://lcsc.com/product-detail/Chip-Resistor-Surface-Mount_UNI-ROYAL-Uniroyal-Elec-0603WAF5490T5E_C23079.html" V 13700 9000 50  0001 C CNN "URL"
+	1    13700 9000
+	0    1    1    0   
+$EndComp
+$Comp
+L Device:LED_ALT D?
+U 1 1 63342049
+P 13000 9000
+AR Path="/5F6B165A/63342049" Ref="D?"  Part="1" 
+AR Path="/5F67E4B9/63342049" Ref="D?"  Part="1" 
+AR Path="/618E8C75/63342049" Ref="D?"  Part="1" 
+AR Path="/618F532C/63342049" Ref="D9"  Part="1" 
+AR Path="/6332A9A8/63342049" Ref="D?"  Part="1" 
+F 0 "D9" H 13000 9100 50  0000 C CNN
+F 1 "YELLOW" H 13050 8850 50  0000 R CNN
+F 2 "LED_SMD:LED_0805_2012Metric" H 13000 9000 50  0001 C CNN
+F 3 "https://lcsc.com/product-detail/Light-Emitting-Diodes-LED_Lite-On-LTST-C170KSKT_C125091.html" H 13000 9000 50  0001 C CNN
+F 4 "www.liteon.com" H 13000 9000 60  0001 C CNN "MNF1_URL"
+F 5 "LTST-C170KSKT" H 13000 9000 60  0001 C CNN "MPN"
+F 6 "https://lcsc.com/product-detail/Light-Emitting-Diodes-LED_Lite-On-LTST-C170KSKT_C125091.html" H 13000 9000 50  0001 C CNN "URL"
+	1    13000 9000
+	1    0    0    -1  
+$EndComp
+$Comp
+L power:+3V3 #PWR?
+U 1 1 63342050
+P 13850 9000
+AR Path="/6332A9A8/63342050" Ref="#PWR?"  Part="1" 
+AR Path="/618F532C/63342050" Ref="#PWR0145"  Part="1" 
+F 0 "#PWR0145" H 13850 8850 50  0001 C CNN
+F 1 "+3V3" H 13865 9173 50  0000 C CNN
+F 2 "" H 13850 9000 50  0001 C CNN
+F 3 "" H 13850 9000 50  0001 C CNN
+	1    13850 9000
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	12850 9450 12700 9450
+Wire Wire Line
+	13150 9450 13550 9450
+$Comp
+L Device:R R?
+U 1 1 6334334C
+P 13700 9450
+AR Path="/5F6B165A/6334334C" Ref="R?"  Part="1" 
+AR Path="/5F67E4B9/6334334C" Ref="R?"  Part="1" 
+AR Path="/618E8C75/6334334C" Ref="R?"  Part="1" 
+AR Path="/618F532C/6334334C" Ref="R15"  Part="1" 
+AR Path="/6332A9A8/6334334C" Ref="R?"  Part="1" 
+F 0 "R15" V 13780 9450 50  0000 C CNN
+F 1 "549" V 13700 9450 50  0000 C CNN
+F 2 "Resistor_SMD:R_0603_1608Metric" V 13630 9450 50  0001 C CNN
+F 3 "" H 13700 9450 50  0000 C CNN
+F 4 "0603WAF5490T5E" V 13700 9450 50  0001 C CNN "MPN"
+F 5 "https://lcsc.com/product-detail/Chip-Resistor-Surface-Mount_UNI-ROYAL-Uniroyal-Elec-0603WAF5490T5E_C23079.html" V 13700 9450 50  0001 C CNN "URL"
+	1    13700 9450
+	0    1    1    0   
+$EndComp
+$Comp
+L Device:LED_ALT D?
+U 1 1 63343356
+P 13000 9450
+AR Path="/5F6B165A/63343356" Ref="D?"  Part="1" 
+AR Path="/5F67E4B9/63343356" Ref="D?"  Part="1" 
+AR Path="/618E8C75/63343356" Ref="D?"  Part="1" 
+AR Path="/618F532C/63343356" Ref="D10"  Part="1" 
+AR Path="/6332A9A8/63343356" Ref="D?"  Part="1" 
+F 0 "D10" H 13000 9550 50  0000 C CNN
+F 1 "YELLOW" H 13050 9300 50  0000 R CNN
+F 2 "LED_SMD:LED_0805_2012Metric" H 13000 9450 50  0001 C CNN
+F 3 "https://lcsc.com/product-detail/Light-Emitting-Diodes-LED_Lite-On-LTST-C170KSKT_C125091.html" H 13000 9450 50  0001 C CNN
+F 4 "www.liteon.com" H 13000 9450 60  0001 C CNN "MNF1_URL"
+F 5 "LTST-C170KSKT" H 13000 9450 60  0001 C CNN "MPN"
+F 6 "https://lcsc.com/product-detail/Light-Emitting-Diodes-LED_Lite-On-LTST-C170KSKT_C125091.html" H 13000 9450 50  0001 C CNN "URL"
+	1    13000 9450
+	1    0    0    -1  
+$EndComp
+$Comp
+L power:+3V3 #PWR?
+U 1 1 6334335D
+P 13850 9450
+AR Path="/6332A9A8/6334335D" Ref="#PWR?"  Part="1" 
+AR Path="/618F532C/6334335D" Ref="#PWR0146"  Part="1" 
+F 0 "#PWR0146" H 13850 9300 50  0001 C CNN
+F 1 "+3V3" H 13865 9623 50  0000 C CNN
+F 2 "" H 13850 9450 50  0001 C CNN
+F 3 "" H 13850 9450 50  0001 C CNN
+	1    13850 9450
+	1    0    0    -1  
+$EndComp
+Text GLabel 12700 9450 0    50   Input ~ 0
+~TM1_3V3
+Text GLabel 12700 9000 0    50   Input ~ 0
+~TM0_3V3
+Wire Wire Line
+	12850 8150 12700 8150
+Wire Wire Line
+	13150 8150 13550 8150
+$Comp
+L Device:R R?
+U 1 1 6334A052
+P 13700 8150
+AR Path="/5F6B165A/6334A052" Ref="R?"  Part="1" 
+AR Path="/5F67E4B9/6334A052" Ref="R?"  Part="1" 
+AR Path="/618E8C75/6334A052" Ref="R?"  Part="1" 
+AR Path="/618F532C/6334A052" Ref="R12"  Part="1" 
+AR Path="/6332A9A8/6334A052" Ref="R?"  Part="1" 
+F 0 "R12" V 13780 8150 50  0000 C CNN
+F 1 "549" V 13700 8150 50  0000 C CNN
+F 2 "Resistor_SMD:R_0603_1608Metric" V 13630 8150 50  0001 C CNN
+F 3 "" H 13700 8150 50  0000 C CNN
+F 4 "0603WAF5490T5E" V 13700 8150 50  0001 C CNN "MPN"
+F 5 "https://lcsc.com/product-detail/Chip-Resistor-Surface-Mount_UNI-ROYAL-Uniroyal-Elec-0603WAF5490T5E_C23079.html" V 13700 8150 50  0001 C CNN "URL"
+	1    13700 8150
+	0    1    1    0   
+$EndComp
+$Comp
+L Device:LED_ALT D?
+U 1 1 6334A05C
+P 13000 8150
+AR Path="/5F6B165A/6334A05C" Ref="D?"  Part="1" 
+AR Path="/5F67E4B9/6334A05C" Ref="D?"  Part="1" 
+AR Path="/618E8C75/6334A05C" Ref="D?"  Part="1" 
+AR Path="/618F532C/6334A05C" Ref="D7"  Part="1" 
+AR Path="/6332A9A8/6334A05C" Ref="D?"  Part="1" 
+F 0 "D7" H 13000 8250 50  0000 C CNN
+F 1 "YELLOW" H 13050 8000 50  0000 R CNN
+F 2 "LED_SMD:LED_0805_2012Metric" H 13000 8150 50  0001 C CNN
+F 3 "https://lcsc.com/product-detail/Light-Emitting-Diodes-LED_Lite-On-LTST-C170KSKT_C125091.html" H 13000 8150 50  0001 C CNN
+F 4 "www.liteon.com" H 13000 8150 60  0001 C CNN "MNF1_URL"
+F 5 "LTST-C170KSKT" H 13000 8150 60  0001 C CNN "MPN"
+F 6 "https://lcsc.com/product-detail/Light-Emitting-Diodes-LED_Lite-On-LTST-C170KSKT_C125091.html" H 13000 8150 50  0001 C CNN "URL"
+	1    13000 8150
+	1    0    0    -1  
+$EndComp
+$Comp
+L power:+3V3 #PWR?
+U 1 1 6334A063
+P 13850 8150
+AR Path="/6332A9A8/6334A063" Ref="#PWR?"  Part="1" 
+AR Path="/618F532C/6334A063" Ref="#PWR0147"  Part="1" 
+F 0 "#PWR0147" H 13850 8000 50  0001 C CNN
+F 1 "+3V3" H 13865 8323 50  0000 C CNN
+F 2 "" H 13850 8150 50  0001 C CNN
+F 3 "" H 13850 8150 50  0001 C CNN
+	1    13850 8150
+	1    0    0    -1  
+$EndComp
+Text GLabel 12700 8150 0    50   Input ~ 0
+~START_3V3
+Wire Wire Line
+	12850 8550 12700 8550
+Wire Wire Line
+	13150 8550 13550 8550
+$Comp
+L Device:R R?
+U 1 1 63352DBD
+P 13700 8550
+AR Path="/5F6B165A/63352DBD" Ref="R?"  Part="1" 
+AR Path="/5F67E4B9/63352DBD" Ref="R?"  Part="1" 
+AR Path="/618E8C75/63352DBD" Ref="R?"  Part="1" 
+AR Path="/618F532C/63352DBD" Ref="R13"  Part="1" 
+AR Path="/6332A9A8/63352DBD" Ref="R?"  Part="1" 
+F 0 "R13" V 13780 8550 50  0000 C CNN
+F 1 "549" V 13700 8550 50  0000 C CNN
+F 2 "Resistor_SMD:R_0603_1608Metric" V 13630 8550 50  0001 C CNN
+F 3 "" H 13700 8550 50  0000 C CNN
+F 4 "0603WAF5490T5E" V 13700 8550 50  0001 C CNN "MPN"
+F 5 "https://lcsc.com/product-detail/Chip-Resistor-Surface-Mount_UNI-ROYAL-Uniroyal-Elec-0603WAF5490T5E_C23079.html" V 13700 8550 50  0001 C CNN "URL"
+	1    13700 8550
+	0    1    1    0   
+$EndComp
+$Comp
+L Device:LED_ALT D?
+U 1 1 63352DC7
+P 13000 8550
+AR Path="/5F6B165A/63352DC7" Ref="D?"  Part="1" 
+AR Path="/5F67E4B9/63352DC7" Ref="D?"  Part="1" 
+AR Path="/618E8C75/63352DC7" Ref="D?"  Part="1" 
+AR Path="/618F532C/63352DC7" Ref="D8"  Part="1" 
+AR Path="/6332A9A8/63352DC7" Ref="D?"  Part="1" 
+F 0 "D8" H 13000 8650 50  0000 C CNN
+F 1 "YELLOW" H 13050 8400 50  0000 R CNN
+F 2 "LED_SMD:LED_0805_2012Metric" H 13000 8550 50  0001 C CNN
+F 3 "https://lcsc.com/product-detail/Light-Emitting-Diodes-LED_Lite-On-LTST-C170KSKT_C125091.html" H 13000 8550 50  0001 C CNN
+F 4 "www.liteon.com" H 13000 8550 60  0001 C CNN "MNF1_URL"
+F 5 "LTST-C170KSKT" H 13000 8550 60  0001 C CNN "MPN"
+F 6 "https://lcsc.com/product-detail/Light-Emitting-Diodes-LED_Lite-On-LTST-C170KSKT_C125091.html" H 13000 8550 50  0001 C CNN "URL"
+	1    13000 8550
+	1    0    0    -1  
+$EndComp
+$Comp
+L power:+3V3 #PWR?
+U 1 1 63352DCE
+P 13850 8550
+AR Path="/6332A9A8/63352DCE" Ref="#PWR?"  Part="1" 
+AR Path="/618F532C/63352DCE" Ref="#PWR0148"  Part="1" 
+F 0 "#PWR0148" H 13850 8400 50  0001 C CNN
+F 1 "+3V3" H 13865 8723 50  0000 C CNN
+F 2 "" H 13850 8550 50  0001 C CNN
+F 3 "" H 13850 8550 50  0001 C CNN
+	1    13850 8550
+	1    0    0    -1  
+$EndComp
+Text GLabel 12700 8550 0    50   Input ~ 0
+~RQST_3V3
 $EndSCHEMATC

@@ -171,9 +171,9 @@ _nubus_nubus_v1_2 = [
     ("ack_3v3_n",          0, Pins("J17"), IOStandard("lvttl")),
     ("ack_o_n",            0, Pins("H14"), IOStandard("lvttl")),
     ("ack_oe_n",           0, Pins("J13"), IOStandard("lvttl")),
-    ("nmrq_3v3_n",         0, Pins("J18"), IOStandard("lvttl")), # 'irq' line, Output only direct to 74LVT125
+    ("nmrq_3v3_n",         0, Pins("K16"), IOStandard("lvttl")), # 'irq' line, Output only direct to 74LVT125
     ("reset_3v3_n",        0, Pins("P2"),  IOStandard("lvttl")), # Input only
-    ("rqst_3v3_n"  ,       0, Pins("K16"), IOStandard("lvttl")), # Open Collector
+    ("rqst_3v3_n"  ,       0, Pins("J18"), IOStandard("lvttl")), # Open Collector
     ("rqst_o_n"  ,         0, Pins("K13"), IOStandard("lvttl")),
     ("start_3v3_n",        0, Pins("K15"), IOStandard("lvttl")),
     ("start_o_n",          0, Pins("H15"), IOStandard("lvttl")),

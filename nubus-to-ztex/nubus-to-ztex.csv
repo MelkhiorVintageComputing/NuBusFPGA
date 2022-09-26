@@ -2,7 +2,7 @@ Part/Designator,Manufacture Part Number/Seeed SKU,Quantity,URL
 "R4,R5,R6,R7,R8,R26,R27,R36,R37,R38,R39,R40,R41,R42,R43,R44,R45",0603WAF1002T5E,17,https://lcsc.com/product-detail/Chip-Resistor-Surface-Mount_UNI-ROYAL-Uniroyal-Elec-0603WAF1002T5E_C25804.html
 "R24,R25",0603WAF1502T5E,2,https://lcsc.com/product-detail/Chip-Resistor-Surface-Mount_UNI-ROYAL-Uniroyal-Elec-0603WAF1502T5E_C22809.html
 "R22,R23",0603WAF270JT5E,2,https://lcsc.com/product-detail/Chip-Resistor-Surface-Mount_UNI-ROYAL-Uniroyal-Elec-0603WAF270JT5E_C25190.html
-"R1,R2,R3,R9,R10,R16,R17,R18,R19",0603WAF5490T5E,9,https://lcsc.com/product-detail/Chip-Resistor-Surface-Mount_UNI-ROYAL-Uniroyal-Elec-0603WAF5490T5E_C23079.html
+"R1,R2,R3,R9,R10,R11,R12,R13,R14,R15,R16,R17,R18,R19",0603WAF5490T5E,14,https://lcsc.com/product-detail/Chip-Resistor-Surface-Mount_UNI-ROYAL-Uniroyal-Elec-0603WAF5490T5E_C23079.html
 J4,0850030567,1,https://www.mouser.fr/ProductDetail/Molex/85003-0567?qs=U4pz39agNJB6P1oBpJ4bJA%3D%3D
 J5,10029449-111RLF,1,https://lcsc.com/product-detail/D-Sub-DVI-HDMI-Connectors_Amphenol-ICC-10029449-111RLF_C427307.html
 J6,105017-0001,1,https://lcsc.com/product-detail/USB-Connectors_MOLEX-1050170001_C136000.html
@@ -21,6 +21,7 @@ C25,GRM31CR60J157ME11L,1,https://lcsc.com/product-detail/Multilayer-Ceramic-Capa
 C39,KM010M400E110A,1,https://lcsc.com/product-detail/Aluminum-Electrolytic-Capacitors-Leaded_Capxon-International-Elec-KM010M400E110A_C59365.html
 "D11,D12,D13,D14",LTST-C170KGKT,4,https://www.lcsc.com/product-detail/Light-Emitting-Diodes-LED_Lite-On-LTST-C170KGKT_C98221.html
 "D1,D2,D4,D5",LTST-C170KRKT,4,https://www.lcsc.com/product-detail/Light-Emitting-Diodes-LED_Lite-On-LTST-C170KRKT_C94868.html
+"D6,D7,D8,D9,D10",LTST-C170KSKT,5,https://lcsc.com/product-detail/Light-Emitting-Diodes-LED_Lite-On-LTST-C170KSKT_C125091.html
 D3,LTST-C170TBKT,1,https://www.lcsc.com/product-detail/Light-Emitting-Diodes-LED_LTST-C170TBKT-blue_C98222.html
 J8,PM254V-11-02-H85,1,https://www.lcsc.com/product-detail/Pin-Header-Female-Header_XFCN-PM254V-11-02-H85_C541849.html
 FB1,PZ2012U221-2R0TF,1,https://lcsc.com/product-detail/Ferrite-Beads_Sunlord-PZ2012U221-2R0TF_C44361.html

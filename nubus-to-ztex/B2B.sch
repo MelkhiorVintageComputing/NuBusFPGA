@@ -331,7 +331,7 @@ Wire Wire Line
 	9450 1050 10200 1050
 Text GLabel 4100 2050 2    50   Input Italic 0
 ~CLK_3V3
-Text GLabel 1600 1350 0    50   Input ~ 0
+Text GLabel 4100 1350 2    50   Input ~ 0
 ~RQST_3V3
 Text GLabel 1600 1450 0    50   Input ~ 0
 ~START_3V3
@@ -663,7 +663,7 @@ F 3 "" H 3400 5900 50  0001 C CNN
 $EndComp
 Text Notes 1200 5650 0    50   ~ 0
 User LEDS
-Text GLabel 4100 1350 2    50   Input ~ 0
+Text GLabel 1600 1350 0    50   Input ~ 0
 ~NMRQ_3V3
 Text GLabel 9900 3550 2    50   Input ~ 0
 ~TM2_3V3
