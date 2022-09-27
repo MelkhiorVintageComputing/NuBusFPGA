@@ -4,7 +4,7 @@ EELAYER 26 0
 EELAYER END
 $Descr A4 11693 8268
 encoding utf-8
-Sheet 6 9
+Sheet 6 10
 Title "nubus-to-ztex extra conenctors (fan, ...)"
 Date ""
 Rev ""
@@ -90,69 +90,6 @@ Wire Wire Line
 Wire Wire Line
 	5150 4850 5150 4950
 Connection ~ 4600 4850
-$Comp
-L Connector_Generic:Conn_01x02 J8
-U 1 1 61BEF34E
-P 6800 4300
-F 0 "J8" H 6880 4292 50  0000 L CNN
-F 1 "Conn_01x02" H 6880 4201 50  0000 L CNN
-F 2 "For_SeeedStudio:PinSocket_1x02_P2.54mm_Vertical_for_SeeedStudio" H 6800 4300 50  0001 C CNN
-F 3 "~" H 6800 4300 50  0001 C CNN
-F 4 "PM254V-11-02-H85" H 6800 4300 50  0001 C CNN "MPN"
-F 5 "https://www.lcsc.com/product-detail/Pin-Header-Female-Header_XFCN-PM254V-11-02-H85_C541849.html" H 6800 4300 50  0001 C CNN "URL"
-	1    6800 4300
-	1    0    0    -1  
-$EndComp
-$Comp
-L power:+3V3 #PWR0110
-U 1 1 61BEF445
-P 6600 4300
-F 0 "#PWR0110" H 6600 4150 50  0001 C CNN
-F 1 "+3V3" V 6615 4428 50  0000 L CNN
-F 2 "" H 6600 4300 50  0001 C CNN
-F 3 "" H 6600 4300 50  0001 C CNN
-	1    6600 4300
-	0    -1   -1   0   
-$EndComp
-$Comp
-L power:GND #PWR0111
-U 1 1 61BEF4B8
-P 6600 4400
-F 0 "#PWR0111" H 6600 4150 50  0001 C CNN
-F 1 "GND" V 6605 4272 50  0000 R CNN
-F 2 "" H 6600 4400 50  0001 C CNN
-F 3 "" H 6600 4400 50  0001 C CNN
-	1    6600 4400
-	0    1    1    0   
-$EndComp
-$Comp
-L Device:C C?
-U 1 1 61C19258
-P 6200 4350
-AR Path="/5F69F4EF/61C19258" Ref="C?"  Part="1" 
-AR Path="/5F6B165A/61C19258" Ref="C?"  Part="1" 
-AR Path="/61B99D2C/61C19258" Ref="C29"  Part="1" 
-F 0 "C29" H 6225 4450 50  0000 L CNN
-F 1 "47uF 10V+" H 6225 4250 50  0000 L CNN
-F 2 "Capacitor_SMD:C_0805_2012Metric" H 6238 4200 50  0001 C CNN
-F 3 "" H 6200 4350 50  0000 C CNN
-F 4 "C2012X5R1A476MTJ00E" H 6200 4350 50  0001 C CNN "MPN"
-F 5 "https://lcsc.com/product-detail/Multilayer-Ceramic-Capacitors-MLCC-SMD-SMT_TDK-C2012X5R1A476MTJ00E_C76636.html" H 6200 4350 50  0001 C CNN "URL"
-	1    6200 4350
-	1    0    0    -1  
-$EndComp
-Wire Wire Line
-	6200 4200 6600 4200
-Wire Wire Line
-	6600 4200 6600 4300
-Connection ~ 6600 4300
-Wire Wire Line
-	6600 4400 6600 4500
-Wire Wire Line
-	6600 4500 6200 4500
-Connection ~ 6600 4400
 Text Notes 3950 4750 0    50   ~ 0
 5V Fan
-Text Notes 6800 4600 0    50   ~ 0
-3.3V access
 $EndSCHEMATC

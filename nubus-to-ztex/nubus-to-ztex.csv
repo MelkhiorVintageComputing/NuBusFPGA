@@ -2,7 +2,7 @@ Part/Designator,Manufacture Part Number/Seeed SKU,Quantity,URL
 "R4,R5,R6,R7,R8,R26,R27,R36,R37,R38,R39,R40,R41,R42,R43,R44,R45",0603WAF1002T5E,17,https://lcsc.com/product-detail/Chip-Resistor-Surface-Mount_UNI-ROYAL-Uniroyal-Elec-0603WAF1002T5E_C25804.html
 "R24,R25",0603WAF1502T5E,2,https://lcsc.com/product-detail/Chip-Resistor-Surface-Mount_UNI-ROYAL-Uniroyal-Elec-0603WAF1502T5E_C22809.html
 "R22,R23",0603WAF270JT5E,2,https://lcsc.com/product-detail/Chip-Resistor-Surface-Mount_UNI-ROYAL-Uniroyal-Elec-0603WAF270JT5E_C25190.html
-"R1,R2,R3,R9,R10,R11,R12,R13,R14,R15,R16,R17,R18,R19",0603WAF5490T5E,14,https://lcsc.com/product-detail/Chip-Resistor-Surface-Mount_UNI-ROYAL-Uniroyal-Elec-0603WAF5490T5E_C23079.html
+"R1,R2,R3,R9,R10,R11,R12,R13,R14,R15,R16,R17,R18,R19",0603WAF5900T5E,14,https://www.lcsc.com/product-detail/Chip-Resistor-Surface-Mount_UNI-ROYAL-Uniroyal-Elec-0603WAF5900T5E_C23084.html
 J4,0850030567,1,https://www.mouser.fr/ProductDetail/Molex/85003-0567?qs=U4pz39agNJB6P1oBpJ4bJA%3D%3D
 J5,10029449-111RLF,1,https://lcsc.com/product-detail/D-Sub-DVI-HDMI-Connectors_Amphenol-ICC-10029449-111RLF_C427307.html
 J6,105017-0001,1,https://lcsc.com/product-detail/USB-Connectors_MOLEX-1050170001_C136000.html
@@ -11,11 +11,13 @@ J2,47219-2001,1,https://eu.mouser.com/ProductDetail/Molex/47219-2001?qs=6kT3pPPH
 J7,640456-3,1,https://www.lcsc.com/product-detail/Wire-To-Board-Wire-To-Wire-Connector_TE-Connectivity-640456-3_C86503.html
 "U1,U2,U3","74LVT125PW,118",3,https://eu.mouser.com/ProductDetail/Nexperia/74LVT125PW118?qs=me8TqzrmIYWdhdg6%252BsGGHw%3D%3D
 "U5,U6,U7,U8","74LVT245BPW,118",4,https://www.digikey.fr/fr/products/detail/nexperia-usa-inc/74LVT245BPW-118/1231957
+"JAB1,JCD1",77313-101-64LF,2,https://eu.mouser.com/ProductDetail/Amphenol-FCI/77313-101-64LF?qs=xJiur%252Bgubk1MSan%2F7C0v%252BA%3D%3D
 J1,87831-1420,1,https://www2.mouser.com/ProductDetail/Molex/87831-1420?qs=QtQX4uD3c2VDCL534TqpVg%3D%3D
 J9,A2541HWR-2x6P,1,https://lcsc.com/product-detail/Pin-Header-Female-Header_Changjiang-Connectors-A2541HWR-2x6P_C239357.html
-"C3,C21,C28,C29",C2012X5R1A476MTJ00E,4,https://lcsc.com/product-detail/Multilayer-Ceramic-Capacitors-MLCC-SMD-SMT_TDK-C2012X5R1A476MTJ00E_C76636.html
+J10,A2541HWV-6P,1,https://www.lcsc.com/product-detail/Female-Headers_CJT-Changjiang-Connectors-A2541HWV-6P_C2897443.html
+"C3,C21,C28",C2012X5R1A476MTJ00E,3,https://lcsc.com/product-detail/Multilayer-Ceramic-Capacitors-MLCC-SMD-SMT_TDK-C2012X5R1A476MTJ00E_C76636.html
 C20,CC0603KRX7R8BB103,1,https://lcsc.com/product-detail/Multilayer-Ceramic-Capacitors-MLCC-SMD-SMT_YAGEO-CC0603KRX7R8BB103_C327204.html
-"C1,C2,C4,C5,C6,C7,C8,C9,C11,C12,C14,C17,C18,C19,C22,C23,C24,C26,C27,C30",CC0603KRX7R8BB104,20,
+"C1,C2,C4,C5,C6,C7,C8,C9,C11,C12,C13,C14,C17,C18,C19,C22,C23,C24,C26,C27,C30",CC0603KRX7R8BB104,21,
 C10,GRM21BR60J476ME15L,1,
 C25,GRM31CR60J157ME11L,1,https://lcsc.com/product-detail/Multilayer-Ceramic-Capacitors-MLCC-SMD-SMT_Murata-Electronics-GRM31CR60J157ME11L_C528968.html
 C39,KM010M400E110A,1,https://lcsc.com/product-detail/Aluminum-Electrolytic-Capacitors-Leaded_Capxon-International-Elec-KM010M400E110A_C59365.html
@@ -23,7 +25,6 @@ C39,KM010M400E110A,1,https://lcsc.com/product-detail/Aluminum-Electrolytic-Capac
 "D1,D2,D4,D5",LTST-C170KRKT,4,https://www.lcsc.com/product-detail/Light-Emitting-Diodes-LED_Lite-On-LTST-C170KRKT_C94868.html
 "D6,D7,D8,D9,D10",LTST-C170KSKT,5,https://lcsc.com/product-detail/Light-Emitting-Diodes-LED_Lite-On-LTST-C170KSKT_C125091.html
 D3,LTST-C170TBKT,1,https://www.lcsc.com/product-detail/Light-Emitting-Diodes-LED_LTST-C170TBKT-blue_C98222.html
-J8,PM254V-11-02-H85,1,https://www.lcsc.com/product-detail/Pin-Header-Female-Header_XFCN-PM254V-11-02-H85_C541849.html
 FB1,PZ2012U221-2R0TF,1,https://lcsc.com/product-detail/Ferrite-Beads_Sunlord-PZ2012U221-2R0TF_C44361.html
 J3,PZ254R-11-06P,1,https://lcsc.com/product-detail/Pin-Header-Female-Header_XFCN-PZ254R-11-06P_C492414.html
 U10,SN65220DBVT,1,https://www.lcsc.com/product-detail/Others_Texas-Instruments-TI-SN65220DBVT_C350555.html
@@ -32,4 +33,3 @@ U12,SN74CB3T1G125DBVR,1,https://www.lcsc.com/product-detail/Analog-Switches-Mult
 U14,SN74CB3T3245PWR,1,https://www.lcsc.com/product-detail/Signal-Switches-Encoders-Decoders-Multiplexers_Texas-Instruments-SN74CB3T3245PWR_C15298.html
 U9,TPD12S016PWR,1,https://lcsc.com/product-detail/Interface-Specialized_Texas-Instruments-TPD12S016PWR_C201665.html
 U11,TPS2051CDBVR,1,https://lcsc.com/product-detail/Power-Distribution-Switches_Texas-Instruments-TPS2051CDBVR_C129581.html
-"JAB1,JCD1",X6521WV-2x32H-C30D60,2,https://www2.mouser.com/ProductDetail/Molex/10-89-7642?qs=%2Fha2pyFadugCxzQFZUdvioDcljDVidgd4vXrOFuSRYM%3D

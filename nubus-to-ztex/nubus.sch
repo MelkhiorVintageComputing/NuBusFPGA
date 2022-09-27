@@ -4,7 +4,7 @@ EELAYER 26 0
 EELAYER END
 $Descr A2 23386 16535
 encoding utf-8
-Sheet 3 9
+Sheet 3 10
 Title "nubus-to-ztex NuBus connection & level shifting"
 Date ""
 Rev ""
@@ -1188,11 +1188,11 @@ AR Path="/5F67E4B9/61D85DF0" Ref="R?"  Part="1"
 AR Path="/618E8C75/61D85DF0" Ref="R?"  Part="1" 
 AR Path="/618F532C/61D85DF0" Ref="R16"  Part="1" 
 F 0 "R16" V 16830 7850 50  0000 C CNN
-F 1 "549" V 16750 7850 50  0000 C CNN
+F 1 "590" V 16750 7850 50  0000 C CNN
 F 2 "Resistor_SMD:R_0603_1608Metric" V 16680 7850 50  0001 C CNN
 F 3 "" H 16750 7850 50  0000 C CNN
-F 4 "0603WAF5490T5E" V 16750 7850 50  0001 C CNN "MPN"
-F 5 "https://lcsc.com/product-detail/Chip-Resistor-Surface-Mount_UNI-ROYAL-Uniroyal-Elec-0603WAF5490T5E_C23079.html" V 16750 7850 50  0001 C CNN "URL"
+F 4 "0603WAF5900T5E" V 16750 7850 50  0001 C CNN "MPN"
+F 5 "https://www.lcsc.com/product-detail/Chip-Resistor-Surface-Mount_UNI-ROYAL-Uniroyal-Elec-0603WAF5900T5E_C23084.html" V 16750 7850 50  0001 C CNN "URL"
 	1    16750 7850
 	0    1    1    0   
 $EndComp
@@ -1227,11 +1227,11 @@ AR Path="/5F67E4B9/61D85E0D" Ref="R?"  Part="1"
 AR Path="/618E8C75/61D85E0D" Ref="R?"  Part="1" 
 AR Path="/618F532C/61D85E0D" Ref="R17"  Part="1" 
 F 0 "R17" V 16830 8350 50  0000 C CNN
-F 1 "549" V 16750 8350 50  0000 C CNN
+F 1 "590" V 16750 8350 50  0000 C CNN
 F 2 "Resistor_SMD:R_0603_1608Metric" V 16680 8350 50  0001 C CNN
 F 3 "" H 16750 8350 50  0000 C CNN
-F 4 "0603WAF5490T5E" V 16750 8350 50  0001 C CNN "MPN"
-F 5 "https://lcsc.com/product-detail/Chip-Resistor-Surface-Mount_UNI-ROYAL-Uniroyal-Elec-0603WAF5490T5E_C23079.html" V 16750 8350 50  0001 C CNN "URL"
+F 4 "0603WAF5900T5E" V 16750 8350 50  0001 C CNN "MPN"
+F 5 "https://www.lcsc.com/product-detail/Chip-Resistor-Surface-Mount_UNI-ROYAL-Uniroyal-Elec-0603WAF5900T5E_C23084.html" V 16750 8350 50  0001 C CNN "URL"
 	1    16750 8350
 	0    1    1    0   
 $EndComp
@@ -1266,11 +1266,11 @@ AR Path="/5F67E4B9/61D85E2A" Ref="R?"  Part="1"
 AR Path="/618E8C75/61D85E2A" Ref="R?"  Part="1" 
 AR Path="/618F532C/61D85E2A" Ref="R18"  Part="1" 
 F 0 "R18" V 16830 8850 50  0000 C CNN
-F 1 "549" V 16750 8850 50  0000 C CNN
+F 1 "590" V 16750 8850 50  0000 C CNN
 F 2 "Resistor_SMD:R_0603_1608Metric" V 16680 8850 50  0001 C CNN
 F 3 "" H 16750 8850 50  0000 C CNN
-F 4 "0603WAF5490T5E" V 16750 8850 50  0001 C CNN "MPN"
-F 5 "https://lcsc.com/product-detail/Chip-Resistor-Surface-Mount_UNI-ROYAL-Uniroyal-Elec-0603WAF5490T5E_C23079.html" V 16750 8850 50  0001 C CNN "URL"
+F 4 "0603WAF5900T5E" V 16750 8850 50  0001 C CNN "MPN"
+F 5 "https://www.lcsc.com/product-detail/Chip-Resistor-Surface-Mount_UNI-ROYAL-Uniroyal-Elec-0603WAF5900T5E_C23084.html" V 16750 8850 50  0001 C CNN "URL"
 	1    16750 8850
 	0    1    1    0   
 $EndComp
@@ -1305,11 +1305,11 @@ AR Path="/5F67E4B9/61D85E47" Ref="R?"  Part="1"
 AR Path="/618E8C75/61D85E47" Ref="R?"  Part="1" 
 AR Path="/618F532C/61D85E47" Ref="R19"  Part="1" 
 F 0 "R19" V 16830 9350 50  0000 C CNN
-F 1 "549" V 16750 9350 50  0000 C CNN
+F 1 "590" V 16750 9350 50  0000 C CNN
 F 2 "Resistor_SMD:R_0603_1608Metric" V 16680 9350 50  0001 C CNN
 F 3 "" H 16750 9350 50  0000 C CNN
-F 4 "0603WAF5490T5E" V 16750 9350 50  0001 C CNN "MPN"
-F 5 "https://lcsc.com/product-detail/Chip-Resistor-Surface-Mount_UNI-ROYAL-Uniroyal-Elec-0603WAF5490T5E_C23079.html" V 16750 9350 50  0001 C CNN "URL"
+F 4 "0603WAF5900T5E" V 16750 9350 50  0001 C CNN "MPN"
+F 5 "https://www.lcsc.com/product-detail/Chip-Resistor-Surface-Mount_UNI-ROYAL-Uniroyal-Elec-0603WAF5900T5E_C23084.html" V 16750 9350 50  0001 C CNN "URL"
 	1    16750 9350
 	0    1    1    0   
 $EndComp
@@ -2582,11 +2582,11 @@ AR Path="/618E8C75/6332F9A9" Ref="R?"  Part="1"
 AR Path="/618F532C/6332F9A9" Ref="R11"  Part="1" 
 AR Path="/6332A9A8/6332F9A9" Ref="R?"  Part="1" 
 F 0 "R11" V 13780 7750 50  0000 C CNN
-F 1 "549" V 13700 7750 50  0000 C CNN
+F 1 "590" V 13700 7750 50  0000 C CNN
 F 2 "Resistor_SMD:R_0603_1608Metric" V 13630 7750 50  0001 C CNN
 F 3 "" H 13700 7750 50  0000 C CNN
-F 4 "0603WAF5490T5E" V 13700 7750 50  0001 C CNN "MPN"
-F 5 "https://lcsc.com/product-detail/Chip-Resistor-Surface-Mount_UNI-ROYAL-Uniroyal-Elec-0603WAF5490T5E_C23079.html" V 13700 7750 50  0001 C CNN "URL"
+F 4 "0603WAF5900T5E" V 13700 7750 50  0001 C CNN "MPN"
+F 5 "https://www.lcsc.com/product-detail/Chip-Resistor-Surface-Mount_UNI-ROYAL-Uniroyal-Elec-0603WAF5900T5E_C23084.html" V 13700 7750 50  0001 C CNN "URL"
 	1    13700 7750
 	0    1    1    0   
 $EndComp
@@ -2638,11 +2638,11 @@ AR Path="/618E8C75/6334203F" Ref="R?"  Part="1"
 AR Path="/618F532C/6334203F" Ref="R14"  Part="1" 
 AR Path="/6332A9A8/6334203F" Ref="R?"  Part="1" 
 F 0 "R14" V 13780 9000 50  0000 C CNN
-F 1 "549" V 13700 9000 50  0000 C CNN
+F 1 "590" V 13700 9000 50  0000 C CNN
 F 2 "Resistor_SMD:R_0603_1608Metric" V 13630 9000 50  0001 C CNN
 F 3 "" H 13700 9000 50  0000 C CNN
-F 4 "0603WAF5490T5E" V 13700 9000 50  0001 C CNN "MPN"
-F 5 "https://lcsc.com/product-detail/Chip-Resistor-Surface-Mount_UNI-ROYAL-Uniroyal-Elec-0603WAF5490T5E_C23079.html" V 13700 9000 50  0001 C CNN "URL"
+F 4 "0603WAF5900T5E" V 13700 9000 50  0001 C CNN "MPN"
+F 5 "https://www.lcsc.com/product-detail/Chip-Resistor-Surface-Mount_UNI-ROYAL-Uniroyal-Elec-0603WAF5900T5E_C23084.html" V 13700 9000 50  0001 C CNN "URL"
 	1    13700 9000
 	0    1    1    0   
 $EndComp
@@ -2692,11 +2692,11 @@ AR Path="/618E8C75/6334334C" Ref="R?"  Part="1"
 AR Path="/618F532C/6334334C" Ref="R15"  Part="1" 
 AR Path="/6332A9A8/6334334C" Ref="R?"  Part="1" 
 F 0 "R15" V 13780 9450 50  0000 C CNN
-F 1 "549" V 13700 9450 50  0000 C CNN
+F 1 "590" V 13700 9450 50  0000 C CNN
 F 2 "Resistor_SMD:R_0603_1608Metric" V 13630 9450 50  0001 C CNN
 F 3 "" H 13700 9450 50  0000 C CNN
-F 4 "0603WAF5490T5E" V 13700 9450 50  0001 C CNN "MPN"
-F 5 "https://lcsc.com/product-detail/Chip-Resistor-Surface-Mount_UNI-ROYAL-Uniroyal-Elec-0603WAF5490T5E_C23079.html" V 13700 9450 50  0001 C CNN "URL"
+F 4 "0603WAF5900T5E" V 13700 9450 50  0001 C CNN "MPN"
+F 5 "https://www.lcsc.com/product-detail/Chip-Resistor-Surface-Mount_UNI-ROYAL-Uniroyal-Elec-0603WAF5900T5E_C23084.html" V 13700 9450 50  0001 C CNN "URL"
 	1    13700 9450
 	0    1    1    0   
 $EndComp
@@ -2750,11 +2750,11 @@ AR Path="/618E8C75/6334A052" Ref="R?"  Part="1"
 AR Path="/618F532C/6334A052" Ref="R12"  Part="1" 
 AR Path="/6332A9A8/6334A052" Ref="R?"  Part="1" 
 F 0 "R12" V 13780 8150 50  0000 C CNN
-F 1 "549" V 13700 8150 50  0000 C CNN
+F 1 "590" V 13700 8150 50  0000 C CNN
 F 2 "Resistor_SMD:R_0603_1608Metric" V 13630 8150 50  0001 C CNN
 F 3 "" H 13700 8150 50  0000 C CNN
-F 4 "0603WAF5490T5E" V 13700 8150 50  0001 C CNN "MPN"
-F 5 "https://lcsc.com/product-detail/Chip-Resistor-Surface-Mount_UNI-ROYAL-Uniroyal-Elec-0603WAF5490T5E_C23079.html" V 13700 8150 50  0001 C CNN "URL"
+F 4 "0603WAF5900T5E" V 13700 8150 50  0001 C CNN "MPN"
+F 5 "https://www.lcsc.com/product-detail/Chip-Resistor-Surface-Mount_UNI-ROYAL-Uniroyal-Elec-0603WAF5900T5E_C23084.html" V 13700 8150 50  0001 C CNN "URL"
 	1    13700 8150
 	0    1    1    0   
 $EndComp
@@ -2806,11 +2806,11 @@ AR Path="/618E8C75/63352DBD" Ref="R?"  Part="1"
 AR Path="/618F532C/63352DBD" Ref="R13"  Part="1" 
 AR Path="/6332A9A8/63352DBD" Ref="R?"  Part="1" 
 F 0 "R13" V 13780 8550 50  0000 C CNN
-F 1 "549" V 13700 8550 50  0000 C CNN
+F 1 "590" V 13700 8550 50  0000 C CNN
 F 2 "Resistor_SMD:R_0603_1608Metric" V 13630 8550 50  0001 C CNN
 F 3 "" H 13700 8550 50  0000 C CNN
-F 4 "0603WAF5490T5E" V 13700 8550 50  0001 C CNN "MPN"
-F 5 "https://lcsc.com/product-detail/Chip-Resistor-Surface-Mount_UNI-ROYAL-Uniroyal-Elec-0603WAF5490T5E_C23079.html" V 13700 8550 50  0001 C CNN "URL"
+F 4 "0603WAF5900T5E" V 13700 8550 50  0001 C CNN "MPN"
+F 5 "https://www.lcsc.com/product-detail/Chip-Resistor-Surface-Mount_UNI-ROYAL-Uniroyal-Elec-0603WAF5900T5E_C23084.html" V 13700 8550 50  0001 C CNN "URL"
 	1    13700 8550
 	0    1    1    0   
 $EndComp
@@ -2848,4 +2848,26 @@ F 3 "" H 13850 8550 50  0001 C CNN
 $EndComp
 Text GLabel 12700 8550 0    50   Input ~ 0
 ~RQST_3V3
+$Comp
+L power:GND #PWR0110
+U 1 1 633B34AD
+P 7450 13600
+F 0 "#PWR0110" H 7450 13350 50  0001 C CNN
+F 1 "GND" H 7455 13427 50  0000 C CNN
+F 2 "" H 7450 13600 50  0001 C CNN
+F 3 "" H 7450 13600 50  0001 C CNN
+	1    7450 13600
+	1    0    0    -1  
+$EndComp
+$Comp
+L power:+3V3 #PWR0111
+U 1 1 633B3A1A
+P 7450 13300
+F 0 "#PWR0111" H 7450 13150 50  0001 C CNN
+F 1 "+3V3" H 7465 13473 50  0000 C CNN
+F 2 "" H 7450 13300 50  0001 C CNN
+F 3 "" H 7450 13300 50  0001 C CNN
+	1    7450 13300
+	1    0    0    -1  
+$EndComp
 $EndSCHEMATC

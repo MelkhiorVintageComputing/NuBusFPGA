@@ -1,4 +1,4 @@
-## Footprint report - date Mon Sep 26 19:03:23 2022
+## Footprint report - date Tue Sep 27 13:51:45 2022
 ## Created by Pcbnew version kicad 5.0.2+dfsg1-1~bpo9+1
 ## Unit = mm, Angle = deg.
 
@@ -8,6 +8,72 @@ $BOARD
 upper_left_corner -50.005001 -35.064286
 lower_right_corner 400.005001 148.435001
 $EndBOARD
+
+$MODULE "J10"
+reference "J10"
+value "Conn_01x06"
+footprint "For_SeeedStudio:PinSocket_1x06_P2.54mm_Vertical_For_SeeedStudio"
+attribut none
+position 193.000000 10.000000  orientation 270.00
+layer front
+$PAD "1"
+Shape Rect Layer both
+position  0.000000  0.000000  size  1.700000  1.700000  orientation 0.00
+drill  1.190000
+shape_offset  0.000000  0.000000
+$EndPAD
+$PAD "2"
+Shape Oval Layer both
+position  0.000000  2.540000  size  1.700000  1.700000  orientation 0.00
+drill  1.190000
+shape_offset  0.000000  0.000000
+$EndPAD
+$PAD "3"
+Shape Oval Layer both
+position  0.000000  5.080000  size  1.700000  1.700000  orientation 0.00
+drill  1.190000
+shape_offset  0.000000  0.000000
+$EndPAD
+$PAD "4"
+Shape Oval Layer both
+position  0.000000  7.620000  size  1.700000  1.700000  orientation 0.00
+drill  1.190000
+shape_offset  0.000000  0.000000
+$EndPAD
+$PAD "5"
+Shape Oval Layer both
+position  0.000000 10.160000  size  1.700000  1.700000  orientation 0.00
+drill  1.190000
+shape_offset  0.000000  0.000000
+$EndPAD
+$PAD "6"
+Shape Oval Layer both
+position  0.000000 12.700000  size  1.700000  1.700000  orientation 0.00
+drill  1.190000
+shape_offset  0.000000  0.000000
+$EndPAD
+$EndMODULE  J10
+
+$MODULE "C13"
+reference "C13"
+value "100nF"
+footprint "Capacitor_SMD:C_0603_1608Metric"
+attribut smd
+position 181.610000 13.270000  orientation 0.00
+layer front
+$PAD "1"
+Shape Roundrect Layer front
+position -0.787500  0.000000  size  0.875000  0.950000  orientation 0.00
+drill  0.000000
+shape_offset  0.000000  0.000000
+$EndPAD
+$PAD "2"
+Shape Roundrect Layer front
+position  0.787500  0.000000  size  0.875000  0.950000  orientation 0.00
+drill  0.000000
+shape_offset  0.000000  0.000000
+$EndPAD
+$EndMODULE  C13
 
 $MODULE "D7"
 reference "D7"
@@ -116,7 +182,7 @@ $EndMODULE  D10
 
 $MODULE "R11"
 reference "R11"
-value "549"
+value "590"
 footprint "Resistor_SMD:R_0603_1608Metric"
 attribut smd
 position 134.880000 16.060293  orientation 270.00
@@ -137,7 +203,7 @@ $EndMODULE  R11
 
 $MODULE "R12"
 reference "R12"
-value "549"
+value "590"
 footprint "Resistor_SMD:R_0603_1608Metric"
 attribut smd
 position 137.420000 16.060293  orientation 270.00
@@ -158,7 +224,7 @@ $EndMODULE  R12
 
 $MODULE "R13"
 reference "R13"
-value "549"
+value "590"
 footprint "Resistor_SMD:R_0603_1608Metric"
 attribut smd
 position 118.610000 69.150000  orientation 0.00
@@ -179,7 +245,7 @@ $EndMODULE  R13
 
 $MODULE "R14"
 reference "R14"
-value "549"
+value "590"
 footprint "Resistor_SMD:R_0603_1608Metric"
 attribut smd
 position 175.721484 16.217130  orientation 270.00
@@ -200,7 +266,7 @@ $EndMODULE  R14
 
 $MODULE "R15"
 reference "R15"
-value "549"
+value "590"
 footprint "Resistor_SMD:R_0603_1608Metric"
 attribut smd
 position 178.261484 16.217130  orientation 270.00
@@ -263,7 +329,7 @@ $EndMODULE  D5
 
 $MODULE "R10"
 reference "R10"
-value "549"
+value "590"
 footprint "Resistor_SMD:R_0603_1608Metric"
 attribut smd
 position 193.875000 19.650000  orientation 90.00
@@ -284,7 +350,7 @@ $EndMODULE  R10
 
 $MODULE "R9"
 reference "R9"
-value "549"
+value "590"
 footprint "Resistor_SMD:R_0603_1608Metric"
 attribut smd
 position 191.623332 19.600000  orientation 90.00
@@ -1220,7 +1286,7 @@ $EndMODULE  D3
 
 $MODULE "R3"
 reference "R3"
-value "549"
+value "590"
 footprint "Resistor_SMD:R_0603_1608Metric"
 attribut smd
 position 114.800000 12.000000  orientation 270.00
@@ -2336,7 +2402,7 @@ $EndMODULE  D12
 
 $MODULE "R16"
 reference "R16"
-value "549"
+value "590"
 footprint "Resistor_SMD:R_0603_1608Metric"
 attribut smd
 position 119.052634 45.877042  orientation 0.00
@@ -2357,7 +2423,7 @@ $EndMODULE  R16
 
 $MODULE "R19"
 reference "R19"
-value "549"
+value "590"
 footprint "Resistor_SMD:R_0603_1608Metric"
 attribut smd
 position 119.052634 36.977042  orientation 0.00
@@ -2378,7 +2444,7 @@ $EndMODULE  R19
 
 $MODULE "R18"
 reference "R18"
-value "549"
+value "590"
 footprint "Resistor_SMD:R_0603_1608Metric"
 attribut smd
 position 119.052634 39.943708  orientation 0.00
@@ -2399,7 +2465,7 @@ $EndMODULE  R18
 
 $MODULE "R17"
 reference "R17"
-value "549"
+value "590"
 footprint "Resistor_SMD:R_0603_1608Metric"
 attribut smd
 position 119.052634 42.910374  orientation 0.00
@@ -2505,27 +2571,6 @@ shape_offset  0.000000  0.000000
 $EndPAD
 $EndMODULE  J6
 
-$MODULE "C29"
-reference "C29"
-value "47uF 10V+"
-footprint "Capacitor_SMD:C_0805_2012Metric"
-attribut smd
-position 204.100000 82.200000  orientation 0.00
-layer front
-$PAD "1"
-Shape Roundrect Layer front
-position -0.937500  0.000000  size  0.975000  1.400000  orientation 0.00
-drill  0.000000
-shape_offset  0.000000  0.000000
-$EndPAD
-$PAD "2"
-Shape Roundrect Layer front
-position  0.937500  0.000000  size  0.975000  1.400000  orientation 0.00
-drill  0.000000
-shape_offset  0.000000  0.000000
-$EndPAD
-$EndMODULE  C29
-
 $MODULE "C17"
 reference "C17"
 value "100nF"
@@ -2546,27 +2591,6 @@ drill  0.000000
 shape_offset  0.000000  0.000000
 $EndPAD
 $EndMODULE  C17
-
-$MODULE "J8"
-reference "J8"
-value "Conn_01x02"
-footprint "For_SeeedStudio:PinSocket_1x02_P2.54mm_Vertical_for_SeeedStudio"
-attribut none
-position 202.830000 79.080000  orientation 90.00
-layer front
-$PAD "1"
-Shape Rect Layer both
-position  0.000000  0.000000  size  1.700000  1.700000  orientation 0.00
-drill  1.020000
-shape_offset  0.000000  0.000000
-$EndPAD
-$PAD "2"
-Shape Oval Layer both
-position  0.000000  2.540000  size  1.700000  1.700000  orientation 0.00
-drill  1.020000
-shape_offset  0.000000  0.000000
-$EndPAD
-$EndMODULE  J8
 
 $MODULE "C18"
 reference "C18"
@@ -3629,7 +3653,7 @@ $EndMODULE  D1
 
 $MODULE "R2"
 reference "R2"
-value "549"
+value "590"
 footprint "Resistor_SMD:R_0603_1608Metric"
 attribut smd
 position 189.371666 19.580000  orientation 90.00
@@ -3650,7 +3674,7 @@ $EndMODULE  R2
 
 $MODULE "R1"
 reference "R1"
-value "549"
+value "590"
 footprint "Resistor_SMD:R_0603_1608Metric"
 attribut smd
 position 187.120000 19.580000  orientation 90.00

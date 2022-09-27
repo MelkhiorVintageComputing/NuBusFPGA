@@ -4,7 +4,7 @@ EELAYER 26 0
 EELAYER END
 $Descr A4 11693 8268
 encoding utf-8
-Sheet 9 9
+Sheet 9 10
 Title "sbus-to-ztex blinkey stuff"
 Date ""
 Rev ""
@@ -105,4 +105,85 @@ Wire Wire Line
 Wire Wire Line
 	6350 3000 6450 3000
 Connection ~ 6250 3200
+Wire Wire Line
+	5600 4400 5900 4400
+Wire Wire Line
+	5600 4500 6100 4500
+$Comp
+L power:GND #PWR0149
+U 1 1 63373073
+P 6100 4500
+F 0 "#PWR0149" H 6100 4250 50  0001 C CNN
+F 1 "GND" H 6105 4327 50  0000 C CNN
+F 2 "" H 6100 4500 50  0001 C CNN
+F 3 "" H 6100 4500 50  0001 C CNN
+	1    6100 4500
+	1    0    0    -1  
+$EndComp
+$Comp
+L power:+3V3 #PWR0150
+U 1 1 63373079
+P 5900 4400
+F 0 "#PWR0150" H 5900 4250 50  0001 C CNN
+F 1 "+3V3" H 5915 4573 50  0000 C CNN
+F 2 "" H 5900 4400 50  0001 C CNN
+F 3 "" H 5900 4400 50  0001 C CNN
+	1    5900 4400
+	1    0    0    -1  
+$EndComp
+$Comp
+L Device:C C?
+U 1 1 6337308E
+P 6100 4350
+AR Path="/5F679B53/6337308E" Ref="C?"  Part="1" 
+AR Path="/5F6B165A/6337308E" Ref="C?"  Part="1" 
+AR Path="/61631F14/6337308E" Ref="C?"  Part="1" 
+AR Path="/62CC4C0A/6337308E" Ref="C13"  Part="1" 
+F 0 "C13" H 6125 4450 50  0000 L CNN
+F 1 "100nF" H 6125 4250 50  0000 L CNN
+F 2 "Capacitor_SMD:C_0603_1608Metric" H 6138 4200 50  0001 C CNN
+F 3 "" H 6100 4350 50  0000 C CNN
+F 4 "www.yageo.com" H 6100 4350 50  0001 C CNN "MNF1_URL"
+F 5 "CC0603KRX7R8BB104" H 6100 4350 50  0001 C CNN "MPN"
+F 6 "603-CC603KRX7R8BB104" H 6100 4350 50  0001 C CNN "Mouser"
+F 7 "?" H 6100 4350 50  0001 C CNN "Digikey"
+F 8 "?" H 6100 4350 50  0001 C CNN "LCSC"
+F 9 "?" H 6100 4350 50  0001 C CNN "Koncar"
+F 10 "TB" H 6100 4350 50  0001 C CNN "Side"
+	1    6100 4350
+	1    0    0    -1  
+$EndComp
+Connection ~ 6100 4500
+Wire Wire Line
+	5900 4400 6000 4400
+Wire Wire Line
+	6000 4400 6000 4200
+Wire Wire Line
+	6000 4200 6100 4200
+Connection ~ 5900 4400
+$Comp
+L Connector_Generic:Conn_01x06 J10
+U 1 1 63373341
+P 5400 4700
+F 0 "J10" H 5320 4175 50  0000 C CNN
+F 1 "Conn_01x06" H 5320 4266 50  0000 C CNN
+F 2 "For_SeeedStudio:PinSocket_1x06_P2.54mm_Vertical_For_SeeedStudio" H 5400 4700 50  0001 C CNN
+F 3 "~" H 5400 4700 50  0001 C CNN
+F 4 "A2541HWV-6P" H 5400 4700 50  0001 C CNN "MPN"
+F 5 "https://www.lcsc.com/product-detail/Female-Headers_CJT-Changjiang-Connectors-A2541HWV-6P_C2897443.html" H 5400 4700 50  0001 C CNN "URL"
+	1    5400 4700
+	-1   0    0    1   
+$EndComp
+Text GLabel 5600 4600 2    60   Input ~ 12
+LED0
+Text GLabel 5600 4700 2    60   Input ~ 12
+LED1
+Text GLabel 5600 4800 2    60   Input ~ 12
+LED2
+Text GLabel 5600 4900 2    60   Input ~ 12
+LED3
+Text Notes 5400 2900 0    50   ~ 0
+Dual-row Pmod\nInternal, in line w/ the carrier
+Text Notes 4850 4150 0    50   ~ 0
+Single-row Pmod\nSharing the user LED signals, mostly for debugging\nInternal, perpendicular to carrier
 $EndSCHEMATC

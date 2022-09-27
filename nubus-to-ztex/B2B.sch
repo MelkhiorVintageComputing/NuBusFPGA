@@ -4,7 +4,7 @@ EELAYER 26 0
 EELAYER END
 $Descr A4 11693 8268
 encoding utf-8
-Sheet 2 9
+Sheet 2 10
 Title "nubus-to-ztex B2B connector"
 Date ""
 Rev ""
@@ -25,9 +25,12 @@ F 0 "JAB1" H 1825 4375 50  0000 C CNN
 F 1 "ZTEX_AB-ztex_AB" H 1825 4284 50  0000 C CNN
 F 2 "For_SeeedStudio:PinHeader_2x32_P2.54mm_Vertical_For_SeeedStudio" H 1800 2650 50  0001 C CNN
 F 3 "" H 1800 2650 50  0001 C CNN
-F 4 "10-89-7642" H 1800 2650 50  0001 C CNN "MPN-ALT"
-F 5 "https://www2.mouser.com/ProductDetail/Molex/10-89-7642?qs=%2Fha2pyFadugCxzQFZUdvioDcljDVidgd4vXrOFuSRYM%3D" H 1800 2650 50  0001 C CNN "URL"
-F 6 "X6521WV-2x32H-C30D60" H 1800 2650 50  0001 C CNN "MPN"
+F 4 "10-89-7642" H 1800 2650 50  0001 C CNN "MPN (Molex)"
+F 5 "https://www2.mouser.com/ProductDetail/Molex/10-89-7642?qs=%2Fha2pyFadugCxzQFZUdvioDcljDVidgd4vXrOFuSRYM%3D" H 1800 2650 50  0001 C CNN "URL (Molex)"
+F 6 "X6521WV-2x32H-C30D60" H 1800 2650 50  0001 C CNN "MPN (XKB)"
+F 7 "https://www.lcsc.com/product-detail/Pin-Headers_XKB-Connectivity-X6521WV-2x32H-C30D60_C2883966.html" H 1800 2650 50  0001 C CNN "URL (XKB)"
+F 8 "77313-101-64LF" H 1800 2650 50  0001 C CNN "MPN"
+F 9 "https://eu.mouser.com/ProductDetail/Amphenol-FCI/77313-101-64LF?qs=xJiur%252Bgubk1MSan%2F7C0v%252BA%3D%3D" H 1800 2650 50  0001 C CNN "URL"
 	1    1800 2650
 	1    0    0    -1  
 $EndComp
@@ -97,9 +100,12 @@ F 0 "JCD1" H 7650 4375 50  0000 C CNN
 F 1 "ZTEX_CD-ztex_CD" H 7650 4284 50  0000 C CNN
 F 2 "For_SeeedStudio:PinHeader_2x32_P2.54mm_Vertical_For_SeeedStudio" H 7600 2650 50  0001 C CNN
 F 3 "" H 7600 2650 50  0001 C CNN
-F 4 "10-89-7642" H 7600 2650 50  0001 C CNN "MPN-ALT"
-F 5 "https://www2.mouser.com/ProductDetail/Molex/10-89-7642?qs=%2Fha2pyFadugCxzQFZUdvioDcljDVidgd4vXrOFuSRYM%3D" H 7600 2650 50  0001 C CNN "URL"
-F 6 "X6521WV-2x32H-C30D60" H 7600 2650 50  0001 C CNN "MPN"
+F 4 "10-89-7642" H 1800 2650 50  0001 C CNN "MPN (Molex)"
+F 5 "https://www2.mouser.com/ProductDetail/Molex/10-89-7642?qs=%2Fha2pyFadugCxzQFZUdvioDcljDVidgd4vXrOFuSRYM%3D" H 1800 2650 50  0001 C CNN "URL (Molex)"
+F 6 "X6521WV-2x32H-C30D60" H 1800 2650 50  0001 C CNN "MPN (XKB)"
+F 7 "https://www.lcsc.com/product-detail/Pin-Headers_XKB-Connectivity-X6521WV-2x32H-C30D60_C2883966.html" H 1800 2650 50  0001 C CNN "URL (XKB)"
+F 8 "77313-101-64LF" H 1800 2650 50  0001 C CNN "MPN"
+F 9 "https://eu.mouser.com/ProductDetail/Amphenol-FCI/77313-101-64LF?qs=xJiur%252Bgubk1MSan%2F7C0v%252BA%3D%3D" H 1800 2650 50  0001 C CNN "URL"
 	1    7600 2650
 	1    0    0    -1  
 $EndComp
@@ -456,11 +462,11 @@ AR Path="/5F6B165A/61B5DFBC" Ref="R?"  Part="1"
 AR Path="/5F67E4B9/61B5DFBC" Ref="R?"  Part="1" 
 AR Path="/618E8C75/61B5DFBC" Ref="R1"  Part="1" 
 F 0 "R1" V 1780 5900 50  0000 C CNN
-F 1 "549" V 1700 5900 50  0000 C CNN
+F 1 "590" V 1700 5900 50  0000 C CNN
 F 2 "Resistor_SMD:R_0603_1608Metric" V 1630 5900 50  0001 C CNN
 F 3 "" H 1700 5900 50  0000 C CNN
-F 4 "0603WAF5490T5E" V 1700 5900 50  0001 C CNN "MPN"
-F 5 "https://lcsc.com/product-detail/Chip-Resistor-Surface-Mount_UNI-ROYAL-Uniroyal-Elec-0603WAF5490T5E_C23079.html" V 1700 5900 50  0001 C CNN "URL"
+F 4 "0603WAF5900T5E" V 1700 5900 50  0001 C CNN "MPN"
+F 5 "https://www.lcsc.com/product-detail/Chip-Resistor-Surface-Mount_UNI-ROYAL-Uniroyal-Elec-0603WAF5900T5E_C23084.html" V 1700 5900 50  0001 C CNN "URL"
 	1    1700 5900
 	0    1    1    0   
 $EndComp
@@ -508,11 +514,11 @@ AR Path="/5F6B165A/61B5F3F5" Ref="R?"  Part="1"
 AR Path="/5F67E4B9/61B5F3F5" Ref="R?"  Part="1" 
 AR Path="/618E8C75/61B5F3F5" Ref="R2"  Part="1" 
 F 0 "R2" V 1780 6400 50  0000 C CNN
-F 1 "549" V 1700 6400 50  0000 C CNN
+F 1 "590" V 1700 6400 50  0000 C CNN
 F 2 "Resistor_SMD:R_0603_1608Metric" V 1630 6400 50  0001 C CNN
 F 3 "" H 1700 6400 50  0000 C CNN
-F 4 "0603WAF5490T5E" V 1700 6400 50  0001 C CNN "MPN"
-F 5 "https://lcsc.com/product-detail/Chip-Resistor-Surface-Mount_UNI-ROYAL-Uniroyal-Elec-0603WAF5490T5E_C23079.html" V 1700 6400 50  0001 C CNN "URL"
+F 4 "0603WAF5900T5E" V 1700 6400 50  0001 C CNN "MPN"
+F 5 "https://www.lcsc.com/product-detail/Chip-Resistor-Surface-Mount_UNI-ROYAL-Uniroyal-Elec-0603WAF5900T5E_C23084.html" V 1700 6400 50  0001 C CNN "URL"
 	1    1700 6400
 	0    1    1    0   
 $EndComp
@@ -683,11 +689,11 @@ AR Path="/5F6B165A/621E3C4D" Ref="R?"  Part="1"
 AR Path="/5F67E4B9/621E3C4D" Ref="R?"  Part="1" 
 AR Path="/618E8C75/621E3C4D" Ref="R3"  Part="1" 
 F 0 "R3" V 8680 5250 50  0000 C CNN
-F 1 "549" V 8600 5250 50  0000 C CNN
+F 1 "590" V 8600 5250 50  0000 C CNN
 F 2 "Resistor_SMD:R_0603_1608Metric" V 8530 5250 50  0001 C CNN
 F 3 "" H 8600 5250 50  0000 C CNN
-F 4 "0603WAF5490T5E" V 8600 5250 50  0001 C CNN "MPN"
-F 5 "https://lcsc.com/product-detail/Chip-Resistor-Surface-Mount_UNI-ROYAL-Uniroyal-Elec-0603WAF5490T5E_C23079.html" V 8600 5250 50  0001 C CNN "URL"
+F 4 "0603WAF5900T5E" V 8600 5250 50  0001 C CNN "MPN"
+F 5 "https://www.lcsc.com/product-detail/Chip-Resistor-Surface-Mount_UNI-ROYAL-Uniroyal-Elec-0603WAF5900T5E_C23084.html" V 8600 5250 50  0001 C CNN "URL"
 	1    8600 5250
 	0    1    1    0   
 $EndComp
@@ -855,11 +861,11 @@ AR Path="/5F6B165A/62CD698B" Ref="R?"  Part="1"
 AR Path="/5F67E4B9/62CD698B" Ref="R?"  Part="1" 
 AR Path="/618E8C75/62CD698B" Ref="R9"  Part="1" 
 F 0 "R9" V 1780 6900 50  0000 C CNN
-F 1 "549" V 1700 6900 50  0000 C CNN
+F 1 "590" V 1700 6900 50  0000 C CNN
 F 2 "Resistor_SMD:R_0603_1608Metric" V 1630 6900 50  0001 C CNN
 F 3 "" H 1700 6900 50  0000 C CNN
-F 4 "0603WAF5490T5E" V 1700 6900 50  0001 C CNN "MPN"
-F 5 "https://lcsc.com/product-detail/Chip-Resistor-Surface-Mount_UNI-ROYAL-Uniroyal-Elec-0603WAF5490T5E_C23079.html" V 1700 6900 50  0001 C CNN "URL"
+F 4 "0603WAF5900T5E" V 1700 6900 50  0001 C CNN "MPN"
+F 5 "https://www.lcsc.com/product-detail/Chip-Resistor-Surface-Mount_UNI-ROYAL-Uniroyal-Elec-0603WAF5900T5E_C23084.html" V 1700 6900 50  0001 C CNN "URL"
 	1    1700 6900
 	0    1    1    0   
 $EndComp
@@ -907,11 +913,11 @@ AR Path="/5F6B165A/62CD69A8" Ref="R?"  Part="1"
 AR Path="/5F67E4B9/62CD69A8" Ref="R?"  Part="1" 
 AR Path="/618E8C75/62CD69A8" Ref="R10"  Part="1" 
 F 0 "R10" V 1780 7400 50  0000 C CNN
-F 1 "549" V 1700 7400 50  0000 C CNN
+F 1 "590" V 1700 7400 50  0000 C CNN
 F 2 "Resistor_SMD:R_0603_1608Metric" V 1630 7400 50  0001 C CNN
 F 3 "" H 1700 7400 50  0000 C CNN
-F 4 "0603WAF5490T5E" V 1700 7400 50  0001 C CNN "MPN"
-F 5 "https://lcsc.com/product-detail/Chip-Resistor-Surface-Mount_UNI-ROYAL-Uniroyal-Elec-0603WAF5490T5E_C23079.html" V 1700 7400 50  0001 C CNN "URL"
+F 4 "0603WAF5900T5E" V 1700 7400 50  0001 C CNN "MPN"
+F 5 "https://www.lcsc.com/product-detail/Chip-Resistor-Surface-Mount_UNI-ROYAL-Uniroyal-Elec-0603WAF5900T5E_C23084.html" V 1700 7400 50  0001 C CNN "URL"
 	1    1700 7400
 	0    1    1    0   
 $EndComp
@@ -949,4 +955,8 @@ Text GLabel 9900 3950 2    60   Input ~ 12
 LED2
 Text GLabel 9900 4050 2    60   Input ~ 12
 LED3
+Text Notes 3900 5000 0    50   ~ 0
+Molex 10-89-7642 a.k.a. A-70280-0072, with dimension 11.1 (total), 6.1 (mating) & 2.72 (solder), Hole diameter 1.02\nXKB X6521WV-2x32H-C30D60 is 11.5/6/3, H1.02\nAmphenol 77313-824-64LF is 12.2/6.75/2.9, H1.02\nAmphenol 77313-818-64LF is 11.43/5.84/3.05, H1.02\nAmphenol 77313-101-64LF is 10.8/5.84/2.41, H1.02 ('1xx' has thicker gold coating than '8xx')\nWurth 61306421121 is 11.54/6/3, H1.10\n
+Text Notes 2350 7600 1    50   ~ 0
+The four LED signals are also connected to a Pmod connector\nfor debugging purposes
 $EndSCHEMATC
