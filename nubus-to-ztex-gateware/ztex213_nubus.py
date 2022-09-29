@@ -102,14 +102,12 @@ _nubus_io_v1_0 = [
 
 _nubus_io_v1_2 = [
     ## leds on the NuBus board
-    ("user_led", 0, Pins("N2"),  IOStandard("lvcmos33")), #LED0
-    ("user_led", 1, Pins("N1"),  IOStandard("lvcmos33")), #LED1
-    ("user_led", 2, Pins("M1"),  IOStandard("lvcmos33")), #LED2
-    ("user_led", 3, Pins("L1"),  IOStandard("lvcmos33")), #LED3
+    ("user_led", 0, Pins("U9"),  IOStandard("lvcmos33")), #LED0
+    ("user_led", 1, Pins("V9"),  IOStandard("lvcmos33")), #LED1; both are overlapping with serial TX/RX
     ## serial header for console
     ("serial", 0,
      Subsignal("tx", Pins("V9")), # FIXME: might be the other way round
-     Subsignal("rx", Pins("U9")),
+     Subsignal("rx", Pins("U9")), # both are overlapping with LED0/1
      IOStandard("LVCMOS33")
     ),
     ## USB
@@ -172,7 +170,7 @@ _nubus_nubus_v1_2 = [
     ("ack_o_n",            0, Pins("H14"), IOStandard("lvttl")),
     ("ack_oe_n",           0, Pins("J13"), IOStandard("lvttl")),
     ("nmrq_3v3_n",         0, Pins("K16"), IOStandard("lvttl")), # 'irq' line, Output only direct to 74LVT125
-    ("reset_3v3_n",        0, Pins("P2"),  IOStandard("lvttl")), # Input only
+    ("reset_3v3_n",        0, Pins("R3"),  IOStandard("lvttl")), # Input only
     ("rqst_3v3_n"  ,       0, Pins("J18"), IOStandard("lvttl")), # Open Collector
     ("rqst_o_n"  ,         0, Pins("K13"), IOStandard("lvttl")),
     ("start_3v3_n",        0, Pins("K15"), IOStandard("lvttl")),
@@ -185,22 +183,48 @@ _nubus_nubus_v1_2 = [
     ("arb_3v3_n",          0, Pins("T8 V4 V5 U6"), IOStandard("lvttl")), # Open Collector
     ("arb_o_n",            0, Pins("J14 G16 G14 H17"), IOStandard("lvttl")),
     ("id_3v3_n",           0, Pins("U7 V6 V7 U8"), IOStandard("lvttl")),
-    ("tm0_3v3_n",          0, Pins("P5"), IOStandard("lvttl")),
-    ("tm0_o_n",            0, Pins("P3"), IOStandard("lvttl")),
-    ("tm1_3v3_n",          0, Pins("N5"), IOStandard("lvttl")),
-    ("tm1_o_n",            0, Pins("P4"), IOStandard("lvttl")),
-    ("tmx_oe_n",           0, Pins("R3"), IOStandard("lvttl")),
-    ("tm2_3v3_n",          0, Pins("R2"),  IOStandard("lvttl")),
-    ("tm2_o_n",            0, Pins("R1"),  IOStandard("lvttl")),
-    ("tm2_oe_n",           0, Pins("T1"),  IOStandard("lvttl")),
+    ("tm0_3v3_n",          0, Pins("V2"), IOStandard("lvttl")),
+    ("tm0_o_n",            0, Pins("T6"), IOStandard("lvttl")),
+    ("tm1_3v3_n",          0, Pins("U2"), IOStandard("lvttl")),
+    ("tm1_o_n",            0, Pins("R7"), IOStandard("lvttl")),
+    ("tmx_oe_n",           0, Pins("R8"), IOStandard("lvttl")),
+    ("tm2_3v3_n",          0, Pins("K6"),  IOStandard("lvttl")),
+    ("tm2_o_n",            0, Pins("R5"),  IOStandard("lvttl")),
+    ("tm2_oe_n",           0, Pins("R6"),  IOStandard("lvttl")),
     
     ("nubus_oe",           0, Pins("G13"), IOStandard("lvttl")),
     ("nubus_ad_dir",       0, Pins("G17"), IOStandard("lvttl"))),
 ]
 
 # Connectors ---------------------------------------------------------------------------------------
-connectors = [
+connectors_v1_0 = [
     ]
+connectors_v1_2 = [
+    ("P1", "M1 L1 N2 N1 R2 P2 T1 R1 P4 P3 P5 N5"), # check sequence! currently in pmod-* order
+    ]
+
+# Ethernet ----------------------------------------------------------------------------------------------
+# custom not-quite-pmod
+def rmii_eth_pmod_io(extpmod):
+    return [
+        ("eth_clocks", 0,
+         Subsignal("ref_clk", Pins(f"{extpmod}:10"))),
+         IOStandard("LVCMOS33"),
+         ),
+        ("eth", 0,
+         Subsignal("rst_n",   Pins(f"{extpmod}:3")),
+         Subsignal("rx_data", Pins(f"{extpmod}:8 {extpmod}:11")),
+         Subsignal("crs_dv",  Pins(f"{extpmod}:6")),
+         Subsignal("tx_en",   Pins(f"{extpmod}:2")),
+         Subsignal("tx_data", Pins(f"{extpmod}:0 {extpmod}:1"))),
+         Subsignal("mdc",     Pins(f"{extpmod}:4")),
+         Subsignal("mdio",    Pins(f"{extpmod}:7")),
+         Subsignal("rx_er",   Pins(f"{extpmod}:9"))),
+         Subsignal("int_n",   Pins(f"{extpmod}:5"))),
+         IOStandard("LVCMOS33")
+         ),
+]
+_rmii_eth_extpmod_io_v1_2 = rmii_eth_extpmod_io("P1")
 
 # Platform -----------------------------------------------------------------------------------------
 

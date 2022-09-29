@@ -4,7 +4,7 @@ EELAYER 26 0
 EELAYER END
 $Descr A4 11693 8268
 encoding utf-8
-Sheet 7 10
+Sheet 7 9
 Title "nubus-to-ztex VGA"
 Date ""
 Rev ""
@@ -62,4 +62,16 @@ F 7 "https://www.lcsc.com/product-detail/Chip-Resistor-Surface-Mount_UNI-ROYAL-U
 	1    8000 5050
 	1    0    0    -1  
 $EndComp
+$Comp
+L Mechanical:MountingHole_Pad H1
+U 1 1 633638E3
+P 8250 4800
+F 0 "H1" H 8350 4851 50  0000 L CNN
+F 1 "MountingHole_Pad" H 8350 4760 50  0000 L CNN
+F 2 "MountingHole:MountingHole_2.2mm_M2_Pad" H 8250 4800 50  0001 C CNN
+F 3 "~" H 8250 4800 50  0001 C CNN
+	1    8250 4800
+	1    0    0    -1  
+$EndComp
+Connection ~ 8250 4900
 $EndSCHEMATC

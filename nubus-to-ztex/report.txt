@@ -1,0 +1,7 @@
+Info: Front side (top side) place file: “/home/dolbeau/MAC/NuBusFPGA.V1_2/nubus-to-ztex/nubus-to-ztex-top.pos”.
+Info: Component count: 88.
+Info: Back side (bottom side) place file: “/home/dolbeau/MAC/NuBusFPGA.V1_2/nubus-to-ztex/nubus-to-ztex-bottom.pos”.
+Info: Component count: 0.
+Info: Full component count: 88
+
+Component Placement File generation OK.

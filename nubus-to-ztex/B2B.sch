@@ -4,7 +4,7 @@ EELAYER 26 0
 EELAYER END
 $Descr A4 11693 8268
 encoding utf-8
-Sheet 2 10
+Sheet 2 9
 Title "nubus-to-ztex B2B connector"
 Date ""
 Rev ""
@@ -300,7 +300,6 @@ F 3 "" H 6250 2550 50  0001 C CNN
 	1    6250 2550
 	1    0    0    -1  
 $EndComp
-Connection ~ 6250 2550
 Wire Wire Line
 	11000 2750 11000 4450
 Wire Wire Line
@@ -367,11 +366,11 @@ Text GLabel 1600 2050 0    50   Input ~ 0
 ~AD31_3V3
 Text GLabel 4100 2150 2    50   Input ~ 0
 ~AD30_3V3
-Text GLabel 9900 3650 2    50   Input ~ 0
+Text GLabel 9900 2550 2    50   Input ~ 0
 ~RESET_3V3
-Text GLabel 9900 3050 2    50   Input ~ 0
+Text GLabel 7400 2450 0    50   Input ~ 0
 ~TM1_3V3
-Text GLabel 9900 2950 2    50   Input ~ 0
+Text GLabel 7400 2350 0    50   Input ~ 0
 ~TM0_3V3
 Text GLabel 1600 3950 0    50   Input ~ 0
 ~AD1_3V3
@@ -552,9 +551,9 @@ F 3 "" H 700 6600 50  0001 C CNN
 $EndComp
 Text GLabel 1850 6400 2    60   Input ~ 12
 LED1
-Text GLabel 9900 3750 2    60   Input ~ 12
+Text GLabel 9450 1050 2    60   Input ~ 12
 LED0
-Text GLabel 9900 3850 2    60   Input ~ 12
+Text GLabel 9450 950  2    60   Input ~ 12
 LED1
 Text GLabel 1600 4050 0    50   Input ~ 0
 USBH0_D+
@@ -642,6 +641,7 @@ F 7 "?" H 3400 6050 50  0001 C CNN "Digikey"
 F 8 "?" H 3400 6050 50  0001 C CNN "LCSC"
 F 9 "?" H 3400 6050 50  0001 C CNN "Koncar"
 F 10 "TB" H 3400 6050 50  0001 C CNN "Side"
+F 11 "https://lcsc.com/product-detail/Multilayer-Ceramic-Capacitors-MLCC-SMD-SMT_YAGEO-CC0603KRX7R8BB104_C92490.html" H 3400 6050 50  0001 C CNN "URL"
 	1    3400 6050
 	1    0    0    -1  
 $EndComp
@@ -671,7 +671,7 @@ Text Notes 1200 5650 0    50   ~ 0
 User LEDS
 Text GLabel 1600 1350 0    50   Input ~ 0
 ~NMRQ_3V3
-Text GLabel 9900 3550 2    50   Input ~ 0
+Text GLabel 7400 2550 0    50   Input ~ 0
 ~TM2_3V3
 Text GLabel 9900 1850 2    50   Input Italic 0
 ~CLK2X_3V3
@@ -754,8 +754,10 @@ F 0 "C3" H 4025 6150 50  0000 L CNN
 F 1 "47uF 10V+" H 4025 5950 50  0000 L CNN
 F 2 "Capacitor_SMD:C_0805_2012Metric" H 4038 5900 50  0001 C CNN
 F 3 "" H 4000 6050 50  0000 C CNN
-F 4 "C2012X5R1A476MTJ00E" H 4000 6050 50  0001 C CNN "MPN"
-F 5 "https://lcsc.com/product-detail/Multilayer-Ceramic-Capacitors-MLCC-SMD-SMT_TDK-C2012X5R1A476MTJ00E_C76636.html" H 4000 6050 50  0001 C CNN "URL"
+F 4 "C2012X5R1A476MTJ00E" H 4000 6050 50  0001 C CNN "MPN-ALT"
+F 5 "https://lcsc.com/product-detail/Multilayer-Ceramic-Capacitors-MLCC-SMD-SMT_TDK-C2012X5R1A476MTJ00E_C76636.html" H 4000 6050 50  0001 C CNN "URL-ALT"
+F 6 "GRM21BR61A476ME15K" H 4000 6050 50  0001 C CNN "MPN"
+F 7 "https://www.lcsc.com/product-detail/Multilayer-Ceramic-Capacitors-MLCC-SMD-SMT_Murata-Electronics-GRM21BR61A476ME15K_C2292827.html" H 4000 6050 50  0001 C CNN "URL"
 	1    4000 6050
 	1    0    0    -1  
 $EndComp
@@ -809,154 +811,55 @@ Text GLabel 1600 1650 0    50   Input ~ 0
 START_o_n
 Text GLabel 1600 1550 0    50   Input ~ 0
 START_oe_n
-Text GLabel 9900 2550 2    50   Input ~ 0
-TMx_oe_n
-Text GLabel 9900 3150 2    50   Input ~ 0
-TM1_n_o
-Text GLabel 9900 3250 2    50   Input ~ 0
-TM0_n_o
-Text GLabel 9900 3350 2    50   Input ~ 0
-TM2_oe_n
-Text GLabel 9900 3450 2    50   Input ~ 0
-TM2_o_n
-Text GLabel 9900 2450 2    60   Input ~ 0
-SD_D2
-Text GLabel 9900 2350 2    60   Input ~ 0
-SD_D3
-Text GLabel 9900 2250 2    60   Input ~ 0
-SD_CMD
-Text GLabel 9900 2150 2    60   Input ~ 0
-SD_CLK
-Text GLabel 9900 2050 2    60   Input ~ 0
-SD_D0
-Text GLabel 9900 1950 2    60   Input ~ 0
-SD_D1
-Text GLabel 7400 1950 0    50   Input ~ 0
-PMOD-5
-Text GLabel 7400 2150 0    50   Input ~ 0
-PMOD-7
-Text GLabel 7400 2350 0    50   Input ~ 0
-PMOD-9
-Text GLabel 7400 2550 0    50   Input ~ 0
-PMOD-11
-Text GLabel 7400 2450 0    50   Input ~ 0
-PMOD-12
 Text GLabel 7400 1850 0    50   Input ~ 0
-PMOD-6
+TMx_oe_n
+Text GLabel 7400 1950 0    50   Input ~ 0
+TM1_n_o
 Text GLabel 7400 2050 0    50   Input ~ 0
-PMOD-8
+TM0_n_o
+Text GLabel 7400 2150 0    50   Input ~ 0
+TM2_oe_n
 Text GLabel 7400 2250 0    50   Input ~ 0
+TM2_o_n
+Text GLabel 9900 1950 2    60   Input ~ 0
+SD_D2
+Text GLabel 9900 2050 2    60   Input ~ 0
+SD_D3
+Text GLabel 9900 2150 2    60   Input ~ 0
+SD_CMD
+Text GLabel 9900 2250 2    60   Input ~ 0
+SD_CLK
+Text GLabel 9900 2350 2    60   Input ~ 0
+SD_D0
+Text GLabel 9900 2450 2    60   Input ~ 0
+SD_D1
+Text GLabel 9900 3950 2    50   Input ~ 0
+PMOD-5
+Text GLabel 9900 3750 2    50   Input ~ 0
+PMOD-7
+Text GLabel 9900 3550 2    50   Input ~ 0
+PMOD-9
+Text GLabel 9900 3350 2    50   Input ~ 0
+PMOD-11
+Text GLabel 9900 3450 2    50   Input ~ 0
+PMOD-12
+Text GLabel 9900 4050 2    50   Input ~ 0
+PMOD-6
+Text GLabel 9900 3850 2    50   Input ~ 0
+PMOD-8
+Text GLabel 9900 3650 2    50   Input ~ 0
 PMOD-10
-Wire Wire Line
-	850  6900 700  6900
-Wire Wire Line
-	700  6900 700  7100
-Wire Wire Line
-	1150 6900 1550 6900
-$Comp
-L Device:R R?
-U 1 1 62CD698B
-P 1700 6900
-AR Path="/5F6B165A/62CD698B" Ref="R?"  Part="1" 
-AR Path="/5F67E4B9/62CD698B" Ref="R?"  Part="1" 
-AR Path="/618E8C75/62CD698B" Ref="R9"  Part="1" 
-F 0 "R9" V 1780 6900 50  0000 C CNN
-F 1 "590" V 1700 6900 50  0000 C CNN
-F 2 "Resistor_SMD:R_0603_1608Metric" V 1630 6900 50  0001 C CNN
-F 3 "" H 1700 6900 50  0000 C CNN
-F 4 "0603WAF5900T5E" V 1700 6900 50  0001 C CNN "MPN"
-F 5 "https://www.lcsc.com/product-detail/Chip-Resistor-Surface-Mount_UNI-ROYAL-Uniroyal-Elec-0603WAF5900T5E_C23084.html" V 1700 6900 50  0001 C CNN "URL"
-	1    1700 6900
-	0    1    1    0   
-$EndComp
-$Comp
-L Device:LED_ALT D?
-U 1 1 62CD6995
-P 1000 6900
-AR Path="/5F6B165A/62CD6995" Ref="D?"  Part="1" 
-AR Path="/5F67E4B9/62CD6995" Ref="D?"  Part="1" 
-AR Path="/618E8C75/62CD6995" Ref="D4"  Part="1" 
-F 0 "D4" H 1000 7000 50  0000 C CNN
-F 1 "RED" H 1050 6750 50  0000 R CNN
-F 2 "LED_SMD:LED_0805_2012Metric" H 1000 6900 50  0001 C CNN
-F 3 "https://optoelectronics.liteon.com/upload/download/DS-22-99-0150/LTST-C170KRKT.pdf" H 1000 6900 50  0001 C CNN
-F 4 "www.liteon.com" H 1000 6900 60  0001 C CNN "MNF1_URL"
-F 5 "LTST-C170KRKT" H 1000 6900 60  0001 C CNN "MPN"
-F 6 "https://www.lcsc.com/product-detail/Light-Emitting-Diodes-LED_Lite-On-LTST-C170KRKT_C94868.html" H 1000 6900 50  0001 C CNN "URL"
-	1    1000 6900
-	1    0    0    -1  
-$EndComp
-$Comp
-L power:GND #PWR0142
-U 1 1 62CD699C
-P 700 7100
-F 0 "#PWR0142" H 700 6850 50  0001 C CNN
-F 1 "GND" H 705 6927 50  0000 C CNN
-F 2 "" H 700 7100 50  0001 C CNN
-F 3 "" H 700 7100 50  0001 C CNN
-	1    700  7100
-	1    0    0    -1  
-$EndComp
-Text GLabel 1850 6900 2    60   Input ~ 12
-LED2
-Wire Wire Line
-	850  7400 700  7400
-Wire Wire Line
-	700  7400 700  7600
-Wire Wire Line
-	1150 7400 1550 7400
-$Comp
-L Device:R R?
-U 1 1 62CD69A8
-P 1700 7400
-AR Path="/5F6B165A/62CD69A8" Ref="R?"  Part="1" 
-AR Path="/5F67E4B9/62CD69A8" Ref="R?"  Part="1" 
-AR Path="/618E8C75/62CD69A8" Ref="R10"  Part="1" 
-F 0 "R10" V 1780 7400 50  0000 C CNN
-F 1 "590" V 1700 7400 50  0000 C CNN
-F 2 "Resistor_SMD:R_0603_1608Metric" V 1630 7400 50  0001 C CNN
-F 3 "" H 1700 7400 50  0000 C CNN
-F 4 "0603WAF5900T5E" V 1700 7400 50  0001 C CNN "MPN"
-F 5 "https://www.lcsc.com/product-detail/Chip-Resistor-Surface-Mount_UNI-ROYAL-Uniroyal-Elec-0603WAF5900T5E_C23084.html" V 1700 7400 50  0001 C CNN "URL"
-	1    1700 7400
-	0    1    1    0   
-$EndComp
-$Comp
-L Device:LED_ALT D?
-U 1 1 62CD69B2
-P 1000 7400
-AR Path="/5F6B165A/62CD69B2" Ref="D?"  Part="1" 
-AR Path="/5F67E4B9/62CD69B2" Ref="D?"  Part="1" 
-AR Path="/618E8C75/62CD69B2" Ref="D5"  Part="1" 
-F 0 "D5" H 1000 7500 50  0000 C CNN
-F 1 "RED" H 1050 7250 50  0000 R CNN
-F 2 "LED_SMD:LED_0805_2012Metric" H 1000 7400 50  0001 C CNN
-F 3 "https://optoelectronics.liteon.com/upload/download/DS-22-99-0150/LTST-C170KRKT.pdf" H 1000 7400 50  0001 C CNN
-F 4 "www.liteon.com" H 1000 7400 60  0001 C CNN "MNF1_URL"
-F 5 "LTST-C170KRKT" H 1000 7400 60  0001 C CNN "MPN"
-F 6 "https://www.lcsc.com/product-detail/Light-Emitting-Diodes-LED_Lite-On-LTST-C170KRKT_C94868.html" H 1000 7400 50  0001 C CNN "URL"
-	1    1000 7400
-	1    0    0    -1  
-$EndComp
-$Comp
-L power:GND #PWR0143
-U 1 1 62CD69B9
-P 700 7600
-F 0 "#PWR0143" H 700 7350 50  0001 C CNN
-F 1 "GND" H 705 7427 50  0000 C CNN
-F 2 "" H 700 7600 50  0001 C CNN
-F 3 "" H 700 7600 50  0001 C CNN
-	1    700  7600
-	1    0    0    -1  
-$EndComp
-Text GLabel 1850 7400 2    60   Input ~ 12
-LED3
-Text GLabel 9900 3950 2    60   Input ~ 12
-LED2
-Text GLabel 9900 4050 2    60   Input ~ 12
-LED3
 Text Notes 3900 5000 0    50   ~ 0
 Molex 10-89-7642 a.k.a. A-70280-0072, with dimension 11.1 (total), 6.1 (mating) & 2.72 (solder), Hole diameter 1.02\nXKB X6521WV-2x32H-C30D60 is 11.5/6/3, H1.02\nAmphenol 77313-824-64LF is 12.2/6.75/2.9, H1.02\nAmphenol 77313-818-64LF is 11.43/5.84/3.05, H1.02\nAmphenol 77313-101-64LF is 10.8/5.84/2.41, H1.02 ('1xx' has thicker gold coating than '8xx')\nWurth 61306421121 is 11.54/6/3, H1.10\n
-Text Notes 2350 7600 1    50   ~ 0
-The four LED signals are also connected to a Pmod connector\nfor debugging purposes
+Text Notes 2450 6750 1    50   ~ 0
+The four LED signals are also\nconnected to the serial connector\nfor debugging purposes
+Connection ~ 6250 2550
+Text GLabel 9900 3250 2    50   Input ~ 0
+PMOD-14
+Text GLabel 9900 3150 2    50   Input ~ 0
+PMOD-13
+Text GLabel 9900 3050 2    50   Input ~ 0
+PMOD-16
+Text GLabel 9900 2950 2    50   Input ~ 0
+PMOD-15
 $EndSCHEMATC

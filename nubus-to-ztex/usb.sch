@@ -4,7 +4,7 @@ EELAYER 26 0
 EELAYER END
 $Descr A4 11693 8268
 encoding utf-8
-Sheet 5 10
+Sheet 5 9
 Title "nubus-to-ztex USB"
 Date ""
 Rev ""
@@ -125,6 +125,7 @@ F 7 "?" H 7200 2000 50  0001 C CNN "Digikey"
 F 8 "?" H 7200 2000 50  0001 C CNN "LCSC"
 F 9 "?" H 7200 2000 50  0001 C CNN "Koncar"
 F 10 "TB" H 7200 2000 50  0001 C CNN "Side"
+F 11 "https://lcsc.com/product-detail/Multilayer-Ceramic-Capacitors-MLCC-SMD-SMT_YAGEO-CC0603KRX7R8BB104_C92490.html" H 3000 6050 50  0001 C CNN "URL"
 	1    7200 2000
 	1    0    0    -1  
 $EndComp
@@ -306,12 +307,14 @@ L Device:CP C25
 U 1 1 60D9A750
 P 4950 2000
 F 0 "C25" H 5068 2046 50  0000 L CNN
-F 1 "150uF" H 5068 1955 50  0000 L CNN
+F 1 "150uF (could be >= 100 uF or even less, probably)" H 5068 1955 50  0000 L CNN
 F 2 "Capacitor_SMD:C_1206_3216Metric" H 4988 1850 50  0001 C CNN
 F 3 "~" H 4950 2000 50  0001 C CNN
-F 4 "GRM31CR60J157ME11L" H 4950 2000 50  0001 C CNN "MPN"
-F 5 "https://lcsc.com/product-detail/Multilayer-Ceramic-Capacitors-MLCC-SMD-SMT_Murata-Electronics-GRM31CR60J157ME11L_C528968.html" H 4950 2000 50  0001 C CNN "URL"
-F 6 "https://www.mouser.fr/ProductDetail/Murata-Electronics/GRM31CR60J157ME11L?qs=qSv5qXjCIG3a12X8fU8miQ%3D%3D" H 4950 2000 50  0001 C CNN "URL (mouser)"
+F 4 "GRM31CR60J157ME11L" H 4950 2000 50  0001 C CNN "MPN-ALT"
+F 5 "https://lcsc.com/product-detail/Multilayer-Ceramic-Capacitors-MLCC-SMD-SMT_Murata-Electronics-GRM31CR60J157ME11L_C528968.html" H 4950 2000 50  0001 C CNN "URL-ALT"
+F 6 "https://www.mouser.fr/ProductDetail/Murata-Electronics/GRM31CR60J157ME11L?qs=qSv5qXjCIG3a12X8fU8miQ%3D%3D" H 4950 2000 50  0001 C CNN "URL-ALT (mouser)"
+F 7 "JMK316ABJ107ML-T" H 4950 2000 50  0001 C CNN "MPN"
+F 8 "https://www.lcsc.com/product-detail/Multilayer-Ceramic-Capacitors-MLCC-SMD-SMT_Taiyo-Yuden-JMK316ABJ107ML-T_C268006.html" H 4950 2000 50  0001 C CNN "URL"
 	1    4950 2000
 	1    0    0    -1  
 $EndComp
@@ -382,6 +385,7 @@ F 7 "?" H 7850 2000 50  0001 C CNN "Digikey"
 F 8 "?" H 7850 2000 50  0001 C CNN "LCSC"
 F 9 "?" H 7850 2000 50  0001 C CNN "Koncar"
 F 10 "TB" H 7850 2000 50  0001 C CNN "Side"
+F 11 "https://lcsc.com/product-detail/Multilayer-Ceramic-Capacitors-MLCC-SMD-SMT_YAGEO-CC0603KRX7R8BB104_C92490.html" H 3000 6050 50  0001 C CNN "URL"
 	1    7850 2000
 	1    0    0    -1  
 $EndComp

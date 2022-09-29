@@ -4,7 +4,7 @@ EELAYER 26 0
 EELAYER END
 $Descr A2 23386 16535
 encoding utf-8
-Sheet 3 10
+Sheet 3 9
 Title "nubus-to-ztex NuBus connection & level shifting"
 Date ""
 Rev ""
@@ -29,6 +29,7 @@ F 7 "?" H 17550 2500 50  0001 C CNN "Digikey"
 F 8 "?" H 17550 2500 50  0001 C CNN "LCSC"
 F 9 "?" H 17550 2500 50  0001 C CNN "Koncar"
 F 10 "TB" H 17550 2500 50  0001 C CNN "Side"
+F 11 "https://lcsc.com/product-detail/Multilayer-Ceramic-Capacitors-MLCC-SMD-SMT_YAGEO-CC0603KRX7R8BB104_C92490.html" H 3000 6050 50  0001 C CNN "URL"
 	1    17550 2500
 	1    0    0    -1  
 $EndComp
@@ -917,9 +918,11 @@ F 0 "U8" H 17350 4428 50  0000 C CNN
 F 1 "74LVT245BPW,118" H 17350 4337 50  0000 C CNN
 F 2 "For_SeeedStudio:TSSOP-20_4.4x6.5mm_P0.65mm_ForSeeedStudio" H 17350 3450 50  0001 C CNN
 F 3 "http://www.ti.com/lit/gpn/sn74LS245" H 17350 3450 50  0001 C CNN
-F 4 "https://eu.mouser.com/ProductDetail/?qs=me8TqzrmIYVnC5%252BK4SaiTg%3D%3D" H 17350 3450 50  0001 C CNN "URL-mouser"
-F 5 "74LVT245BPW,118" H 17350 3450 50  0001 C CNN "MPN"
-F 6 "https://www.digikey.fr/fr/products/detail/nexperia-usa-inc/74LVT245BPW-118/1231957" H 17350 3450 50  0001 C CNN "URL"
+F 4 "https://eu.mouser.com/ProductDetail/?qs=me8TqzrmIYVnC5%252BK4SaiTg%3D%3D" H 17350 3450 50  0001 C CNN "URL - ALT - mouser"
+F 5 "74LVT245BPW,118" H 17350 3450 50  0001 C CNN "MPN - ALT"
+F 6 "https://www.digikey.fr/fr/products/detail/nexperia-usa-inc/74LVT245BPW-118/1231957" H 17350 3450 50  0001 C CNN "URL - ALT"
+F 7 "SN74LVT245BPWR" H 17350 3450 50  0001 C CNN "MPN"
+F 8 "https://lcsc.com/product-detail/Receivers-Transceivers_Texas-Instruments-SN74LVT245BPWR_C74214.html" H 17350 3450 50  0001 C CNN "URL"
 	1    17350 3450
 	-1   0    0    -1  
 $EndComp
@@ -943,6 +946,7 @@ F 7 "?" H 15550 2500 50  0001 C CNN "Digikey"
 F 8 "?" H 15550 2500 50  0001 C CNN "LCSC"
 F 9 "?" H 15550 2500 50  0001 C CNN "Koncar"
 F 10 "TB" H 15550 2500 50  0001 C CNN "Side"
+F 11 "https://lcsc.com/product-detail/Multilayer-Ceramic-Capacitors-MLCC-SMD-SMT_YAGEO-CC0603KRX7R8BB104_C92490.html" H 3000 6050 50  0001 C CNN "URL"
 	1    15550 2500
 	1    0    0    -1  
 $EndComp
@@ -989,9 +993,11 @@ F 0 "U7" H 15350 4428 50  0000 C CNN
 F 1 "74LVT245BPW,118" H 15350 4337 50  0000 C CNN
 F 2 "For_SeeedStudio:TSSOP-20_4.4x6.5mm_P0.65mm_ForSeeedStudio" H 15350 3450 50  0001 C CNN
 F 3 "http://www.ti.com/lit/gpn/sn74LS245" H 15350 3450 50  0001 C CNN
-F 4 "74LVT245BPW,118" H 15350 3450 50  0001 C CNN "MPN"
-F 5 "https://eu.mouser.com/ProductDetail/?qs=me8TqzrmIYVnC5%252BK4SaiTg%3D%3D" H 15350 3450 50  0001 C CNN "URL-mouser"
-F 6 "https://www.digikey.fr/fr/products/detail/nexperia-usa-inc/74LVT245BPW-118/1231957" H 15350 3450 50  0001 C CNN "URL"
+F 4 "74LVT245BPW,118" H 15350 3450 50  0001 C CNN "MPN - ALT"
+F 5 "https://eu.mouser.com/ProductDetail/?qs=me8TqzrmIYVnC5%252BK4SaiTg%3D%3D" H 15350 3450 50  0001 C CNN "URL - ALT - mouser"
+F 6 "https://www.digikey.fr/fr/products/detail/nexperia-usa-inc/74LVT245BPW-118/1231957" H 15350 3450 50  0001 C CNN "URL - ALT"
+F 7 "SN74LVT245BPWR" H 15350 3450 50  0001 C CNN "MPN"
+F 8 "https://lcsc.com/product-detail/Receivers-Transceivers_Texas-Instruments-SN74LVT245BPWR_C74214.html" H 15350 3450 50  0001 C CNN "URL"
 	1    15350 3450
 	-1   0    0    -1  
 $EndComp
@@ -1015,6 +1021,7 @@ F 7 "?" H 13500 2500 50  0001 C CNN "Digikey"
 F 8 "?" H 13500 2500 50  0001 C CNN "LCSC"
 F 9 "?" H 13500 2500 50  0001 C CNN "Koncar"
 F 10 "TB" H 13500 2500 50  0001 C CNN "Side"
+F 11 "https://lcsc.com/product-detail/Multilayer-Ceramic-Capacitors-MLCC-SMD-SMT_YAGEO-CC0603KRX7R8BB104_C92490.html" H 3000 6050 50  0001 C CNN "URL"
 	1    13500 2500
 	1    0    0    -1  
 $EndComp
@@ -1061,9 +1068,11 @@ F 0 "U6" H 13300 4428 50  0000 C CNN
 F 1 "74LVT245BPW,118" H 13300 4337 50  0000 C CNN
 F 2 "For_SeeedStudio:TSSOP-20_4.4x6.5mm_P0.65mm_ForSeeedStudio" H 13300 3450 50  0001 C CNN
 F 3 "http://www.ti.com/lit/gpn/sn74LS245" H 13300 3450 50  0001 C CNN
-F 4 "74LVT245BPW,118" H 13300 3450 50  0001 C CNN "MPN"
-F 5 "https://eu.mouser.com/ProductDetail/?qs=me8TqzrmIYVnC5%252BK4SaiTg%3D%3D" H 13300 3450 50  0001 C CNN "URL-mouser"
-F 6 "https://www.digikey.fr/fr/products/detail/nexperia-usa-inc/74LVT245BPW-118/1231957" H 13300 3450 50  0001 C CNN "URL"
+F 4 "74LVT245BPW,118" H 13300 3450 50  0001 C CNN "MPN - ALT"
+F 5 "https://eu.mouser.com/ProductDetail/?qs=me8TqzrmIYVnC5%252BK4SaiTg%3D%3D" H 13300 3450 50  0001 C CNN "URL - ALT - mouser"
+F 6 "https://www.digikey.fr/fr/products/detail/nexperia-usa-inc/74LVT245BPW-118/1231957" H 13300 3450 50  0001 C CNN "URL - ALT"
+F 7 "SN74LVT245BPWR" H 13300 3450 50  0001 C CNN "MPN"
+F 8 "https://lcsc.com/product-detail/Receivers-Transceivers_Texas-Instruments-SN74LVT245BPWR_C74214.html" H 13300 3450 50  0001 C CNN "URL"
 	1    13300 3450
 	-1   0    0    -1  
 $EndComp
@@ -1087,6 +1096,7 @@ F 7 "?" H 11450 2500 50  0001 C CNN "Digikey"
 F 8 "?" H 11450 2500 50  0001 C CNN "LCSC"
 F 9 "?" H 11450 2500 50  0001 C CNN "Koncar"
 F 10 "TB" H 11450 2500 50  0001 C CNN "Side"
+F 11 "https://lcsc.com/product-detail/Multilayer-Ceramic-Capacitors-MLCC-SMD-SMT_YAGEO-CC0603KRX7R8BB104_C92490.html" H 3000 6050 50  0001 C CNN "URL"
 	1    11450 2500
 	1    0    0    -1  
 $EndComp
@@ -1133,12 +1143,14 @@ F 0 "U5" H 11250 4428 50  0000 C CNN
 F 1 "74LVT245BPW,118" H 11250 4337 50  0000 C CNN
 F 2 "For_SeeedStudio:TSSOP-20_4.4x6.5mm_P0.65mm_ForSeeedStudio" H 11250 3450 50  0001 C CNN
 F 3 "http://www.ti.com/lit/gpn/sn74LS245" H 11250 3450 50  0001 C CNN
-F 4 "74LVT245BPW,118" H 11250 3450 50  0001 C CNN "MPN"
-F 5 "https://eu.mouser.com/ProductDetail/?qs=me8TqzrmIYVnC5%252BK4SaiTg%3D%3D" H 11250 3450 50  0001 C CNN "URL-mouser"
+F 4 "74LVT245BPW,118" H 11250 3450 50  0001 C CNN "MPN - ALT"
+F 5 "https://eu.mouser.com/ProductDetail/?qs=me8TqzrmIYVnC5%252BK4SaiTg%3D%3D" H 11250 3450 50  0001 C CNN "URL - ALT - mouser"
 F 6 "https://www.renesas.com/us/en/package/pcg20" H 11250 3450 50  0001 C CNN "Drawings"
 F 7 "https://www.renesas.com/document/psc/pcpcg-package-outline-150-body-width-qsop-025-pitch?language=en" H 11250 3450 50  0001 C CNN "Datasheet - Packaging"
 F 8 "https://assets.nexperia.com/documents/package-information/SOT360-1.pdf" H 11250 3450 50  0001 C CNN "Package Drawings"
-F 9 "https://www.digikey.fr/fr/products/detail/nexperia-usa-inc/74LVT245BPW-118/1231957" H 11250 3450 50  0001 C CNN "URL"
+F 9 "https://www.digikey.fr/fr/products/detail/nexperia-usa-inc/74LVT245BPW-118/1231957" H 11250 3450 50  0001 C CNN "URL - ALT"
+F 10 "SN74LVT245BPWR" H 11250 3450 50  0001 C CNN "MPN"
+F 11 "https://lcsc.com/product-detail/Receivers-Transceivers_Texas-Instruments-SN74LVT245BPWR_C74214.html" H 11250 3450 50  0001 C CNN "URL"
 	1    11250 3450
 	-1   0    0    -1  
 $EndComp
@@ -1543,6 +1555,7 @@ F 7 "?" H 5100 6200 50  0001 C CNN "Digikey"
 F 8 "?" H 5100 6200 50  0001 C CNN "LCSC"
 F 9 "?" H 5100 6200 50  0001 C CNN "Koncar"
 F 10 "TB" H 5100 6200 50  0001 C CNN "Side"
+F 11 "https://lcsc.com/product-detail/Multilayer-Ceramic-Capacitors-MLCC-SMD-SMT_YAGEO-CC0603KRX7R8BB104_C92490.html" H 3000 6050 50  0001 C CNN "URL"
 	1    5100 6200
 	1    0    0    -1  
 $EndComp
@@ -1647,6 +1660,7 @@ F 7 "?" H 4650 2850 50  0001 C CNN "Digikey"
 F 8 "?" H 4650 2850 50  0001 C CNN "LCSC"
 F 9 "?" H 4650 2850 50  0001 C CNN "Koncar"
 F 10 "TB" H 4650 2850 50  0001 C CNN "Side"
+F 11 "https://lcsc.com/product-detail/Multilayer-Ceramic-Capacitors-MLCC-SMD-SMT_YAGEO-CC0603KRX7R8BB104_C92490.html" H 3000 6050 50  0001 C CNN "URL"
 	1    4650 2850
 	1    0    0    -1  
 $EndComp
@@ -1813,6 +1827,7 @@ F 7 "?" H 4700 10300 50  0001 C CNN "Digikey"
 F 8 "?" H 4700 10300 50  0001 C CNN "LCSC"
 F 9 "?" H 4700 10300 50  0001 C CNN "Koncar"
 F 10 "TB" H 4700 10300 50  0001 C CNN "Side"
+F 11 "https://lcsc.com/product-detail/Multilayer-Ceramic-Capacitors-MLCC-SMD-SMT_YAGEO-CC0603KRX7R8BB104_C92490.html" H 3000 6050 50  0001 C CNN "URL"
 	1    4700 10300
 	1    0    0    -1  
 $EndComp
@@ -2235,6 +2250,7 @@ F 7 "?" H 5150 13300 50  0001 C CNN "Digikey"
 F 8 "?" H 5150 13300 50  0001 C CNN "LCSC"
 F 9 "?" H 5150 13300 50  0001 C CNN "Koncar"
 F 10 "TB" H 5150 13300 50  0001 C CNN "Side"
+F 11 "https://lcsc.com/product-detail/Multilayer-Ceramic-Capacitors-MLCC-SMD-SMT_YAGEO-CC0603KRX7R8BB104_C92490.html" H 5150 13300 50  0001 C CNN "URL"
 	1    5150 13300
 	-1   0    0    -1  
 $EndComp
@@ -2321,6 +2337,7 @@ F 7 "?" H 10200 14650 50  0001 C CNN "Digikey"
 F 8 "?" H 10200 14650 50  0001 C CNN "LCSC"
 F 9 "?" H 10200 14650 50  0001 C CNN "Koncar"
 F 10 "TB" H 10200 14650 50  0001 C CNN "Side"
+F 11 "https://lcsc.com/product-detail/Multilayer-Ceramic-Capacitors-MLCC-SMD-SMT_YAGEO-CC0603KRX7R8BB104_C92490.html" H 3000 6050 50  0001 C CNN "URL"
 	1    10200 14650
 	1    0    0    -1  
 $EndComp
@@ -2410,6 +2427,7 @@ F 7 "?" H 13050 14650 50  0001 C CNN "Digikey"
 F 8 "?" H 13050 14650 50  0001 C CNN "LCSC"
 F 9 "?" H 13050 14650 50  0001 C CNN "Koncar"
 F 10 "TB" H 13050 14650 50  0001 C CNN "Side"
+F 11 "https://lcsc.com/product-detail/Multilayer-Ceramic-Capacitors-MLCC-SMD-SMT_YAGEO-CC0603KRX7R8BB104_C92490.html" H 3000 6050 50  0001 C CNN "URL"
 	1    13050 14650
 	1    0    0    -1  
 $EndComp
@@ -2527,6 +2545,7 @@ F 7 "?" H 7950 13850 50  0001 C CNN "Digikey"
 F 8 "?" H 7950 13850 50  0001 C CNN "LCSC"
 F 9 "?" H 7950 13850 50  0001 C CNN "Koncar"
 F 10 "TB" H 7950 13850 50  0001 C CNN "Side"
+F 11 "https://lcsc.com/product-detail/Multilayer-Ceramic-Capacitors-MLCC-SMD-SMT_YAGEO-CC0603KRX7R8BB104_C92490.html" H 3000 6050 50  0001 C CNN "URL"
 	1    7950 13850
 	-1   0    0    -1  
 $EndComp

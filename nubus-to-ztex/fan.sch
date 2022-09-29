@@ -4,7 +4,7 @@ EELAYER 26 0
 EELAYER END
 $Descr A4 11693 8268
 encoding utf-8
-Sheet 6 10
+Sheet 6 9
 Title "nubus-to-ztex extra conenctors (fan, ...)"
 Date ""
 Rev ""
@@ -75,8 +75,10 @@ F 0 "C28" H 5175 4900 50  0000 L CNN
 F 1 "47uF 10V+" H 5175 4700 50  0000 L CNN
 F 2 "Capacitor_SMD:C_0805_2012Metric" H 5188 4650 50  0001 C CNN
 F 3 "" H 5150 4800 50  0000 C CNN
-F 4 "C2012X5R1A476MTJ00E" H 5150 4800 50  0001 C CNN "MPN"
-F 5 "https://lcsc.com/product-detail/Multilayer-Ceramic-Capacitors-MLCC-SMD-SMT_TDK-C2012X5R1A476MTJ00E_C76636.html" H 5150 4800 50  0001 C CNN "URL"
+F 4 "C2012X5R1A476MTJ00E" H 5150 4800 50  0001 C CNN "MPN-ALT"
+F 5 "https://lcsc.com/product-detail/Multilayer-Ceramic-Capacitors-MLCC-SMD-SMT_TDK-C2012X5R1A476MTJ00E_C76636.html" H 5150 4800 50  0001 C CNN "URL-ALT"
+F 6 "GRM21BR61A476ME15K" H 5150 4800 50  0001 C CNN "MPN"
+F 7 "https://www.lcsc.com/product-detail/Multilayer-Ceramic-Capacitors-MLCC-SMD-SMT_Murata-Electronics-GRM21BR61A476ME15K_C2292827.html" H 5150 4800 50  0001 C CNN "URL"
 	1    5150 4800
 	1    0    0    -1  
 $EndComp
