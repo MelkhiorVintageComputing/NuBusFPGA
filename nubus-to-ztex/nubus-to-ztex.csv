@@ -14,7 +14,7 @@ J7,640456-3,1,https://www.lcsc.com/product-detail/Wire-To-Board-Wire-To-Wire-Con
 J1,87831-1420,1,https://www2.mouser.com/ProductDetail/Molex/87831-1420?qs=QtQX4uD3c2VDCL534TqpVg%3D%3D
 J8,A2541HWR-2x8P,1,https://www.lcsc.com/product-detail/Female-Headers_CJT-Changjiang-Connectors-A2541HWR-2x8P_C239359.html
 C20,CC0603KRX7R8BB103,1,https://lcsc.com/product-detail/Multilayer-Ceramic-Capacitors-MLCC-SMD-SMT_YAGEO-CC0603KRX7R8BB103_C327204.html
-"C1,C2,C4,C5,C6,C7,C8,C9,C11,C14,C15,C17,C18,C19,C22,C23,C24,C26,C27,C30",CC0603KRX7R8BB104,20,https://lcsc.com/product-detail/Multilayer-Ceramic-Capacitors-MLCC-SMD-SMT_YAGEO-CC0603KRX7R8BB104_C92490.html
+"C1,C2,C4,C5,C6,C8,C9,C12,C14,C15,C17,C18,C19,C22,C23,C24,C26,C27,C30",CC0603KRX7R8BB104,19,https://lcsc.com/product-detail/Multilayer-Ceramic-Capacitors-MLCC-SMD-SMT_YAGEO-CC0603KRX7R8BB104_C92490.html
 "C3,C10,C21,C28",GRM21BR61A476ME15K,4,https://www.lcsc.com/product-detail/Multilayer-Ceramic-Capacitors-MLCC-SMD-SMT_Murata-Electronics-GRM21BR61A476ME15K_C2292827.html
 C25,JMK316ABJ107ML-T,1,https://www.lcsc.com/product-detail/Multilayer-Ceramic-Capacitors-MLCC-SMD-SMT_Taiyo-Yuden-JMK316ABJ107ML-T_C268006.html
 C39,KM010M400E110A,1,https://lcsc.com/product-detail/Aluminum-Electrolytic-Capacitors-Leaded_Capxon-International-Elec-KM010M400E110A_C59365.html
@@ -25,9 +25,7 @@ D3,LTST-C170TBKT,1,https://www.lcsc.com/product-detail/Light-Emitting-Diodes-LED
 FB1,PZ2012U221-2R0TF,1,https://lcsc.com/product-detail/Ferrite-Beads_Sunlord-PZ2012U221-2R0TF_C44361.html
 J3,PZ254R-11-06P,1,https://lcsc.com/product-detail/Pin-Header-Female-Header_XFCN-PZ254R-11-06P_C492414.html
 U10,SN65220DBVT,1,https://www.lcsc.com/product-detail/Others_Texas-Instruments-TI-SN65220DBVT_C350555.html
-U12,SN74CB3T1G125DBVR,1,https://www.lcsc.com/product-detail/Analog-Switches-Multiplexers_Texas-Instruments-SN74CB3T1G125DBVR_C134001.html
-"U4,U13",SN74CB3T3125PWR,2,https://www.mouser.fr/ProductDetail/?qs=mE33ZKBHyE5AjFWEyhuB4Q%3D%3D
-U14,SN74CB3T3245PWR,1,https://www.lcsc.com/product-detail/Signal-Switches-Encoders-Decoders-Multiplexers_Texas-Instruments-SN74CB3T3245PWR_C15298.html
+"U13,U14,U15",SN74CB3T3245PWR,3,https://www.lcsc.com/product-detail/Signal-Switches-Encoders-Decoders-Multiplexers_Texas-Instruments-SN74CB3T3245PWR_C15298.html
 "U5,U6,U7,U8",SN74LVT245BPWR,4,https://lcsc.com/product-detail/Receivers-Transceivers_Texas-Instruments-SN74LVT245BPWR_C74214.html
 U9,TPD12S016PWR,1,https://lcsc.com/product-detail/Interface-Specialized_Texas-Instruments-TPD12S016PWR_C201665.html
 U11,TPS2051CDBVR,1,https://lcsc.com/product-detail/Power-Distribution-Switches_Texas-Instruments-TPS2051CDBVR_C129581.html
