@@ -4,7 +4,7 @@ EELAYER 26 0
 EELAYER END
 $Descr A4 11693 8268
 encoding utf-8
-Sheet 2 9
+Sheet 2 8
 Title "nubus-to-ztex B2B connector"
 Date ""
 Rev ""
@@ -368,9 +368,9 @@ Text GLabel 4100 2150 2    50   Input ~ 0
 ~AD30_3V3
 Text GLabel 9900 2550 2    50   Input ~ 0
 ~RESET_3V3
-Text GLabel 7400 2450 0    50   Input ~ 0
-~TM1_3V3
 Text GLabel 7400 2350 0    50   Input ~ 0
+~TM1_3V3
+Text GLabel 7400 2450 0    50   Input ~ 0
 ~TM0_3V3
 Text GLabel 1600 3950 0    50   Input ~ 0
 ~AD1_3V3
@@ -656,17 +656,6 @@ F 3 "" H 3400 6200 50  0001 C CNN
 	1    3400 6200
 	1    0    0    -1  
 $EndComp
-$Comp
-L power:+3.3V #PWR08
-U 1 1 61F0853E
-P 3400 5900
-F 0 "#PWR08" H 3400 5750 50  0001 C CNN
-F 1 "+3.3V" H 3415 6073 50  0000 C CNN
-F 2 "" H 3400 5900 50  0001 C CNN
-F 3 "" H 3400 5900 50  0001 C CNN
-	1    3400 5900
-	1    0    0    -1  
-$EndComp
 Text Notes 1200 5650 0    50   ~ 0
 User LEDS
 Text GLabel 1600 1350 0    50   Input ~ 0
@@ -862,4 +851,15 @@ Text GLabel 9900 3050 2    50   Input ~ 0
 PMOD-16
 Text GLabel 9900 2950 2    50   Input ~ 0
 PMOD-15
+$Comp
+L power:+3V3 #PWR0110
+U 1 1 6343D117
+P 3400 5900
+F 0 "#PWR0110" H 3400 5750 50  0001 C CNN
+F 1 "+3V3" H 3415 6073 50  0000 C CNN
+F 2 "" H 3400 5900 50  0001 C CNN
+F 3 "" H 3400 5900 50  0001 C CNN
+	1    3400 5900
+	1    0    0    -1  
+$EndComp
 $EndSCHEMATC

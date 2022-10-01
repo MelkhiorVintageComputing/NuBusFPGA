@@ -4,7 +4,7 @@ EELAYER 26 0
 EELAYER END
 $Descr A4 11693 8268
 encoding utf-8
-Sheet 1 9
+Sheet 1 8
 Title ""
 Date ""
 Rev ""
@@ -43,12 +43,6 @@ S 2250 2550 1000 500
 U 61B99D2C
 F0 "fan" 50
 F1 "fan.sch" 50
-$EndSheet
-$Sheet
-S 1000 1850 1000 500 
-U 6193AB43
-F0 "vga" 50
-F1 "vga.sch" 50
 $EndSheet
 $Sheet
 S 1000 3300 1000 550 

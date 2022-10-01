@@ -131,6 +131,15 @@ _nubus_io_v1_2 = [
         Subsignal("scl",     Pins("L6"), IOStandard("LVCMOS33")),
         Subsignal("cec",     Pins("L5"), IOStandard("LVCMOS33")),
     ),
+    ## micro-sd
+    ("sdcard", 0,
+        Subsignal("data", Pins("U1 T3 T4 U4"), Misc("PULLUP True")),
+        Subsignal("cmd",  Pins("U3"), Misc("PULLUP True")),
+        Subsignal("clk",  Pins("V1")),
+        #Subsignal("cd",   Pins("")),
+        Misc("SLEW=FAST"),
+        IOStandard("LVCMOS33"),
+    ),
     ]
 
 # NuBus
@@ -183,9 +192,9 @@ _nubus_nubus_v1_2 = [
     ("arb_3v3_n",          0, Pins("T8 V4 V5 U6"), IOStandard("lvttl")), # Open Collector
     ("arb_o_n",            0, Pins("J14 G16 G14 H17"), IOStandard("lvttl")),
     ("id_3v3_n",           0, Pins("U7 V6 V7 U8"), IOStandard("lvttl")),
-    ("tm0_3v3_n",          0, Pins("V2"), IOStandard("lvttl")),
+    ("tm0_3v3_n",          0, Pins("U2"), IOStandard("lvttl")),
     ("tm0_o_n",            0, Pins("T6"), IOStandard("lvttl")),
-    ("tm1_3v3_n",          0, Pins("U2"), IOStandard("lvttl")),
+    ("tm1_3v3_n",          0, Pins("V2"), IOStandard("lvttl")),
     ("tm1_o_n",            0, Pins("R7"), IOStandard("lvttl")),
     ("tmx_oe_n",           0, Pins("R8"), IOStandard("lvttl")),
     ("tm2_3v3_n",          0, Pins("K6"),  IOStandard("lvttl")),

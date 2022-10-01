@@ -1,4 +1,4 @@
-## Footprint report - date Thu Sep 29 18:22:08 2022
+## Footprint report - date Sat Oct  1 08:36:50 2022
 ## Created by Pcbnew version kicad 5.0.2+dfsg1-1~bpo9+1
 ## Unit = mm, Angle = deg.
 
@@ -164,7 +164,7 @@ reference "C12"
 value "100nF"
 footprint "Capacitor_SMD:C_0603_1608Metric"
 attribut smd
-position 186.100000 46.500000  orientation 180.00
+position 189.211371 51.462953  orientation 90.00
 layer front
 $PAD "1"
 Shape Roundrect Layer front
@@ -185,7 +185,7 @@ reference "U15"
 value "SN74CB3T3245PWR"
 footprint "For_SeeedStudio:TSSOP-20_4.4x6.5mm_P0.65mm_ForSeeedStudio"
 attribut smd
-position 184.100000 51.200000  orientation 0.00
+position 184.511371 49.462953  orientation 270.00
 layer front
 $PAD "1"
 Shape Rect Layer front
@@ -518,7 +518,7 @@ reference "D9"
 value "YELLOW"
 footprint "LED_SMD:LED_0805_2012Metric"
 attribut smd
-position 175.721484 20.097130  orientation 90.00
+position 178.144189 17.011035  orientation 270.00
 layer front
 $PAD "2"
 Shape Roundrect Layer front
@@ -539,7 +539,7 @@ reference "D10"
 value "YELLOW"
 footprint "LED_SMD:LED_0805_2012Metric"
 attribut smd
-position 178.261484 20.097130  orientation 90.00
+position 175.604189 17.011035  orientation 270.00
 layer front
 $PAD "1"
 Shape Roundrect Layer front
@@ -623,7 +623,7 @@ reference "R14"
 value "590"
 footprint "Resistor_SMD:R_0603_1608Metric"
 attribut smd
-position 175.721484 16.217130  orientation 270.00
+position 178.144189 20.891035  orientation 90.00
 layer front
 $PAD "2"
 Shape Roundrect Layer front
@@ -644,7 +644,7 @@ reference "R15"
 value "590"
 footprint "Resistor_SMD:R_0603_1608Metric"
 attribut smd
-position 178.261484 16.217130  orientation 270.00
+position 175.604189 20.891035  orientation 90.00
 layer front
 $PAD "1"
 Shape Roundrect Layer front
@@ -1022,7 +1022,7 @@ reference "R40"
 value "10k"
 footprint "Resistor_SMD:R_0603_1608Metric"
 attribut smd
-position 182.100000 85.100000  orientation 90.00
+position 181.412661 85.255497  orientation 0.00
 layer front
 $PAD "2"
 Shape Roundrect Layer front
@@ -1043,7 +1043,7 @@ reference "R41"
 value "10k"
 footprint "Resistor_SMD:R_0603_1608Metric"
 attribut smd
-position 186.100000 71.300000  orientation 180.00
+position 185.800000 72.500000  orientation 180.00
 layer front
 $PAD "1"
 Shape Roundrect Layer front

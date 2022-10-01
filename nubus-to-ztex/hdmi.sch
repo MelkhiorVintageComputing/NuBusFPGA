@@ -4,7 +4,7 @@ EELAYER 26 0
 EELAYER END
 $Descr A4 11693 8268
 encoding utf-8
-Sheet 4 9
+Sheet 4 8
 Title "nubus-to-ztex HDMI"
 Date ""
 Rev ""
@@ -361,4 +361,72 @@ Text HLabel 7300 1450 2    50   Input ~ 0
 HDMI_5V
 Text HLabel 4000 1900 2    50   Input ~ 0
 HDMI_5V
+Text GLabel 6400 4500 0    50   Input ~ 0
+SHIELD
+$Comp
+L power:GND #PWR?
+U 1 1 63467FDF
+P 6400 4800
+AR Path="/6193AB43/63467FDF" Ref="#PWR?"  Part="1" 
+AR Path="/61B62C00/63467FDF" Ref="#PWR0132"  Part="1" 
+F 0 "#PWR0132" H 6400 4550 50  0001 C CNN
+F 1 "GND" H 6405 4627 50  0000 C CNN
+F 2 "" H 6400 4800 50  0001 C CNN
+F 3 "" H 6400 4800 50  0001 C CNN
+	1    6400 4800
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	6650 4800 6400 4800
+Wire Wire Line
+	6650 4500 6400 4500
+$Comp
+L Device:C C?
+U 1 1 63467FEB
+P 6650 4650
+AR Path="/6193AB43/63467FEB" Ref="C?"  Part="1" 
+AR Path="/61B62C00/63467FEB" Ref="C39"  Part="1" 
+F 0 "C39" H 6765 4696 50  0000 L CNN
+F 1 "1 uF (250+V)" H 6765 4605 50  0000 L CNN
+F 2 "Capacitor_THT:CP_Radial_D6.3mm_P2.50mm" H 6688 4500 50  0001 C CNN
+F 3 "~" H 6650 4650 50  0001 C CNN
+F 4 "860021373002" H 6650 4650 50  0001 C CNN "MPN-ALT"
+F 5 "https://www2.mouser.com/ProductDetail/Wurth-Elektronik/860021373002?qs=0KOYDY2FL28tNXbPyU6hsg%3D%3D" H 6650 4650 50  0001 C CNN "URL-ALT"
+F 6 "KM010M400E110A" H 6650 4650 50  0001 C CNN "MPN"
+F 7 "https://lcsc.com/product-detail/Aluminum-Electrolytic-Capacitors-Leaded_Capxon-International-Elec-KM010M400E110A_C59365.html" H 6650 4650 50  0001 C CNN "URL"
+	1    6650 4650
+	1    0    0    -1  
+$EndComp
+Connection ~ 6400 4800
+$Comp
+L Device:R R?
+U 1 1 63467FF7
+P 6400 4650
+AR Path="/6193AB43/63467FF7" Ref="R?"  Part="1" 
+AR Path="/61B62C00/63467FF7" Ref="R33"  Part="1" 
+F 0 "R33" H 6470 4696 50  0000 L CNN
+F 1 "1M" H 6470 4605 50  0000 L CNN
+F 2 "Resistor_SMD:R_1210_3225Metric" V 6330 4650 50  0001 C CNN
+F 3 "~" H 6400 4650 50  0001 C CNN
+F 4 "RC1210FR-071ML" H 6400 4650 50  0001 C CNN "MPN-ALT"
+F 5 "https://lcsc.com/product-detail/Chip-Resistor-Surface-Mount_YAGEO-RC1210FR-071ML_C470029.html" H 6400 4650 50  0001 C CNN "URL-ALT"
+F 6 "1210W2F1004T5E" H 6400 4650 50  0001 C CNN "MPN"
+F 7 "https://www.lcsc.com/product-detail/Chip-Resistor-Surface-Mount_UNI-ROYAL-Uniroyal-Elec-1210W2F1004T5E_C620664.html" H 6400 4650 50  0001 C CNN "URL"
+	1    6400 4650
+	1    0    0    -1  
+$EndComp
+$Comp
+L Mechanical:MountingHole_Pad H?
+U 1 1 63467FFE
+P 6650 4400
+AR Path="/6193AB43/63467FFE" Ref="H?"  Part="1" 
+AR Path="/61B62C00/63467FFE" Ref="H1"  Part="1" 
+F 0 "H1" H 6750 4451 50  0000 L CNN
+F 1 "MountingHole_Pad" H 6750 4360 50  0000 L CNN
+F 2 "MountingHole:MountingHole_2.2mm_M2_Pad" H 6650 4400 50  0001 C CNN
+F 3 "~" H 6650 4400 50  0001 C CNN
+	1    6650 4400
+	1    0    0    -1  
+$EndComp
+Connection ~ 6650 4500
 $EndSCHEMATC

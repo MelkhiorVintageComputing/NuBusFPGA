@@ -1,4 +1,4 @@
-### Module positions - created on Thu Sep 29 18:22:02 2022 ###
+### Module positions - created on Sat Oct  1 08:36:39 2022 ###
 ### Printed by Pcbnew version kicad 5.0.2+dfsg1-1~bpo9+1
 ## Unit = mm, Angle = deg.
 ## Side : top
@@ -12,7 +12,7 @@ C6        100nF                                              C_0603_1608Metric  
 C8        100nF                                              C_0603_1608Metric                           130.4400   -79.6400    0.0000  top
 C9        100nF                                              C_0603_1608Metric                           157.3400   -21.8000    0.0000  top
 C10       47uF_10V+                                          C_0805_2012Metric                           157.3400   -24.0000    0.0000  top
-C12       100nF                                              C_0603_1608Metric                           186.1000   -46.5000  180.0000  top
+C12       100nF                                              C_0603_1608Metric                           189.2114   -51.4630   90.0000  top
 C14       100nF                                              C_0603_1608Metric                           149.9000   -72.9000   90.0000  top
 C15       100nF                                              C_0603_1608Metric                           261.1850   -37.0700   90.0000  top
 C17       100nF                                              C_0603_1608Metric                           163.0000   -72.9000   90.0000  top
@@ -34,8 +34,8 @@ D3        BLUE                                               LED_0805_2012Metric
 D6        YELLOW                                             LED_0805_2012Metric                         134.8800   -20.0603   90.0000  top
 D7        YELLOW                                             LED_0805_2012Metric                         137.4100   -20.0603   90.0000  top
 D8        YELLOW                                             LED_0805_2012Metric                         122.6100   -69.1500  180.0000  top
-D9        YELLOW                                             LED_0805_2012Metric                         175.7215   -20.0971   90.0000  top
-D10       YELLOW                                             LED_0805_2012Metric                         178.2615   -20.0971   90.0000  top
+D9        YELLOW                                             LED_0805_2012Metric                         178.1442   -17.0110  270.0000  top
+D10       YELLOW                                             LED_0805_2012Metric                         175.6042   -17.0110  270.0000  top
 D11       GREEN                                              LED_0805_2012Metric                         122.9026   -52.8770  180.0000  top
 D12       GREEN                                              LED_0805_2012Metric                         122.9026   -49.9104  180.0000  top
 D13       GREEN                                              LED_0805_2012Metric                         122.9026   -46.9437  180.0000  top
@@ -54,8 +54,8 @@ R8        10k                                                R_0603_1608Metric  
 R11       590                                                R_0603_1608Metric                           134.8800   -16.0603  270.0000  top
 R12       590                                                R_0603_1608Metric                           137.4200   -16.0603  270.0000  top
 R13       590                                                R_0603_1608Metric                           118.6100   -69.1500    0.0000  top
-R14       590                                                R_0603_1608Metric                           175.7215   -16.2171  270.0000  top
-R15       590                                                R_0603_1608Metric                           178.2615   -16.2171  270.0000  top
+R14       590                                                R_0603_1608Metric                           178.1442   -20.8910   90.0000  top
+R15       590                                                R_0603_1608Metric                           175.6042   -20.8910   90.0000  top
 R16       590                                                R_0603_1608Metric                           119.0526   -52.8770    0.0000  top
 R17       590                                                R_0603_1608Metric                           119.0526   -49.9104    0.0000  top
 R18       590                                                R_0603_1608Metric                           119.0526   -46.9437    0.0000  top
@@ -71,8 +71,8 @@ R36       10k                                                R_0603_1608Metric  
 R37       10k                                                R_0603_1608Metric                           120.3000   -79.8000    0.0000  top
 R38       10k                                                R_0603_1608Metric                           125.5000   -83.3000  180.0000  top
 R39       10k                                                R_0603_1608Metric                           121.4000   -82.7000    0.0000  top
-R40       10k                                                R_0603_1608Metric                           182.1000   -85.1000   90.0000  top
-R41       10k                                                R_0603_1608Metric                           186.1000   -71.3000  180.0000  top
+R40       10k                                                R_0603_1608Metric                           181.4127   -85.2555    0.0000  top
+R41       10k                                                R_0603_1608Metric                           185.8000   -72.5000  180.0000  top
 R42       10k                                                R_0603_1608Metric                           143.0000   -84.9000  180.0000  top
 R43       10k                                                R_0603_1608Metric                           144.6000   -83.2000    0.0000  top
 R44       10k                                                R_0603_1608Metric                           135.9000   -89.6000   90.0000  top
@@ -88,5 +88,5 @@ U10       SN65220                                            SOT-23-6           
 U11       TPS2051C                                           SOT-23-5                                    252.9000   -85.2100  270.0000  top
 U13       SN74CB3T3245PWR                                    TSSOP-20_4.4x6.5mm_P0.65mm_ForSeeedStudio   132.4500   -74.9400  180.0000  top
 U14       SN74CB3T3245PWR                                    TSSOP-20_4.4x6.5mm_P0.65mm_ForSeeedStudio   142.2000   -48.8000   90.0000  top
-U15       SN74CB3T3245PWR                                    TSSOP-20_4.4x6.5mm_P0.65mm_ForSeeedStudio   184.1000   -51.2000    0.0000  top
+U15       SN74CB3T3245PWR                                    TSSOP-20_4.4x6.5mm_P0.65mm_ForSeeedStudio   184.5114   -49.4630  270.0000  top
 ## End
