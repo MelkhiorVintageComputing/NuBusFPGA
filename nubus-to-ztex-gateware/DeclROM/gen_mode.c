@@ -268,7 +268,7 @@ int main(int argc, char **argv) {
 				fprintf(fd, "\tOSLstEntry\tsRsrc_GoboFB_R%hux%hu,_sRsrc_GoboFB_R%hux%hu/* video sRsrc List */\n", hres, vres, hres, vres);
 			}
 		}
-		/* fprintf(fd, "\tOSLstEntry\tsRsrc_RAMDsk,_sRsrc_RAMDsk\n"); */
+		fprintf(fd, "\tOSLstEntry\tsRsrc_RAMDsk,_sRsrc_RAMDsk\n");
 		fprintf(fd, "\tDatLstEntry	endOfList,	0\n");
 		
 		fclose(fd);

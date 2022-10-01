@@ -15,8 +15,8 @@ class NuBus(Module):
         platform = soc.platform
         self.add_sources(platform)
 
-        #led0 = platform.request("user_led", 0)
-        #led1 = platform.request("user_led", 1)
+        led0 = platform.request("user_led", 0)
+        led1 = platform.request("user_led", 1)
 
         # Signals for tri-stated nubus access
         # slave
@@ -241,7 +241,7 @@ class NuBus(Module):
         ]
         
         self.submodules.dma_fsm = dma_fsm = ClockDomainsRenamer(cd_nubus)(FSM(reset_state="Reset"))
-        ctr = Signal(2) # burst counter
+        ctr = Signal(log2_int(burst_size)) # burst counter
         burst = Signal()
         burst_we = Signal()
         
@@ -255,7 +255,7 @@ class NuBus(Module):
         tosbus_fifo_dout = Record(soc.tosbus_layout)
         self.comb += tosbus_fifo_dout.raw_bits().eq(tosbus_fifo.dout)
         tosbus_fifo_dout_data_byterev = Signal(data_width_bits)
-        tosbus_fifo_dout_bytereversal_stmts = [ tosbus_fifo_dout_data_byterev[k*32+j*8:k*32+j*8+8].eq(tosbus_fifo_dout.data[k*32+32-j*8-8:k*32+32-j*8])  for k in range(burst_size) for j in range(4) ]   
+        tosbus_fifo_dout_bytereversal_stmts = [ tosbus_fifo_dout_data_byterev[k*32+j*8:k*32+j*8+8].eq(tosbus_fifo_dout.data[k*32+32-j*8-8:k*32+32-j*8])  for k in range(burst_size) for j in range(4) ]
         self.comb += tosbus_fifo_dout_bytereversal_stmts
         
         fromsbus_req_fifo_dout = Record(soc.fromsbus_req_layout)
@@ -263,6 +263,9 @@ class NuBus(Module):
         
         fromsbus_fifo_din = Record(soc.fromsbus_layout)
         self.comb += fromsbus_fifo.din.eq(fromsbus_fifo_din.raw_bits())
+
+        self.comb += led0.eq(~dma_fsm.ongoing("Idle"))
+        self.comb += led1.eq(burst)
         
         dma_fsm.act("Reset",
                     NextState("Idle")
@@ -345,6 +348,7 @@ class NuBus(Module):
                     )
         )
         dma_fsm.act("FinishCycle",
+                    NextValue(burst, 0),
                     master_oe.eq(1), # for start
                     start_o_n.eq(1), # start finished, but still need to be driven
                     tmo_oe.eq(1), # for tm0, tm1, ack, need to be driven to inactive
@@ -364,6 +368,26 @@ class NuBus(Module):
                     )
         )
 
+        if (burst_size == 4):
+            handle_ad_for_burst = [
+                    ad_o_n[0].eq(1), # burst
+                    ad_o_n[1].eq(0), # burst
+                    ad_o_n[2].eq(0), # burst  == 4
+                    ad_o_n[3].eq(1), # burst  == 4
+                    ad_o_n[4:32].eq(~fifo_addr), # adr
+            ]
+        elif (burst_size == 8):
+            handle_ad_for_burst = [
+                    ad_o_n[0].eq(1), # burst
+                    ad_o_n[1].eq(0), # burst
+                    ad_o_n[2].eq(0), # burst  == 8
+                    ad_o_n[3].eq(0), # burst  == 8
+                    ad_o_n[4].eq(1), # burst  == 8
+                    ad_o_n[5:32].eq(~fifo_addr), # adr
+            ]
+        else:
+            raise ValueError(f"Unsupported burst_size {burst_size}")
+
         dma_fsm.act("Burst4AdrCycle",
                     start_arbitration.eq(0),
                     master_oe.eq(1), # for start
@@ -372,11 +396,7 @@ class NuBus(Module):
                     start_o_n.eq(0),
                     tm0_o_n.eq(1), # burst
                     tm1_o_n.eq(~burst_we),
-                    ad_o_n[0].eq(1), # burst
-                    ad_o_n[1].eq(0), # burst
-                    ad_o_n[2].eq(0), # burst  == 4
-                    ad_o_n[3].eq(1), # burst  == 4
-                    ad_o_n[4:32].eq(~fifo_addr),
+                    *handle_ad_for_burst,
                     ack_o_n.eq(1),
                     NextValue(ctr, 0),
                     If(burst_we,
@@ -385,6 +405,42 @@ class NuBus(Module):
                         NextState("Burst4ReadWaitForTM0"),
                     )
         )
+
+        if (burst_size == 4):
+            handle_buffer_read_for_burst = [
+                Case(ctr, {
+                    0x0: NextValue(fifo_buffer[ 0: 32], sampled_ad),
+                    0x1: NextValue(fifo_buffer[32: 64], sampled_ad),
+                    0x2: NextValue(fifo_buffer[64: 96], sampled_ad),
+                    #0x3: NextValue(fifo_buffer[96:128], sampled_ad),
+                    #0x0: NextValue(fifo_buffer[ 0: 32], sampled_ad_byterev),
+                    #0x1: NextValue(fifo_buffer[32: 64], sampled_ad_byterev),
+                    #0x2: NextValue(fifo_buffer[64: 96], sampled_ad_byterev),
+                    ##0x3: NextValue(fifo_buffer[96:128], sampled_ad_byterev),
+                }),
+            ]
+            handle_final_buffer_read_for_burst = [
+                fromsbus_fifo_din.data.eq(Cat(fifo_buffer[0:96], sampled_ad)), # we use sampled_ad directly for 96:128
+            ]
+        elif (burst_size == 8):
+            handle_buffer_read_for_burst = [
+                Case(ctr, {
+                    0x0: NextValue(fifo_buffer[  0: 32], sampled_ad),
+                    0x1: NextValue(fifo_buffer[ 32: 64], sampled_ad),
+                    0x2: NextValue(fifo_buffer[ 64: 96], sampled_ad),
+                    0x3: NextValue(fifo_buffer[ 96:128], sampled_ad),
+                    0x4: NextValue(fifo_buffer[128:160], sampled_ad),
+                    0x5: NextValue(fifo_buffer[160:192], sampled_ad),
+                    0x6: NextValue(fifo_buffer[192:224], sampled_ad),
+                    #0x7: NextValue(fifo_buffer[224:256], sampled_ad),
+                }),
+            ]
+            handle_final_buffer_read_for_burst = [
+                fromsbus_fifo_din.data.eq(Cat(fifo_buffer[0:224], sampled_ad)), # we use sampled_ad directly for 224:256
+            ]
+        else:
+            raise ValueError(f"Unsupported burst_size {burst_size}")
+        
         dma_fsm.act("Burst4ReadWaitForTM0",
                     master_oe.eq(1), # for start
                     start_o_n.eq(1), # start finished, but still need to be driven
@@ -394,18 +450,9 @@ class NuBus(Module):
                        #NextValue(led1, 1),
                        NextState("FinishCycle"),
                     ).Elif(sampled_tm0,
-                           Case(ctr, {
-                               #0x0: NextValue(fifo_buffer[ 0: 32], sampled_ad),
-                               #0x1: NextValue(fifo_buffer[32: 64], sampled_ad),
-                               #0x2: NextValue(fifo_buffer[64: 96], sampled_ad),
-                               ##0x3: NextValue(fifo_buffer[96:128], sampled_ad),
-                               0x0: NextValue(fifo_buffer[ 0: 32], sampled_ad_byterev),
-                               0x1: NextValue(fifo_buffer[32: 64], sampled_ad_byterev),
-                               0x2: NextValue(fifo_buffer[64: 96], sampled_ad_byterev),
-                               #0x3: NextValue(fifo_buffer[96:128], sampled_ad_byterev),
-                           }),
+                           *handle_buffer_read_for_burst,
                            NextValue(ctr, ctr + 1),
-                           If(ctr == 0x2, # burst next-to-last
+                           If(ctr == (burst_size - 2), # burst next-to-last
                               NextState("Burst4ReadWaitForAck"),
                            ).Else(
                                NextState("Burst4ReadWaitForTM0"),
@@ -419,27 +466,54 @@ class NuBus(Module):
                        fromsbus_req_fifo.re.eq(1), # remove request
                        fromsbus_fifo.we.eq(1),
                        fromsbus_fifo_din.blkaddress.eq(fifo_blk_addr),
-                       #fromsbus_fifo_din.data.eq(Cat(fifo_buffer[0:96], sampled_ad)), # we use sampled_ad directly for 96:128
-                       fromsbus_fifo_din.data.eq(Cat(fifo_buffer[0:96], sampled_ad_byterev)), # we use sampled_ad directly for 96:128
+                       *handle_final_buffer_read_for_burst,
                        # fixme: check status ??? (tm0 and tm1 should be active for no-error)
                        #NextValue(led0, (~sampled_tm0 | ~sampled_tm1)),
                        NextState("FinishCycle"),
                     )
         )
+
+
+        if (burst_size == 4):
+            handle_buffer_write_for_burst = [
+                    Case(ctr, {
+                        0x0: ad_o_n.eq(~tosbus_fifo_dout.data[ 0: 32]),
+                        0x1: ad_o_n.eq(~tosbus_fifo_dout.data[32: 64]),
+                        0x2: ad_o_n.eq(~tosbus_fifo_dout.data[64: 96]),
+                        ##0x3: ad_o_n.eq(~tosbus_fifo_dout.data[96:128]),
+                        #0x0: ad_o_n.eq(~tosbus_fifo_dout_data_byterev[ 0: 32]),
+                        #0x1: ad_o_n.eq(~tosbus_fifo_dout_data_byterev[32: 64]),
+                        #0x2: ad_o_n.eq(~tosbus_fifo_dout_data_byterev[64: 96]),
+                        ##0x3: ad_o_n.eq(~tosbus_fifo_dout_data_byterev[96:128]),
+                    }),
+            ]
+            handle_last_buffer_write_for_burst = [
+                ad_o_n.eq(~tosbus_fifo_dout.data[96:128]), # last word
+            ]
+        elif (burst_size == 8):
+            handle_buffer_write_for_burst = [
+                    Case(ctr, {
+                        0x0: ad_o_n.eq(~tosbus_fifo_dout.data[  0: 32]),
+                        0x1: ad_o_n.eq(~tosbus_fifo_dout.data[ 32: 64]),
+                        0x2: ad_o_n.eq(~tosbus_fifo_dout.data[ 64: 96]),
+                        0x3: ad_o_n.eq(~tosbus_fifo_dout.data[ 96:128]),
+                        0x4: ad_o_n.eq(~tosbus_fifo_dout.data[128:160]),
+                        0x5: ad_o_n.eq(~tosbus_fifo_dout.data[160:192]),
+                        0x6: ad_o_n.eq(~tosbus_fifo_dout.data[192:224]),
+                        #0x7: ad_o_n.eq(~tosbus_fifo_dout.data[224:256]),
+                    }),
+            ]
+            handle_last_buffer_write_for_burst = [
+                ad_o_n.eq(~tosbus_fifo_dout.data[224:256]), # last word
+            ]
+        else:
+            raise ValueError(f"Unsupported burst_size {burst_size}")
+        
         dma_fsm.act("Burst4DatCycleTM0",
                     master_oe.eq(1), # for start
                     ad_oe.eq(1), # for write data
                     start_o_n.eq(1), # start finished, but still need to be driven
-                    Case(ctr, {
-                        #0x0: ad_o_n.eq(~tosbus_fifo_dout.data[ 0: 32]),
-                        #0x1: ad_o_n.eq(~tosbus_fifo_dout.data[32: 64]),
-                        #0x2: ad_o_n.eq(~tosbus_fifo_dout.data[64: 96]),
-                        ##0x3: ad_o_n.eq(~tosbus_fifo_dout.data[96:128]),
-                        0x0: ad_o_n.eq(~tosbus_fifo_dout_data_byterev[ 0: 32]),
-                        0x1: ad_o_n.eq(~tosbus_fifo_dout_data_byterev[32: 64]),
-                        0x2: ad_o_n.eq(~tosbus_fifo_dout_data_byterev[64: 96]),
-                        #0x3: ad_o_n.eq(~tosbus_fifo_dout_data_byterev[96:128]),
-                    }),
+                    *handle_buffer_write_for_burst,
                     If(sampled_ack, # oups
                        #NextValue(led0, 1),
                        #NextValue(led1, 1),
@@ -447,7 +521,7 @@ class NuBus(Module):
                        NextState("FinishCycle"),
                     ).Elif(sampled_tm0,
                         NextValue(ctr, ctr + 1),
-                       If(ctr == 0x2, # burst next-to-last
+                       If(ctr == (burst_size - 2), # burst next-to-last
                           NextState("Burst4DatCycleAck"),
                        ).Else(
                            NextState("Burst4DatCycleTM0"),
@@ -458,8 +532,7 @@ class NuBus(Module):
                     master_oe.eq(1), # for start
                     ad_oe.eq(1), # for write data
                     start_o_n.eq(1), # start finished, but still need to be driven
-                    #ad_o_n.eq(~tosbus_fifo_dout.data[96:128]), # last word
-                    ad_o_n.eq(~tosbus_fifo_dout_data_byterev[96:128]), # last word
+                    *handle_last_buffer_write_for_burst,
                     If(sampled_ack,
                        tosbus_fifo.re.eq(1), # remove FIFO entry at last
                        # fixme: check status ??? (tm0 and tm1 should be active for no-error)
