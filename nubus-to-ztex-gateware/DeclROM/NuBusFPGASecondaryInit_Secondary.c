@@ -5,34 +5,6 @@
 #define SECO_WRITEREG(reg, val) \
 	*((volatile UInt32*)(a32+GOBOFB_BASE+reg)) = (UInt32)val;
 
-UniversalProcPtr toto;
-
-void local_BitBlt(void);
-asm("	.ALIGN 2\n"
-"        .type   local_BitBlt, @function\n"
-"local_BitBlt:\n"
-"	move.l %a0,-(%sp)\n"
-"	move.l #0xfc90001c, %a0\n"
-"	move.l #0xDEADBEEF, (%a0)\n"
-"	/* move.l %pc@(orig_BitBlt), (%a0) */\n"
-"	move.l %sp@(4), (%a0)\n"
-"	move.l %a1, (%a0)\n"
-"	move.l %a2, (%a0)\n"
-"	move.l %a3, (%a0)\n"
-"	move.l %a4, (%a0)\n"
-"	move.l %a5, (%a0)\n"
-"	move.l %a6, (%a0)\n"
-"	move.l %a2@(0),(%a0)\n"
-"	move.l %a2@(4),(%a0)\n"
-"	move.l %a3@(0),(%a0)\n"
-"	move.l %a3@(4),(%a0)\n"
-"	move.l (%sp)+,%a0\n"
-"	move.l %pc@(toto),(%a0)\n"
-"	move.l %pc@(toto),-(%sp)\n"
-"	rts\n"
-".size   local_BitBlt, .-local_BitBlt\n"
-	);
-
 UInt32 Secondary(SEBlock* seblock) {
 	UInt32 a32 = 0xF0000000 | ((UInt32)seblock->seSlot << 24);
 	UInt32 a32_l0, a32_l1;
@@ -111,19 +83,6 @@ UInt32 Secondary(SEBlock* seblock) {
 		/* 	SECO_WRITEREG(GOBOFB_DEBUG, pram[i]);*/
 	}
 	SwapMMUMode ( &busMode ); // restore
-#endif
-
-#if 0
-	// patch some traps
-	UniversalProcPtr orig_BitBlt = GetToolTrapAddress(0xAB00); // BitBlt
-	SECO_WRITEREG(GOBOFB_DEBUG, orig_BitBlt);
-	SECO_WRITEREG(GOBOFB_DEBUG, unimpptr);
-	toto = orig_BitBlt;
-	SECO_WRITEREG(GOBOFB_DEBUG, toto);
-	UniversalProcPtr tutu;
-	asm("lea %%pc@(local_BitBlt),%0\n" : "=a"(tutu));
-	SECO_WRITEREG(GOBOFB_DEBUG, tutu);
-	SetToolTrapAddress(orig_BitBlt, 0xAB00);
 #endif
 	
 	seblock->seStatus = 1;
