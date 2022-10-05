@@ -10,6 +10,7 @@ static inline void waitSome(unsigned long bound) {
 }
 
 /* Devices 1-34 (p54) */
+#pragma parameter __D0 cNuBusFPGARAMDskPrime(__A0, __A1)
 OSErr cNuBusFPGARAMDskPrime(IOParamPtr pb, /* DCtlPtr */ AuxDCEPtr dce)
 {
 	OSErr ret = noErr;

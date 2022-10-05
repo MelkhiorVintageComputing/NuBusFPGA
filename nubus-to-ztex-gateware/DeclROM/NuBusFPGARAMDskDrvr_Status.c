@@ -1,5 +1,6 @@
 #include "NuBusFPGARAMDskDrvr.h"
 
+#pragma parameter __D0 cNuBusFPGARAMDskStatus(__A0, __A1)
 OSErr cNuBusFPGARAMDskStatus(CntrlParamPtr pb, /* DCtlPtr */ AuxDCEPtr dce)
 {
 	OSErr ret = noErr;

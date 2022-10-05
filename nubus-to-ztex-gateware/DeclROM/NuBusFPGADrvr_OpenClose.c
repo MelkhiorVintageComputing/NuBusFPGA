@@ -12,10 +12,12 @@ short fbIrq(const long sqParameter){
 	vblproto myVbl = *(vblproto**)0x0d28;
 	/* write_reg(dce, GOBOFB_INTR_CLEAR, 0); */
 	*((volatile unsigned int*)(sqParameter+GOBOFB_BASE+GOBOFB_INTR_CLEAR)) = 0;
-	myVbl((sqParameter>>24)&0xf);
+	myVbl((sqParameter>>24)&0xf); // cleaner to use dStore->slot ? but require more code...
 	return 1;
 }
 
+
+#pragma parameter __D0 cNuBusFPGAOpen(__A0, __A1)
 OSErr cNuBusFPGAOpen(IOParamPtr pb, /* DCtlPtr */ AuxDCEPtr dce)
 {
 	OSErr ret = noErr;
@@ -169,6 +171,7 @@ OSErr cNuBusFPGAOpen(IOParamPtr pb, /* DCtlPtr */ AuxDCEPtr dce)
    return noErr;
 }
 
+#pragma parameter __D0 cNuBusFPGAClose(__A0, __A1)
 OSErr cNuBusFPGAClose(IOParamPtr pb, /* DCtlPtr */ AuxDCEPtr dce)
 {
 	OSErr ret = noErr;

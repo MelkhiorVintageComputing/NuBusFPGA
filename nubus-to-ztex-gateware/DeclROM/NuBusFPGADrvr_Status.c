@@ -32,7 +32,7 @@
       1 �Debug: 0x0000000c
 */
 
-
+#pragma parameter __D0 cNuBusFPGAStatus(__A0, __A1)
 OSErr cNuBusFPGAStatus(CntrlParamPtr pb, /* DCtlPtr */ AuxDCEPtr dce)
 {
    NuBusFPGADriverGlobalsHdl dStoreHdl = (NuBusFPGADriverGlobalsHdl)dce->dCtlStorage;

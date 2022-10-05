@@ -72,7 +72,7 @@ OSErr changeIRQ(AuxDCEPtr dce, char en, OSErr err) {
       1 �Debug: 0x00000002
 */
 
-
+#pragma parameter __D0 cNuBusFPGACtl(__A0, __A1)
 OSErr cNuBusFPGACtl(CntrlParamPtr pb, /* DCtlPtr */ AuxDCEPtr dce)
 {
    NuBusFPGADriverGlobalsHdl dStoreHdl = (NuBusFPGADriverGlobalsHdl)dce->dCtlStorage;

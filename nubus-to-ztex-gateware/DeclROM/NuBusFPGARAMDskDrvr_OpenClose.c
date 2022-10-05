@@ -1,10 +1,22 @@
 #include "NuBusFPGARAMDskDrvr.h"
 
-/* duplicated */
- void MyAddDrive(short drvrRefNum, short drvNum, DrvQElPtr qEl);
+#include <Disks.h>
+
+/* FYI, missing in library with Retro68 */
+/* void AddDrive(short drvrRefNum, short drvNum, DrvQElPtr qEl); */
+
+/* re-implement with Retro68 features */
+/* drVNum to high-order bits of num, drvrRefNum in low-order */
+/* not sure how to do "parameter" without output ? */
+#pragma parameter __D0 AddDrive(__D0, __A0)
+static inline int dupAddDrive(unsigned long num, DrvQElPtr qEl) {
+	asm volatile(".word 0xA04E" : : "d" (num), "a" (qEl));
+	return num; // should cost nothing, num is already in D0
+}
 
 #include <ROMDefs.h>
 
+#pragma parameter __D0 cNuBusFPGARAMDskOpen(__A0, __A1)
 OSErr cNuBusFPGARAMDskOpen(IOParamPtr pb, /* DCtlPtr */ AuxDCEPtr dce)
 {
 	DrvSts2 *dsptr; // pointer to the DrvSts2 in our context
@@ -94,7 +106,8 @@ OSErr cNuBusFPGARAMDskOpen(IOParamPtr pb, /* DCtlPtr */ AuxDCEPtr dce)
 		}
 
 		// add the drive
-		MyAddDrive(dsptr->dQRefNum, drvnum, (DrvQElPtr)&dsptr->qLink);
+		//MyAddDrive(dsptr->dQRefNum, drvnum, (DrvQElPtr)&dsptr->qLink);
+		dupAddDrive((dsptr->dQRefNum & 0xFFFF) | (drvnum << 16), (DrvQElPtr)&dsptr->qLink);
 		
 #ifdef ENABLE_DMA
 		ctx->dma_blk_size = revb( read_reg(dce, DMA_BLK_SIZE) );
@@ -128,6 +141,7 @@ OSErr cNuBusFPGARAMDskOpen(IOParamPtr pb, /* DCtlPtr */ AuxDCEPtr dce)
 	return ret;
 }
 
+#pragma parameter __D0 cNuBusFPGARAMDskClose(__A0, __A1)
 OSErr cNuBusFPGARAMDskClose(IOParamPtr pb, /* DCtlPtr */ AuxDCEPtr dce)
 {
 	OSErr ret = noErr;
