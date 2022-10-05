@@ -100,7 +100,7 @@ OSErr cNuBusFPGARAMDskOpen(IOParamPtr pb, /* DCtlPtr */ AuxDCEPtr dce)
 		ctx->dma_blk_size = revb( read_reg(dce, DMA_BLK_SIZE) );
 		ctx->dma_blk_size_mask = ctx->dma_blk_size - 1; // size is Po2
 		ctx->dma_blk_size_shift = 0;
-		while ((1 << ctx->dma_blk_size_shift) < ctx->dma_blk_size)
+		while ((1 << ctx->dma_blk_size_shift) < ctx->dma_blk_size) // fixme
 			   ctx->dma_blk_size_shift++;
 		ctx->dma_blk_base = revb( read_reg(dce, DMA_BLK_BASE) );
 		ctx->dma_mem_size = revb( read_reg(dce, DMA_MEM_SIZE) );
