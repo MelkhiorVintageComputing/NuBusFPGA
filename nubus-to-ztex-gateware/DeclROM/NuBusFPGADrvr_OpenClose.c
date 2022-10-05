@@ -2,6 +2,20 @@
 
 #include "ROMDefs.h"
 
+typedef void(*vblproto)(short);
+
+#pragma parameter __D0 fbIrq(__A1)
+short fbIrq(const long sqParameter){
+	/* AuxDCEPtr dce = (AuxDCEPtr)sqParameter; */
+	/* NuBusFPGADriverGlobalsHdl dStoreHdl = (NuBusFPGADriverGlobalsHdl)dce->dCtlStorage; */
+	/* NuBusFPGADriverGlobalsPtr dStore = *dStoreHdl; */
+	vblproto myVbl = *(vblproto**)0x0d28;
+	/* write_reg(dce, GOBOFB_INTR_CLEAR, 0); */
+	*((volatile unsigned int*)(sqParameter+GOBOFB_BASE+GOBOFB_INTR_CLEAR)) = 0;
+	myVbl((sqParameter>>24)&0xf);
+	return 1;
+}
+
 OSErr cNuBusFPGAOpen(IOParamPtr pb, /* DCtlPtr */ AuxDCEPtr dce)
 {
 	OSErr ret = noErr;
@@ -47,9 +61,16 @@ OSErr cNuBusFPGAOpen(IOParamPtr pb, /* DCtlPtr */ AuxDCEPtr dce)
 			siqel->sqPrio = 8;
 			//siqel->sqAddr = interruptRoutine;
 			/* not sure how to get the proper result in C... */
+			/* SlotIntServiceProcPtr sqAddr; */
+			/* asm("lea %%pc@(interruptRoutine),%0\n" : "=a"(sqAddr)); */
+			/* siqel->sqAddr = sqAddr; */
+			/* siqel->sqParm = (long)dce->dCtlDevBase; */
+			
+			/* not sure how to get the proper result in C... */
 			SlotIntServiceProcPtr sqAddr;
-			asm("lea %%pc@(interruptRoutine),%0\n" : "=a"(sqAddr));
+			asm("lea %%pc@(fbIrq),%0\n" : "=a"(sqAddr));
 			siqel->sqAddr = sqAddr;
+			/* siqel->sqParm = (long)dce; */
 			siqel->sqParm = (long)dce->dCtlDevBase;
 			dStore->siqel = siqel;
 

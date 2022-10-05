@@ -78,13 +78,12 @@ OSErr cNuBusFPGACtl(CntrlParamPtr pb, /* DCtlPtr */ AuxDCEPtr dce)
    NuBusFPGADriverGlobalsHdl dStoreHdl = (NuBusFPGADriverGlobalsHdl)dce->dCtlStorage;
    NuBusFPGADriverGlobalsPtr dStore = *dStoreHdl;
    
-   short ret = -1;
+   short ret = noErr;
    char	busMode = 1;
 
    /* write_reg(dce, GOBOFB_DEBUG, 0xBEEF0001); */
    /* write_reg(dce, GOBOFB_DEBUG, pb->csCode); */
-   
-#if 1
+
   switch (pb->csCode)
   {
   case -1:
@@ -171,16 +170,19 @@ OSErr cNuBusFPGACtl(CntrlParamPtr pb, /* DCtlPtr */ AuxDCEPtr dce)
 		   if (gammaTbl == NULL) {
 			   linearGamma(dStore);
 		   } else {
+			   ret = noErr;
 			   if (gammaTbl->gDataWidth != 8)
-				   return paramErr;
+				   ret = paramErr;
 			   if (gammaTbl->gDataCnt != 256) // 8-bits
-				   return paramErr;
+				   ret = paramErr;
 			   if ((gammaTbl->gChanCnt != 1) && (gammaTbl->gChanCnt != 3))
-				   return paramErr;
+				   ret = paramErr;
 			   if ((gammaTbl->gType != 0) && (gammaTbl->gType != 0xFFFFBEEF))
-				   return paramErr;
+				   ret = paramErr;
 			   if (gammaTbl->gFormulaSize != 0)
-				   return paramErr;
+				   ret = paramErr;
+			   if (ret != noErr)
+				   goto done;
 			   
 			   dStore->gamma.gVersion =     gammaTbl->gVersion;
 			   dStore->gamma.gType =        gammaTbl->gType;
@@ -215,8 +217,10 @@ OSErr cNuBusFPGACtl(CntrlParamPtr pb, /* DCtlPtr */ AuxDCEPtr dce)
 		   const uint32_t wb = dStore->hres[0] >> idx;
 		   unsigned short j, i;
 		   short npage = (vPInfo->csMode == kDepthMode5) ? 1 : 2;
-		   if (vPInfo->csPage >= npage)
+		   if (vPInfo->csPage >= npage) {
 			   return paramErr;
+			   goto done;
+		   }
 
 		   a32 += vPInfo->csPage * 1024 * 1024 * 4; /* fixme */
 		   
@@ -297,7 +301,7 @@ OSErr cNuBusFPGACtl(CntrlParamPtr pb, /* DCtlPtr */ AuxDCEPtr dce)
 
   case cscDirectSetEntries: /* 0x8 */
 	  asm volatile(".word 0xfe16\n");
-	  return controlErr;
+	  ret = controlErr;
 	  break;
 
   case cscSetDefaultMode: /* 0x9 */
@@ -351,7 +355,11 @@ OSErr cNuBusFPGACtl(CntrlParamPtr pb, /* DCtlPtr */ AuxDCEPtr dce)
 	  ret = controlErr;
 	  break;
   }
-#endif
+
+ done:
+  if (!(pb->ioTrap & (1<<noQueueBit)))
+	  IODone(dce, ret);
+
   return ret;
 }
 
@@ -359,7 +367,7 @@ OSErr reconfHW(AuxDCEPtr dce, unsigned char mode, unsigned char depth, unsigned 
 	NuBusFPGADriverGlobalsHdl dStoreHdl = (NuBusFPGADriverGlobalsHdl)dce->dCtlStorage;
 	NuBusFPGADriverGlobalsPtr dStore = *dStoreHdl;
 	const short npage = (depth == kDepthMode5) ? 1 : 2;
-	OSErr err = noErr;
+	OSErr err = -1;
 	char busMode = 1;
 
 	/* write_reg(dce, GOBOFB_DEBUG, 0xBEEF0031); */

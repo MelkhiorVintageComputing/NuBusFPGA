@@ -26,5 +26,7 @@ OSErr cNuBusFPGARAMDskCtl(CntrlParamPtr pb, /* DCtlPtr */ AuxDCEPtr dce)
 	}
 
  done:
+	if (!(pb->ioTrap & (1<<noQueueBit)))
+		IODone(dce, ret);
 	return ret;
 }

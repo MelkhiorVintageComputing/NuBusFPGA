@@ -76,8 +76,10 @@ OSErr cNuBusFPGAStatus(CntrlParamPtr pb, /* DCtlPtr */ AuxDCEPtr dce)
 			  (vPInfo->csMode != kDepthMode3) &&
 			  (vPInfo->csMode != kDepthMode4) &&
 			  (vPInfo->csMode != kDepthMode5) &&
-			  (vPInfo->csMode != kDepthMode6)) 
-			  return paramErr;
+			  (vPInfo->csMode != kDepthMode6)) {
+			  ret = paramErr;
+			  goto done;
+		  }
 		  vPInfo->csPage = (vPInfo->csMode == kDepthMode5) ? 1 : 2;
 		  ret = noErr;
 	   }
@@ -90,11 +92,15 @@ OSErr cNuBusFPGAStatus(CntrlParamPtr pb, /* DCtlPtr */ AuxDCEPtr dce)
 			  (vPInfo->csMode != kDepthMode3) &&
 			  (vPInfo->csMode != kDepthMode4) &&
 			  (vPInfo->csMode != kDepthMode5) &&
-			  (vPInfo->csMode != kDepthMode6)) 
-			  return paramErr;
+			  (vPInfo->csMode != kDepthMode6)) {
+			  ret = paramErr;
+			  goto done;
+		  }
 		   short npage = (vPInfo->csMode == kDepthMode5) ? 1 : 2;
-		   if (vPInfo->csPage >= npage)
-			   return paramErr;
+		   if (vPInfo->csPage >= npage) {
+			   ret = paramErr;
+			   goto done;
+		   }
 		   vPInfo->csBaseAddr = vPInfo->csPage * 1024 * 1024 * 4; /* fixme for > 2 pages ? */
 		   ret = noErr;
 	   }
@@ -176,8 +182,10 @@ OSErr cNuBusFPGAStatus(CntrlParamPtr pb, /* DCtlPtr */ AuxDCEPtr dce)
 		   if (((((UInt8)vdtim->csTimingMode) < nativeVidMode) ||
 				(((UInt8)vdtim->csTimingMode) > dStore->maxMode)) &&
 			   (vdtim->csTimingMode != kDisplayModeIDFindFirstResolution) &&
-			   (vdtim->csTimingMode != kDisplayModeIDCurrent))
-			   return paramErr;
+			   (vdtim->csTimingMode != kDisplayModeIDCurrent)) {
+			   ret = paramErr;
+			   goto done;
+		   }
 		  unsigned int mode = vdtim->csTimingMode;
 		  if (mode == kDisplayModeIDFindFirstResolution)
 			  mode = nativeVidMode;
@@ -238,8 +246,10 @@ OSErr cNuBusFPGAStatus(CntrlParamPtr pb, /* DCtlPtr */ AuxDCEPtr dce)
 			  {
 			  default:
 				  if ((((UInt8)vdres->csPreviousDisplayModeID) < nativeVidMode) ||
-					  (((UInt8)vdres->csPreviousDisplayModeID) > dStore->maxMode))
-					  return paramErr;
+					  (((UInt8)vdres->csPreviousDisplayModeID) > dStore->maxMode)) {
+					  ret = paramErr;
+					  goto done;
+				  }
 				  if (((UInt8)vdres->csPreviousDisplayModeID) == dStore->maxMode)
 					  vdres->csDisplayModeID = kDisplayModeIDNoMoreResolutions;
 				  else
@@ -274,15 +284,19 @@ OSErr cNuBusFPGAStatus(CntrlParamPtr pb, /* DCtlPtr */ AuxDCEPtr dce)
 		  if (((((UInt8)vdparam->csDisplayModeID) < nativeVidMode) ||
 			   (((UInt8)vdparam->csDisplayModeID) > dStore->maxMode)) &&
 			  (vdparam->csDisplayModeID != kDisplayModeIDFindFirstResolution) &&
-			  (vdparam->csDisplayModeID != kDisplayModeIDCurrent))
-			  return paramErr;
+			  (vdparam->csDisplayModeID != kDisplayModeIDCurrent)) {
+			  ret = paramErr;
+			  goto done;
+		  }
 		  if ((vdparam->csDepthMode != kDepthMode1) &&
 			  (vdparam->csDepthMode != kDepthMode2) &&
 			  (vdparam->csDepthMode != kDepthMode3) &&
 			  (vdparam->csDepthMode != kDepthMode4) &&
 			  (vdparam->csDepthMode != kDepthMode5) &&
-			  (vdparam->csDepthMode != kDepthMode6)) 
-			  return paramErr;
+			  (vdparam->csDepthMode != kDepthMode6)) {
+			  ret = paramErr;
+			  goto done;
+		  }
 		  /* write_reg(dce, GOBOFB_DEBUG, 0xBEEF0022); */
 		  /* write_reg(dce, GOBOFB_DEBUG, (unsigned int)vdparam->csDisplayModeID); */
 		  /* write_reg(dce, GOBOFB_DEBUG, (unsigned int)vdparam->csDepthMode); */
@@ -385,5 +399,8 @@ OSErr cNuBusFPGAStatus(CntrlParamPtr pb, /* DCtlPtr */ AuxDCEPtr dce)
 	   break;
    }
 #endif
+ done:
+  if (!(pb->ioTrap & (1<<noQueueBit)))
+	  IODone(dce, ret);
    return ret;
 }

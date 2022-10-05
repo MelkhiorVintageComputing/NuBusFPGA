@@ -36,8 +36,6 @@ _NuBusFPGARAMDskPrime:
 	jsr			cNuBusFPGARAMDskPrime
 	MOVE.L		(%A7)+, %a0
 	MOVE.L		(%A7)+, %a1
-	BTST		#9,%a0@(ioTrap) /* noQueueBit is 9 */   	
-	BEQ.S		_RAMDskGoIODone
 	rts
 
 _NuBusFPGARAMDskCtl:
@@ -46,8 +44,6 @@ _NuBusFPGARAMDskCtl:
 	jsr			cNuBusFPGARAMDskCtl
 	MOVE.L		(%A7)+, %a0
 	MOVE.L		(%A7)+, %a1
-	BTST		#9,%a0@(ioTrap) /* noQueueBit is 9 */   	
-	BEQ.S		_RAMDskGoIODone
 	rts
 
 _NuBusFPGARAMDskStatus:
@@ -56,8 +52,6 @@ _NuBusFPGARAMDskStatus:
 	jsr			cNuBusFPGARAMDskStatus
 	MOVE.L		(%A7)+, %a0
 	MOVE.L		(%A7)+, %a1
-	BTST		#9,%a0@(ioTrap) /* noQueueBit is 9 */   	
-	BEQ.S		_RAMDskGoIODone
 	rts
 
 _NuBusFPGARAMDskClose:
@@ -66,6 +60,7 @@ _NuBusFPGARAMDskClose:
 	jsr			cNuBusFPGARAMDskClose
 	MOVE.L		(%A7)+, %a0
 	MOVE.L		(%A7)+, %a1
+	rts
 
 MyAddDrive:
 	LINK      %A6,#0
@@ -77,12 +72,6 @@ MyAddDrive:
 	DC.W      0xA04E  /* _AddDrive */
 	UNLK      %A6
 	RTS
-	
-_RAMDskGoIODone:	
-	/*  MOVEA.L    JIODone,%A0 */
-	/*	JMP        (%A0) */
-	movel JIODone,%sp@-
-	rts
 
 	.include "NuBusFPGARAMDskDrvr_OpenClose.s"
 	.text

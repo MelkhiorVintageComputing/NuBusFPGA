@@ -36,8 +36,6 @@ _NuBusFPGACtl:
 	jsr			cNuBusFPGACtl
 	MOVE.L		(%A7)+, %a0
 	MOVE.L		(%A7)+, %a1
-	BTST		#9,%a0@(ioTrap) /* noQueueBit is 9 */   	
-	BEQ.S		_GoIODone
 	rts
 
 _NuBusFPGAStatus:
@@ -46,8 +44,6 @@ _NuBusFPGAStatus:
 	jsr			cNuBusFPGAStatus
 	MOVE.L		(%A7)+, %a0
 	MOVE.L		(%A7)+, %a1
-	BTST		#9,%a0@(ioTrap) /* noQueueBit is 9 */   	
-	BEQ.S		_GoIODone
 	rts
 
 _NuBusFPGAClose:
@@ -57,12 +53,6 @@ _NuBusFPGAClose:
 	MOVE.L		(%A7)+, %a0
 	MOVE.L		(%A7)+, %a1
 	rts
-	
-_GoIODone:	
-	/*  MOVEA.L    JIODone,%A0 */
-	/*	JMP        (%A0) */
-	movel JIODone,%sp@-
-	rts
 
 	.include "NuBusFPGADrvr_OpenClose.s"
 	.text
@@ -70,21 +60,5 @@ _GoIODone:
 	.text
 	.include "NuBusFPGADrvr_Status.s"
 	.text
-	
-    ALIGN  2
-interruptRoutine:
-	moveal %a1,%a0
-	addal #0x0090000c,%a0 /* FIXME */
-	MOVEQ		#1,%D0
-	_SwapMMUMode         
-	clrb %a0@ /*  we only need to write */
-	_SwapMMUMode
-	movel %a1,%d0
-	roll #8,%d0
-	andiw #15,%d0
-	moveal 0xd28,%a0 /*  JVBLTask */
-	jsr (%a0)
-	moveq #1,%d0
-	rts
 	
 	ALIGN 2
