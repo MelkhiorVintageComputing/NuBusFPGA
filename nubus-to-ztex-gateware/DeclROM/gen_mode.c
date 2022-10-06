@@ -71,45 +71,46 @@ int main(int argc, char **argv) {
 		if (res_db[i].native_only && ((hres != maxhres) || (vres != maxvres)))
 			continue;
 		
+		if ((hres > maxhres) || (vres > maxvres))
+			continue;
+			
 		snprintf(filename, 512, "VidRomRes_%hux%hu.s", hres, vres);	
 		fd = fopen(filename, "w");
 		if (fd == NULL) {
 			fprintf(stderr, "Generating '%s' failed.\n", filename);
 			return -1;
 		}
-		if ((hres <= maxhres) && (vres <= maxvres)) {
-			enabled[i] = 1;
-			id ++;
+		enabled[i] = 1;
+		id ++;
 		
-			for (j = 0 ; j < 6 ; j++) {
-				char modename[128];
-				const unsigned short depth = depthdb[j];
-				const unsigned short rowBytes = (hres * depth) / 8;
-				snprintf(modename, 128, "R%hux%huD%d", hres, vres, depth);
+		for (j = 0 ; j < 6 ; j++) {
+			char modename[128];
+			const unsigned short depth = depthdb[j];
+			const unsigned short rowBytes = (hres * depth) / 8;
+			snprintf(modename, 128, "R%hux%huD%d", hres, vres, depth);
 			
-				fprintf(fd, "\tALIGN 2\n");
-				fprintf(fd, "_%sModes: /* id 0x%02x */\n", modename, id-1);
-				fprintf(fd, "\tOSLstEntry\tmVidParams,_%sParms\t/* offset to vid parameters */\n", modename);
-				fprintf(fd, "\tDatLstEntry\tmPageCnt,%d\t/* number of video pages */\n", (depth == 32) ? 1 : 2);
-				fprintf(fd, "\tDatLstEntry\tmDevType,%s\t/* device type */\n", depth <= 8 ? "clutType" : "directType");
-				fprintf(fd, "\t.long\tEndOfList\t/* end of list */\n");
-				fprintf(fd, "_%sParms:\n", modename);
-				fprintf(fd, "\t.long\t_End%sParms-_%sParms\t/* physical block size */\n", modename, modename);
-				fprintf(fd, "\t.long\t0\t/* QuickDraw base offset ; vpBaseOffset */\n"); // defmBaseOffset
-				fprintf(fd, "\t.word\t%hu\t/* physRowBytes ; vpRowBytes */\n", rowBytes);
-				fprintf(fd, "\t.word\t0,0,%hu,%hu\t/* vpBounds */\n", vres, hres);
-				fprintf(fd, "\t.word\tdefVersion\t/* bmVersion ; vpVersion */\n");
-				fprintf(fd, "\t.word\t0\t/* packType not used ; vpPackType */\n");
-				fprintf(fd, "\t.long\t0\t/* packSize not used ; vpPackSize */\n");
-				fprintf(fd, "\t.long\tdefmHRes\t/* bmHRes */\n");
-				fprintf(fd, "\t.long\tdefmVRes\t/* bmVRes */\n");
-				fprintf(fd, "\t.word\t%s\t/* bmPixelType */\n", depth <= 8 ? "ChunkyIndexed" : "ChunkyDirect");
-				fprintf(fd, "\t.word\t%d\t/* bmPixelSize */\n", depth);
-				fprintf(fd, "\t.word\t%d\t/* bmCmpCount */\n", depth <= 8 ? 1 : 3);
-				fprintf(fd, "\t.word\t%d\t/* bmCmpSize */\n", depth <= 8 ? depth : (depth == 32 ? 8 : 5));
-				fprintf(fd, "\t.long\t0\t/* bmPlaneBytes */\n"); // defmPlaneBytes
-				fprintf(fd, "_End%sParms:\n\n",modename);
-			}
+			fprintf(fd, "\tALIGN 2\n");
+			fprintf(fd, "_%sModes: /* id 0x%02x */\n", modename, id-1);
+			fprintf(fd, "\tOSLstEntry\tmVidParams,_%sParms\t/* offset to vid parameters */\n", modename);
+			fprintf(fd, "\tDatLstEntry\tmPageCnt,%d\t/* number of video pages */\n", (depth == 32) ? 1 : 2);
+			fprintf(fd, "\tDatLstEntry\tmDevType,%s\t/* device type */\n", depth <= 8 ? "clutType" : "directType");
+			fprintf(fd, "\t.long\tEndOfList\t/* end of list */\n");
+			fprintf(fd, "_%sParms:\n", modename);
+			fprintf(fd, "\t.long\t_End%sParms-_%sParms\t/* physical block size */\n", modename, modename);
+			fprintf(fd, "\t.long\t0\t/* QuickDraw base offset ; vpBaseOffset */\n"); // defmBaseOffset
+			fprintf(fd, "\t.word\t%hu\t/* physRowBytes ; vpRowBytes */\n", rowBytes);
+			fprintf(fd, "\t.word\t0,0,%hu,%hu\t/* vpBounds */\n", vres, hres);
+			fprintf(fd, "\t.word\tdefVersion\t/* bmVersion ; vpVersion */\n");
+			fprintf(fd, "\t.word\t0\t/* packType not used ; vpPackType */\n");
+			fprintf(fd, "\t.long\t0\t/* packSize not used ; vpPackSize */\n");
+			fprintf(fd, "\t.long\tdefmHRes\t/* bmHRes */\n");
+			fprintf(fd, "\t.long\tdefmVRes\t/* bmVRes */\n");
+			fprintf(fd, "\t.word\t%s\t/* bmPixelType */\n", depth <= 8 ? "ChunkyIndexed" : "ChunkyDirect");
+			fprintf(fd, "\t.word\t%d\t/* bmPixelSize */\n", depth);
+			fprintf(fd, "\t.word\t%d\t/* bmCmpCount */\n", depth <= 8 ? 1 : 3);
+			fprintf(fd, "\t.word\t%d\t/* bmCmpSize */\n", depth <= 8 ? depth : (depth == 32 ? 8 : 5));
+			fprintf(fd, "\t.long\t0\t/* bmPlaneBytes */\n"); // defmPlaneBytes
+			fprintf(fd, "_End%sParms:\n\n",modename);
 		}
 		fclose(fd);
 	}

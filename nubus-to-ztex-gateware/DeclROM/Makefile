@@ -33,7 +33,7 @@ ${GEN_ASM}: gen_mode
 
 all: vid_decl_rom.bin
 
-vid_decl_rom.o: vid_decl_rom.s NuBusFPGAPrimaryInit.s NuBusFPGASecondaryInit.s NuBusFPGADrvr.s ${APPLEINCS} DepVideo.inc ${GEN_ASM}
+vid_decl_rom.o: vid_decl_rom.s NuBusFPGADrvr.s NuBusFPGARAMDskDrvr.s ${APPLEINCS} DepVideo.inc ${GEN_ASM}
 	rm -f res.inc
 	echo -e "HRES=${HRES}\nVRES=${VRES}\n" | tee res.inc
 	${AS} ${ARCHFLAGS} -I${NS816DECLROMDIR} $< -o $@ -a > vid_decl_rom.l
