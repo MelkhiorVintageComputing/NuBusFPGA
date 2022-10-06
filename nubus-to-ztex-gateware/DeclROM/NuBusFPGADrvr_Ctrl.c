@@ -78,7 +78,7 @@ OSErr cNuBusFPGACtl(CntrlParamPtr pb, /* DCtlPtr */ AuxDCEPtr dce)
    NuBusFPGADriverGlobalsHdl dStoreHdl = (NuBusFPGADriverGlobalsHdl)dce->dCtlStorage;
    NuBusFPGADriverGlobalsPtr dStore = *dStoreHdl;
    
-   short ret = noErr;
+   short ret = -1;
    char	busMode = 1;
 
    /* write_reg(dce, GOBOFB_DEBUG, 0xBEEF0001); */
@@ -367,7 +367,7 @@ OSErr reconfHW(AuxDCEPtr dce, unsigned char mode, unsigned char depth, unsigned 
 	NuBusFPGADriverGlobalsHdl dStoreHdl = (NuBusFPGADriverGlobalsHdl)dce->dCtlStorage;
 	NuBusFPGADriverGlobalsPtr dStore = *dStoreHdl;
 	const short npage = (depth == kDepthMode5) ? 1 : 2;
-	OSErr err = -1;
+	OSErr err = noErr;
 	char busMode = 1;
 
 	/* write_reg(dce, GOBOFB_DEBUG, 0xBEEF0031); */
