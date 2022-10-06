@@ -5,6 +5,7 @@
 #define SECO_WRITEREG(reg, val) \
 	*((volatile UInt32*)(a32+GOBOFB_BASE+reg)) = (UInt32)val;
 
+#pragma parameter __D0 Primary(__A0)
 UInt32 Secondary(SEBlock* seblock) {
 	UInt32 a32 = 0xF0000000 | ((UInt32)seblock->seSlot << 24);
 	UInt32 a32_l0, a32_l1;
