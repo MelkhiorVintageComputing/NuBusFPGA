@@ -46,7 +46,10 @@ _BoardName:
 /* _sPInitRec: */
     /* .long       _EndsPInitRec-_sPInitRec */ /*  physical block size */
 	.long size_sPInitRec
-	.include  "NuBusFPGAPrimaryInit.s"			   /*  	the header/code */
+	.byte	sExec2						/* Code revision (Primary init) */
+	.byte	sCPU68020					/* CPU type is 68020 */
+	.short	0							/* Reserved */
+	.long	Primary-.					/* Offset to C code. */
     ALIGN 2
 /* _EndsPInitRec: */
 
@@ -54,10 +57,12 @@ _BoardName:
 /* _sSInitRec: */
     /* .long    _EndsSInitRec-_sSInitRec */ /* physical block size */
 	.long size_sSInitRec
-    .include "NuBusFPGASecondaryInit.s"  /* the header/code */
+	.byte	sExec2						/* Code revision (Primary init) */
+	.byte	sCPU68020					/* CPU type is 68020 */
+	.short	0							/* Reserved */
+	.long	Secondary-.					/* Offset to C code. */
     ALIGN 2
 /* _EndsSInitRec: */
-
 
     .section .text.begin
 	ALIGN 2
