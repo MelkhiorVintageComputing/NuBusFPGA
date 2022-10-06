@@ -24,7 +24,8 @@ UInt32 Primary(SEBlock* seblock) {
 
 	PRIM_WRITEREG(GOBOFB_VBL_MASK, 0);// disable interrupts
 	
-	/* PRIM_WRITEREG(GOBOFB_DEBUG, busMode);// trace */
+	PRIM_WRITEREG(GOBOFB_DEBUG, 0x87654321);// trace
+	PRIM_WRITEREG(GOBOFB_DEBUG, busMode);// trace
 
 	hres = __builtin_bswap32((UInt32)PRIM_READREG(GOBOFB_HRES)); // fixme: endianness
 	vres = __builtin_bswap32((UInt32)PRIM_READREG(GOBOFB_VRES)); // fixme: endianness

@@ -9,7 +9,7 @@
 /* drVNum to high-order bits of num, drvrRefNum in low-order */
 /* not sure how to do "parameter" without output ? */
 #pragma parameter __D0 AddDrive(__D0, __A0)
-static inline int dupAddDrive(unsigned long num, DrvQElPtr qEl) {
+__attribute__ ((section (".text.dskdriver"))) static inline int dupAddDrive(unsigned long num, DrvQElPtr qEl) {
 	asm volatile(".word 0xA04E" : : "d" (num), "a" (qEl));
 	return num; // should cost nothing, num is already in D0
 }

@@ -9,16 +9,23 @@
 sRsrc_Board = 1 /*  board sResource (>0 & <128) */
 	.include "VidRomDef.s"
 sRsrc_RAMDsk = 0x90 /*  functional sResources */
+	
+    .global DeclROMDir
+
+    .section .text.begin
 
 	.include "VidRomRsrcDir.s"
 
+    .global _sRsrc_Board
 _sRsrc_Board:	
     OSLstEntry  sRsrcType,_BoardType       /*  offset to board descriptor */
     OSLstEntry  sRsrcName,_BoardName       /*  offset to name of board */
     DatLstEntry boardId,NuBusFPGAID         /*  board ID # (assigned by DTS) */
-    OSLstEntry  primaryInit,_sPInitRec     /*  offset to PrimaryInit exec blk */
+    /* OSLstEntry  primaryInit,_sPInitRec */    /*  offset to PrimaryInit exec blk */
+	.long entry_sPInitRec
     OSLstEntry  vendorInfo,_VendorInfo     /*  offset to vendor info record */
-	OSLstEntry  secondaryInit,_sSInitRec  /* offset to SecondaryInit block	 */
+	/* OSLstEntry  secondaryInit,_sSInitRec */  /* offset to SecondaryInit block	 */
+	.long entry_sSInitRec
 	OSLstEntry	sRsrcVidNames, _VModeName /* video name directory */
 	.long EndOfList
 
@@ -35,20 +42,24 @@ _BoardName:
 /*  _VidICON ; optional icon, not needed */
 /*  _sVidNameDir ; optional name(s), not needed */
 
-_sPInitRec:	
-    .long       _EndsPInitRec-_sPInitRec /*  physical block size */
+	.section .text.primary_init
+/* _sPInitRec: */
+    /* .long       _EndsPInitRec-_sPInitRec */ /*  physical block size */
+	.long size_sPInitRec
 	.include  "NuBusFPGAPrimaryInit.s"			   /*  	the header/code */
-	.text	
     ALIGN 2
-_EndsPInitRec:
+/* _EndsPInitRec: */
 
-_sSInitRec:	
-    .long    _EndsSInitRec-_sSInitRec /* physical block size */
+	.section .text.secondary_init
+/* _sSInitRec: */
+    /* .long    _EndsSInitRec-_sSInitRec */ /* physical block size */
+	.long size_sSInitRec
     .include "NuBusFPGASecondaryInit.s"  /* the header/code */
-	.text
     ALIGN 2
-_EndsSInitRec:
-	
+/* _EndsSInitRec: */
+
+
+    .section .text.begin
 	ALIGN 2
 _VendorInfo:	
     OSLstEntry vendorId,_VendorId      /*  offset to vendor ID */
@@ -89,19 +100,24 @@ _MinorLength:
     .long        defMinorLength           /*  frame buffer length */
 
 	ALIGN 2
+	.section .text.begin
+	.global _GoboFBDrvrDir
 _GoboFBDrvrDir:	
-    OSLstEntry  sMacOS68020,_GoboFBDrvrMacOS68020     /* driver directory for Mac OS */
+    /* OSLstEntry  sMacOS68020,_GoboFBDrvrMacOS68020  */   /* driver directory for Mac OS */
+	.long entry_GoboFBDrvrMacOS68020
     .long EndOfList 
 
 	ALIGN 2
-_GoboFBDrvrMacOS68020:	
+	.section .text.fbdriver_init
+/* _GoboFBDrvrMacOS68020: */ /* supplied by linker script */
     .long        _GoboFBEnd020Drvr-.   /*  physical block size */
     .include     "NuBusFPGADrvr.s"             /*   driver code */
-	.text
-_GoboFBEnd020Drvr:
-
+/* _GoboFBEnd020Drvr: */ /* supplied by linker script */
+	
+	.section .text.begin
 	.include "VidRomRes.s"
 	
+	.section .text.begin
 	ALIGN 2
 _sRsrc_RAMDsk:	
 	OSLstEntry  sRsrcType,_RAMDskType      /*  video type descriptor */
@@ -122,14 +138,33 @@ _RAMDskName:
     .string        "RAMDsk_NuBusFPGA"        /*  video driver name */
 	
 	ALIGN 2
+	.section .text.begin
+	.global _RAMDskDrvrDir
 _RAMDskDrvrDir:	
-    OSLstEntry  sMacOS68020,_RAMDskDrvrMacOS68020     /* driver directory for Mac OS */
+    /* OSLstEntry  sMacOS68020,_RAMDskDrvrMacOS68020 */    /* driver directory for Mac OS */
+	.long entry_RAMDskDrvrMacOS68020
     .long EndOfList 
 
 	ALIGN 2
-_RAMDskDrvrMacOS68020:	
+	.section .text.dskdriver_init
+/* _RAMDskDrvrMacOS68020: */ /* supplied by linker script */
     .long        _RAMDskEnd020Drvr-.   /*  physical block size */
     .include     "NuBusFPGARAMDskDrvr.s"             /*   driver code */
-	.text
-_RAMDskEnd020Drvr:
+/* _RAMDskEnd020Drvr: */ /* supplied by linker script */
+
 	
+    /* Declaration ROM directory at end */
+       .section .romblock
+       ALIGN 2
+DeclROMDir:
+       .long RsrcDirOffset /* supplied by linker script, replace OSLstEntry 0, _sRsrcDir */
+DeclROMCRC:
+       .long ROMSize /* supplied by linker script */
+       .long 0 /* crc TBComputed after the fact */
+       .byte 1                  /* Revision Level */
+       .byte appleFormat        /* Apple Format */
+       .long testPattern        /* magic TestPattern */
+       .byte 0                  /* reserved */
+       .byte 0x0F               /* byte lane marker */
+DeclRomEnd:
+       .end

@@ -51,6 +51,3 @@ ChunkyIndexed = 0
 ChunkyDirect = 16
 
 defVersion		=		0			/* Version = 0 */
-
-ROMSize			=		0x1000					/* 4K byte ROM */
-

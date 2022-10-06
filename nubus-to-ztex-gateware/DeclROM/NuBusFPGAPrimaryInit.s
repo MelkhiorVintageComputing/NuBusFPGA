@@ -6,8 +6,7 @@
 	
 BeginPrimary:
 	MOVE.L		%A0, -(%A7)
-	JSR			Primary
+	BSR         Primary
 	MOVE.L		(%A7)+, %a0
 	rts
-	.include "NuBusFPGAPrimaryInit_Primary.s"
-	.text
+

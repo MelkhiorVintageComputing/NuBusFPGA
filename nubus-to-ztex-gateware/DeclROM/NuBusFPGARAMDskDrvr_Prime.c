@@ -2,7 +2,7 @@
 
 /* #include <DriverServices.h> */
 
-static inline void waitSome(unsigned long bound) {
+__attribute__ ((section (".text.dskdriver"))) static inline void waitSome(unsigned long bound) {
 	unsigned long i;
 	for (i = 0 ; i < bound ; i++) {
 		asm volatile("nop");
@@ -199,7 +199,7 @@ OSErr cNuBusFPGARAMDskPrime(IOParamPtr pb, /* DCtlPtr */ AuxDCEPtr dce)
 
  done:
 	if (!(pb->ioTrap & (1<<noQueueBit)))
-		IODone(dce, ret);
+		IODone((DCtlPtr)dce, ret);
 	
 	return ret;
 }

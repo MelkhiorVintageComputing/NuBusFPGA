@@ -21,12 +21,3 @@ _NuBusFPGATitle_StringEnd:
     /* A0 pointer to driver parameter block */
 	/* A1 pointer to driver device control entry */
 	ALIGN 2
-
-	.include "NuBusFPGADrvr_OpenClose.s"
-	.text
-	.include "NuBusFPGADrvr_Ctrl.s"
-	.text
-	.include "NuBusFPGADrvr_Status.s"
-	.text
-	
-	ALIGN 2

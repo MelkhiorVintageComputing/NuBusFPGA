@@ -2,6 +2,8 @@
 
 //#include <stdio.h>
 
+#include "NuBusFPGARAMDskDrvr.h"
+
 #ifndef SKIP_MAIN
 uint32_t rleenc(uint32_t* out, const uint32_t* in, const uint32_t len) {
 	uint32_t i = 0, j = 0, p = 0, ib, k;

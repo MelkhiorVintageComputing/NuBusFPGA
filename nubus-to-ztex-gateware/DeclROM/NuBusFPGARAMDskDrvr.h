@@ -41,7 +41,16 @@ struct RAMDrvContext {
 #define DMA_STATUS_CHECK_BITS (0x01F)
 
 #endif
+/* ctrl */
+OSErr cNuBusFPGARAMDskCtl(CntrlParamPtr pb, /* DCtlPtr */ AuxDCEPtr dce) __attribute__ ((section (".text.dskdriver")));
+/* open, close */
+OSErr cNuBusFPGARAMDskOpen(IOParamPtr pb, /* DCtlPtr */ AuxDCEPtr dce) __attribute__ ((section (".text.dskdriver")));
+OSErr cNuBusFPGARAMDskClose(IOParamPtr pb, /* DCtlPtr */ AuxDCEPtr dce) __attribute__ ((section (".text.dskdriver")));
+/* prime */
+OSErr cNuBusFPGARAMDskPrime(IOParamPtr pb, /* DCtlPtr */ AuxDCEPtr dce) __attribute__ ((section (".text.dskdriver")));
+/* status */
+OSErr cNuBusFPGARAMDskStatus(CntrlParamPtr pb, /* DCtlPtr */ AuxDCEPtr dce) __attribute__ ((section (".text.dskdriver")));
 
-uint32_t rledec(uint32_t* out, const uint32_t* in, const uint32_t len);
+uint32_t rledec(uint32_t* out, const uint32_t* in, const uint32_t len) __attribute__ ((section (".text.dskdriver")));;
 
 #endif

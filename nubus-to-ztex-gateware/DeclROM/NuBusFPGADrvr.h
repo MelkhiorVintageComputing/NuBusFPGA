@@ -126,23 +126,25 @@ static inline unsigned int read_reg(AuxDCEPtr dce, unsigned int reg) {
 /* ASM */
 extern SlotIntServiceProcPtr interruptRoutine;
 /* ctrl */
-void linearGamma(NuBusFPGADriverGlobalsPtr dStore);
-OSErr changeIRQ(AuxDCEPtr dce, char en, OSErr err);
-OSErr cNuBusFPGACtl(CntrlParamPtr pb, /* DCtlPtr */ AuxDCEPtr dce);
-OSErr reconfHW(AuxDCEPtr dce, unsigned char mode, unsigned char depth, unsigned short page);
-OSErr updatePRAM(AuxDCEPtr dce, unsigned char mode, unsigned char depth, unsigned short page);
+void linearGamma(NuBusFPGADriverGlobalsPtr dStore) __attribute__ ((section (".text.fbdriver")));
+OSErr changeIRQ(AuxDCEPtr dce, char en, OSErr err) __attribute__ ((section (".text.fbdriver")));
+OSErr cNuBusFPGACtl(CntrlParamPtr pb, /* DCtlPtr */ AuxDCEPtr dce) __attribute__ ((section (".text.fbdriver")));
+OSErr reconfHW(AuxDCEPtr dce, unsigned char mode, unsigned char depth, unsigned short page) __attribute__ ((section (".text.fbdriver")));
+OSErr updatePRAM(AuxDCEPtr dce, unsigned char mode, unsigned char depth, unsigned short page) __attribute__ ((section (".text.fbdriver")));
 /* status */
-OSErr cNuBusFPGAStatus(CntrlParamPtr pb, /* DCtlPtr */ AuxDCEPtr dce);
+OSErr cNuBusFPGAStatus(CntrlParamPtr pb, /* DCtlPtr */ AuxDCEPtr dce) __attribute__ ((section (".text.fbdriver")));
 /* open close */
-OSErr cNuBusFPGAOpen(IOParamPtr pb, /* DCtlPtr */ AuxDCEPtr dce);
-OSErr cNuBusFPGAClose(IOParamPtr pb, /* DCtlPtr */ AuxDCEPtr dce);
+OSErr cNuBusFPGAOpen(IOParamPtr pb, /* DCtlPtr */ AuxDCEPtr dce) __attribute__ ((section (".text.fbdriver")));
+OSErr cNuBusFPGAClose(IOParamPtr pb, /* DCtlPtr */ AuxDCEPtr dce) __attribute__ ((section (".text.fbdriver")));
 
 /* primary init */
-UInt32 Primary(SEBlock* block);
+UInt32 Primary(SEBlock* block) __attribute__ ((section (".text.primary")));
+/* secondary init */
+UInt32 Secondary(SEBlock* seblock) __attribute__ ((section (".text.secondary")));
 
 #define         Check32QDTrap               0xAB03
 
-#if 1
+#if 0
 static inline UInt32 revb(UInt32 d) {
 	return ((d&0xFFul)<<24) | ((d&0xFF00ul)<<8) | ((d&0xFF0000ul)>>8) | ((d&0xFF000000ul)>>24);
 }
@@ -151,3 +153,4 @@ static inline UInt32 revb(UInt32 d) {
 #endif
 
 #endif
+

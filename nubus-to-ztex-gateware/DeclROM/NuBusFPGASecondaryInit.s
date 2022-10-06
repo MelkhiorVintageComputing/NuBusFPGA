@@ -6,8 +6,10 @@
 	
 BeginSecondary:
 	MOVE.L		%A0, -(%A7)
-	JSR			Secondary
+	movea.l #0xfc90001c, %a0
+	move.l  #0xcccccccc, (%a0)
+	BSR			Secondary
+	movea.l #0xfc90001c, %a0
+	move.l  #0xdddddddd, (%a0)
 	MOVE.L		(%A7)+, %a0
 	rts
-	.include "NuBusFPGASecondaryInit_Secondary.s"
-	.text

@@ -5,7 +5,7 @@
 typedef void(*vblproto)(short);
 
 #pragma parameter __D0 fbIrq(__A1)
-short fbIrq(const long sqParameter){
+__attribute__ ((section (".text.fbdriver"))) short fbIrq(const long sqParameter){
 	/* AuxDCEPtr dce = (AuxDCEPtr)sqParameter; */
 	/* NuBusFPGADriverGlobalsHdl dStoreHdl = (NuBusFPGADriverGlobalsHdl)dce->dCtlStorage; */
 	/* NuBusFPGADriverGlobalsPtr dStore = *dStoreHdl; */
@@ -21,8 +21,8 @@ short fbIrq(const long sqParameter){
 OSErr cNuBusFPGAOpen(IOParamPtr pb, /* DCtlPtr */ AuxDCEPtr dce)
 {
 	OSErr ret = noErr;
-	/* write_reg(dce, GOBOFB_DEBUG, 0xBEEF0000); */
-	/* write_reg(dce, GOBOFB_DEBUG, (unsigned long)dce->dCtlDevBase); */
+	write_reg(dce, GOBOFB_DEBUG, 0xBEEF0000);
+	write_reg(dce, GOBOFB_DEBUG, (unsigned long)dce->dCtlDevBase);
 	
 	if (dce->dCtlStorage == nil)
 		{

@@ -21,16 +21,3 @@ _NuBusFPGARAMDskTitle_StringEnd:
     /* A0 pointer to driver parameter block */
 	/* A1 pointer to driver device control entry */
 	ALIGN 2
-
-	.include "NuBusFPGARAMDskDrvr_OpenClose.s"
-	.text
-	.include "NuBusFPGARAMDskDrvr_Prime.s"
-	.text
-	.include "NuBusFPGARAMDskDrvr_Ctrl.s"
-	.text
-	.include "NuBusFPGARAMDskDrvr_Status.s"
-	.text
-	.include "myrle.s"
-	.text
-	
-	ALIGN 2
