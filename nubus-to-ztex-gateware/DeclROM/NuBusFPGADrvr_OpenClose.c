@@ -69,9 +69,10 @@ OSErr cNuBusFPGAOpen(IOParamPtr pb, /* DCtlPtr */ AuxDCEPtr dce)
 			/* siqel->sqParm = (long)dce->dCtlDevBase; */
 			
 			/* not sure how to get the proper result in C... */
-			SlotIntServiceProcPtr sqAddr;
-			asm("lea %%pc@(fbIrq),%0\n" : "=a"(sqAddr));
-			siqel->sqAddr = sqAddr;
+			/* ... from ~mac68k, you need option "-mpcrel", and it works */
+			/* SlotIntServiceProcPtr sqAddr; */
+			/* asm("lea %%pc@(fbIrq),%0\n" : "=a"(sqAddr)); */
+			siqel->sqAddr = fbIrq;
 			/* siqel->sqParm = (long)dce; */
 			siqel->sqParm = (long)dce->dCtlDevBase;
 			dStore->siqel = siqel;
