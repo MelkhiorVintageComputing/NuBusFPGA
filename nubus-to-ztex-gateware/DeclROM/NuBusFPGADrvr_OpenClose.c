@@ -4,8 +4,16 @@
 
 typedef void(*vblproto)(short);
 
+/* how do I tell it to only modify D0 & A1 ? */
+/* the ABI allows to modify D0-D2 & A0-A1 (caller save) */
+/* currently this is clobbering A0 yet seems to work ... */
+/* 'Devices' p1-37 says of interrupt handler "preserving all registers other than D0 through D3 and A0 through A3"
+ * but that for NuBus you see SIntInstall which says (2-70)
+ * "routine must preserve the contents of all registers except A1 and D0"
+ * yet the interrupt handler for the video card driver example in DCDMF3 p589 clobbers A0
+ */
 #pragma parameter __D0 fbIrq(__A1)
-__attribute__ ((section (".text.fbdriver"))) short fbIrq(const long sqParameter){
+__attribute__ ((section (".text.fbdriver"))) short fbIrq(const long sqParameter) {
 	/* AuxDCEPtr dce = (AuxDCEPtr)sqParameter; */
 	/* NuBusFPGADriverGlobalsHdl dStoreHdl = (NuBusFPGADriverGlobalsHdl)dce->dCtlStorage; */
 	/* NuBusFPGADriverGlobalsPtr dStore = *dStoreHdl; */
@@ -15,7 +23,6 @@ __attribute__ ((section (".text.fbdriver"))) short fbIrq(const long sqParameter)
 	myVbl((sqParameter>>24)&0xf); // cleaner to use dStore->slot ? but require more code...
 	return 1;
 }
-
 
 #pragma parameter __D0 cNuBusFPGAOpen(__A0, __A1)
 OSErr cNuBusFPGAOpen(IOParamPtr pb, /* DCtlPtr */ AuxDCEPtr dce)

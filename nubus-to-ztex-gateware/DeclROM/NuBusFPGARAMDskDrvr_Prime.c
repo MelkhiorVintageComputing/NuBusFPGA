@@ -9,6 +9,56 @@ __attribute__ ((section (".text.dskdriver"))) static inline void waitSome(unsign
 	}
 }
 
+typedef struct {
+	unsigned long blk_todo;
+	unsigned long blk_done;
+	unsigned long blk_offset;
+	unsigned long blk_doing;
+	void *ioBuffer;
+	int write;
+} ram_dsk_op;
+
+__attribute__ ((section (".text.dskdriver"))) static void startOneOp(const struct RAMDrvContext *ctx, const AuxDCEPtr dce, ram_dsk_op *op) {
+	if (op->blk_todo > 0) {
+		op->blk_doing = op->blk_todo;
+		if (op->blk_doing > 65535) { // fixme: read HW max
+			op->blk_doing = 32768; // nice Po2
+		}
+		write_reg(dce, DMA_BLK_ADDR, revb(ctx->dma_blk_base + op->blk_offset));
+		write_reg(dce, DMA_DMA_ADDR, revb(op->ioBuffer + (op->blk_done << ctx->dma_blk_size_shift)));
+		write_reg(dce, DMA_BLK_CNT,  revb((op->write ? 0x80000000ul : 0x00000000ul) | op->blk_doing));
+		op->blk_done += op->blk_doing;
+		op->blk_todo -= op->blk_doing;
+		op->blk_offset += op->blk_doing;
+	}
+}
+
+__attribute__ ((section (".text.dskdriver"))) static OSErr waitForHW(const struct RAMDrvContext *ctx, const AuxDCEPtr dce, ram_dsk_op *op) {
+	unsigned long count, max_count, delay;
+	unsigned long blk_cnt, status;
+	OSErr ret = noErr;
+	max_count = 32 * op->blk_doing;
+	delay = (op->blk_doing >> 4);
+	if (delay > 65536)
+		delay = 65536;
+	waitSome(delay);
+	count = 0;
+	blk_cnt = revb(read_reg(dce, DMA_BLK_CNT)) & 0xFFFF;
+	status = revb(read_reg(dce, DMA_STATUS)) & DMA_STATUS_CHECK_BITS;
+	while (((blk_cnt != 0) ||
+			(status != 0)) &&
+		   (count < max_count)) {
+		count ++;
+		waitSome(delay);
+		if (blk_cnt) blk_cnt = revb(read_reg(dce, DMA_BLK_CNT)) & 0xFFFF;
+		if (status) status = revb(read_reg(dce, DMA_STATUS)) & DMA_STATUS_CHECK_BITS;
+	}
+	if (blk_cnt || status) {
+		ret = op->write ? writErr : readErr;
+	}
+	return ret;
+}
+
 /* Devices 1-34 (p54) */
 #pragma parameter __D0 cNuBusFPGARAMDskPrime(__A0, __A1)
 OSErr cNuBusFPGARAMDskPrime(IOParamPtr pb, /* DCtlPtr */ AuxDCEPtr dce)
@@ -53,77 +103,27 @@ OSErr cNuBusFPGARAMDskPrime(IOParamPtr pb, /* DCtlPtr */ AuxDCEPtr dce)
 				if ((((unsigned long)pb->ioBuffer & ctx->dma_blk_size_mask) == 0) &&
 					(((unsigned long)pb->ioReqCount & ctx->dma_blk_size_mask) == 0) &&
 					(((unsigned long)abs_offset & ctx->dma_blk_size_mask) == 0)) {
-					unsigned long blk_todo = (pb->ioReqCount >> ctx->dma_blk_size_shift), blk_doing, blk_done;
-					unsigned long count, max_count, delay;
+					ram_dsk_op op;
 					unsigned long blk_cnt, status;
 					blk_cnt = revb(read_reg(dce, DMA_BLK_CNT)) & 0xFFFF;
 					status =  revb(read_reg(dce, DMA_STATUS)) & DMA_STATUS_CHECK_BITS;
-					blk_done = 0;
-					while (blk_todo > 0) {
-						blk_doing = blk_todo;
-						if (blk_doing > 65535) { // fixme: read HW max
-							blk_doing = 32768; // nice Po2
+					if ((blk_cnt == 0) && (status == 0)) {
+						op.blk_todo = pb->ioReqCount >> ctx->dma_blk_size_shift;
+						op.blk_done = 0;
+						op.blk_offset = abs_offset >> ctx->dma_blk_size_shift;
+						op.ioBuffer = pb->ioBuffer;
+						op.write = 0;
+						while (op.blk_todo > 0) {
+							startOneOp(ctx, dce, &op);
+							ret = waitForHW(ctx, dce, &op);
+							if (ret != noErr)
+								goto done;
 						}
-						max_count = 32 * blk_doing;
-						delay = (blk_doing >> 4);
-						if (delay > 65536)
-							delay = 65536;
-						if ((blk_cnt == 0) && (status == 0)) {
-							write_reg(dce, DMA_BLK_ADDR, revb(ctx->dma_blk_base + (abs_offset >> ctx->dma_blk_size_shift) + blk_done));
-							write_reg(dce, DMA_DMA_ADDR, revb(pb->ioBuffer + (blk_done << ctx->dma_blk_size_shift)));
-							write_reg(dce, DMA_BLK_CNT,  revb(0x00000000ul | blk_doing));
-							waitSome(delay);
-							count = 0;
-							blk_cnt = revb(read_reg(dce, DMA_BLK_CNT)) & 0xFFFF;
-							status = revb(read_reg(dce, DMA_STATUS)) & DMA_STATUS_CHECK_BITS;
-							while (((blk_cnt != 0) ||
-									(status != 0)) &&
-								   (count < max_count)) {
-								count ++;
-								waitSome(delay);
-								if (blk_cnt) blk_cnt = revb(read_reg(dce, DMA_BLK_CNT)) & 0xFFFF;
-								if (status) status = revb(read_reg(dce, DMA_STATUS)) & DMA_STATUS_CHECK_BITS;
-							}
-						}
-						blk_done += blk_doing;
-						blk_todo -= blk_doing;
 					}
 					if (blk_cnt || status) {
-						return readErr;
-						BlockMoveData((superslot + abs_offset), pb->ioBuffer, pb->ioReqCount);
+						ret = readErr;
+						goto done;
 					}
-#ifdef DMA_DEBUG
-					else {
-						unsigned int k = 0;
-						while ((((unsigned long*)(superslot))[5] == 0x12345678) && (((unsigned long*)(superslot))[9] == 0x87654321) && (k < 7)) {
-							k++;
-							superslot += 64;
-						}
-						if ((((unsigned long*)(superslot))[5] != 0x12345678) || (((unsigned long*)(superslot))[9] != 0x87654321)) {
-							unsigned int i;
-							for (i = 0 ; i < pb->ioReqCount ; i+=4 ) {
-								if ((*(unsigned long*)(superslot + abs_offset + i)) != (*(unsigned long*)((char*)pb->ioBuffer + i))) {
-									((unsigned long*)(superslot))[0] = ctx->dma_blk_size;
-									((unsigned long*)(superslot))[1] = ctx->dma_blk_size_mask;
-									((unsigned long*)(superslot))[2] = ctx->dma_blk_size_shift;
-									((unsigned long*)(superslot))[3] = ctx->dma_blk_base;
-									((unsigned long*)(superslot))[4] = ctx->dma_mem_size;
-									((unsigned long*)(superslot))[5] = 0x12345678;
-									((unsigned long*)(superslot))[6] = pb->ioBuffer;
-									((unsigned long*)(superslot))[7] = pb->ioReqCount;
-									((unsigned long*)(superslot))[8] = abs_offset;
-									((unsigned long*)(superslot))[9] = 0x87654321;
-									((unsigned long*)(superslot))[10] = i;
-									((unsigned long*)(superslot))[11] = (*(unsigned long*)(superslot + abs_offset + i));
-									((unsigned long*)(superslot))[12] = (*(unsigned long*)((char*)pb->ioBuffer + i));
-									((unsigned long*)(superslot))[13] = (*(unsigned long*)(superslot + abs_offset + i + 4));
-									((unsigned long*)(superslot))[14] = (*(unsigned long*)((char*)pb->ioBuffer + i + 4));
-									i += 4;
-								}
-							}
-						}
-					}
-#endif
 				} else
 #endif
 					{
@@ -141,44 +141,26 @@ OSErr cNuBusFPGARAMDskPrime(IOParamPtr pb, /* DCtlPtr */ AuxDCEPtr dce)
 				if ((((unsigned long)pb->ioBuffer & ctx->dma_blk_size_mask) == 0) &&
 					(((unsigned long)pb->ioReqCount & ctx->dma_blk_size_mask) == 0) &&
 					(((unsigned long)abs_offset & ctx->dma_blk_size_mask) == 0)) {
-					unsigned long blk_todo = (pb->ioReqCount >> ctx->dma_blk_size_shift), blk_doing, blk_done;
-					unsigned long count, max_count, delay;
+					ram_dsk_op op;
 					unsigned long blk_cnt, status;
 					blk_cnt = revb(read_reg(dce, DMA_BLK_CNT)) & 0xFFFF;
-					status = revb(read_reg(dce, DMA_STATUS)) & DMA_STATUS_CHECK_BITS;
-					blk_done = 0;
-					while (blk_todo > 0) {
-						blk_doing = blk_todo;
-						if (blk_doing > 65535) { // fixme: read HW max
-							blk_doing = 32768; // nice Po2
+					status =  revb(read_reg(dce, DMA_STATUS)) & DMA_STATUS_CHECK_BITS;
+					if ((blk_cnt == 0) && (status == 0)) {
+						op.blk_todo = pb->ioReqCount >> ctx->dma_blk_size_shift;
+						op.blk_done = 0;
+						op.blk_offset = abs_offset >> ctx->dma_blk_size_shift;
+						op.ioBuffer = pb->ioBuffer;
+						op.write = 1;
+						while (op.blk_todo > 0) {
+							startOneOp(ctx, dce, &op);
+							ret = waitForHW(ctx, dce, &op);
+							if (ret != noErr)
+								goto done;
 						}
-						max_count = 32 * blk_doing;
-						delay = (blk_doing >> 4);
-						if (delay > 65536)
-							delay = 65536;
-						if ((blk_cnt == 0) && (status == 0)) {
-							write_reg(dce, DMA_BLK_ADDR, revb(ctx->dma_blk_base + (abs_offset >> ctx->dma_blk_size_shift) + blk_done));
-							write_reg(dce, DMA_DMA_ADDR, revb(pb->ioBuffer + (blk_done << ctx->dma_blk_size_shift)));
-							write_reg(dce, DMA_BLK_CNT,  revb(0x80000000ul | blk_doing));
-							waitSome(delay);
-							count = 0;
-							blk_cnt = revb(read_reg(dce, DMA_BLK_CNT)) & 0xFFFF;
-							status = revb(read_reg(dce, DMA_STATUS)) & DMA_STATUS_CHECK_BITS;
-							while (((blk_cnt != 0) ||
-									(status != 0)) &&
-								   (count < max_count)) {
-								count ++;
-								waitSome(delay);
-								if (blk_cnt) blk_cnt = revb(read_reg(dce, DMA_BLK_CNT)) & 0xFFFF;
-								if (status) status = revb(read_reg(dce, DMA_STATUS)) & DMA_STATUS_CHECK_BITS;
-							}
-						}
-						blk_done += blk_doing;
-						blk_todo -= blk_doing;
 					}
 					if (blk_cnt || status) {
-						return writErr;
-						BlockMoveData(pb->ioBuffer, (superslot + abs_offset), pb->ioReqCount);
+						ret = writErr;
+						goto done;
 					}
 				} else
 #endif
