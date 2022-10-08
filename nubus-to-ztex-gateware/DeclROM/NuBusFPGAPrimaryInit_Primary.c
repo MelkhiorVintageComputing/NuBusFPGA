@@ -1,4 +1,5 @@
 #include "NuBusFPGADrvr.h"
+#include "NuBusFPGARAMDskDrvr.h"
 
 #include <Traps.h>
 #include <ROMDefs.h>
@@ -23,10 +24,11 @@ UInt32 Primary(SEBlock* seblock) {
 	busMode = 1;
 	SwapMMUMode ( &busMode ); // to32 // this likely won't work on older MacII ???
 
-	PRIM_WRITEREG(GOBOFB_VBL_MASK, 0);// disable interrupts
+	PRIM_WRITEREG(GOBOFB_VBL_MASK, 0);// disable interrupts on FB
+	PRIM_WRITEREG(DMA_IRQ_CTL, revb(0x2));// disable/clear interrupts on DSK
 	
-	PRIM_WRITEREG(GOBOFB_DEBUG, 0x87654321);// trace
-	PRIM_WRITEREG(GOBOFB_DEBUG, busMode);// trace
+	/* PRIM_WRITEREG(GOBOFB_DEBUG, 0x87654321);// trace */
+	/* PRIM_WRITEREG(GOBOFB_DEBUG, busMode);// trace */
 
 	hres = __builtin_bswap32((UInt32)PRIM_READREG(GOBOFB_HRES)); // fixme: endianness
 	vres = __builtin_bswap32((UInt32)PRIM_READREG(GOBOFB_VRES)); // fixme: endianness

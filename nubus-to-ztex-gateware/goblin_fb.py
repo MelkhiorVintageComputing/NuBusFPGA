@@ -474,7 +474,7 @@ class goblin(Module, AutoCSR):
         videoctrl = Signal() # reg 0x8
         
         vbl_signal = Signal(reset = 0) # reg 0xC
-        self.comb += irq_line.eq(~vbl_signal | m_vbl_disable) # active low
+        self.comb += irq_line.eq(~vbl_signal | m_vbl_disable) # irq_line is active low
 
         if (endian == "big"):
             low_byte = slice(0, 8)
@@ -557,7 +557,7 @@ class goblin(Module, AutoCSR):
                                     # bt_addr
                                     0x0: [ NextValue(bus.dat_r[low_byte], bt_mode), ],
                                     0x2: [ NextValue(bus.dat_r[low_byte], videoctrl), ],
-                                    0x3: [ NextValue(bus.dat_r[low_byte], vbl_signal), ],
+                                    0x3: [ NextValue(bus.dat_r[low_byte], ~irq_line), ], # irq_line is active low
                                     "default": [ NextValue(bus.dat_r, 0xDEADBEEF)],
                                     0x10: [ NextValue(bus.dat_r, hres), ], # hres (r/o) # FIXME: endianess
                                     0x11: [ NextValue(bus.dat_r, vres), ], # vres (r/o) # FIXME: endianess

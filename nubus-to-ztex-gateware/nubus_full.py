@@ -15,8 +15,8 @@ class NuBus(Module):
         platform = soc.platform
         self.add_sources(platform)
 
-        led0 = platform.request("user_led", 0)
-        led1 = platform.request("user_led", 1)
+        #led0 = platform.request("user_led", 0)
+        #led1 = platform.request("user_led", 1)
 
         # Signals for tri-stated nubus access
         # slave
@@ -264,8 +264,8 @@ class NuBus(Module):
         fromsbus_fifo_din = Record(soc.fromsbus_layout)
         self.comb += fromsbus_fifo.din.eq(fromsbus_fifo_din.raw_bits())
 
-        self.comb += led0.eq(~dma_fsm.ongoing("Idle"))
-        self.comb += led1.eq(burst)
+        #self.comb += led0.eq(~dma_fsm.ongoing("Idle"))
+        #self.comb += led1.eq(burst)
         
         dma_fsm.act("Reset",
                     NextState("Idle")

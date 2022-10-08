@@ -20,7 +20,7 @@ __attribute__ ((section (".text.fbdriver"))) short fbIrq(const long sqParameter)
 	asm volatile("" : "+d" (p_D1), "+d" (p_D2));
 	ret = 0;
 	irq = (*((volatile unsigned int*)(sqParameter+GOBOFB_BASE+GOBOFB_INTR_CLEAR)));
-	if (irq) {
+	if (irq & 1) {
 		vblproto myVbl = *(vblproto**)0x0d28;
 		*((volatile unsigned int*)(sqParameter+GOBOFB_BASE+GOBOFB_INTR_CLEAR)) = 0;
 		myVbl((sqParameter>>24)&0xf); // cleaner to use dStore->slot ? but require more code...
@@ -34,8 +34,8 @@ __attribute__ ((section (".text.fbdriver"))) short fbIrq(const long sqParameter)
 OSErr cNuBusFPGAOpen(IOParamPtr pb, /* DCtlPtr */ AuxDCEPtr dce)
 {
 	OSErr ret = noErr;
-	write_reg(dce, GOBOFB_DEBUG, 0xBEEF0000);
-	write_reg(dce, GOBOFB_DEBUG, (unsigned long)dce->dCtlDevBase);
+	/* write_reg(dce, GOBOFB_DEBUG, 0xBEEF0000); */
+	/* write_reg(dce, GOBOFB_DEBUG, (unsigned long)dce->dCtlDevBase); */
 	
 	if (dce->dCtlStorage == nil)
 		{

@@ -349,11 +349,17 @@ class NuBusFPGA(SoCCore):
             self.submodules.tosbus_fifo = ClockDomainsRenamer({"read": "nubus", "write": "sys"})(AsyncFIFOBuffered(width=layout_len(self.tosbus_layout), depth=1024//data_width))
             self.submodules.fromsbus_fifo = ClockDomainsRenamer({"write": "nubus", "read": "sys"})(AsyncFIFOBuffered(width=layout_len(self.fromsbus_layout), depth=512//data_width))
             self.submodules.fromsbus_req_fifo = ClockDomainsRenamer({"read": "nubus", "write": "sys"})(AsyncFIFOBuffered(width=layout_len(self.fromsbus_req_layout), depth=512//data_width))
-            irq_line = self.platform.request("nmrq_3v3_n")
-            fb_irq = Signal()
-            dma_irq = Signal()
+            irq_line = self.platform.request("nmrq_3v3_n") # active low
+            fb_irq = Signal() # active low
+            dma_irq = Signal() # active low
+            led0 = platform.request("user_led", 0)
+            led1 = platform.request("user_led", 1)
+            self.comb += [
+                led0.eq(~fb_irq),
+                led1.eq(~dma_irq),
+            ]
 
-            self.comb += irq_line.eq(fb_irq | dma_irq)
+            self.comb += irq_line.eq(fb_irq & dma_irq) # active low, enable if one is low
             
             self.submodules.exchange_with_mem = ExchangeWithMem(soc=self,
                                                                 platform=platform,

@@ -27,6 +27,9 @@ OSErr changeIRQ(AuxDCEPtr dce, char en, OSErr err) {
 	   	   if (SIntInstall(dStore->siqel, dce->dCtlSlot)) {
 	   		   return err;
 	   	   }
+		   write_reg(dce, GOBOFB_DEBUG, 0x88888888);
+		   write_reg(dce, GOBOFB_DEBUG, dStore->siqel);
+		   write_reg(dce, GOBOFB_DEBUG, dStore->siqel->sqLink);
 	   } else {
 	   	   if (SIntRemove(dStore->siqel, dce->dCtlSlot)) {
 	   		   return err;

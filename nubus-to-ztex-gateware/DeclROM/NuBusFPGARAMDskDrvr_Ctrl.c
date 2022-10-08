@@ -1,7 +1,6 @@
 #include "NuBusFPGARAMDskDrvr.h"
 
-
-
+#ifdef ENABLE_DMA
 OSErr changeRAMDskIRQ(AuxDCEPtr dce, char en, OSErr err) {
 	struct RAMDrvContext *ctx = *(struct RAMDrvContext**)dce->dCtlStorage;
 	
@@ -19,11 +18,12 @@ OSErr changeRAMDskIRQ(AuxDCEPtr dce, char en, OSErr err) {
 	   	   }
 	   }
 
-	   write_reg(dce, DMA_IRQ_CTL, en ? 0x3 : 0x2); // 0x2: always clear pending interrupt
+	   write_reg(dce, DMA_IRQ_CTL, en ? revb(0x3) : revb(0x2)); // 0x2: always clear pending interrupt
 	   ctx->irqen = en;
    }
    return noErr;
 }
+#endif
 
 
 #pragma parameter __D0 cNuBusFPGARAMDskCtl(__A0, __A1)
