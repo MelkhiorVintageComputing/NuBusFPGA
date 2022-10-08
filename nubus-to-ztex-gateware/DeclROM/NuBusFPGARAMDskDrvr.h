@@ -12,6 +12,17 @@
 
 #include "NuBusFPGADrvr.h"
 
+#ifdef ENABLE_DMA
+typedef struct {
+	unsigned long blk_todo;
+	unsigned long blk_done;
+	unsigned long blk_offset;
+	unsigned long blk_doing;
+	void *ioBuffer;
+	int write;
+} ram_dsk_op;
+#endif
+
 struct RAMDrvContext {
 	DrvSts2 drvsts;
 	char slot;
@@ -21,6 +32,9 @@ struct RAMDrvContext {
 	unsigned int dma_blk_size_shift;
 	unsigned long dma_blk_base;
 	unsigned long dma_mem_size;
+	SlotIntQElement *siqel;
+	ram_dsk_op op;
+	char irqen;
 #endif
 };
 
@@ -32,7 +46,7 @@ struct RAMDrvContext {
 #define DMA_BLK_SIZE (0x00100800 | 0x00)
 #define DMA_BLK_BASE (0x00100800 | 0x04)
 #define DMA_MEM_SIZE (0x00100800 | 0x08)
-//#define DMA_IRQ_CTL  (0x00a00800 | 0x0c) // IRQ not connected
+#define DMA_IRQ_CTL  (0x00100800 | 0x0c)
 #define DMA_BLK_ADDR (0x00100800 | 0x10)
 #define DMA_DMA_ADDR (0x00100800 | 0x14)
 #define DMA_BLK_CNT  (0x00100800 | 0x18)
@@ -40,8 +54,12 @@ struct RAMDrvContext {
 #define DMA_STATUS   (0x00100800 | 0x2c)
 #define DMA_STATUS_CHECK_BITS (0x01F)
 
+#define DMA_IRQSTATUS (0x00100800 | 0x34)
+
 #endif
+
 /* ctrl */
+OSErr changeRAMdskIRQ(AuxDCEPtr dce, char en, OSErr err) __attribute__ ((section (".text.dskdriver")));
 OSErr cNuBusFPGARAMDskCtl(CntrlParamPtr pb, /* DCtlPtr */ AuxDCEPtr dce) __attribute__ ((section (".text.dskdriver")));
 /* open, close */
 OSErr cNuBusFPGARAMDskOpen(IOParamPtr pb, /* DCtlPtr */ AuxDCEPtr dce) __attribute__ ((section (".text.dskdriver")));

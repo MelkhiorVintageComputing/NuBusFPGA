@@ -14,14 +14,20 @@ typedef void(*vblproto)(short);
  */
 #pragma parameter __D0 fbIrq(__A1)
 __attribute__ ((section (".text.fbdriver"))) short fbIrq(const long sqParameter) {
-	/* AuxDCEPtr dce = (AuxDCEPtr)sqParameter; */
-	/* NuBusFPGADriverGlobalsHdl dStoreHdl = (NuBusFPGADriverGlobalsHdl)dce->dCtlStorage; */
-	/* NuBusFPGADriverGlobalsPtr dStore = *dStoreHdl; */
-	vblproto myVbl = *(vblproto**)0x0d28;
-	/* write_reg(dce, GOBOFB_INTR_CLEAR, 0); */
-	*((volatile unsigned int*)(sqParameter+GOBOFB_BASE+GOBOFB_INTR_CLEAR)) = 0;
-	myVbl((sqParameter>>24)&0xf); // cleaner to use dStore->slot ? but require more code...
-	return 1;
+	register unsigned long p_D1 asm("d1"), p_D2 asm("d2");
+	unsigned int irq;
+	short ret;
+	asm volatile("" : "+d" (p_D1), "+d" (p_D2));
+	ret = 0;
+	irq = (*((volatile unsigned int*)(sqParameter+GOBOFB_BASE+GOBOFB_INTR_CLEAR)));
+	if (irq) {
+		vblproto myVbl = *(vblproto**)0x0d28;
+		*((volatile unsigned int*)(sqParameter+GOBOFB_BASE+GOBOFB_INTR_CLEAR)) = 0;
+		myVbl((sqParameter>>24)&0xf); // cleaner to use dStore->slot ? but require more code...
+		ret = 1;
+	}
+	asm volatile("" : : "d" (p_D1), "d" (p_D2));
+	return ret;
 }
 
 #pragma parameter __D0 cNuBusFPGAOpen(__A0, __A1)

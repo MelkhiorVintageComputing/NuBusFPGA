@@ -557,6 +557,7 @@ class goblin(Module, AutoCSR):
                                     # bt_addr
                                     0x0: [ NextValue(bus.dat_r[low_byte], bt_mode), ],
                                     0x2: [ NextValue(bus.dat_r[low_byte], videoctrl), ],
+                                    0x3: [ NextValue(bus.dat_r[low_byte], vbl_signal), ],
                                     "default": [ NextValue(bus.dat_r, 0xDEADBEEF)],
                                     0x10: [ NextValue(bus.dat_r, hres), ], # hres (r/o) # FIXME: endianess
                                     0x11: [ NextValue(bus.dat_r, vres), ], # vres (r/o) # FIXME: endianess

@@ -14,6 +14,32 @@ __attribute__ ((section (".text.dskdriver"))) static inline int dupAddDrive(unsi
 	return num; // should cost nothing, num is already in D0
 }
 
+
+/* see the comment for the FB irq */
+#pragma parameter __D0 dskIrq(__A1)
+__attribute__ ((section (".text.dskdriver"))) short dskIrq(const long sqParameter) {
+	register unsigned long p_D1 asm("d1"), p_D2 asm("d2");
+	AuxDCEPtr dce;
+	struct RAMDrvContext *ctx;
+	unsigned int irq;
+	short ret;
+	asm volatile("" : "+d" (p_D1), "+d" (p_D2));
+	dce = (AuxDCEPtr)sqParameter;
+	ctx = *(struct RAMDrvContext**)dce->dCtlStorage;
+	ret = 0;
+	irq = revb(*((volatile unsigned int*)(sqParameter+GOBOFB_BASE+DMA_IRQSTATUS)));
+	*((volatile unsigned int*)(sqParameter+GOBOFB_BASE+GOBOFB_DEBUG)) = 0x11111111;
+	*((volatile unsigned int*)(sqParameter+GOBOFB_BASE+GOBOFB_DEBUG)) = irq;
+	if (irq & 1) {
+		unsigned int irqctrl = revb(*((volatile unsigned int*)(sqParameter+GOBOFB_BASE+DMA_IRQ_CTL)));
+		irqctrl |= 0x2; // irq clear
+		*((volatile unsigned int*)(sqParameter+GOBOFB_BASE+DMA_IRQ_CTL)) = revb(irqctrl);
+		ret = 1;
+	}
+	asm volatile("" : : "d" (p_D1), "d" (p_D2));
+	return ret;
+}
+
 #include <ROMDefs.h>
 
 #pragma parameter __D0 cNuBusFPGARAMDskOpen(__A0, __A1)
@@ -123,6 +149,26 @@ OSErr cNuBusFPGARAMDskOpen(IOParamPtr pb, /* DCtlPtr */ AuxDCEPtr dce)
 		/* write_reg(dce, GOBOFB_DEBUG, ctx->dma_blk_size_shift); */
 		/* write_reg(dce, GOBOFB_DEBUG, ctx->dma_blk_base); */
 		/* write_reg(dce, GOBOFB_DEBUG, ctx->dma_mem_size); */
+
+		if (1) {
+			SlotIntQElement *siqel = (SlotIntQElement *)NewPtrSysClear(sizeof(SlotIntQElement));
+	   		
+			if (siqel == NULL) {
+				return openErr;
+			}
+
+			// disable IRQ for now
+			write_reg(dce, DMA_IRQ_CTL, 0x2); // 0x1 would enable irq, 0x2 is auto-clear so we make sure there's no spurious IRQ pending
+			
+			siqel->sqType = sIQType;
+			siqel->sqPrio = 7;
+			siqel->sqAddr = dskIrq;
+			siqel->sqParm = (long)dce;
+			ctx->siqel = siqel;
+			ctx->irqen = 0;
+			write_reg(dce, GOBOFB_DEBUG, siqel);
+			write_reg(dce, GOBOFB_DEBUG, ctx);
+		}
 #endif
 
 		// auto-mount
@@ -131,8 +177,6 @@ OSErr cNuBusFPGARAMDskOpen(IOParamPtr pb, /* DCtlPtr */ AuxDCEPtr dce)
 			pbr.volumeParam.ioVRefNum = dsptr->dQDrive;
 			ret = PBMountVol(&pbr);
 		}
-
-		
 	}
 		
 	SwapMMUMode ( &busMode ); 
@@ -145,13 +189,14 @@ OSErr cNuBusFPGARAMDskOpen(IOParamPtr pb, /* DCtlPtr */ AuxDCEPtr dce)
 OSErr cNuBusFPGARAMDskClose(IOParamPtr pb, /* DCtlPtr */ AuxDCEPtr dce)
 {
 	OSErr ret = noErr;
-	//RAMDrvContext *ctx = *(RAMDrvContext**)dce->dCtlStorage;
+	struct RAMDrvContext *ctx = *(struct RAMDrvContext**)dce->dCtlStorage;
 	
 	/* dce->dCtlDevBase = 0xfc000000; */
 	
 	/* write_reg(dce, GOBOFB_DEBUG, 0xDEAD0001); */
 	
 	if (dce->dCtlStorage) {
+		//DisposePtr((Ptr)ctx->siqel);
 		/* HUnlock(dce->dCtlStorage); */ /* not needed before DisposeHandle */
 		DisposeHandle(dce->dCtlStorage);
 		dce->dCtlStorage = NULL;

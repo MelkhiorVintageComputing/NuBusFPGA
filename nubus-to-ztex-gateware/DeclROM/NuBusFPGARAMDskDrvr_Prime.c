@@ -9,36 +9,27 @@ __attribute__ ((section (".text.dskdriver"))) static inline void waitSome(unsign
 	}
 }
 
-typedef struct {
-	unsigned long blk_todo;
-	unsigned long blk_done;
-	unsigned long blk_offset;
-	unsigned long blk_doing;
-	void *ioBuffer;
-	int write;
-} ram_dsk_op;
-
-__attribute__ ((section (".text.dskdriver"))) static void startOneOp(const struct RAMDrvContext *ctx, const AuxDCEPtr dce, ram_dsk_op *op) {
-	if (op->blk_todo > 0) {
-		op->blk_doing = op->blk_todo;
-		if (op->blk_doing > 65535) { // fixme: read HW max
-			op->blk_doing = 32768; // nice Po2
+__attribute__ ((section (".text.dskdriver"))) static void startOneOp(struct RAMDrvContext *ctx, const AuxDCEPtr dce) {
+	if (ctx->op.blk_todo > 0) {
+		ctx->op.blk_doing = ctx->op.blk_todo;
+		if (ctx->op.blk_doing > 65535) { // fixme: read HW max
+			ctx->op.blk_doing = 32768; // nice Po2
 		}
-		write_reg(dce, DMA_BLK_ADDR, revb(ctx->dma_blk_base + op->blk_offset));
-		write_reg(dce, DMA_DMA_ADDR, revb(op->ioBuffer + (op->blk_done << ctx->dma_blk_size_shift)));
-		write_reg(dce, DMA_BLK_CNT,  revb((op->write ? 0x80000000ul : 0x00000000ul) | op->blk_doing));
-		op->blk_done += op->blk_doing;
-		op->blk_todo -= op->blk_doing;
-		op->blk_offset += op->blk_doing;
+		write_reg(dce, DMA_BLK_ADDR, revb(ctx->dma_blk_base + ctx->op.blk_offset));
+		write_reg(dce, DMA_DMA_ADDR, revb(ctx->op.ioBuffer + (ctx->op.blk_done << ctx->dma_blk_size_shift)));
+		write_reg(dce, DMA_BLK_CNT,  revb((ctx->op.write ? 0x80000000ul : 0x00000000ul) | ctx->op.blk_doing));
+		ctx->op.blk_done += ctx->op.blk_doing;
+		ctx->op.blk_todo -= ctx->op.blk_doing;
+		ctx->op.blk_offset += ctx->op.blk_doing;
 	}
 }
 
-__attribute__ ((section (".text.dskdriver"))) static OSErr waitForHW(const struct RAMDrvContext *ctx, const AuxDCEPtr dce, ram_dsk_op *op) {
+__attribute__ ((section (".text.dskdriver"))) static OSErr waitForHW(struct RAMDrvContext *ctx, const AuxDCEPtr dce) {
 	unsigned long count, max_count, delay;
 	unsigned long blk_cnt, status;
 	OSErr ret = noErr;
-	max_count = 32 * op->blk_doing;
-	delay = (op->blk_doing >> 4);
+	max_count = 32 * ctx->op.blk_doing;
+	delay = (ctx->op.blk_doing >> 4);
 	if (delay > 65536)
 		delay = 65536;
 	waitSome(delay);
@@ -54,7 +45,7 @@ __attribute__ ((section (".text.dskdriver"))) static OSErr waitForHW(const struc
 		if (status) status = revb(read_reg(dce, DMA_STATUS)) & DMA_STATUS_CHECK_BITS;
 	}
 	if (blk_cnt || status) {
-		ret = op->write ? writErr : readErr;
+		ret = ctx->op.write ? writErr : readErr;
 	}
 	return ret;
 }
@@ -103,19 +94,18 @@ OSErr cNuBusFPGARAMDskPrime(IOParamPtr pb, /* DCtlPtr */ AuxDCEPtr dce)
 				if ((((unsigned long)pb->ioBuffer & ctx->dma_blk_size_mask) == 0) &&
 					(((unsigned long)pb->ioReqCount & ctx->dma_blk_size_mask) == 0) &&
 					(((unsigned long)abs_offset & ctx->dma_blk_size_mask) == 0)) {
-					ram_dsk_op op;
 					unsigned long blk_cnt, status;
 					blk_cnt = revb(read_reg(dce, DMA_BLK_CNT)) & 0xFFFF;
 					status =  revb(read_reg(dce, DMA_STATUS)) & DMA_STATUS_CHECK_BITS;
 					if ((blk_cnt == 0) && (status == 0)) {
-						op.blk_todo = pb->ioReqCount >> ctx->dma_blk_size_shift;
-						op.blk_done = 0;
-						op.blk_offset = abs_offset >> ctx->dma_blk_size_shift;
-						op.ioBuffer = pb->ioBuffer;
-						op.write = 0;
-						while (op.blk_todo > 0) {
-							startOneOp(ctx, dce, &op);
-							ret = waitForHW(ctx, dce, &op);
+						ctx->op.blk_todo = pb->ioReqCount >> ctx->dma_blk_size_shift;
+						ctx->op.blk_done = 0;
+						ctx->op.blk_offset = abs_offset >> ctx->dma_blk_size_shift;
+						ctx->op.ioBuffer = pb->ioBuffer;
+						ctx->op.write = 0;
+						while (ctx->op.blk_todo > 0) {
+							startOneOp(ctx, dce);
+							ret = waitForHW(ctx, dce);
 							if (ret != noErr)
 								goto done;
 						}
@@ -141,19 +131,18 @@ OSErr cNuBusFPGARAMDskPrime(IOParamPtr pb, /* DCtlPtr */ AuxDCEPtr dce)
 				if ((((unsigned long)pb->ioBuffer & ctx->dma_blk_size_mask) == 0) &&
 					(((unsigned long)pb->ioReqCount & ctx->dma_blk_size_mask) == 0) &&
 					(((unsigned long)abs_offset & ctx->dma_blk_size_mask) == 0)) {
-					ram_dsk_op op;
 					unsigned long blk_cnt, status;
 					blk_cnt = revb(read_reg(dce, DMA_BLK_CNT)) & 0xFFFF;
 					status =  revb(read_reg(dce, DMA_STATUS)) & DMA_STATUS_CHECK_BITS;
 					if ((blk_cnt == 0) && (status == 0)) {
-						op.blk_todo = pb->ioReqCount >> ctx->dma_blk_size_shift;
-						op.blk_done = 0;
-						op.blk_offset = abs_offset >> ctx->dma_blk_size_shift;
-						op.ioBuffer = pb->ioBuffer;
-						op.write = 1;
-						while (op.blk_todo > 0) {
-							startOneOp(ctx, dce, &op);
-							ret = waitForHW(ctx, dce, &op);
+						ctx->op.blk_todo = pb->ioReqCount >> ctx->dma_blk_size_shift;
+						ctx->op.blk_done = 0;
+						ctx->op.blk_offset = abs_offset >> ctx->dma_blk_size_shift;
+						ctx->op.ioBuffer = pb->ioBuffer;
+						ctx->op.write = 1;
+						while (ctx->op.blk_todo > 0) {
+							startOneOp(ctx, dce);
+							ret = waitForHW(ctx, dce);
 							if (ret != noErr)
 								goto done;
 						}

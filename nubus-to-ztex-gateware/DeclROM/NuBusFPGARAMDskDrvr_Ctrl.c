@@ -1,5 +1,31 @@
 #include "NuBusFPGARAMDskDrvr.h"
 
+
+
+OSErr changeRAMDskIRQ(AuxDCEPtr dce, char en, OSErr err) {
+	struct RAMDrvContext *ctx = *(struct RAMDrvContext**)dce->dCtlStorage;
+	
+   if (en != ctx->irqen) {
+	   /* write_reg(dce, GOBOFB_DEBUG, 0xBEEF0005); */
+	   /* write_reg(dce, GOBOFB_DEBUG, en); */
+	   
+	   if (en) {
+	   	   if (SIntInstall(ctx->siqel, dce->dCtlSlot)) {
+	   		   return err;
+	   	   }
+	   } else {
+	   	   if (SIntRemove(ctx->siqel, dce->dCtlSlot)) {
+	   		   return err;
+	   	   }
+	   }
+
+	   write_reg(dce, DMA_IRQ_CTL, en ? 0x3 : 0x2); // 0x2: always clear pending interrupt
+	   ctx->irqen = en;
+   }
+   return noErr;
+}
+
+
 #pragma parameter __D0 cNuBusFPGARAMDskCtl(__A0, __A1)
 OSErr cNuBusFPGARAMDskCtl(CntrlParamPtr pb, /* DCtlPtr */ AuxDCEPtr dce)
 {

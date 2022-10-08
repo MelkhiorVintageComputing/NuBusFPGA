@@ -349,6 +349,11 @@ class NuBusFPGA(SoCCore):
             self.submodules.tosbus_fifo = ClockDomainsRenamer({"read": "nubus", "write": "sys"})(AsyncFIFOBuffered(width=layout_len(self.tosbus_layout), depth=1024//data_width))
             self.submodules.fromsbus_fifo = ClockDomainsRenamer({"write": "nubus", "read": "sys"})(AsyncFIFOBuffered(width=layout_len(self.fromsbus_layout), depth=512//data_width))
             self.submodules.fromsbus_req_fifo = ClockDomainsRenamer({"read": "nubus", "write": "sys"})(AsyncFIFOBuffered(width=layout_len(self.fromsbus_req_layout), depth=512//data_width))
+            irq_line = self.platform.request("nmrq_3v3_n")
+            fb_irq = Signal()
+            dma_irq = Signal()
+
+            self.comb += irq_line.eq(fb_irq | dma_irq)
             
             self.submodules.exchange_with_mem = ExchangeWithMem(soc=self,
                                                                 platform=platform,
@@ -361,6 +366,8 @@ class NuBusFPGA(SoCCore):
                                                                 burst_size=burst_size,
                                                                 do_checksum = False,
                                                                 clock_domain="nubus")
+
+            self.comb += dma_irq.eq(self.exchange_with_mem.irq)
 
             if (sampling):
                 self.submodules.nubus = nubus_full_sampling.NuBus(soc=self,
@@ -388,15 +395,14 @@ class NuBusFPGA(SoCCore):
 
             self.submodules.stat = nubus_stat.NuBusStat(nubus=self.nubus, platform=platform)
             self.bus.add_slave("Stat", self.stat.bus_slv, SoCRegion(origin=self.mem_map.get("stat", None), size=0x1000, cached=False))
-                                                        
             
         if (goblin):
             if (not hdmi):
                 self.submodules.videophy = VideoVGAPHY(platform.request("vga"), clock_domain="vga")
-                self.submodules.goblin = goblin_fb.goblin(soc=self, phy=self.videophy, timings=goblin_res, clock_domain="vga", irq_line=self.platform.request("nmrq_3v3_n"), endian="little", hwcursor=False, truecolor=True) # clock_domain for the VGA side, goblin is running in cd_sys
+                self.submodules.goblin = goblin_fb.goblin(soc=self, phy=self.videophy, timings=goblin_res, clock_domain="vga", irq_line=fb_irq, endian="little", hwcursor=False, truecolor=True) # clock_domain for the VGA side, goblin is running in cd_sys
             else:
                 self.submodules.videophy = VideoS7HDMIPHY(platform.request("hdmi"), clock_domain="hdmi")
-                self.submodules.goblin = goblin_fb.goblin(soc=self, phy=self.videophy, timings=goblin_res, clock_domain="hdmi", irq_line=self.platform.request("nmrq_3v3_n"), endian="little", hwcursor=False, truecolor=True) # clock_domain for the HDMI side, goblin is running in cd_sys
+                self.submodules.goblin = goblin_fb.goblin(soc=self, phy=self.videophy, timings=goblin_res, clock_domain="hdmi", irq_line=fb_irq, endian="little", hwcursor=False, truecolor=True) # clock_domain for the HDMI side, goblin is running in cd_sys
             self.bus.add_slave("goblin_bt", self.goblin.bus, SoCRegion(origin=self.mem_map.get("goblin_bt", None), size=0x1000, cached=False))
             #pad_user_led_0 = platform.request("user_led", 0)
             #pad_user_led_1 = platform.request("user_led", 1)
