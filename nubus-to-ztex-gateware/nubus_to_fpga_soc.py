@@ -234,7 +234,7 @@ class NuBusFPGA(SoCCore):
                     platform.add_platform_command(fix_line)
 
         rom_file = "rom_{}.bin".format(version.replace(".", "_"))
-        rom_data = soc_core.get_mem_data(rom_file, "little") # "big"
+        rom_data = soc_core.get_mem_data(filename_or_regions=rom_file, endianness="little") # "big"
         # rom = Array(rom_data)
         #print("\n****************************************\n")
         #for i in range(len(rom)):
@@ -420,7 +420,7 @@ class NuBusFPGA(SoCCore):
                 self.bus.add_master(name="goblin_accel_r5_i", master=self.goblin_accel.ibus)
                 self.bus.add_master(name="goblin_accel_r5_d", master=self.goblin_accel.dbus)
                 goblin_rom_file = "blit_goblin.raw"
-                goblin_rom_data = soc_core.get_mem_data(goblin_rom_file, "little")
+                goblin_rom_data = soc_core.get_mem_data(filename_or_regions=goblin_rom_file, endianness="little")
                 goblin_rom_len = 4*len(goblin_rom_data);
                 rounded_goblin_rom_len = 2**log2_int(goblin_rom_len, False)
                 print(f"GOBLIN ROM is {goblin_rom_len} bytes, using {rounded_goblin_rom_len}")
