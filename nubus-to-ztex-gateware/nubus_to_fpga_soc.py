@@ -37,7 +37,8 @@ from VintageBusFPGA_Common.goblin_accel import *
 
 # Wishbone stuff
 from VintageBusFPGA_Common.cdc_wb import WishboneDomainCrossingMaster
-from sbus_to_fpga_blk_dma import *
+from VintageBusFPGA_Common.fpga_blk_dma import *
+
 from nubus_mem_wb import NuBus2Wishbone
 from nubus_memfifo_wb import NuBus2WishboneFIFO
 from nubus_cpu_wb import Wishbone2NuBus
