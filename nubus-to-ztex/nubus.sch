@@ -1,6 +1,5 @@
 EESchema Schematic File Version 4
-LIBS:nubus-to-ztex-cache
-EELAYER 26 0
+EELAYER 30 0
 EELAYER END
 $Descr A2 23386 16535
 encoding utf-8
@@ -2614,7 +2613,7 @@ How should unused input be connected ?
 Text Notes 15800 14800 1    50   ~ 0
 How should unused input be connected ?
 Text Notes 11800 12700 0    50   ~ 0
-SN74CB3T3245PW are cheaper and more available than the SN74CB3T3125PW ...
+SN74CB3T3245PW are cheaper and more available than the (smaller) SN74CB3T3125PW ...
 Connection ~ 12250 13800
 Connection ~ 12250 13900
 Wire Wire Line

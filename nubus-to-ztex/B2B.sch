@@ -1,6 +1,5 @@
 EESchema Schematic File Version 4
-LIBS:nubus-to-ztex-cache
-EELAYER 26 0
+EELAYER 30 0
 EELAYER END
 $Descr A4 11693 8268
 encoding utf-8
@@ -332,8 +331,6 @@ Wire Wire Line
 	10200 1050 10200 1350
 Wire Wire Line
 	10200 1350 9900 1350
-Wire Wire Line
-	9450 1050 10200 1050
 Text GLabel 4100 2050 2    50   Input Italic 0
 ~CLK_3V3
 Text GLabel 4100 1350 2    50   Input ~ 0
@@ -551,9 +548,9 @@ F 3 "" H 700 6600 50  0001 C CNN
 $EndComp
 Text GLabel 1850 6400 2    60   Input ~ 12
 LED1
-Text GLabel 9450 1050 2    60   Input ~ 12
+Text GLabel 9650 1050 2    60   Input ~ 12
 LED0
-Text GLabel 9450 950  2    60   Input ~ 12
+Text GLabel 9650 950  2    60   Input ~ 12
 LED1
 Text GLabel 1600 4050 0    50   Input ~ 0
 USBH0_D+
@@ -862,4 +859,9 @@ F 3 "" H 3400 5900 50  0001 C CNN
 	1    3400 5900
 	1    0    0    -1  
 $EndComp
+Wire Wire Line
+	9450 950  9650 950 
+Connection ~ 9450 950 
+Wire Wire Line
+	9450 1050 10200 1050
 $EndSCHEMATC
