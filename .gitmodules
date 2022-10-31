@@ -1,3 +1,4 @@
 [submodule "nubus-to-ztex-gateware/XiBus"]
 	path = nubus-to-ztex-gateware/XiBus
 	url = git@github.com:rdolbeau/XiBus.git
+	branch = more_fixes

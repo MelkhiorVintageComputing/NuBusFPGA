@@ -317,6 +317,14 @@ class NuBusFPGA(SoCCore):
             self.submodules.wishbone2nubus = ClockDomainsRenamer("nubus")(Wishbone2NuBus(nubus=self.nubus,wb=wishbone_slave_nubus))
             self.submodules.wishbone_slave_sys = WishboneDomainCrossingMaster(platform=self.platform, slave=wishbone_slave_nubus, cd_master="sys", cd_slave="nubus")
             self.bus.add_slave("DMA", self.wishbone_slave_sys, SoCRegion(origin=self.mem_map.get("master", None), size=0x40000000, cached=False))
+            
+            irq_line = self.platform.request("nmrq_3v3_n") # active low
+            fb_irq = Signal() # active low
+            led0 = platform.request("user_led", 0)
+            self.comb += [
+                led0.eq(~fb_irq),
+            ]
+            self.comb += irq_line.eq(fb_irq) # active low, enable if one is low
         else:
             sampling = 1
             wishbone_master_sys = wishbone.Interface(data_width=self.bus.data_width)

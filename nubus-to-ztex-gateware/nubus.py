@@ -110,11 +110,11 @@ class NuBus(Module):
     def add_sources(self, platform):
         platform.add_source("nubus.v", "verilog")
         # XiBus is from my github, branch 'more_fixes'
-        platform.add_source("/home/dolbeau/XiBus/nubus.svh", "verilog")
-        #platform.add_source("/home/dolbeau/XiBus/nubus_arbiter.v", "verilog") # in the CPLD
-        platform.add_source("/home/dolbeau/XiBus/nubus_cpubus.v", "verilog")
-        platform.add_source("/home/dolbeau/XiBus/nubus_driver.v", "verilog")
-        #platform.add_source("/home/dolbeau/XiBus/nubus_errors.v", "verilog") # unused
-        platform.add_source("/home/dolbeau/XiBus/nubus_membus.v", "verilog")
-        platform.add_source("/home/dolbeau/XiBus/nubus_master.v", "verilog")
-        platform.add_source("/home/dolbeau/XiBus/nubus_slave.v", "verilog")
+        platform.add_source("XiBus/nubus.svh", "verilog")
+        #platform.add_source("XiBus/nubus_arbiter.v", "verilog") # in the CPLD
+        platform.add_source("XiBus/nubus_cpubus.v", "verilog")
+        platform.add_source("XiBus/nubus_driver.v", "verilog")
+        #platform.add_source("XiBus/nubus_errors.v", "verilog") # unused
+        platform.add_source("XiBus/nubus_membus.v", "verilog")
+        platform.add_source("XiBus/nubus_master.v", "verilog")
+        platform.add_source("XiBus/nubus_slave.v", "verilog")
