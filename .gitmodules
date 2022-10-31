@@ -2,3 +2,6 @@
 	path = nubus-to-ztex-gateware/XiBus
 	url = git@github.com:rdolbeau/XiBus.git
 	branch = more_fixes
+[submodule "nubus-to-ztex-gateware/VintageBusFPGA_Common"]
+	path = nubus-to-ztex-gateware/VintageBusFPGA_Common
+	url = git@github.com:rdolbeau/VintageBusFPGA_Common.git

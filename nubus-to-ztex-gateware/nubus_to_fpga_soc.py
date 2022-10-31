@@ -32,11 +32,11 @@ from migen.genlib.resetsync import AsyncResetSynchronizer
 from litex.soc.cores.video import VideoS7HDMIPHY
 from litex.soc.cores.video import VideoVGAPHY
 from litex.soc.cores.video import video_timings
-import goblin_fb
-import goblin_accel
+from VintageBusFPGA_Common.goblin_fb import *
+from VintageBusFPGA_Common.goblin_accel import *
 
 # Wishbone stuff
-from sbus_wb import WishboneDomainCrossingMaster
+from VintageBusFPGA_Common.cdc_wb import WishboneDomainCrossingMaster
 from sbus_to_fpga_blk_dma import *
 from nubus_mem_wb import NuBus2Wishbone
 from nubus_memfifo_wb import NuBus2WishboneFIFO
@@ -168,13 +168,13 @@ class NuBusFPGA(SoCCore):
         if (goblin):
             hres = int(goblin_res.split("@")[0].split("x")[0])
             vres = int(goblin_res.split("@")[0].split("x")[1])
-            goblin_fb_size = goblin_fb.goblin_rounded_size(hres, vres)
+            goblin_fb_size = goblin_rounded_size(hres, vres)
             print(f"Reserving {goblin_fb_size} bytes ({goblin_fb_size//1048576} MiB) for the goblin")
         else:
             hres = 0
             vres = 0
             goblin_fb_size = 0
-            # litex.soc.cores.video.video_timings.update(goblin_fb.goblin_timings)
+            # litex.soc.cores.video.video_timings.update(goblin_timings)
         
         SoCCore.__init__(self,
                          platform=platform,
@@ -413,17 +413,17 @@ class NuBusFPGA(SoCCore):
         if (goblin):
             if (not hdmi):
                 self.submodules.videophy = VideoVGAPHY(platform.request("vga"), clock_domain="vga")
-                self.submodules.goblin = goblin_fb.goblin(soc=self, phy=self.videophy, timings=goblin_res, clock_domain="vga", irq_line=fb_irq, endian="little", hwcursor=False, truecolor=True) # clock_domain for the VGA side, goblin is running in cd_sys
+                self.submodules.goblin = Goblin(soc=self, phy=self.videophy, timings=goblin_res, clock_domain="vga", irq_line=fb_irq, endian="little", hwcursor=False, truecolor=True) # clock_domain for the VGA side, goblin is running in cd_sys
             else:
                 self.submodules.videophy = VideoS7HDMIPHY(platform.request("hdmi"), clock_domain="hdmi")
-                self.submodules.goblin = goblin_fb.goblin(soc=self, phy=self.videophy, timings=goblin_res, clock_domain="hdmi", irq_line=fb_irq, endian="little", hwcursor=False, truecolor=True) # clock_domain for the HDMI side, goblin is running in cd_sys
+                self.submodules.goblin = Goblin(soc=self, phy=self.videophy, timings=goblin_res, clock_domain="hdmi", irq_line=fb_irq, endian="little", hwcursor=False, truecolor=True) # clock_domain for the HDMI side, goblin is running in cd_sys
             self.bus.add_slave("goblin_bt", self.goblin.bus, SoCRegion(origin=self.mem_map.get("goblin_bt", None), size=0x1000, cached=False))
             #pad_user_led_0 = platform.request("user_led", 0)
             #pad_user_led_1 = platform.request("user_led", 1)
             #self.comb += pad_user_led_0.eq(self.goblin.video_framebuffer.underflow)
             #self.comb += pad_user_led_1.eq(self.goblin.video_framebuffer.fb_dma.enable)
             if (True):
-                self.submodules.goblin_accel = goblin_accel.GoblinAccelNuBus(soc = self)
+                self.submodules.goblin_accel = GoblinAccelNuBus(soc = self)
                 self.bus.add_slave("goblin_accel", self.goblin_accel.bus, SoCRegion(origin=self.mem_map.get("goblin_accel", None), size=0x1000, cached=False))
                 self.bus.add_master(name="goblin_accel_r5_i", master=self.goblin_accel.ibus)
                 self.bus.add_master(name="goblin_accel_r5_d", master=self.goblin_accel.dbus)
