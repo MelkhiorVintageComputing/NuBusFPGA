@@ -10,4 +10,4 @@ First prototype is working in a Quadra 650. It implements a single-screen-resolu
 
 Some basic acceleration now exists for 8/16/32 bits, doing rectangle screen-to-screen blits and pattern rectangle fills. 1/2/4 bits also has some acceleration, ut only for byte-aligned cases.
 
-There's also a basic RAM Disk using the 248 MiB of SDRAM not used by the framebuffer. So far this is by 32-bits accesses from the host; DMA using 1x block mode is still TBD.
+There's also a basic RAM Disk using the 248 MiB of SDRAM not used by the framebuffer. The driver can use either synchronous direct access to the memory bt the CPU, or asynchronous using DMA (using 16-bytes blocks). Frustratingly, the direct access methode seems faster.
