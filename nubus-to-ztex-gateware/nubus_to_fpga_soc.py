@@ -247,7 +247,7 @@ class NuBusFPGA(SoCCore):
         #self.submodules.wa2d = WA2D(self.platform)
         #self.bus.add_slave("WA2D", self.wa2d.bus, SoCRegion(origin=0x00C00000, size=0x00400000, cached=False))
 
-        notsimul = 1
+        notsimul = 0
         if (notsimul):
             avail_sdram = 0
             self.submodules.ddrphy = s7ddrphy.A7DDRPHY(platform.request("ddram"),
@@ -303,13 +303,14 @@ class NuBusFPGA(SoCCore):
         # Interface NuBus to wishbone
         # we need to cross clock domains
         
-        xibus=0
+        xibus=1
         if (xibus):
             wishbone_master_sys = wishbone.Interface(data_width=self.bus.data_width)
             self.submodules.wishbone_master_nubus = WishboneDomainCrossingMaster(platform=self.platform, slave=wishbone_master_sys, cd_master="nubus", cd_slave="sys")
             self.bus.add_master(name="NuBusBridgeToWishbone", master=wishbone_master_sys)
             self.submodules.nubus = nubus.NuBus(platform=platform, cd_nubus="nubus")
             #self.submodules.nubus2wishbone = ClockDomainsRenamer("nubus")(NuBus2Wishbone(nubus=self.nubus,wb=self.wishbone_master_nubus))
+            self.comb += self.nubus.nubus_oe.eq(hold_reset) # improveme
             nubus_writemaster_sys = wishbone.Interface(data_width=self.bus.data_width)
             self.submodules.nubus2wishbone = NuBus2WishboneFIFO(platform=self.platform,nubus=self.nubus,wb_read=self.wishbone_master_nubus,wb_write=nubus_writemaster_sys)
             self.bus.add_master(name="NuBusBridgeToWishboneWrite", master=nubus_writemaster_sys)
@@ -321,10 +322,10 @@ class NuBusFPGA(SoCCore):
             
             irq_line = self.platform.request("nmrq_3v3_n") # active low
             fb_irq = Signal() # active low
-            led0 = platform.request("user_led", 0)
-            self.comb += [
-                led0.eq(~fb_irq),
-            ]
+            #led0 = platform.request("user_led", 0)
+            #self.comb += [
+            #    led0.eq(~fb_irq),
+            #]
             self.comb += irq_line.eq(fb_irq) # active low, enable if one is low
         else:
             sampling = 1

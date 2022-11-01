@@ -134,19 +134,15 @@ module nubus_slave_tb ();
 			     .A({reset_n_3v3, tm2_n_3v3, tm0_n_3v3, tm1_n_3v3}),
 			     .B({nub_resetn,  nub_tm2n,  nub_tm0n,  nub_tm1n }));
 
-   assign clk2x_n_3v3 = nub_clk2n;
+   assign clk2x_n_3v3 = nub_clk2xn;
 
    ztex213_nubus_V1_2 UNuBus (
 			      // NuBus lines only
 			      .clk48(bd_clk48),
 			      .clk_3v3_n(clk_n_3v3),
 			      .reset_3v3_n(reset_n_3v3),
-			      .nubus_clk2x_n(clk2x_n_3v3),
 			      .user_led0(leds[0]),
 			      .user_led1(leds[1]),
-			      .user_led2(leds[2]),
-			      .user_led3(leds[3]),
-			      .nubus_tm2_n(tm2_n_3v3),
 			      .id_3v3_n(id_n_3v3),
 			      .ad_3v3_n(ad_n_3v3),
 			      .tm0_3v3_n(tm0_n_3v3),
@@ -160,10 +156,10 @@ module nubus_slave_tb ();
 			      .rqst_3v3_n(rqst_n_3v3),
 			      .rqst_o_n(rqst_o_n),
 			      .nmrq_3v3_n(nmrq_n_3v3), // output only, direct to driver
-			      .ack_3v3_n(ack_n_3v3),
+			      .ack_3v3_n(ack_3v3_n),
 			      .ack_o_n(ack_o_n),
 			      .ack_oe_n(ack_oe_n),
-			      .arb_n_3v3(arb_n_3v3),
+			      .arb_3v3_n(arb_3v3_n),
 			      .arb_o_n(arb_o_n),
 			      .nubus_ad_dir(nubus_ad_dir),
 			      .nubus_oe(nubus_oe),

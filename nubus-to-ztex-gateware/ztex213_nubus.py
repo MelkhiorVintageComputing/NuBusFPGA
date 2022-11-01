@@ -202,7 +202,7 @@ _nubus_nubus_v1_2 = [
     ("tm2_oe_n",           0, Pins("R6"),  IOStandard("lvttl")),
     
     ("nubus_oe",           0, Pins("G13"), IOStandard("lvttl")),
-    ("nubus_ad_dir",       0, Pins("G17"), IOStandard("lvttl"))),
+    ("nubus_ad_dir",       0, Pins("G17"), IOStandard("lvttl")),
 ]
 
 # Connectors ---------------------------------------------------------------------------------------
@@ -214,10 +214,10 @@ connectors_v1_2 = [
 
 # Ethernet ----------------------------------------------------------------------------------------------
 # custom not-quite-pmod
-def rmii_eth_pmod_io(extpmod):
+def rmii_eth_extpmod_io(extpmod):
     return [
         ("eth_clocks", 0,
-         Subsignal("ref_clk", Pins(f"{extpmod}:10"))),
+         Subsignal("ref_clk", Pins(f"{extpmod}:10")),
          IOStandard("LVCMOS33"),
          ),
         ("eth", 0,
@@ -225,12 +225,12 @@ def rmii_eth_pmod_io(extpmod):
          Subsignal("rx_data", Pins(f"{extpmod}:8 {extpmod}:11")),
          Subsignal("crs_dv",  Pins(f"{extpmod}:6")),
          Subsignal("tx_en",   Pins(f"{extpmod}:2")),
-         Subsignal("tx_data", Pins(f"{extpmod}:0 {extpmod}:1"))),
+         Subsignal("tx_data", Pins(f"{extpmod}:0 {extpmod}:1")),
          Subsignal("mdc",     Pins(f"{extpmod}:4")),
          Subsignal("mdio",    Pins(f"{extpmod}:7")),
-         Subsignal("rx_er",   Pins(f"{extpmod}:9"))),
-         Subsignal("int_n",   Pins(f"{extpmod}:5"))),
-         IOStandard("LVCMOS33")
+         Subsignal("rx_er",   Pins(f"{extpmod}:9")),
+         Subsignal("int_n",   Pins(f"{extpmod}:5")),
+         IOStandard("LVCMOS33"),
          ),
 ]
 _rmii_eth_extpmod_io_v1_2 = rmii_eth_extpmod_io("P1")
@@ -256,6 +256,10 @@ class Platform(XilinxPlatform):
         nubus_nubus = {
             "V1.0" : _nubus_nubus_v1_0,
             "V1.2" : _nubus_nubus_v1_2,
+        }[version]
+        connectors = {
+            "V1.0" : connectors_v1_0,
+            "V1.2" : connectors_v1_2,
         }[version]
         self.speedgrade = -1
         if (device[-1] == '2'):

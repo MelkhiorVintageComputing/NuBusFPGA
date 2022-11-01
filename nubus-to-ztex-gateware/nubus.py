@@ -56,9 +56,11 @@ class NuBus(Module):
         arbcy_n = Signal()
         grant = Signal()
         tmoen = Signal()
+
+        self.nubus_oe = nubus_oe = Signal() # improveme
         
         # those are needed in both Nubus and cpld integrated part now
-        broadcast_id_3v3_n = plaform.request("id_3v3_n")
+        broadcast_id_3v3_n = platform.request("id_3v3_n")
         # those are 'return' signals (O part of IO separated in I and O)
         # the 3v3 signals 'see' the 5V signals from the external drivers
         internal_start_3v3_n = Signal()
@@ -85,11 +87,11 @@ class NuBus(Module):
                                   i_nub_startn = platform.request("start_3v3_n"),
                                   i_nub_rqstn = platform.request("rqst_3v3_n"),
                                   i_nub_ackn = platform.request("ack_3v3_n"),
-                                  o_nub_tm0n = internal_tm0_3v3_n,
-                                  o_nub_tm1n = internal_tm1_3v3_n,
-                                  o_nub_startn = internal_start_3v3_n,
-                                  o_nub_rqstn = internal_rqst_3v3_n,
-                                  o_nub_ackn = internal_ack_3v3_n,
+                                  o_nub_tm0n_o = internal_tm0_3v3_n,
+                                  o_nub_tm1n_o = internal_tm1_3v3_n,
+                                  o_nub_startn_o = internal_start_3v3_n,
+                                  o_nub_rqstn_o = internal_rqst_3v3_n,
+                                  o_nub_ackn_o = internal_ack_3v3_n,
                                   # io_nub_arbn = platform.request("nubus_arb_n"),
                                   o_arbcy_n = arbcy_n, # internal now
                                   i_grant = grant, # internal now
@@ -124,10 +126,10 @@ class NuBus(Module):
 
                                   i_nub_clk2xn = ClockSignal(cd_nubus90),
                                   i_nub_tm2n = platform.request("tm2_3v3_n"),
-                                  o_nub_tm2n = internal_tm2_3v3_n,
+                                  o_nub_tm2n_o = internal_tm2_3v3_n,
         )
         self.specials += Instance("nubus_cpldinfpga",
-                                  i_nubus_oe = nubus_oe, # FIXME: handled in soc
+                                  i_nubus_oe = nubus_oe, # improveme: handled in soc
                                   i_tmoen = tmoen,
                                   i_nubus_master_dir = nubus_master_dir,
                                   i_rqst_oe_n = rqst_oe_n,
@@ -140,26 +142,26 @@ class NuBus(Module):
                                   o_grant = grant,
                             
                                   i_tm0_n_3v3 = internal_tm0_3v3_n, # tm0 driving controlled by tmoen
-                                  o_tm0_o_n = platform.request("tm_o_n"),
+                                  o_tm0_o_n = platform.request("tm0_o_n"),
                             
                                   i_tm1_n_3v3 = internal_tm1_3v3_n, # tm1 driving controlled by tmoen
-                                  o_tm1_o_n = platform_request("tm1_o_n"),
-                                  o_tmx_oe_n = platform_request("tmx_oe_n"),
+                                  o_tm1_o_n = platform.request("tm1_o_n"),
+                                  o_tmx_oe_n = platform.request("tmx_oe_n"),
                             
                                   i_tm2_n_3v3 = internal_tm2_3v3_n, # tm2 currently never driven
-                                  o_tm2_o_n = platform_request("tm2_o_n"),
-                                  o_tm2_oe_n = platform_request("tm2_oe_n"),
+                                  o_tm2_o_n = platform.request("tm2_o_n"),
+                                  o_tm2_oe_n = platform.request("tm2_oe_n"),
    
                                   i_start_n_3v3 = internal_start_3v3_n, # start driving enabled by nubus_master_dir
-                                  o_start_o_n = platform_request("start_o_n"),
-                                  o_start_oe_n = platform_request("start_oe_n"),
+                                  o_start_o_n = platform.request("start_o_n"),
+                                  o_start_oe_n = platform.request("start_oe_n"),
                                   
                                   i_ack_n_3v3 = internal_ack_3v3_n, # ack driving controlled by tmoen
-                                  o_ack_o_n = platform_request("ack_o_n"),
-                                  o_ack_oe_n = platform_request("ack_oe_n"),
+                                  o_ack_o_n = platform.request("ack_o_n"),
+                                  o_ack_oe_n = platform.request("ack_oe_n"),
                                   
                                   i_rqst_n_3v3 = internal_rqst_3v3_n, # rqst driving ocntroller by rqst_oe_n
-                                  o_rqst_o_n = platform_request("rqst_o_n")
+                                  o_rqst_o_n = platform.request("rqst_o_n")
     )
 
                 

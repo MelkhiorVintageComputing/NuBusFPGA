@@ -43,7 +43,6 @@ module nubus_cpldinfpga
    );
 	
    // placeholders
-   assign tm2_n_3v3 = tm2_n_5v;
    assign tm2_o_n = 0;
    assign tm2_oe_n = 1;
    
