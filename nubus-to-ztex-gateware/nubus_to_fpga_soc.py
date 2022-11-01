@@ -16,7 +16,6 @@ from litex.soc.cores.led import LedChaser
 import ztex213_nubus
 import nubus_to_fpga_export
 
-import nubus
 import nubus_full
 import nubus_full_sampling
 import nubus_stat
@@ -308,7 +307,11 @@ class NuBusFPGA(SoCCore):
             wishbone_master_sys = wishbone.Interface(data_width=self.bus.data_width)
             self.submodules.wishbone_master_nubus = WishboneDomainCrossingMaster(platform=self.platform, slave=wishbone_master_sys, cd_master="nubus", cd_slave="sys")
             self.bus.add_master(name="NuBusBridgeToWishbone", master=wishbone_master_sys)
-            self.submodules.nubus = nubus.NuBus(platform=platform, cd_nubus="nubus")
+            if (version == "V1.0"):
+                from nubus_V1_0 import NuBus
+            elif (version == "V1.2"):
+                from nubus_V1_2 import NuBus
+            self.submodules.nubus = NuBus(platform=platform, cd_nubus="nubus")
             #self.submodules.nubus2wishbone = ClockDomainsRenamer("nubus")(NuBus2Wishbone(nubus=self.nubus,wb=self.wishbone_master_nubus))
             if (version == "V1.2"):
                 self.comb += self.nubus.nubus_oe.eq(hold_reset) # improveme
