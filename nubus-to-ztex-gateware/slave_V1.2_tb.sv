@@ -48,12 +48,11 @@ module nubus_slave_tb ();
 
    tri1 [1:0] 		   leds;
    
-   tri 			   unused0, tmoen, unused1, unused2;
-   tri 			   arbcy_n;
-   tri 			   grant;
+   tri 			   unused0, unused1, unused2;
    tri 			   nubus_oe, nubus_ad_dir;
    tri			   reset_n_3v3, clk_n_3v3, tm0_n_3v3, tm1_n_3v3, start_n_3v3, ack_n_3v3, rqst_n_3v3;
    tri [3:0] 		   id_n_3v3;
+   tri [3:0] 		   arb_n_3v3;
    tri [31:0] 		   ad_n_3v3;
    tri [3:0] 		   arb_o_n;
    tri 			   tm0_o_n, tm1_o_n, tmx_oe_n;
@@ -88,10 +87,10 @@ module nubus_slave_tb ();
 			  .nubus_oe(nubus_oe),
 			  .nubus_ad_dir(nubus_ad_dir));
    
-   tri1 			   nmrq_3v3_n;
+   tri1 			   nmrq_n_3v3;
    
    
-   sn74lvt145_quarter driver_u1a(.oe_n(nmrq_3v3_n),
+   sn74lvt145_quarter driver_u1a(.oe_n(nmrq_n_3v3),
 								 .in(0),
 								 .out(nub_nmrqn));
    sn74lvt145_quarter driver_u1b(.oe_n(rqst_o_n),
@@ -126,15 +125,20 @@ module nubus_slave_tb ();
    sn74lvt145_quarter driver_u2c(.oe_n(tm2_oe_n),
 								  .in(tm2_o_n),
 								  .out(nub_tm2n));
-   
-   sn74cb3t3125 shifters_u4(.oe_n('h0),
-			    .A({start_n_3v3, ack_n_3v3, clk_n_3v3, rqst_n_3v3 }),
-			    .B({nub_startn,  nub_ackn,  nub_clkn,  nub_rqstn }));
-   sn74cb3t3125 shifters_u13(.oe_n('h0),
-			     .A({reset_n_3v3, tm2_n_3v3, tm0_n_3v3, tm1_n_3v3}),
-			     .B({nub_resetn,  nub_tm2n,  nub_tm0n,  nub_tm1n }));
 
-   assign clk2x_n_3v3 = nub_clk2xn;
+   tri1 [2:0]			   u13_throwaway;
+   tri1 [2:0]			   u13_zero;
+   sn74cb3t3245 shifters_u13(.oe_n('h0),
+			     .A({clk2x_n_3v3, clk_n_3v3, start_n_3v3, ack_n_3v3, rqst_n_3v3, u13_throwaway}),
+			     .B({nub_clk2xn, nub_clkn, nub_startn, nub_ackn, nub_rqstn, u13_zero}));
+   sn74cb3t3245 shifters_u14(.oe_n('h0),
+			     .A({id_n_3v3, arb_n_3v3 }),
+			     .B({nub_idn, nub_arbn }));
+   tri1 [3:0]			   u15_throwaway;
+   tri1 [3:0]			   u15_zero;
+   sn74cb3t3245 shifters_u15(.oe_n('h0),
+			     .A({ reset_n_3v3, tm2_n_3v3, tm0_n_3v3, tm1_n_3v3, u15_throwaway }),
+			     .B({ nub_resetn, nub_tm2n, nub_tm0n, nub_tm1n, u15_zero }));
 
    ztex213_nubus_V1_2 UNuBus (
 			      // NuBus lines only
@@ -156,10 +160,10 @@ module nubus_slave_tb ();
 			      .rqst_3v3_n(rqst_n_3v3),
 			      .rqst_o_n(rqst_o_n),
 			      .nmrq_3v3_n(nmrq_n_3v3), // output only, direct to driver
-			      .ack_3v3_n(ack_3v3_n),
+			      .ack_3v3_n(ack_n_3v3),
 			      .ack_o_n(ack_o_n),
 			      .ack_oe_n(ack_oe_n),
-			      .arb_3v3_n(arb_3v3_n),
+			      .arb_3v3_n(arb_n_3v3),
 			      .arb_o_n(arb_o_n),
 			      .nubus_ad_dir(nubus_ad_dir),
 			      .nubus_oe(nubus_oe),
