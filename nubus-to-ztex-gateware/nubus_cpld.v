@@ -12,8 +12,8 @@ module nubus_cpld
    input  clk2x_n_5v, // clk from NuBus90
 
    // Spares
-   input  fpga_to_cpld_clk, // rqstoen (extra line from FPGA to CPLD, pin is a clk input)
-   input  fpga_to_cpld_signal, // unused (extra line from FPGA to CPLD)
+   input  fpga_to_cpld_clk, // unused (extra line from FPGA to CPLD, pin is a clk input)
+   input  fpga_to_cpld_signal, // rqstoen (extra line from FPGA to CPLD)
    inout  fpga_to_cpld_signal_2, // unused (extra line from FPGA to CPLD)
 
    // NuBus (output to FPGA)
