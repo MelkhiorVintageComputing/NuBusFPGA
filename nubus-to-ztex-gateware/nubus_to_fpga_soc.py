@@ -247,7 +247,7 @@ class NuBusFPGA(SoCCore):
         #self.submodules.wa2d = WA2D(self.platform)
         #self.bus.add_slave("WA2D", self.wa2d.bus, SoCRegion(origin=0x00C00000, size=0x00400000, cached=False))
 
-        notsimul = 0
+        notsimul = 1
         if (notsimul):
             avail_sdram = 0
             self.submodules.ddrphy = s7ddrphy.A7DDRPHY(platform.request("ddram"),

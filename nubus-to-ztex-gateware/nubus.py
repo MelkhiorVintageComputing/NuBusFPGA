@@ -172,7 +172,7 @@ class NuBus(Module):
         platform.add_source("nubus.v", "verilog")
         # XiBus is from my github, branch 'more_fixes'
         platform.add_source("XiBus/nubus.svh", "verilog")
-        #platform.add_source("XiBus/nubus_arbiter.v", "verilog") # in the CPLDinfpga
+        platform.add_source("nubus_arbiter.v", "verilog") # for CPLDinfpga
         platform.add_source("XiBus/nubus_cpubus.v", "verilog")
         platform.add_source("XiBus/nubus_driver.v", "verilog")
         #platform.add_source("XiBus/nubus_errors.v", "verilog") # unused
