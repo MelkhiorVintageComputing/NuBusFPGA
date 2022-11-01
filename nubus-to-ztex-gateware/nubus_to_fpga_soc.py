@@ -310,7 +310,8 @@ class NuBusFPGA(SoCCore):
             self.bus.add_master(name="NuBusBridgeToWishbone", master=wishbone_master_sys)
             self.submodules.nubus = nubus.NuBus(platform=platform, cd_nubus="nubus")
             #self.submodules.nubus2wishbone = ClockDomainsRenamer("nubus")(NuBus2Wishbone(nubus=self.nubus,wb=self.wishbone_master_nubus))
-            self.comb += self.nubus.nubus_oe.eq(hold_reset) # improveme
+            if (version == "V1.2"):
+                self.comb += self.nubus.nubus_oe.eq(hold_reset) # improveme
             nubus_writemaster_sys = wishbone.Interface(data_width=self.bus.data_width)
             self.submodules.nubus2wishbone = NuBus2WishboneFIFO(platform=self.platform,nubus=self.nubus,wb_read=self.wishbone_master_nubus,wb_write=nubus_writemaster_sys)
             self.bus.add_master(name="NuBusBridgeToWishboneWrite", master=nubus_writemaster_sys)
