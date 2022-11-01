@@ -28,19 +28,26 @@ module nubus
    (
     /* *** NuBus signals *** */
 	/* those are connected to the FPGA */
-	/* connected via the CPLD */
     input 		  nub_clkn, // Clock (rising is driving edge, faling is sampling) 
     input 		  nub_resetn, // Reset
     input [ 3:0]  nub_idn, // Slot Identification
-    inout 		  nub_tm0n, // Transfer Mode
-    inout 		  nub_tm1n, // Transfer Mode
-    inout 		  nub_startn, // Start
-    inout 		  nub_rqstn, // Request
-    inout 		  nub_ackn, // Acknowledge
+    // raw input
+    input 		  nub_tm0n, // Transfer Mode
+    input 		  nub_tm1n, // Transfer Mode
+    input 		  nub_startn, // Start
+    input 		  nub_rqstn, // Request
+    input 		  nub_ackn, // Acknowledge
+    // output to other part of the FPGA
+    output 		  nub_tm0n_o, // Transfer Mode
+    output 		  nub_tm1n_o, // Transfer Mode
+    output 		  nub_startn_o, // Start
+    output 		  nub_rqstn_o, // Request
+    output 		  nub_ackn_o, // Acknowledge
 
-	// connected via the CPLD but NuBus90 (unimplemented)
+	// NuBus90 (unimplemented)
 	input 		  nub_clk2xn, 
- 	inout 		  nub_tm2n,
+ 	input 		  nub_tm2n,
+ 	output 		  nub_tm2n_o,
 
 	/* connected via the 74LVT245 */
     inout [31:0]  nub_adn, // Address/Data
@@ -260,11 +267,11 @@ module nubus
       .mst_tm0n(cpu_tm0n), // Address lines
       .mst_timeout(mst_timeout),
       .mis_errorn(TMN_COMPLETE),
-      .nub_tm0n_o(nub_tm0n), // Transfer mode
-      .nub_tm1n_o(nub_tm1n), // Transfer mode
-      .nub_ackn_o(nub_ackn), // Achnowlege
-      .nub_startn_o(nub_startn), // Transfer start
-      .nub_rqstn_o(nub_rqstn), // Bus request
+      .nub_tm0n_o(nub_tm0n_o), // Transfer mode
+      .nub_tm1n_o(nub_tm1n_o), // Transfer mode
+      .nub_ackn_o(nub_ackn_o), // Achnowlege
+      .nub_startn_o(nub_startn_o), // Transfer start
+      .nub_rqstn_o(nub_rqstn_o), // Bus request
       .nub_rqstoen_o(fpga_to_cpld_signal), // Bus request enable
       .drv_tmoen_o(drv_tmoen), // Transfer mode enable
       .drv_mstdn_o(drv_mstdn) // Guess: Slave sends /ACK. Master responds with /MSTDN, which allows slave to clear /ACK and listen for next transaction.
