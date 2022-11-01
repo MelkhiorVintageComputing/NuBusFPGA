@@ -160,7 +160,7 @@ class NuBus(Module):
                                   o_ack_o_n = platform.request("ack_o_n"),
                                   o_ack_oe_n = platform.request("ack_oe_n"),
                                   
-                                  i_rqst_n_3v3 = internal_rqst_3v3_n, # rqst driving ocntroller by rqst_oe_n
+                                  i_rqst_n_3v3 = internal_rqst_3v3_n, # rqst driving controller by rqst_oe_n
                                   o_rqst_o_n = platform.request("rqst_o_n")
     )
 
