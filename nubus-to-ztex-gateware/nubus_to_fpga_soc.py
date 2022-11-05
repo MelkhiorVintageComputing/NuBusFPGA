@@ -16,8 +16,7 @@ from litex.soc.cores.led import LedChaser
 import ztex213_nubus
 import nubus_to_fpga_export
 
-import nubus_full
-import nubus_full_sampling
+import nubus_full_unified
 import nubus_stat
 
 from litedram.modules import MT41J128M16
@@ -303,7 +302,7 @@ class NuBusFPGA(SoCCore):
         # Interface NuBus to wishbone
         # we need to cross clock domains
         
-        xibus=1
+        xibus=False
         if (xibus):
             wishbone_master_sys = wishbone.Interface(data_width=self.bus.data_width)
             self.submodules.wishbone_master_nubus = WishboneDomainCrossingMaster(platform=self.platform, slave=wishbone_master_sys, cd_master="nubus", cd_slave="sys")
@@ -333,9 +332,9 @@ class NuBusFPGA(SoCCore):
             #]
             self.comb += irq_line.eq(fb_irq) # active low, enable if one is low
         else:
-            sampling = 1
+            usesampling = True
             wishbone_master_sys = wishbone.Interface(data_width=self.bus.data_width)
-            if (not sampling):
+            if (not usesampling): # we need an extra CDC
                 self.submodules.wishbone_master_nubus = WishboneDomainCrossingMaster(platform=self.platform, slave=wishbone_master_sys, cd_master="nubus", cd_slave="sys") # for non-sampling only
             nubus_writemaster_sys = wishbone.Interface(data_width=self.bus.data_width)
             wishbone_slave_nubus = wishbone.Interface(data_width=self.bus.data_width)
@@ -390,26 +389,17 @@ class NuBusFPGA(SoCCore):
 
             self.comb += dma_irq.eq(self.exchange_with_mem.irq)
 
-            if (sampling):
-                self.submodules.nubus = nubus_full_sampling.NuBus(soc=self,
-                                                                  burst_size=burst_size,
-                                                                  tosbus_fifo=self.tosbus_fifo,
-                                                                  fromsbus_fifo=self.fromsbus_fifo,
-                                                                  fromsbus_req_fifo=self.fromsbus_req_fifo,
-                                                                  wb_read=wishbone_master_sys,
-                                                                  wb_write=nubus_writemaster_sys,
-                                                                  wb_dma=wishbone_slave_nubus,
-                                                                  cd_nubus="nubus")
-            else:
-                self.submodules.nubus = nubus_full.NuBus(soc=self,
-                                                         burst_size=burst_size,
-                                                         tosbus_fifo=self.tosbus_fifo,
-                                                         fromsbus_fifo=self.fromsbus_fifo,
-                                                         fromsbus_req_fifo=self.fromsbus_req_fifo,
-                                                         wb_read=self.wishbone_master_nubus,
-                                                         wb_write=nubus_writemaster_sys,
-                                                         wb_dma=wishbone_slave_nubus,
-                                                         cd_nubus="nubus")
+            self.submodules.nubus = nubus_full_unified.NuBus(soc=self,
+                                                             burst_size=burst_size,
+                                                             tosbus_fifo=self.tosbus_fifo,
+                                                             fromsbus_fifo=self.fromsbus_fifo,
+                                                             fromsbus_req_fifo=self.fromsbus_req_fifo,
+                                                             wb_read=(wishbone_master_sys if usesampling else self.wishbone_master_nubus), # CDC or not
+                                                             wb_write=nubus_writemaster_sys,
+                                                             wb_dma=wishbone_slave_nubus,
+                                                             usesampling=usesampling,
+                                                             cd_nubus="nubus")
+            
             self.bus.add_master(name="NuBusBridgeToWishbone", master=wishbone_master_sys)
             self.bus.add_slave("DMA", self.wishbone_slave_sys, SoCRegion(origin=self.mem_map.get("master", None), size=0x40000000, cached=False))
             self.bus.add_master(name="NuBusBridgeToWishboneWrite", master=nubus_writemaster_sys)
