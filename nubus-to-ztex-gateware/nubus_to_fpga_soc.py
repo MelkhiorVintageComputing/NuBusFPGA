@@ -246,7 +246,9 @@ class NuBusFPGA(SoCCore):
         #self.submodules.wa2d = WA2D(self.platform)
         #self.bus.add_slave("WA2D", self.wa2d.bus, SoCRegion(origin=0x00C00000, size=0x00400000, cached=False))
 
-        notsimul = 1
+        # notsimul to signify we're making a real bitstream
+        # notsimul == False only to produce a verilog implementation to simulate the bus side of things
+        notsimul = True
         if (notsimul):
             avail_sdram = 0
             self.submodules.ddrphy = s7ddrphy.A7DDRPHY(platform.request("ddram"),
@@ -301,7 +303,10 @@ class NuBusFPGA(SoCCore):
 
         # Interface NuBus to wishbone
         # we need to cross clock domains
-        
+
+        # Xibus is the original VErilog implementation I used
+        # mostly only for testing now, it doesn't have block mode so doesn't support the DMA mode of the RAM disk
+        # Should be set to False unless for testing (usually with notsimul=False)
         xibus=False
         if (xibus):
             wishbone_master_sys = wishbone.Interface(data_width=self.bus.data_width)
@@ -332,6 +337,7 @@ class NuBusFPGA(SoCCore):
             #]
             self.comb += irq_line.eq(fb_irq) # active low, enable if one is low
         else:
+            # details for usesampling in the NuBus python object
             usesampling = True
             wishbone_master_sys = wishbone.Interface(data_width=self.bus.data_width)
             if (not usesampling): # we need an extra CDC
