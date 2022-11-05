@@ -181,6 +181,7 @@ class NuBusFPGA(SoCCore):
                          sys_clk_freq=sys_clk_freq,
                          clk_freq=sys_clk_freq,
                          csr_paging=0x800, #  default is 0x800
+                         bus_interconnect = "crossbar",
                          **kwargs)
 
         # Quoting the doc:

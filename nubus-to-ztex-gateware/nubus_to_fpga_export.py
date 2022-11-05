@@ -88,8 +88,10 @@ def get_csr_header_split(regions, constants, csr_base=None, with_access_function
         if not isinstance(region.obj, Memory):
             for csr in region.obj:
                 nr = (csr.size + region.busword - 1)//region.busword
-                r += _get_rw_functions_c(csr.name, origin, nr, region.busword, alignment,
-                    getattr(csr, "read_only", False), with_access_functions)
+                r += _get_rw_functions_c(reg_name=csr.name, reg_base=origin, nwords=nr, busword=region.busword, alignment=alignment,
+                                         read_only=getattr(csr, "read_only", False),
+                                         csr_base=0, with_csr_base_define=False,
+                                         with_access_functions=with_access_functions)
                 origin += alignment//8*nr
                 if hasattr(csr, "fields"):
                     for field in csr.fields.fields:
