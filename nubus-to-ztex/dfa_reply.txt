@@ -1,9 +1,0 @@
-Hello,
-
-About the DFA status:
-
-(1) Molex 87831-1420 does not include a 'peg' and so does not need the hole for it if I understand the datasheet correctly; I think this is the issue raised? See <https://www.molex.com/pdm_docs/sd/878311420_sd.pdf> page 10 for the mention of a lack of 'peg', the 'peg' is pointed out in the picture on page 1.
-
-(2) The measure in the schematics seem to be for the connector-side pins (the VGA plug), not for the solder-side pins. Datasgheet <https://cdn.amphenol-icc.com/media/wysiwyg/files/drawing/l77hde15sd1ch4fvga.pdf> has a 'recommended PCB layout' that shows the pins at 2.54mm interval.
-
-(3) Yes, some files were left out, my bad, new upload

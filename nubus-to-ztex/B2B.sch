@@ -114,15 +114,10 @@ U 1 1 5F749BE1
 P 3150 7250
 F 0 "J1" H 3200 7767 50  0000 C CNN
 F 1 "Conn_02x07_Odd_Even" H 3200 7676 50  0000 C CNN
-F 2 "For_SeeedStudio:PinHeader_2x07_P2.00mm_Vertical_For_SeeedStudio" H 3150 7250 50  0001 C CNN
+F 2 "For_SeeedStudio:MOLEX_87832-1420" H 3150 7250 50  0001 C CNN
 F 3 "https://www.molex.com/pdm_docs/sd/878331420_sd.pdf" H 3150 7250 50  0001 C CNN
-F 4 "87833-1420" H 3150 7250 50  0001 C CNN "MPN Right Angle"
-F 5 "A2005WR-N-2X7P-B" H 3150 7250 50  0001 C CNN "MPN-ALT Right Angle"
-F 6 "https://www2.mouser.com/ProductDetail/Molex/87833-1420?qs=%2Fha2pyFadujYFYCIYI1IvFCvLi7no9WQYzIL%2FpYxKhg%3D" H 3150 7250 50  0001 C CNN "URL Rihgt Angle"
-F 7 "87831-1420" H 3150 7250 50  0001 C CNN "MPN"
-F 8 "https://www2.mouser.com/ProductDetail/Molex/87831-1420?qs=QtQX4uD3c2VDCL534TqpVg%3D%3D" H 3150 7250 50  0001 C CNN "URL"
-F 9 "https://datasheet.lcsc.com/lcsc/1811051309_MOLEX-878311420_C240854.pdf" H 3150 7250 50  0001 C CNN "Datasheet-ALT"
-F 10 "87831-1419, 87831-1420, 87831-1421, 87831-1436 only change plating" H 3150 7250 50  0001 C CNN "Notes"
+F 4 "87832-1420" H 3150 7250 50  0001 C CNN "MPN"
+F 5 "https://www.mouser.fr/ProductDetail/Molex/87832-1420?qs=9Wl4wMk6Njp2JciwISLQUQ%3D%3D" H 3150 7250 50  0001 C CNN "URL"
 	1    3150 7250
 	1    0    0    -1  
 $EndComp
