@@ -1,4 +1,4 @@
-## Footprint report - date Tue Nov  1 08:32:34 2022
+## Footprint report - date Sat Nov 12 11:37:48 2022
 ## Created by Pcbnew version kicad 5.1.9+dfsg1-1~bpo10+1
 ## Unit = mm, Angle = deg.
 
@@ -8,6 +8,225 @@ $BOARD
 upper_left_corner -50.005001 -35.064286
 lower_right_corner 400.005001 148.435001
 $EndBOARD
+
+$MODULE "GRAPHIC1"
+reference "GRAPHIC1"
+value "LogoLitex"
+footprint "For_SeeedStudio:litex_logo"
+attribut none
+position 230.730000 77.000000  orientation 0.00
+layer front
+$EndMODULE  GRAPHIC1
+
+$MODULE "J8"
+reference "J8"
+value "SMH-108-02-L-D (Pmod 2x8 F)"
+footprint "For_SeeedStudio:SAMTEC-SMH-108-02-X-D"
+attribut none
+position 270.138000 28.000000  orientation 270.00
+layer front
+$PAD "16"
+Shape Rect Layer front
+position  8.890000 11.138000  size  1.420010  2.240000  orientation 0.00
+drill  0.000000
+shape_offset  0.000000  0.000000
+$EndPAD
+$PAD "15"
+Shape Rect Layer front
+position  8.890000  7.277000  size  1.420010  2.340000  orientation 0.00
+drill  0.000000
+shape_offset  0.000000  0.000000
+$EndPAD
+$PAD "14"
+Shape Rect Layer front
+position  6.350000 11.138000  size  1.420010  2.240000  orientation 0.00
+drill  0.000000
+shape_offset  0.000000  0.000000
+$EndPAD
+$PAD "13"
+Shape Rect Layer front
+position  6.350000  7.277000  size  1.420010  2.340000  orientation 0.00
+drill  0.000000
+shape_offset  0.000000  0.000000
+$EndPAD
+$PAD "12"
+Shape Rect Layer front
+position  3.810000 11.138000  size  1.420010  2.240000  orientation 0.00
+drill  0.000000
+shape_offset  0.000000  0.000000
+$EndPAD
+$PAD "11"
+Shape Rect Layer front
+position  3.810000  7.277000  size  1.420010  2.340000  orientation 0.00
+drill  0.000000
+shape_offset  0.000000  0.000000
+$EndPAD
+$PAD "10"
+Shape Rect Layer front
+position  1.270000 11.138000  size  1.420010  2.240000  orientation 0.00
+drill  0.000000
+shape_offset  0.000000  0.000000
+$EndPAD
+$PAD "9"
+Shape Rect Layer front
+position  1.270000  7.277000  size  1.420010  2.340000  orientation 0.00
+drill  0.000000
+shape_offset  0.000000  0.000000
+$EndPAD
+$PAD "8"
+Shape Rect Layer front
+position -1.270000 11.138000  size  1.420010  2.240000  orientation 0.00
+drill  0.000000
+shape_offset  0.000000  0.000000
+$EndPAD
+$PAD "7"
+Shape Rect Layer front
+position -1.270000  7.277000  size  1.420010  2.340000  orientation 0.00
+drill  0.000000
+shape_offset  0.000000  0.000000
+$EndPAD
+$PAD "6"
+Shape Rect Layer front
+position -3.810000 11.138000  size  1.420010  2.240000  orientation 0.00
+drill  0.000000
+shape_offset  0.000000  0.000000
+$EndPAD
+$PAD "5"
+Shape Rect Layer front
+position -3.810000  7.277000  size  1.420010  2.340000  orientation 0.00
+drill  0.000000
+shape_offset  0.000000  0.000000
+$EndPAD
+$PAD "4"
+Shape Rect Layer front
+position -6.350000 11.138000  size  1.420010  2.240000  orientation 0.00
+drill  0.000000
+shape_offset  0.000000  0.000000
+$EndPAD
+$PAD "3"
+Shape Rect Layer front
+position -6.350000  7.277000  size  1.420010  2.340000  orientation 0.00
+drill  0.000000
+shape_offset  0.000000  0.000000
+$EndPAD
+$PAD "2"
+Shape Rect Layer front
+position -8.890000 11.138000  size  1.420010  2.240000  orientation 0.00
+drill  0.000000
+shape_offset  0.000000  0.000000
+$EndPAD
+$PAD "1"
+Shape Rect Layer front
+position -8.890000  7.277000  size  1.420010  2.340000  orientation 0.00
+drill  0.000000
+shape_offset  0.000000  0.000000
+$EndPAD
+$EndMODULE  J8
+
+$MODULE "J1"
+reference "J1"
+value "87832-1420 (2x7 M 2mm)"
+footprint "For_SeeedStudio:MOLEX_87832-1420"
+attribut none
+position 226.000000 29.590000  orientation 270.00
+layer front
+$PAD "None"
+Shape Circle Layer both
+position  0.000000  5.000000  size  1.050000  1.050000  orientation 0.00
+drill  1.050000
+shape_offset  0.000000  0.000000
+$EndPAD
+$PAD "None"
+Shape Circle Layer both
+position  0.000000 -5.000000  size  1.050000  1.050000  orientation 0.00
+drill  1.050000
+shape_offset  0.000000  0.000000
+$EndPAD
+$PAD "14"
+Shape Rect Layer front
+position  2.130000  6.000000  size  1.000000  2.750000  orientation -90.00
+drill  0.000000
+shape_offset  0.000000  0.000000
+$EndPAD
+$PAD "13"
+Shape Rect Layer front
+position -2.130000  6.000000  size  1.000000  2.750000  orientation -90.00
+drill  0.000000
+shape_offset  0.000000  0.000000
+$EndPAD
+$PAD "12"
+Shape Rect Layer front
+position  2.130000  4.000000  size  1.000000  2.750000  orientation -90.00
+drill  0.000000
+shape_offset  0.000000  0.000000
+$EndPAD
+$PAD "11"
+Shape Rect Layer front
+position -2.130000  4.000000  size  1.000000  2.750000  orientation -90.00
+drill  0.000000
+shape_offset  0.000000  0.000000
+$EndPAD
+$PAD "10"
+Shape Rect Layer front
+position  2.130000  2.000000  size  1.000000  2.750000  orientation -90.00
+drill  0.000000
+shape_offset  0.000000  0.000000
+$EndPAD
+$PAD "9"
+Shape Rect Layer front
+position -2.130000  2.000000  size  1.000000  2.750000  orientation -90.00
+drill  0.000000
+shape_offset  0.000000  0.000000
+$EndPAD
+$PAD "8"
+Shape Rect Layer front
+position  2.130000  0.000000  size  1.000000  2.750000  orientation -90.00
+drill  0.000000
+shape_offset  0.000000  0.000000
+$EndPAD
+$PAD "7"
+Shape Rect Layer front
+position -2.130000  0.000000  size  1.000000  2.750000  orientation -90.00
+drill  0.000000
+shape_offset  0.000000  0.000000
+$EndPAD
+$PAD "6"
+Shape Rect Layer front
+position  2.130000 -2.000000  size  1.000000  2.750000  orientation -90.00
+drill  0.000000
+shape_offset  0.000000  0.000000
+$EndPAD
+$PAD "5"
+Shape Rect Layer front
+position -2.130000 -2.000000  size  1.000000  2.750000  orientation -90.00
+drill  0.000000
+shape_offset  0.000000  0.000000
+$EndPAD
+$PAD "4"
+Shape Rect Layer front
+position  2.130000 -4.000000  size  1.000000  2.750000  orientation -90.00
+drill  0.000000
+shape_offset  0.000000  0.000000
+$EndPAD
+$PAD "3"
+Shape Rect Layer front
+position -2.130000 -4.000000  size  1.000000  2.750000  orientation -90.00
+drill  0.000000
+shape_offset  0.000000  0.000000
+$EndPAD
+$PAD "2"
+Shape Rect Layer front
+position  2.130000 -6.000000  size  1.000000  2.750000  orientation -90.00
+drill  0.000000
+shape_offset  0.000000  0.000000
+$EndPAD
+$PAD "1"
+Shape Rect Layer front
+position -2.130000 -6.000000  size  1.000000  2.750000  orientation -90.00
+drill  0.000000
+shape_offset  0.000000  0.000000
+$EndPAD
+$EndMODULE  J1
 
 $MODULE "C8"
 reference "C8"
@@ -324,117 +543,12 @@ shape_offset  0.000000  0.000000
 $EndPAD
 $EndMODULE  H1
 
-$MODULE "J8"
-reference "J8"
-value "Conn_02x08_Odd_Even"
-footprint "For_SeeedStudio:PinSocket_2x08_P2.54mm_Horizontal_ForSeeedStudio"
-attribut none
-position 264.310000 37.854999  orientation 180.00
-layer front
-$PAD "1"
-Shape Rect Layer both
-position  0.000000  0.000000  size  1.700000  1.700000  orientation 0.00
-drill  1.190000
-shape_offset  0.000000  0.000000
-$EndPAD
-$PAD "2"
-Shape Oval Layer both
-position -2.540000  0.000000  size  1.700000  1.700000  orientation 0.00
-drill  1.190000
-shape_offset  0.000000  0.000000
-$EndPAD
-$PAD "3"
-Shape Oval Layer both
-position  0.000000  2.540000  size  1.700000  1.700000  orientation 0.00
-drill  1.190000
-shape_offset  0.000000  0.000000
-$EndPAD
-$PAD "4"
-Shape Oval Layer both
-position -2.540000  2.540000  size  1.700000  1.700000  orientation 0.00
-drill  1.190000
-shape_offset  0.000000  0.000000
-$EndPAD
-$PAD "5"
-Shape Oval Layer both
-position  0.000000  5.080000  size  1.700000  1.700000  orientation 0.00
-drill  1.190000
-shape_offset  0.000000  0.000000
-$EndPAD
-$PAD "6"
-Shape Oval Layer both
-position -2.540000  5.080000  size  1.700000  1.700000  orientation 0.00
-drill  1.190000
-shape_offset  0.000000  0.000000
-$EndPAD
-$PAD "7"
-Shape Oval Layer both
-position  0.000000  7.620000  size  1.700000  1.700000  orientation 0.00
-drill  1.190000
-shape_offset  0.000000  0.000000
-$EndPAD
-$PAD "8"
-Shape Oval Layer both
-position -2.540000  7.620000  size  1.700000  1.700000  orientation 0.00
-drill  1.190000
-shape_offset  0.000000  0.000000
-$EndPAD
-$PAD "9"
-Shape Oval Layer both
-position  0.000000 10.160000  size  1.700000  1.700000  orientation 0.00
-drill  1.190000
-shape_offset  0.000000  0.000000
-$EndPAD
-$PAD "10"
-Shape Oval Layer both
-position -2.540000 10.160000  size  1.700000  1.700000  orientation 0.00
-drill  1.190000
-shape_offset  0.000000  0.000000
-$EndPAD
-$PAD "11"
-Shape Oval Layer both
-position  0.000000 12.700000  size  1.700000  1.700000  orientation 0.00
-drill  1.190000
-shape_offset  0.000000  0.000000
-$EndPAD
-$PAD "12"
-Shape Oval Layer both
-position -2.540000 12.700000  size  1.700000  1.700000  orientation 0.00
-drill  1.190000
-shape_offset  0.000000  0.000000
-$EndPAD
-$PAD "13"
-Shape Oval Layer both
-position  0.000000 15.240000  size  1.700000  1.700000  orientation 0.00
-drill  1.190000
-shape_offset  0.000000  0.000000
-$EndPAD
-$PAD "14"
-Shape Oval Layer both
-position -2.540000 15.240000  size  1.700000  1.700000  orientation 0.00
-drill  1.190000
-shape_offset  0.000000  0.000000
-$EndPAD
-$PAD "15"
-Shape Oval Layer both
-position  0.000000 17.780000  size  1.700000  1.700000  orientation 0.00
-drill  1.190000
-shape_offset  0.000000  0.000000
-$EndPAD
-$PAD "16"
-Shape Oval Layer both
-position -2.540000 17.780000  size  1.700000  1.700000  orientation 0.00
-drill  1.190000
-shape_offset  0.000000  0.000000
-$EndPAD
-$EndMODULE  J8
-
 $MODULE "C15"
 reference "C15"
 value "100nF"
 footprint "Capacitor_SMD:C_0603_1608Metric"
 attribut smd
-position 261.185001 37.070000  orientation 90.00
+position 254.000000 36.102500  orientation 90.00
 layer front
 $PAD "1"
 Shape Roundrect Layer front
@@ -452,7 +566,7 @@ $EndMODULE  C15
 
 $MODULE "D7"
 reference "D7"
-value "YELLOW"
+value "YELLOW Led"
 footprint "LED_SMD:LED_0805_2012Metric"
 attribut smd
 position 137.410000 20.060293  orientation 90.00
@@ -473,7 +587,7 @@ $EndMODULE  D7
 
 $MODULE "D6"
 reference "D6"
-value "YELLOW"
+value "YELLOW Led"
 footprint "LED_SMD:LED_0805_2012Metric"
 attribut smd
 position 134.880000 20.060293  orientation 90.00
@@ -494,7 +608,7 @@ $EndMODULE  D6
 
 $MODULE "D8"
 reference "D8"
-value "YELLOW"
+value "YELLOW Led"
 footprint "LED_SMD:LED_0805_2012Metric"
 attribut smd
 position 122.610000 69.150000  orientation 180.00
@@ -515,7 +629,7 @@ $EndMODULE  D8
 
 $MODULE "D9"
 reference "D9"
-value "YELLOW"
+value "YELLOW Led"
 footprint "LED_SMD:LED_0805_2012Metric"
 attribut smd
 position 178.144189 17.011035  orientation 270.00
@@ -536,7 +650,7 @@ $EndMODULE  D9
 
 $MODULE "D10"
 reference "D10"
-value "YELLOW"
+value "YELLOW Led"
 footprint "LED_SMD:LED_0805_2012Metric"
 attribut smd
 position 175.604189 17.011035  orientation 270.00
@@ -812,7 +926,7 @@ $EndMODULE  C9
 
 $MODULE "C10"
 reference "C10"
-value "47uF 10V+"
+value "47uF 10V 0805"
 footprint "Capacitor_SMD:C_0805_2012Metric"
 attribut smd
 position 157.340000 24.000000  orientation 0.00
@@ -833,7 +947,7 @@ $EndMODULE  C10
 
 $MODULE "J2"
 reference "J2"
-value "47219-2001"
+value "47219-2001 (micro-sd)"
 footprint "MOLEX_47219-2001:MOLEX_47219-2001"
 attribut none
 position 156.430000 12.780000  orientation 180.00
@@ -1145,7 +1259,7 @@ $EndMODULE  R45
 
 $MODULE "C3"
 reference "C3"
-value "47uF 10V+"
+value "47uF 10V 0805"
 footprint "Capacitor_SMD:C_0805_2012Metric"
 attribut smd
 position 131.300000 56.100000  orientation 0.00
@@ -1166,7 +1280,7 @@ $EndMODULE  C3
 
 $MODULE "D3"
 reference "D3"
-value "BLUE"
+value "BLUE Led"
 footprint "LED_SMD:LED_0805_2012Metric"
 attribut smd
 position 114.800000 15.500000  orientation 90.00
@@ -1229,7 +1343,7 @@ $EndMODULE  C5
 
 $MODULE "U2"
 reference "U2"
-value "74LVT125"
+value "74LVT125PW,118"
 footprint "Package_SO:TSSOP-14_4.4x5mm_P0.65mm"
 attribut smd
 position 184.500000 78.500000  orientation 90.00
@@ -1859,7 +1973,7 @@ $EndMODULE  C4
 
 $MODULE "U1"
 reference "U1"
-value "74LVT125"
+value "74LVT125PW,118"
 footprint "Package_SO:TSSOP-14_4.4x5mm_P0.65mm"
 attribut smd
 position 116.700000 88.780000  orientation 0.00
@@ -1973,7 +2087,7 @@ $EndMODULE  C6
 
 $MODULE "U3"
 reference "U3"
-value "74LVT125"
+value "74LVT125PW,118"
 footprint "Package_SO:TSSOP-14_4.4x5mm_P0.65mm"
 attribut smd
 position 143.750000 88.750000  orientation 180.00
@@ -2219,7 +2333,7 @@ $EndMODULE  U9
 
 $MODULE "D11"
 reference "D11"
-value "GREEN"
+value "GREEN Led"
 footprint "LED_SMD:LED_0805_2012Metric"
 attribut smd
 position 122.902634 52.877042  orientation 180.00
@@ -2240,7 +2354,7 @@ $EndMODULE  D11
 
 $MODULE "D14"
 reference "D14"
-value "GREEN"
+value "GREEN Led"
 footprint "LED_SMD:LED_0805_2012Metric"
 attribut smd
 position 122.902634 43.977042  orientation 180.00
@@ -2261,7 +2375,7 @@ $EndMODULE  D14
 
 $MODULE "D13"
 reference "D13"
-value "GREEN"
+value "GREEN Led"
 footprint "LED_SMD:LED_0805_2012Metric"
 attribut smd
 position 122.902634 46.943708  orientation 180.00
@@ -2282,7 +2396,7 @@ $EndMODULE  D13
 
 $MODULE "D12"
 reference "D12"
-value "GREEN"
+value "GREEN Led"
 footprint "LED_SMD:LED_0805_2012Metric"
 attribut smd
 position 122.902634 49.910374  orientation 180.00
@@ -2387,7 +2501,7 @@ $EndMODULE  R17
 
 $MODULE "J6"
 reference "J6"
-value "USB micro-B"
+value "105017-0001 (USB micro-B)"
 footprint "Connector_USB:USB_Micro-B_Molex-105017-0001"
 attribut smd
 position 270.660000 79.070000  orientation 90.00
@@ -2558,7 +2672,7 @@ $EndMODULE  C14
 
 $MODULE "C28"
 reference "C28"
-value "47uF 10V+"
+value "47uF 10V 0805"
 footprint "Capacitor_SMD:C_0805_2012Metric"
 attribut smd
 position 221.780000 96.000000  orientation 0.00
@@ -2579,7 +2693,7 @@ $EndMODULE  C28
 
 $MODULE "J7"
 reference "J7"
-value "Conn_01x03_Male"
+value "640456-3 (Fan)"
 footprint "Connector_Molex:Molex_KK-254_AE-6410-03A_1x03_P2.54mm_Vertical"
 attribut none
 position 218.240000 91.270000  orientation 0.00
@@ -2711,7 +2825,7 @@ $EndMODULE  C20
 
 $MODULE "JCD1"
 reference "JCD1"
-value "ZTEX_CD-ztex_CD"
+value "77313-101-64LF (2x32 M 2.54mm)"
 footprint "For_SeeedStudio:PinHeader_2x32_P2.54mm_Vertical_For_SeeedStudio"
 attribut none
 position 130.000000 30.000000  orientation 90.00
@@ -3123,99 +3237,6 @@ shape_offset  0.000000  0.000000
 $EndPAD
 $EndMODULE  C1
 
-$MODULE "J1"
-reference "J1"
-value "Conn_02x07_Odd_Even"
-footprint "For_SeeedStudio:PinHeader_2x07_P2.00mm_Vertical_For_SeeedStudio"
-attribut none
-position 228.230000 27.500000  orientation 270.00
-layer front
-$PAD "1"
-Shape Rect Layer both
-position  0.000000  0.000000  size  1.350000  1.350000  orientation 0.00
-drill  0.900000
-shape_offset  0.000000  0.000000
-$EndPAD
-$PAD "2"
-Shape Oval Layer both
-position  2.000000  0.000000  size  1.350000  1.350000  orientation 0.00
-drill  0.900000
-shape_offset  0.000000  0.000000
-$EndPAD
-$PAD "3"
-Shape Oval Layer both
-position  0.000000  2.000000  size  1.350000  1.350000  orientation 0.00
-drill  0.900000
-shape_offset  0.000000  0.000000
-$EndPAD
-$PAD "4"
-Shape Oval Layer both
-position  2.000000  2.000000  size  1.350000  1.350000  orientation 0.00
-drill  0.900000
-shape_offset  0.000000  0.000000
-$EndPAD
-$PAD "5"
-Shape Oval Layer both
-position  0.000000  4.000000  size  1.350000  1.350000  orientation 0.00
-drill  0.900000
-shape_offset  0.000000  0.000000
-$EndPAD
-$PAD "6"
-Shape Oval Layer both
-position  2.000000  4.000000  size  1.350000  1.350000  orientation 0.00
-drill  0.900000
-shape_offset  0.000000  0.000000
-$EndPAD
-$PAD "7"
-Shape Oval Layer both
-position  0.000000  6.000000  size  1.350000  1.350000  orientation 0.00
-drill  0.900000
-shape_offset  0.000000  0.000000
-$EndPAD
-$PAD "8"
-Shape Oval Layer both
-position  2.000000  6.000000  size  1.350000  1.350000  orientation 0.00
-drill  0.900000
-shape_offset  0.000000  0.000000
-$EndPAD
-$PAD "9"
-Shape Oval Layer both
-position  0.000000  8.000000  size  1.350000  1.350000  orientation 0.00
-drill  0.900000
-shape_offset  0.000000  0.000000
-$EndPAD
-$PAD "10"
-Shape Oval Layer both
-position  2.000000  8.000000  size  1.350000  1.350000  orientation 0.00
-drill  0.900000
-shape_offset  0.000000  0.000000
-$EndPAD
-$PAD "11"
-Shape Oval Layer both
-position  0.000000 10.000000  size  1.350000  1.350000  orientation 0.00
-drill  0.900000
-shape_offset  0.000000  0.000000
-$EndPAD
-$PAD "12"
-Shape Oval Layer both
-position  2.000000 10.000000  size  1.350000  1.350000  orientation 0.00
-drill  0.900000
-shape_offset  0.000000  0.000000
-$EndPAD
-$PAD "13"
-Shape Oval Layer both
-position  0.000000 12.000000  size  1.350000  1.350000  orientation 0.00
-drill  0.900000
-shape_offset  0.000000  0.000000
-$EndPAD
-$PAD "14"
-Shape Oval Layer both
-position  2.000000 12.000000  size  1.350000  1.350000  orientation 0.00
-drill  0.900000
-shape_offset  0.000000  0.000000
-$EndPAD
-$EndMODULE  J1
-
 $MODULE "C26"
 reference "C26"
 value "100nF"
@@ -3260,7 +3281,7 @@ $EndMODULE  C27
 
 $MODULE "C25"
 reference "C25"
-value "150uF (could be >= 100 uF or even less, probably)"
+value "100uF 1206 (officially 150 uF ? could be >= 100 uF or even less, probably)"
 footprint "Capacitor_SMD:C_1206_3216Metric"
 attribut smd
 position 257.410000 86.360000  orientation 180.00
@@ -3302,7 +3323,7 @@ $EndMODULE  FB1
 
 $MODULE "U11"
 reference "U11"
-value "TPS2051C"
+value "TPS2051CDBV"
 footprint "Package_TO_SOT_SMD:SOT-23-5"
 attribut smd
 position 252.900000 85.210000  orientation 270.00
@@ -3341,7 +3362,7 @@ $EndMODULE  U11
 
 $MODULE "U10"
 reference "U10"
-value "SN65220"
+value "SN65220DBV"
 footprint "Package_TO_SOT_SMD:SOT-23-6"
 attribut smd
 position 265.400000 79.355000  orientation 180.00
@@ -3512,7 +3533,7 @@ $EndMODULE  R27
 
 $MODULE "D2"
 reference "D2"
-value "RED"
+value "RED Led"
 footprint "LED_SMD:LED_0805_2012Metric"
 attribut smd
 position 117.930000 38.158334  orientation 0.00
@@ -3533,7 +3554,7 @@ $EndMODULE  D2
 
 $MODULE "D1"
 reference "D1"
-value "RED"
+value "RED Led"
 footprint "LED_SMD:LED_0805_2012Metric"
 attribut smd
 position 117.930000 40.410000  orientation 0.00
@@ -3659,7 +3680,7 @@ $EndMODULE  C22
 
 $MODULE "C21"
 reference "C21"
-value "47uF 10V+"
+value "47uF 10V 0805"
 footprint "Capacitor_SMD:C_0805_2012Metric"
 attribut smd
 position 259.540000 53.810000  orientation 180.00
@@ -3680,7 +3701,7 @@ $EndMODULE  C21
 
 $MODULE "J5"
 reference "J5"
-value "HDMI_A"
+value "10029449-111RLF (HDMI A)"
 footprint "For_SeeedStudio:HDMI_A_Amphenol_10029449-111"
 attribut smd
 position 268.900000 62.300000  orientation 90.00
@@ -3827,7 +3848,7 @@ $EndMODULE  J5
 
 $MODULE "C39"
 reference "C39"
-value "1 uF (250+V)"
+value "1uF 250V Radial 6.3x2.5"
 footprint "Capacitor_THT:CP_Radial_D6.3mm_P2.50mm"
 attribut none
 position 266.850000 44.280000  orientation 180.00
@@ -3848,7 +3869,7 @@ $EndMODULE  C39
 
 $MODULE "R33"
 reference "R33"
-value "1M"
+value "1M 1210"
 footprint "Resistor_SMD:R_1210_3225Metric"
 attribut smd
 position 265.450000 50.320000  orientation 180.00
@@ -3869,7 +3890,7 @@ $EndMODULE  R33
 
 $MODULE "J4"
 reference "J4"
-value "C96ABC"
+value "0850030567 (DIN 41612C 3x32 pins)"
 footprint "For_SeeedStudio:DIN41612_C_3x32_Male_Horizontal_THT"
 attribut none
 position 200.000000 100.000000  orientation 180.00
@@ -4553,7 +4574,7 @@ $EndMODULE  J3
 
 $MODULE "JAB1"
 reference "JAB1"
-value "ZTEX_AB-ztex_AB"
+value "77313-101-64LF (2x32 M 2.54mm)"
 footprint "For_SeeedStudio:PinHeader_2x32_P2.54mm_Vertical_For_SeeedStudio"
 attribut none
 position 130.000000 61.750000  orientation 90.00

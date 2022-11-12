@@ -3,7 +3,7 @@ EELAYER 30 0
 EELAYER END
 $Descr A4 11693 8268
 encoding utf-8
-Sheet 9 8
+Sheet 8 8
 Title "sbus-to-ztex blinkey stuff"
 Date ""
 Rev ""
@@ -18,16 +18,15 @@ Dual-row "extended" Pmod\nExternal, in line w/ the carrier
 $Comp
 L Connector_Generic:Conn_02x08_Odd_Even J8
 U 1 1 63467144
-P 7350 3600
-F 0 "J8" H 7400 4117 50  0000 C CNN
-F 1 "Conn_02x08_Odd_Even" H 7400 4026 50  0000 C CNN
-F 2 "For_SeeedStudio:PinSocket_2x08_P2.54mm_Horizontal_ForSeeedStudio" H 7350 3600 50  0001 C CNN
-F 3 "~" H 7350 3600 50  0001 C CNN
-F 4 "A2541HWR-2x8P" H 7350 3600 50  0001 C CNN "MPN"
-F 5 "https://www.lcsc.com/product-detail/Female-Headers_CJT-Changjiang-Connectors-A2541HWR-2x8P_C239359.html" H 7350 3600 50  0001 C CNN "URL"
-F 6 "PPPC082LJBN-RC" H 7350 3600 50  0001 C CNN "MPN-ALT"
-	1    7350 3600
-	1    0    0    -1  
+P 7450 3700
+F 0 "J8" H 7500 4217 50  0000 C CNN
+F 1 "SMH-108-02-L-D (Pmod 2x8 F)" H 7500 4126 50  0000 C CNN
+F 2 "For_SeeedStudio:SAMTEC-SMH-108-02-X-D" H 7450 3700 50  0001 C CNN
+F 3 "~" H 7450 3700 50  0001 C CNN
+F 4 "SMH-108-02-L-D" H 7450 3700 50  0001 C CNN "MPN"
+F 5 "https://www.mouser.fr/ProductDetail/Samtec/SMH-108-02-L-D?qs=%252BZP6%2F%252BtExtAyrMiVCu9Apg%3D%3D" H 7450 3700 50  0001 C CNN "URL"
+	1    7450 3700
+	-1   0    0    1   
 $EndComp
 Text GLabel 7150 3500 0    50   Input ~ 0
 PMOD-5
@@ -45,10 +44,6 @@ Text GLabel 7650 3600 2    50   Input ~ 0
 PMOD-8
 Text GLabel 7650 3700 2    50   Input ~ 0
 PMOD-10
-Wire Wire Line
-	7650 3300 7950 3300
-Wire Wire Line
-	7650 3400 8150 3400
 $Comp
 L power:GND #PWR0151
 U 1 1 634673C0
@@ -94,20 +89,12 @@ F 11 "https://lcsc.com/product-detail/Multilayer-Ceramic-Capacitors-MLCC-SMD-SMT
 	1    8150 3250
 	1    0    0    -1  
 $EndComp
-Connection ~ 8150 3400
 Wire Wire Line
 	7950 3300 8050 3300
 Wire Wire Line
 	8050 3300 8050 3100
 Wire Wire Line
 	8050 3100 8150 3100
-Connection ~ 7950 3300
-Wire Wire Line
-	7150 3300 7650 3300
-Connection ~ 7650 3300
-Wire Wire Line
-	7650 3400 7150 3400
-Connection ~ 7650 3400
 Text GLabel 7650 3900 2    50   Input ~ 0
 PMOD-14
 Text GLabel 7650 4000 2    50   Input ~ 0
@@ -126,4 +113,16 @@ Wire Notes Line
 	6700 4050 6700 3850
 Text Notes 8100 4050 0    50   ~ 0
 Extra Pins
+Wire Wire Line
+	7150 3300 7650 3300
+Wire Wire Line
+	7650 3300 7950 3300
+Connection ~ 7650 3300
+Connection ~ 7950 3300
+Wire Wire Line
+	7150 3400 7650 3400
+Wire Wire Line
+	7650 3400 8150 3400
+Connection ~ 7650 3400
+Connection ~ 8150 3400
 $EndSCHEMATC

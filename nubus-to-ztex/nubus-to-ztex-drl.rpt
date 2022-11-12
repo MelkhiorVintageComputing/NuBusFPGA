@@ -1,5 +1,5 @@
 Drill report for /home/dolbeau/MAC/NuBusFPGA.V1_2/nubus-to-ztex/nubus-to-ztex.kicad_pcb
-Created on Tue Nov  1 08:32:06 2022
+Created on Sat Nov 12 11:37:18 2022
 
 Copper Layer Stackup:
     =============================================================
@@ -12,25 +12,24 @@ Copper Layer Stackup:
 Drill file 'nubus-to-ztex-PTH.drl' contains
     plated through holes:
     =============================================================
-    T1  0.40mm  0.016"  (137 holes)
+    T1  0.40mm  0.016"  (145 holes)
     T2  0.60mm  0.024"  (2 holes)  (with 2 slots)
     T3  0.80mm  0.031"  (2 holes)
     T4  0.85mm  0.033"  (2 holes)
-    T5  0.90mm  0.035"  (14 holes)
-    T6  1.00mm  0.039"  (96 holes)
-    T7  1.02mm  0.040"  (6 holes)
-    T8  1.14mm  0.045"  (128 holes)
-    T9  1.19mm  0.047"  (16 holes)
-    T10  1.20mm  0.047"  (3 holes)
-    T11  1.30mm  0.051"  (4 holes)
-    T12  2.20mm  0.087"  (1 hole)
+    T5  1.00mm  0.039"  (96 holes)
+    T6  1.02mm  0.040"  (6 holes)
+    T7  1.14mm  0.045"  (128 holes)
+    T8  1.20mm  0.047"  (3 holes)
+    T9  1.30mm  0.051"  (4 holes)
+    T10  2.20mm  0.087"  (1 hole)
 
-    Total plated holes count 411
+    Total plated holes count 389
 
 
 Drill file 'nubus-to-ztex-NPTH.drl' contains
     unplated through holes:
     =============================================================
-    T1  2.85mm  0.112"  (2 holes)
+    T1  1.05mm  0.041"  (2 holes)
+    T2  2.85mm  0.112"  (2 holes)
 
-    Total unplated holes count 2
+    Total unplated holes count 4

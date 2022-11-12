@@ -2,7 +2,7 @@
 <export version="D">
   <design>
     <source>/home/dolbeau/MAC/NuBusFPGA.V1_2/nubus-to-ztex/nubus-to-ztex.sch</source>
-    <date>Tue Nov  1 08:31:47 2022</date>
+    <date>Sat Nov 12 11:38:23 2022</date>
     <tool>Eeschema 5.1.9+dfsg1-1~bpo10+1</tool>
     <sheet number="1" name="/" tstamps="/">
       <title_block>
@@ -110,8 +110,15 @@
     </sheet>
   </design>
   <components>
+    <comp ref="GRAPHIC1">
+      <value>LogoLitex</value>
+      <footprint>For_SeeedStudio:litex_logo</footprint>
+      <libsource lib="logo" part="LogoLitex" description=""/>
+      <sheetpath names="/" tstamps="/"/>
+      <tstamp>637CDFF9</tstamp>
+    </comp>
     <comp ref="JAB1">
-      <value>ZTEX_AB-ztex_AB</value>
+      <value>77313-101-64LF (2x32 M 2.54mm)</value>
       <footprint>For_SeeedStudio:PinHeader_2x32_P2.54mm_Vertical_For_SeeedStudio</footprint>
       <fields>
         <field name="MPN">77313-101-64LF</field>
@@ -140,7 +147,7 @@
       <tstamp>5F69129B</tstamp>
     </comp>
     <comp ref="JCD1">
-      <value>ZTEX_CD-ztex_CD</value>
+      <value>77313-101-64LF (2x32 M 2.54mm)</value>
       <footprint>For_SeeedStudio:PinHeader_2x32_P2.54mm_Vertical_For_SeeedStudio</footprint>
       <fields>
         <field name="MPN">77313-101-64LF</field>
@@ -155,17 +162,12 @@
       <tstamp>5F676F65</tstamp>
     </comp>
     <comp ref="J1">
-      <value>Conn_02x07_Odd_Even</value>
-      <footprint>For_SeeedStudio:PinHeader_2x07_P2.00mm_Vertical_For_SeeedStudio</footprint>
+      <value>87832-1420 (2x7 M 2mm)</value>
+      <footprint>For_SeeedStudio:MOLEX_87832-1420</footprint>
       <datasheet>https://www.molex.com/pdm_docs/sd/878331420_sd.pdf</datasheet>
       <fields>
-        <field name="Datasheet-ALT">https://datasheet.lcsc.com/lcsc/1811051309_MOLEX-878311420_C240854.pdf</field>
-        <field name="MPN">87831-1420</field>
-        <field name="MPN Right Angle">87833-1420</field>
-        <field name="MPN-ALT Right Angle">A2005WR-N-2X7P-B</field>
-        <field name="Notes">87831-1419, 87831-1420, 87831-1421, 87831-1436 only change plating</field>
-        <field name="URL">https://www2.mouser.com/ProductDetail/Molex/87831-1420?qs=QtQX4uD3c2VDCL534TqpVg%3D%3D</field>
-        <field name="URL Rihgt Angle">https://www2.mouser.com/ProductDetail/Molex/87833-1420?qs=%2Fha2pyFadujYFYCIYI1IvFCvLi7no9WQYzIL%2FpYxKhg%3D</field>
+        <field name="MPN">87832-1420</field>
+        <field name="URL">https://www.mouser.fr/ProductDetail/Molex/87832-1420?qs=9Wl4wMk6Njp2JciwISLQUQ%3D%3D</field>
       </fields>
       <libsource lib="Connector_Generic" part="Conn_02x07_Odd_Even" description="Generic connector, double row, 02x07, odd/even pin numbering scheme (row 1 odd numbers, row 2 even numbers), script generated (kicad-library-utils/schlib/autogen/connector/)"/>
       <sheetpath names="/B2B/" tstamps="/618E8C75/"/>
@@ -183,7 +185,7 @@
       <tstamp>61B5DFBC</tstamp>
     </comp>
     <comp ref="D1">
-      <value>RED</value>
+      <value>RED Led</value>
       <footprint>LED_SMD:LED_0805_2012Metric</footprint>
       <datasheet>https://optoelectronics.liteon.com/upload/download/DS-22-99-0150/LTST-C170KRKT.pdf</datasheet>
       <fields>
@@ -207,7 +209,7 @@
       <tstamp>61B5F3F5</tstamp>
     </comp>
     <comp ref="D2">
-      <value>RED</value>
+      <value>RED Led</value>
       <footprint>LED_SMD:LED_0805_2012Metric</footprint>
       <datasheet>https://optoelectronics.liteon.com/upload/download/DS-22-99-0150/LTST-C170KRKT.pdf</datasheet>
       <fields>
@@ -265,7 +267,7 @@
       <tstamp>621E3C4D</tstamp>
     </comp>
     <comp ref="D3">
-      <value>BLUE</value>
+      <value>BLUE Led</value>
       <footprint>LED_SMD:LED_0805_2012Metric</footprint>
       <datasheet>https://eu.mouser.com/datasheet/2/239/Lite-On-LTST-C170TBKT-1175372.pdf</datasheet>
       <fields>
@@ -278,7 +280,7 @@
       <tstamp>621E3C57</tstamp>
     </comp>
     <comp ref="C3">
-      <value>47uF 10V+</value>
+      <value>47uF 10V 0805</value>
       <footprint>Capacitor_SMD:C_0805_2012Metric</footprint>
       <fields>
         <field name="MPN">GRM21BR61A476ME15K</field>
@@ -318,7 +320,7 @@
       <tstamp>5F93CF72</tstamp>
     </comp>
     <comp ref="J4">
-      <value>C96ABC</value>
+      <value>0850030567 (DIN 41612C 3x32 pins)</value>
       <footprint>For_SeeedStudio:DIN41612_C_3x32_Male_Horizontal_THT</footprint>
       <datasheet> ~</datasheet>
       <fields>
@@ -490,7 +492,7 @@
       <tstamp>61D85DF0</tstamp>
     </comp>
     <comp ref="D11">
-      <value>GREEN</value>
+      <value>GREEN Led</value>
       <footprint>LED_SMD:LED_0805_2012Metric</footprint>
       <datasheet>https://www.lcsc.com/product-detail/Light-Emitting-Diodes-LED_Lite-On-LTST-C170KGKT_C98221.html</datasheet>
       <fields>
@@ -514,7 +516,7 @@
       <tstamp>61D85E0D</tstamp>
     </comp>
     <comp ref="D12">
-      <value>GREEN</value>
+      <value>GREEN Led</value>
       <footprint>LED_SMD:LED_0805_2012Metric</footprint>
       <datasheet>https://www.lcsc.com/product-detail/Light-Emitting-Diodes-LED_Lite-On-LTST-C170KGKT_C98221.html</datasheet>
       <fields>
@@ -538,7 +540,7 @@
       <tstamp>61D85E2A</tstamp>
     </comp>
     <comp ref="D13">
-      <value>GREEN</value>
+      <value>GREEN Led</value>
       <footprint>LED_SMD:LED_0805_2012Metric</footprint>
       <datasheet>https://www.lcsc.com/product-detail/Light-Emitting-Diodes-LED_Lite-On-LTST-C170KGKT_C98221.html</datasheet>
       <fields>
@@ -562,7 +564,7 @@
       <tstamp>61D85E47</tstamp>
     </comp>
     <comp ref="D14">
-      <value>GREEN</value>
+      <value>GREEN Led</value>
       <footprint>LED_SMD:LED_0805_2012Metric</footprint>
       <datasheet>https://www.lcsc.com/product-detail/Light-Emitting-Diodes-LED_Lite-On-LTST-C170KGKT_C98221.html</datasheet>
       <fields>
@@ -585,7 +587,7 @@
       <tstamp>61AF68A2</tstamp>
     </comp>
     <comp ref="U3">
-      <value>74LVT125</value>
+      <value>74LVT125PW,118</value>
       <footprint>Package_SO:TSSOP-14_4.4x5mm_P0.65mm</footprint>
       <datasheet>http://www.ti.com/lit/gpn/sn74LVT125</datasheet>
       <fields>
@@ -615,7 +617,7 @@
       <tstamp>61F85FB5</tstamp>
     </comp>
     <comp ref="U1">
-      <value>74LVT125</value>
+      <value>74LVT125PW,118</value>
       <footprint>Package_SO:TSSOP-14_4.4x5mm_P0.65mm</footprint>
       <datasheet>http://www.ti.com/lit/gpn/sn74LVT125</datasheet>
       <fields>
@@ -644,7 +646,7 @@
       <tstamp>61FA599B</tstamp>
     </comp>
     <comp ref="U2">
-      <value>74LVT125</value>
+      <value>74LVT125PW,118</value>
       <footprint>Package_SO:TSSOP-14_4.4x5mm_P0.65mm</footprint>
       <datasheet>http://www.ti.com/lit/gpn/sn74LVT125</datasheet>
       <fields>
@@ -812,7 +814,7 @@
       <tstamp>6332F9A9</tstamp>
     </comp>
     <comp ref="D6">
-      <value>YELLOW</value>
+      <value>YELLOW Led</value>
       <footprint>LED_SMD:LED_0805_2012Metric</footprint>
       <datasheet>https://lcsc.com/product-detail/Light-Emitting-Diodes-LED_Lite-On-LTST-C170KSKT_C125091.html</datasheet>
       <fields>
@@ -836,7 +838,7 @@
       <tstamp>6334203F</tstamp>
     </comp>
     <comp ref="D9">
-      <value>YELLOW</value>
+      <value>YELLOW Led</value>
       <footprint>LED_SMD:LED_0805_2012Metric</footprint>
       <datasheet>https://lcsc.com/product-detail/Light-Emitting-Diodes-LED_Lite-On-LTST-C170KSKT_C125091.html</datasheet>
       <fields>
@@ -860,7 +862,7 @@
       <tstamp>6334334C</tstamp>
     </comp>
     <comp ref="D10">
-      <value>YELLOW</value>
+      <value>YELLOW Led</value>
       <footprint>LED_SMD:LED_0805_2012Metric</footprint>
       <datasheet>https://lcsc.com/product-detail/Light-Emitting-Diodes-LED_Lite-On-LTST-C170KSKT_C125091.html</datasheet>
       <fields>
@@ -884,7 +886,7 @@
       <tstamp>6334A052</tstamp>
     </comp>
     <comp ref="D7">
-      <value>YELLOW</value>
+      <value>YELLOW Led</value>
       <footprint>LED_SMD:LED_0805_2012Metric</footprint>
       <datasheet>https://lcsc.com/product-detail/Light-Emitting-Diodes-LED_Lite-On-LTST-C170KSKT_C125091.html</datasheet>
       <fields>
@@ -908,7 +910,7 @@
       <tstamp>63352DBD</tstamp>
     </comp>
     <comp ref="D8">
-      <value>YELLOW</value>
+      <value>YELLOW Led</value>
       <footprint>LED_SMD:LED_0805_2012Metric</footprint>
       <datasheet>https://lcsc.com/product-detail/Light-Emitting-Diodes-LED_Lite-On-LTST-C170KSKT_C125091.html</datasheet>
       <fields>
@@ -1043,7 +1045,7 @@
       <tstamp>6148D34B</tstamp>
     </comp>
     <comp ref="J5">
-      <value>HDMI_A</value>
+      <value>10029449-111RLF (HDMI A)</value>
       <footprint>For_SeeedStudio:HDMI_A_Amphenol_10029449-111</footprint>
       <datasheet>https://en.wikipedia.org/wiki/HDMI</datasheet>
       <fields>
@@ -1056,7 +1058,7 @@
       <tstamp>6148D34C</tstamp>
     </comp>
     <comp ref="C21">
-      <value>47uF 10V+</value>
+      <value>47uF 10V 0805</value>
       <footprint>Capacitor_SMD:C_0805_2012Metric</footprint>
       <fields>
         <field name="MPN">GRM21BR61A476ME15K</field>
@@ -1087,7 +1089,7 @@
       <tstamp>61B9B186</tstamp>
     </comp>
     <comp ref="C39">
-      <value>1 uF (250+V)</value>
+      <value>1uF 250V Radial 6.3x2.5</value>
       <footprint>Capacitor_THT:CP_Radial_D6.3mm_P2.50mm</footprint>
       <datasheet>~</datasheet>
       <fields>
@@ -1101,7 +1103,7 @@
       <tstamp>63467FEB</tstamp>
     </comp>
     <comp ref="R33">
-      <value>1M</value>
+      <value>1M 1210</value>
       <footprint>Resistor_SMD:R_1210_3225Metric</footprint>
       <datasheet>~</datasheet>
       <fields>
@@ -1123,7 +1125,7 @@
       <tstamp>63467FFE</tstamp>
     </comp>
     <comp ref="J6">
-      <value>USB micro-B</value>
+      <value>105017-0001 (USB micro-B)</value>
       <footprint>Connector_USB:USB_Micro-B_Molex-105017-0001</footprint>
       <datasheet>https://www.molex.com/pdm_docs/sd/1050170001_sd.pdf</datasheet>
       <fields>
@@ -1176,7 +1178,7 @@
       <tstamp>60D9A6E1</tstamp>
     </comp>
     <comp ref="U10">
-      <value>SN65220</value>
+      <value>SN65220DBV</value>
       <footprint>Package_TO_SOT_SMD:SOT-23-6</footprint>
       <datasheet>http://www.ti.com/lit/ds/symlink/sn65220.pdf</datasheet>
       <fields>
@@ -1236,7 +1238,7 @@
       <tstamp>60D9A735</tstamp>
     </comp>
     <comp ref="C25">
-      <value>150uF (could be &gt;= 100 uF or even less, probably)</value>
+      <value>100uF 1206 (officially 150 uF ? could be &gt;= 100 uF or even less, probably)</value>
       <footprint>Capacitor_SMD:C_1206_3216Metric</footprint>
       <datasheet>~</datasheet>
       <fields>
@@ -1281,7 +1283,7 @@
       <tstamp>612D3A06</tstamp>
     </comp>
     <comp ref="U11">
-      <value>TPS2051C</value>
+      <value>TPS2051CDBV</value>
       <footprint>Package_TO_SOT_SMD:SOT-23-5</footprint>
       <fields>
         <field name="MPN">TPS2051CDBVR</field>
@@ -1294,7 +1296,7 @@
       <tstamp>60D9A6AC</tstamp>
     </comp>
     <comp ref="J7">
-      <value>Conn_01x03_Male</value>
+      <value>640456-3 (Fan)</value>
       <footprint>Connector_Molex:Molex_KK-254_AE-6410-03A_1x03_P2.54mm_Vertical</footprint>
       <datasheet>~</datasheet>
       <fields>
@@ -1310,7 +1312,7 @@
       <tstamp>60E1E49E</tstamp>
     </comp>
     <comp ref="C28">
-      <value>47uF 10V+</value>
+      <value>47uF 10V 0805</value>
       <footprint>Capacitor_SMD:C_0805_2012Metric</footprint>
       <fields>
         <field name="MPN">GRM21BR61A476ME15K</field>
@@ -1323,7 +1325,7 @@
       <tstamp>60E24715</tstamp>
     </comp>
     <comp ref="C10">
-      <value>47uF 10V+</value>
+      <value>47uF 10V 0805</value>
       <footprint>Capacitor_SMD:C_0805_2012Metric</footprint>
       <fields>
         <field name="MPN">GRM21BR61A476ME15K</field>
@@ -1336,7 +1338,7 @@
       <tstamp>590C7447</tstamp>
     </comp>
     <comp ref="J2">
-      <value>47219-2001</value>
+      <value>47219-2001 (micro-sd)</value>
       <footprint>MOLEX_47219-2001:MOLEX_47219-2001</footprint>
       <datasheet>https://www.molex.com/webdocs/datasheets/pdf/en-us/0472192001_MEMORY_CARD_SOCKET.pdf</datasheet>
       <fields>
@@ -1365,13 +1367,12 @@
       <tstamp>60D77AD6</tstamp>
     </comp>
     <comp ref="J8">
-      <value>Conn_02x08_Odd_Even</value>
-      <footprint>For_SeeedStudio:PinSocket_2x08_P2.54mm_Horizontal_ForSeeedStudio</footprint>
+      <value>SMH-108-02-L-D (Pmod 2x8 F)</value>
+      <footprint>For_SeeedStudio:SAMTEC-SMH-108-02-X-D</footprint>
       <datasheet>~</datasheet>
       <fields>
-        <field name="MPN">A2541HWR-2x8P</field>
-        <field name="MPN-ALT">PPPC082LJBN-RC</field>
-        <field name="URL">https://www.lcsc.com/product-detail/Female-Headers_CJT-Changjiang-Connectors-A2541HWR-2x8P_C239359.html</field>
+        <field name="MPN">SMH-108-02-L-D</field>
+        <field name="URL">https://www.mouser.fr/ProductDetail/Samtec/SMH-108-02-L-D?qs=%252BZP6%2F%252BtExtAyrMiVCu9Apg%3D%3D</field>
       </fields>
       <libsource lib="Connector_Generic" part="Conn_02x08_Odd_Even" description="Generic connector, double row, 02x08, odd/even pin numbering scheme (row 1 odd numbers, row 2 even numbers), script generated (kicad-library-utils/schlib/autogen/connector/)"/>
       <sheetpath names="/pmod/" tstamps="/62CC4C0A/"/>
@@ -1931,6 +1932,13 @@
         <pin num="24" name="VCCA" type="power_in"/>
       </pins>
     </libpart>
+    <libpart lib="logo" part="LogoLitex">
+      <fields>
+        <field name="Reference">GRAPHIC</field>
+        <field name="Value">LogoLitex</field>
+        <field name="Footprint">For_SeeedStudio:litex_logo</field>
+      </fields>
+    </libpart>
     <libpart lib="ztex_AB" part="ZTEX_AB">
       <footprints>
         <fp>Connector*:*_2x??_*</fp>
@@ -2116,6 +2124,9 @@
     <library logical="TPD12S016PWR">
       <uri>/home/dolbeau/MAC/NuBusFPGA.V1_2/nubus-to-ztex/TPD12S016PWR.lib</uri>
     </library>
+    <library logical="logo">
+      <uri>/home/dolbeau/MAC/NuBusFPGA.V1_2/nubus-to-ztex/logo.lib</uri>
+    </library>
     <library logical="ztex_AB">
       <uri>/home/dolbeau/MAC/NuBusFPGA.V1_2/nubus-to-ztex/ztex_AB.lib</uri>
     </library>
@@ -2200,13 +2211,13 @@
       <node ref="R14" pin="1"/>
       <node ref="R15" pin="1"/>
       <node ref="C21" pin="1"/>
+      <node ref="C15" pin="1"/>
       <node ref="U2" pin="13"/>
       <node ref="U2" pin="14"/>
       <node ref="C10" pin="1"/>
-      <node ref="J8" pin="2"/>
-      <node ref="J8" pin="1"/>
+      <node ref="J8" pin="15"/>
+      <node ref="J8" pin="16"/>
       <node ref="J2" pin="4"/>
-      <node ref="C15" pin="1"/>
       <node ref="C22" pin="1"/>
       <node ref="R16" pin="1"/>
       <node ref="C9" pin="1"/>
@@ -2518,16 +2529,16 @@
       <node ref="U13" pin="3"/>
     </net>
     <net code="79" name="NUBUS_AD_DIR">
-      <node ref="U8" pin="1"/>
       <node ref="JAB1" pin="17"/>
-      <node ref="U5" pin="1"/>
       <node ref="U6" pin="1"/>
       <node ref="U7" pin="1"/>
+      <node ref="U5" pin="1"/>
+      <node ref="U8" pin="1"/>
     </net>
     <net code="80" name="ARB3_o_n">
-      <node ref="JAB1" pin="15"/>
-      <node ref="U3" pin="10"/>
       <node ref="R45" pin="2"/>
+      <node ref="U3" pin="10"/>
+      <node ref="JAB1" pin="15"/>
     </net>
     <net code="81" name="ARB0_o_n">
       <node ref="U3" pin="1"/>
@@ -2539,20 +2550,20 @@
       <node ref="U1" pin="9"/>
     </net>
     <net code="83" name="GND">
-      <node ref="C17" pin="2"/>
-      <node ref="J4" pin="b30"/>
-      <node ref="U6" pin="10"/>
-      <node ref="JAB1" pin="4"/>
-      <node ref="JAB1" pin="32"/>
       <node ref="C18" pin="2"/>
-      <node ref="J3" pin="1"/>
-      <node ref="JAB1" pin="64"/>
-      <node ref="U7" pin="10"/>
-      <node ref="JCD1" pin="3"/>
+      <node ref="U6" pin="10"/>
+      <node ref="J4" pin="b30"/>
+      <node ref="JAB1" pin="32"/>
+      <node ref="C17" pin="2"/>
       <node ref="JAB1" pin="31"/>
-      <node ref="JCD1" pin="33"/>
-      <node ref="C14" pin="2"/>
       <node ref="JAB1" pin="3"/>
+      <node ref="JCD1" pin="33"/>
+      <node ref="JCD1" pin="3"/>
+      <node ref="JAB1" pin="64"/>
+      <node ref="J3" pin="1"/>
+      <node ref="U7" pin="10"/>
+      <node ref="JAB1" pin="4"/>
+      <node ref="C14" pin="2"/>
       <node ref="J4" pin="b12"/>
       <node ref="J4" pin="b13"/>
       <node ref="J4" pin="b14"/>
@@ -2582,14 +2593,14 @@
       <node ref="C3" pin="2"/>
       <node ref="J5" pin="5"/>
       <node ref="J5" pin="2"/>
-      <node ref="J8" pin="4"/>
+      <node ref="J8" pin="14"/>
       <node ref="C21" pin="2"/>
       <node ref="C23" pin="2"/>
       <node ref="C22" pin="2"/>
       <node ref="J5" pin="17"/>
       <node ref="C9" pin="2"/>
       <node ref="J2" pin="G4"/>
-      <node ref="J8" pin="3"/>
+      <node ref="J8" pin="13"/>
       <node ref="C15" pin="2"/>
       <node ref="J2" pin="G2"/>
       <node ref="J2" pin="G1"/>
@@ -2672,31 +2683,31 @@
     </net>
     <net code="85" name="PMOD-9">
       <node ref="JCD1" pin="50"/>
-      <node ref="J8" pin="9"/>
+      <node ref="J8" pin="8"/>
     </net>
     <net code="86" name="PMOD-12">
       <node ref="JCD1" pin="48"/>
-      <node ref="J8" pin="12"/>
+      <node ref="J8" pin="5"/>
     </net>
     <net code="87" name="PMOD-11">
-      <node ref="J8" pin="11"/>
       <node ref="JCD1" pin="46"/>
+      <node ref="J8" pin="6"/>
     </net>
     <net code="88" name="PMOD-14">
+      <node ref="J8" pin="3"/>
       <node ref="JCD1" pin="44"/>
-      <node ref="J8" pin="14"/>
     </net>
     <net code="89" name="PMOD-13">
-      <node ref="J8" pin="13"/>
       <node ref="JCD1" pin="42"/>
+      <node ref="J8" pin="4"/>
     </net>
     <net code="90" name="PMOD-16">
       <node ref="JCD1" pin="40"/>
-      <node ref="J8" pin="16"/>
+      <node ref="J8" pin="1"/>
     </net>
     <net code="91" name="PMOD-15">
       <node ref="JCD1" pin="38"/>
-      <node ref="J8" pin="15"/>
+      <node ref="J8" pin="2"/>
     </net>
     <net code="92" name="~RESET_3V3">
       <node ref="JCD1" pin="30"/>
@@ -2711,8 +2722,8 @@
       <node ref="JCD1" pin="24"/>
     </net>
     <net code="95" name="SD_CMD">
-      <node ref="J2" pin="3"/>
       <node ref="JCD1" pin="22"/>
+      <node ref="J2" pin="3"/>
     </net>
     <net code="96" name="SD_D3">
       <node ref="J2" pin="2"/>
@@ -2727,13 +2738,13 @@
     </net>
     <net code="99" name="TMx_oe_n">
       <node ref="JCD1" pin="15"/>
+      <node ref="U2" pin="1"/>
       <node ref="U2" pin="4"/>
       <node ref="R40" pin="2"/>
-      <node ref="U2" pin="1"/>
     </net>
     <net code="100" name="~ARB0_3V3">
-      <node ref="JCD1" pin="13"/>
       <node ref="U14" pin="12"/>
+      <node ref="JCD1" pin="13"/>
     </net>
     <net code="101" name="~ARB3_3V3">
       <node ref="U14" pin="13"/>
@@ -2745,25 +2756,25 @@
       <node ref="JCD1" pin="9"/>
     </net>
     <net code="103" name="~ID3_3V3">
-      <node ref="U14" pin="18"/>
-      <node ref="D14" pin="1"/>
       <node ref="JCD1" pin="7"/>
+      <node ref="D14" pin="1"/>
+      <node ref="U14" pin="18"/>
     </net>
     <net code="104" name="FPGA_JTAG_TDO">
       <node ref="JCD1" pin="61"/>
       <node ref="J1" pin="8"/>
     </net>
     <net code="105" name="PMOD-7">
-      <node ref="J8" pin="7"/>
+      <node ref="J8" pin="10"/>
       <node ref="JCD1" pin="54"/>
     </net>
     <net code="106" name="PMOD-10">
-      <node ref="J8" pin="10"/>
       <node ref="JCD1" pin="52"/>
+      <node ref="J8" pin="7"/>
     </net>
     <net code="107" name="FPGA_JTAG_TMS">
-      <node ref="JCD1" pin="62"/>
       <node ref="J1" pin="4"/>
+      <node ref="JCD1" pin="62"/>
     </net>
     <net code="108" name="/B2B/JTAG_VIO">
       <node ref="J1" pin="2"/>
@@ -2781,26 +2792,26 @@
       <node ref="J2" pin="1"/>
     </net>
     <net code="112" name="PMOD-8">
-      <node ref="J8" pin="8"/>
+      <node ref="J8" pin="9"/>
       <node ref="JCD1" pin="56"/>
     </net>
     <net code="113" name="PMOD-5">
       <node ref="JCD1" pin="58"/>
-      <node ref="J8" pin="5"/>
+      <node ref="J8" pin="12"/>
     </net>
     <net code="114" name="PMOD-6">
-      <node ref="J8" pin="6"/>
       <node ref="JCD1" pin="60"/>
+      <node ref="J8" pin="11"/>
     </net>
     <net code="115" name="~ID2_3V3">
-      <node ref="D13" pin="1"/>
       <node ref="JCD1" pin="8"/>
+      <node ref="D13" pin="1"/>
       <node ref="U14" pin="17"/>
     </net>
     <net code="116" name="~ID1_3V3">
+      <node ref="U14" pin="16"/>
       <node ref="JCD1" pin="10"/>
       <node ref="D12" pin="1"/>
-      <node ref="U14" pin="16"/>
     </net>
     <net code="117" name="~ARB2_3V3">
       <node ref="U14" pin="14"/>
@@ -2811,36 +2822,36 @@
       <node ref="JCD1" pin="14"/>
     </net>
     <net code="119" name="~ACK_5V">
-      <node ref="U13" pin="15"/>
-      <node ref="J4" pin="a28"/>
       <node ref="U1" pin="11"/>
+      <node ref="J4" pin="a28"/>
+      <node ref="U13" pin="15"/>
     </net>
     <net code="120" name="~START_5V">
+      <node ref="U13" pin="16"/>
       <node ref="J4" pin="c28"/>
       <node ref="U1" pin="8"/>
-      <node ref="U13" pin="16"/>
     </net>
     <net code="121" name="~RQST_5V">
-      <node ref="U13" pin="14"/>
-      <node ref="U1" pin="6"/>
       <node ref="J4" pin="a30"/>
+      <node ref="U1" pin="6"/>
+      <node ref="U13" pin="14"/>
     </net>
     <net code="122" name="~NMRQ_5V">
-      <node ref="J4" pin="a31"/>
       <node ref="U1" pin="3"/>
+      <node ref="J4" pin="a31"/>
     </net>
     <net code="123" name="Net-(U2-Pad11)">
       <node ref="U2" pin="11"/>
     </net>
     <net code="124" name="~TM1_5V">
+      <node ref="U2" pin="3"/>
       <node ref="J4" pin="a5"/>
       <node ref="U15" pin="15"/>
-      <node ref="U2" pin="3"/>
     </net>
     <net code="125" name="~TM2_5V">
+      <node ref="J4" pin="b8"/>
       <node ref="U15" pin="17"/>
       <node ref="U2" pin="8"/>
-      <node ref="J4" pin="b8"/>
     </net>
     <net code="126" name="~TM0_5V">
       <node ref="U15" pin="16"/>
@@ -2970,8 +2981,8 @@
       <node ref="U7" pin="3"/>
     </net>
     <net code="160" name="~AD17_5V">
-      <node ref="U6" pin="9"/>
       <node ref="J4" pin="a14"/>
+      <node ref="U6" pin="9"/>
     </net>
     <net code="161" name="~AD19_5V">
       <node ref="U6" pin="7"/>
@@ -2982,16 +2993,16 @@
       <node ref="J4" pin="a16"/>
     </net>
     <net code="163" name="~AD23_5V">
-      <node ref="U6" pin="3"/>
       <node ref="J4" pin="a17"/>
+      <node ref="U6" pin="3"/>
     </net>
     <net code="164" name="~AD25_5V">
-      <node ref="J4" pin="a18"/>
       <node ref="U5" pin="8"/>
+      <node ref="J4" pin="a18"/>
     </net>
     <net code="165" name="~AD27_5V">
-      <node ref="J4" pin="a19"/>
       <node ref="U5" pin="6"/>
+      <node ref="J4" pin="a19"/>
     </net>
     <net code="166" name="SB0_5V">
       <node ref="J4" pin="a2"/>
@@ -3045,20 +3056,20 @@
       <node ref="U8" pin="8"/>
     </net>
     <net code="179" name="~AD2_5V">
-      <node ref="J4" pin="c7"/>
       <node ref="U8" pin="6"/>
+      <node ref="J4" pin="c7"/>
     </net>
     <net code="180" name="~AD4_5V">
-      <node ref="U8" pin="4"/>
       <node ref="J4" pin="c8"/>
+      <node ref="U8" pin="4"/>
     </net>
     <net code="181" name="~AD6_5V">
-      <node ref="J4" pin="c9"/>
       <node ref="U8" pin="2"/>
+      <node ref="J4" pin="c9"/>
     </net>
     <net code="182" name="~CLK2X_5V">
-      <node ref="J4" pin="b24"/>
       <node ref="U13" pin="18"/>
+      <node ref="J4" pin="b24"/>
     </net>
     <net code="183" name="STDBYPWR">
       <node ref="J4" pin="b25"/>
@@ -3073,8 +3084,8 @@
       <node ref="J4" pin="b9"/>
     </net>
     <net code="187" name="~RESET_5V">
-      <node ref="J4" pin="c1"/>
       <node ref="U15" pin="18"/>
+      <node ref="J4" pin="c1"/>
     </net>
     <net code="188" name="~AD8_5V">
       <node ref="U7" pin="8"/>
@@ -3101,8 +3112,8 @@
       <node ref="J4" pin="c15"/>
     </net>
     <net code="194" name="~AD20_5V">
-      <node ref="U6" pin="4"/>
       <node ref="J4" pin="c16"/>
+      <node ref="U6" pin="4"/>
     </net>
     <net code="197" name="Net-(U10-Pad3)">
       <node ref="U10" pin="3"/>
@@ -3111,22 +3122,22 @@
       <node ref="U10" pin="1"/>
     </net>
     <net code="199" name="/usb/USB_FLT">
-      <node ref="R27" pin="1"/>
       <node ref="U11" pin="3"/>
+      <node ref="R27" pin="1"/>
     </net>
     <net code="200" name="Net-(J6-Pad4)">
       <node ref="J6" pin="4"/>
     </net>
     <net code="201" name="SHIELD">
-      <node ref="J5" pin="SH"/>
-      <node ref="J6" pin="6"/>
       <node ref="C39" pin="1"/>
-      <node ref="R33" pin="1"/>
+      <node ref="J6" pin="6"/>
+      <node ref="J5" pin="SH"/>
       <node ref="H1" pin="1"/>
+      <node ref="R33" pin="1"/>
     </net>
     <net code="202" name="/usb/VBus">
-      <node ref="FB1" pin="1"/>
       <node ref="U11" pin="1"/>
+      <node ref="FB1" pin="1"/>
       <node ref="C27" pin="1"/>
     </net>
     <net code="203" name="+5V">
@@ -3135,12 +3146,12 @@
       <node ref="J4" pin="b6"/>
       <node ref="J7" pin="2"/>
       <node ref="J4" pin="a29"/>
+      <node ref="J4" pin="b29"/>
       <node ref="R5" pin="1"/>
       <node ref="R7" pin="1"/>
       <node ref="J4" pin="b7"/>
       <node ref="J4" pin="b4"/>
       <node ref="R6" pin="1"/>
-      <node ref="J4" pin="b29"/>
       <node ref="J4" pin="b28"/>
       <node ref="J4" pin="b5"/>
       <node ref="J4" pin="c4"/>
@@ -3161,22 +3172,22 @@
       <node ref="U11" pin="4"/>
       <node ref="R26" pin="1"/>
     </net>
-    <net code="205" name="/usb/USB_D+">
-      <node ref="U10" pin="4"/>
-      <node ref="J6" pin="3"/>
-      <node ref="R22" pin="1"/>
-      <node ref="R24" pin="2"/>
-    </net>
-    <net code="206" name="/usb/USB_D-">
-      <node ref="R25" pin="1"/>
-      <node ref="R23" pin="1"/>
-      <node ref="U10" pin="6"/>
-      <node ref="J6" pin="2"/>
-    </net>
-    <net code="207" name="/usb/VBus_USB0">
+    <net code="205" name="/usb/VBus_USB0">
+      <node ref="FB1" pin="2"/>
       <node ref="J6" pin="1"/>
       <node ref="C25" pin="1"/>
-      <node ref="FB1" pin="2"/>
+    </net>
+    <net code="206" name="/usb/USB_D+">
+      <node ref="U10" pin="4"/>
+      <node ref="R22" pin="1"/>
+      <node ref="J6" pin="3"/>
+      <node ref="R24" pin="2"/>
+    </net>
+    <net code="207" name="/usb/USB_D-">
+      <node ref="R25" pin="1"/>
+      <node ref="R23" pin="1"/>
+      <node ref="J6" pin="2"/>
+      <node ref="U10" pin="6"/>
     </net>
     <net code="208" name="/hdmi/HDMI_5V">
       <node ref="C24" pin="1"/>
@@ -3194,8 +3205,8 @@
       <node ref="J5" pin="16"/>
     </net>
     <net code="212" name="/hdmi/cec_b">
-      <node ref="U9" pin="7"/>
       <node ref="J5" pin="13"/>
+      <node ref="U9" pin="7"/>
     </net>
     <net code="213" name="/hdmi/hpd_b">
       <node ref="U9" pin="10"/>
