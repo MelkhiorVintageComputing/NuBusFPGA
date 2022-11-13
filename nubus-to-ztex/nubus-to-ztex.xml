@@ -2,7 +2,7 @@
 <export version="D">
   <design>
     <source>/home/dolbeau/MAC/NuBusFPGA.V1_2/nubus-to-ztex/nubus-to-ztex.sch</source>
-    <date>Sat Nov 12 12:43:46 2022</date>
+    <date>Sun Nov 13 14:04:50 2022</date>
     <tool>Eeschema 5.1.9+dfsg1-1~bpo10+1</tool>
     <sheet number="1" name="/" tstamps="/">
       <title_block>
@@ -134,13 +134,13 @@
     </comp>
     <comp ref="J3">
       <value>Conn_01x06_Male</value>
-      <footprint>For_SeeedStudio:PinHeader_1x06_P2.54mm_Horizontal_For_SeeedStudio</footprint>
-      <datasheet>~</datasheet>
+      <footprint>For_SeeedStudio:SAMTEC_TSM-106-01-L-SH</footprint>
+      <datasheet>https://www.mouser.com/datasheet/2/527/tsm-2854655.pdf</datasheet>
       <fields>
-        <field name="MPN">PZ254R-11-06P</field>
-        <field name="MPN-ALT">22-28-8060</field>
-        <field name="URL">https://lcsc.com/product-detail/Pin-Header-Female-Header_XFCN-PZ254R-11-06P_C492414.html</field>
-        <field name="URL-ALT">https://www2.mouser.com/ProductDetail/Molex/22-28-8060?qs=4XSMV6Twtb2rYD%2F%2F316gfQ==</field>
+        <field name="DNP">DNP</field>
+        <field name="MPN">TSM-106-01-T-SH</field>
+        <field name="MPN comments">'T' is tin 'L' is gold ; with extra -A (and footprint change) to get alignment pin ; -01 is post length (-02 would be fine)</field>
+        <field name="URL">https://www.mouser.fr/ProductDetail/Samtec/TSM-106-01-T-SH?qs=0lQeLiL1qybjt4R2%252BGOpsA%3D%3D</field>
       </fields>
       <libsource lib="Connector" part="Conn_01x06_Male" description="Generic connector, single row, 01x06, script generated (kicad-library-utils/schlib/autogen/connector/)"/>
       <sheetpath names="/B2B/" tstamps="/618E8C75/"/>
@@ -166,6 +166,7 @@
       <footprint>For_SeeedStudio:MOLEX_87832-1420</footprint>
       <datasheet>https://www.molex.com/pdm_docs/sd/878331420_sd.pdf</datasheet>
       <fields>
+        <field name="DNP">DNP</field>
         <field name="MPN">87832-1420</field>
         <field name="URL">https://www.mouser.fr/ProductDetail/Molex/87832-1420?qs=9Wl4wMk6Njp2JciwISLQUQ%3D%3D</field>
       </fields>
@@ -320,17 +321,18 @@
       <tstamp>5F93CF72</tstamp>
     </comp>
     <comp ref="J4">
-      <value>0850030567 (DIN 41612C 3x32 pins)</value>
+      <value>09031966921 (DIN 41612C 3x32 pins)</value>
       <footprint>For_SeeedStudio:DIN41612_C_3x32_Male_Horizontal_THT</footprint>
       <datasheet> ~</datasheet>
       <fields>
-        <field name="MPN">0850030567</field>
+        <field name="MPN">09033966921</field>
         <field name="MPN (3M)">DIN-096CPC-RR1-HM</field>
         <field name="MPN (Harting 2)">09033966921</field>
         <field name="MPN (Harting)">09033967921</field>
-        <field name="MPN alias">85003-0567</field>
+        <field name="MPN (Molex)">85003-0567</field>
         <field name="Notes (3M)">RR1L would also work (for .062 PCBs)</field>
-        <field name="URL">https://www.mouser.fr/ProductDetail/Molex/85003-0567?qs=U4pz39agNJB6P1oBpJ4bJA%3D%3D</field>
+        <field name="Notes (Harting)">Loads of variants...</field>
+        <field name="URL">https://www.mouser.fr/ProductDetail/HARTING/09031966921?qs=gIpPgrDBK%2Fho4yEpoERymA%3D%3D</field>
       </fields>
       <libsource lib="C96ABC" part="C96ABC_NUBUS" description=""/>
       <sheetpath names="/nubus/" tstamps="/618F532C/"/>
@@ -1088,34 +1090,6 @@
       <sheetpath names="/hdmi/" tstamps="/61B62C00/"/>
       <tstamp>61B9B186</tstamp>
     </comp>
-    <comp ref="C39">
-      <value>1uF 250V Radial 6.3x2.5</value>
-      <footprint>Capacitor_THT:CP_Radial_D6.3mm_P2.50mm</footprint>
-      <datasheet>~</datasheet>
-      <fields>
-        <field name="MPN">KM010M400E110A</field>
-        <field name="MPN-ALT">860021373002</field>
-        <field name="URL">https://lcsc.com/product-detail/Aluminum-Electrolytic-Capacitors-Leaded_Capxon-International-Elec-KM010M400E110A_C59365.html</field>
-        <field name="URL-ALT">https://www2.mouser.com/ProductDetail/Wurth-Elektronik/860021373002?qs=0KOYDY2FL28tNXbPyU6hsg%3D%3D</field>
-      </fields>
-      <libsource lib="Device" part="C" description="Unpolarized capacitor"/>
-      <sheetpath names="/hdmi/" tstamps="/61B62C00/"/>
-      <tstamp>63467FEB</tstamp>
-    </comp>
-    <comp ref="R33">
-      <value>1M 1210</value>
-      <footprint>Resistor_SMD:R_1210_3225Metric</footprint>
-      <datasheet>~</datasheet>
-      <fields>
-        <field name="MPN">1210W2F1004T5E</field>
-        <field name="MPN-ALT">RC1210FR-071ML</field>
-        <field name="URL">https://www.lcsc.com/product-detail/Chip-Resistor-Surface-Mount_UNI-ROYAL-Uniroyal-Elec-1210W2F1004T5E_C620664.html</field>
-        <field name="URL-ALT">https://lcsc.com/product-detail/Chip-Resistor-Surface-Mount_YAGEO-RC1210FR-071ML_C470029.html</field>
-      </fields>
-      <libsource lib="Device" part="R" description="Resistor"/>
-      <sheetpath names="/hdmi/" tstamps="/61B62C00/"/>
-      <tstamp>63467FF7</tstamp>
-    </comp>
     <comp ref="H1">
       <value>MountingHole_Pad</value>
       <footprint>MountingHole:MountingHole_2.2mm_M2_Pad</footprint>
@@ -1124,11 +1098,36 @@
       <sheetpath names="/hdmi/" tstamps="/61B62C00/"/>
       <tstamp>63467FFE</tstamp>
     </comp>
+    <comp ref="C7">
+      <value>10nF 1kV 0805</value>
+      <footprint>Capacitor_SMD:C_0805_2012Metric</footprint>
+      <datasheet>~</datasheet>
+      <fields>
+        <field name="MPN">C0805V103KCRACTU</field>
+        <field name="URL">https://www.lcsc.com/product-detail/Multilayer-Ceramic-Capacitors-MLCC-SMD-SMT_KEMET-C0805V103KCRACTU_C2170011.html</field>
+      </fields>
+      <libsource lib="Device" part="C" description="Unpolarized capacitor"/>
+      <sheetpath names="/hdmi/" tstamps="/61B62C00/"/>
+      <tstamp>641A275A</tstamp>
+    </comp>
+    <comp ref="R9">
+      <value>1M 500V 2512</value>
+      <footprint>Resistor_SMD:R_2512_6332Metric</footprint>
+      <datasheet>~</datasheet>
+      <fields>
+        <field name="MPN">AS25J1004ET</field>
+        <field name="URL">https://www.lcsc.com/product-detail/Chip-Resistor-Surface-Mount_Ohmite-AS25J1004ET_C2546765.html</field>
+      </fields>
+      <libsource lib="Device" part="R" description="Resistor"/>
+      <sheetpath names="/hdmi/" tstamps="/61B62C00/"/>
+      <tstamp>641A2763</tstamp>
+    </comp>
     <comp ref="J6">
       <value>105017-0001 (USB micro-B)</value>
       <footprint>Connector_USB:USB_Micro-B_Molex-105017-0001</footprint>
       <datasheet>https://www.molex.com/pdm_docs/sd/1050170001_sd.pdf</datasheet>
       <fields>
+        <field name="DNP">DNP</field>
         <field name="MPN">105017-0001</field>
         <field name="Manufacturer">Molex</field>
         <field name="URL">https://lcsc.com/product-detail/USB-Connectors_MOLEX-1050170001_C136000.html</field>
@@ -1142,6 +1141,7 @@
       <value>10k</value>
       <footprint>Resistor_SMD:R_0603_1608Metric</footprint>
       <fields>
+        <field name="DNP">DNP</field>
         <field name="MPN">0603WAF1002T5E</field>
         <field name="URL">https://lcsc.com/product-detail/Chip-Resistor-Surface-Mount_UNI-ROYAL-Uniroyal-Elec-0603WAF1002T5E_C25804.html</field>
       </fields>
@@ -1153,6 +1153,7 @@
       <value>10k</value>
       <footprint>Resistor_SMD:R_0603_1608Metric</footprint>
       <fields>
+        <field name="DNP">DNP</field>
         <field name="MPN">0603WAF1002T5E</field>
         <field name="URL">https://lcsc.com/product-detail/Chip-Resistor-Surface-Mount_UNI-ROYAL-Uniroyal-Elec-0603WAF1002T5E_C25804.html</field>
       </fields>
@@ -1164,6 +1165,7 @@
       <value>100nF</value>
       <footprint>Capacitor_SMD:C_0603_1608Metric</footprint>
       <fields>
+        <field name="DNP">DNP</field>
         <field name="Digikey">?</field>
         <field name="Koncar">?</field>
         <field name="LCSC">?</field>
@@ -1182,6 +1184,7 @@
       <footprint>Package_TO_SOT_SMD:SOT-23-6</footprint>
       <datasheet>http://www.ti.com/lit/ds/symlink/sn65220.pdf</datasheet>
       <fields>
+        <field name="DNP">DNP</field>
         <field name="MPN">SN65220DBVT</field>
         <field name="Notes">SN65220DBVT or SN65220DBVR (Tape or Reel...)</field>
         <field name="URL">https://www.lcsc.com/product-detail/Others_Texas-Instruments-TI-SN65220DBVT_C350555.html</field>
@@ -1195,6 +1198,7 @@
       <value>15k</value>
       <footprint>Resistor_SMD:R_0603_1608Metric</footprint>
       <fields>
+        <field name="DNP">DNP</field>
         <field name="MPN">0603WAF1502T5E</field>
         <field name="URL">https://lcsc.com/product-detail/Chip-Resistor-Surface-Mount_UNI-ROYAL-Uniroyal-Elec-0603WAF1502T5E_C22809.html</field>
       </fields>
@@ -1206,6 +1210,7 @@
       <value>15k</value>
       <footprint>Resistor_SMD:R_0603_1608Metric</footprint>
       <fields>
+        <field name="DNP">DNP</field>
         <field name="MPN">0603WAF1502T5E</field>
         <field name="URL">https://lcsc.com/product-detail/Chip-Resistor-Surface-Mount_UNI-ROYAL-Uniroyal-Elec-0603WAF1502T5E_C22809.html</field>
       </fields>
@@ -1217,6 +1222,7 @@
       <value>27</value>
       <footprint>Resistor_SMD:R_0603_1608Metric</footprint>
       <fields>
+        <field name="DNP">DNP</field>
         <field name="MPN">0603WAF270JT5E</field>
         <field name="MPN-ALT">ERJ-3EKF27R0V</field>
         <field name="URL">https://lcsc.com/product-detail/Chip-Resistor-Surface-Mount_UNI-ROYAL-Uniroyal-Elec-0603WAF270JT5E_C25190.html</field>
@@ -1229,6 +1235,7 @@
       <value>27</value>
       <footprint>Resistor_SMD:R_0603_1608Metric</footprint>
       <fields>
+        <field name="DNP">DNP</field>
         <field name="MPN">0603WAF270JT5E</field>
         <field name="MPN-ALT">ERJ-3EKF27R0V</field>
         <field name="URL">https://lcsc.com/product-detail/Chip-Resistor-Surface-Mount_UNI-ROYAL-Uniroyal-Elec-0603WAF270JT5E_C25190.html</field>
@@ -1242,6 +1249,7 @@
       <footprint>Capacitor_SMD:C_1206_3216Metric</footprint>
       <datasheet>~</datasheet>
       <fields>
+        <field name="DNP">DNP</field>
         <field name="MPN">JMK316ABJ107ML-T</field>
         <field name="MPN-ALT">GRM31CR60J157ME11L</field>
         <field name="URL">https://www.lcsc.com/product-detail/Multilayer-Ceramic-Capacitors-MLCC-SMD-SMT_Taiyo-Yuden-JMK316ABJ107ML-T_C268006.html</field>
@@ -1257,6 +1265,7 @@
       <footprint>Inductor_SMD:L_0805_2012Metric</footprint>
       <datasheet>~</datasheet>
       <fields>
+        <field name="DNP">DNP</field>
         <field name="MPN">PZ2012U221-2R0TF</field>
         <field name="MPN-ALT">742792022</field>
         <field name="URL">https://lcsc.com/product-detail/Ferrite-Beads_Sunlord-PZ2012U221-2R0TF_C44361.html</field>
@@ -1269,6 +1278,7 @@
       <value>100nF</value>
       <footprint>Capacitor_SMD:C_0603_1608Metric</footprint>
       <fields>
+        <field name="DNP">DNP</field>
         <field name="Digikey">?</field>
         <field name="Koncar">?</field>
         <field name="LCSC">?</field>
@@ -1286,6 +1296,7 @@
       <value>TPS2051CDBV</value>
       <footprint>Package_TO_SOT_SMD:SOT-23-5</footprint>
       <fields>
+        <field name="DNP">DNP</field>
         <field name="MPN">TPS2051CDBVR</field>
         <field name="Mouser No">595-TPS2051CDBVR</field>
         <field name="URL">https://lcsc.com/product-detail/Power-Distribution-Switches_Texas-Instruments-TPS2051CDBVR_C129581.html</field>
@@ -1300,6 +1311,7 @@
       <footprint>Connector_Molex:Molex_KK-254_AE-6410-03A_1x03_P2.54mm_Vertical</footprint>
       <datasheet>~</datasheet>
       <fields>
+        <field name="DNP">DNP</field>
         <field name="MPN">640456-3</field>
         <field name="MPN-ALT">22-27-2031</field>
         <field name="Manufacturer">TE Connectivity</field>
@@ -1315,6 +1327,7 @@
       <value>47uF 10V 0805</value>
       <footprint>Capacitor_SMD:C_0805_2012Metric</footprint>
       <fields>
+        <field name="DNP">DNP</field>
         <field name="MPN">GRM21BR61A476ME15K</field>
         <field name="MPN-ALT">C2012X5R1A476MTJ00E</field>
         <field name="URL">https://www.lcsc.com/product-detail/Multilayer-Ceramic-Capacitors-MLCC-SMD-SMT_Murata-Electronics-GRM21BR61A476ME15K_C2292827.html</field>
@@ -2622,8 +2635,8 @@
       <node ref="U9" pin="14"/>
       <node ref="U9" pin="19"/>
       <node ref="J5" pin="8"/>
-      <node ref="C39" pin="2"/>
-      <node ref="R33" pin="2"/>
+      <node ref="C7" pin="2"/>
+      <node ref="R9" pin="2"/>
       <node ref="C2" pin="2"/>
       <node ref="D1" pin="1"/>
       <node ref="U10" pin="5"/>
@@ -3122,18 +3135,18 @@
       <node ref="U10" pin="1"/>
     </net>
     <net code="199" name="/usb/USB_FLT">
-      <node ref="U11" pin="3"/>
       <node ref="R27" pin="1"/>
+      <node ref="U11" pin="3"/>
     </net>
     <net code="200" name="Net-(J6-Pad4)">
       <node ref="J6" pin="4"/>
     </net>
     <net code="201" name="SHIELD">
-      <node ref="C39" pin="1"/>
+      <node ref="C7" pin="1"/>
       <node ref="J6" pin="6"/>
       <node ref="J5" pin="SH"/>
       <node ref="H1" pin="1"/>
-      <node ref="R33" pin="1"/>
+      <node ref="R9" pin="1"/>
     </net>
     <net code="202" name="/usb/VBus">
       <node ref="U11" pin="1"/>

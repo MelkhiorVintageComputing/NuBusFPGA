@@ -58,12 +58,12 @@ U 1 1 5F69129B
 P 9250 850
 F 0 "J3" H 9356 1228 50  0000 C CNN
 F 1 "Conn_01x06_Male" H 9356 1137 50  0000 C CNN
-F 2 "For_SeeedStudio:PinHeader_1x06_P2.54mm_Horizontal_For_SeeedStudio" H 9250 850 50  0001 C CNN
-F 3 "~" H 9250 850 50  0001 C CNN
-F 4 "22-28-8060" H 9250 850 50  0001 C CNN "MPN-ALT"
-F 5 "PZ254R-11-06P" H 9250 850 50  0001 C CNN "MPN"
-F 6 "https://www2.mouser.com/ProductDetail/Molex/22-28-8060?qs=4XSMV6Twtb2rYD%2F%2F316gfQ==" H 9250 850 50  0001 C CNN "URL-ALT"
-F 7 "https://lcsc.com/product-detail/Pin-Header-Female-Header_XFCN-PZ254R-11-06P_C492414.html" H 9250 850 50  0001 C CNN "URL"
+F 2 "For_SeeedStudio:SAMTEC_TSM-106-01-L-SH" H 9250 850 50  0001 C CNN
+F 3 "https://www.mouser.com/datasheet/2/527/tsm-2854655.pdf" H 9250 850 50  0001 C CNN
+F 4 "TSM-106-01-T-SH" H 9250 850 50  0001 C CNN "MPN"
+F 5 "https://www.mouser.fr/ProductDetail/Samtec/TSM-106-01-T-SH?qs=0lQeLiL1qybjt4R2%252BGOpsA%3D%3D" H 9250 850 50  0001 C CNN "URL"
+F 6 "'T' is tin 'L' is gold ; with extra -A (and footprint change) to get alignment pin ; -01 is post length (-02 would be fine)" H 9250 850 50  0001 C CNN "MPN comments"
+F 7 "DNP" H 9250 850 50  0000 C CNN "DNP"
 	1    9250 850 
 	1    0    0    -1  
 $EndComp
@@ -118,6 +118,7 @@ F 2 "For_SeeedStudio:MOLEX_87832-1420" H 3150 7250 50  0001 C CNN
 F 3 "https://www.molex.com/pdm_docs/sd/878331420_sd.pdf" H 3150 7250 50  0001 C CNN
 F 4 "87832-1420" H 3150 7250 50  0001 C CNN "MPN"
 F 5 "https://www.mouser.fr/ProductDetail/Molex/87832-1420?qs=9Wl4wMk6Njp2JciwISLQUQ%3D%3D" H 3150 7250 50  0001 C CNN "URL"
+F 6 "DNP" H 3150 7250 50  0000 C CNN "DNP"
 	1    3150 7250
 	1    0    0    -1  
 $EndComp

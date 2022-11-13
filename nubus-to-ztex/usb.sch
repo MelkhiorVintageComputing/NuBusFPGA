@@ -25,6 +25,7 @@ F 4 "105017-0001" H 5000 2800 50  0001 C CNN "MPN"
 F 5 "Molex" H 5000 2800 50  0001 C CNN "Manufacturer"
 F 6 "https://lcsc.com/product-detail/USB-Connectors_MOLEX-1050170001_C136000.html" H 5000 2800 50  0001 C CNN "URL"
 F 7 "https://www.mouser.fr/ProductDetail/Molex/105017-0001?qs=hlXxxvYE36k7QcsR97GUKA%3D%3D" H 5000 2800 50  0001 C CNN "URL-ALT"
+F 8 "DNP" H 5000 2800 50  0000 C CNN "DNP"
 	1    5000 2800
 	-1   0    0    -1  
 $EndComp
@@ -69,6 +70,7 @@ F 2 "Resistor_SMD:R_0603_1608Metric" V 6130 2450 50  0001 C CNN
 F 3 "" H 6200 2450 50  0000 C CNN
 F 4 "0603WAF1002T5E" V 6200 1850 50  0001 C CNN "MPN"
 F 5 "https://lcsc.com/product-detail/Chip-Resistor-Surface-Mount_UNI-ROYAL-Uniroyal-Elec-0603WAF1002T5E_C25804.html" V 6200 2450 50  0001 C CNN "URL"
+F 6 "DNP" V 6200 2450 50  0000 C CNN "DNP"
 	1    6200 2450
 	-1   0    0    1   
 $EndComp
@@ -90,6 +92,7 @@ F 2 "Resistor_SMD:R_0603_1608Metric" V 6030 2850 50  0001 C CNN
 F 3 "" H 6100 2850 50  0000 C CNN
 F 4 "0603WAF1002T5E" V 6100 2250 50  0001 C CNN "MPN"
 F 5 "https://lcsc.com/product-detail/Chip-Resistor-Surface-Mount_UNI-ROYAL-Uniroyal-Elec-0603WAF1002T5E_C25804.html" V 6100 2850 50  0001 C CNN "URL"
+F 6 "DNP" V 6100 2850 50  0000 C CNN "DNP"
 	1    6100 2850
 	-1   0    0    1   
 $EndComp
@@ -125,6 +128,7 @@ F 8 "?" H 7200 2000 50  0001 C CNN "LCSC"
 F 9 "?" H 7200 2000 50  0001 C CNN "Koncar"
 F 10 "TB" H 7200 2000 50  0001 C CNN "Side"
 F 11 "https://lcsc.com/product-detail/Multilayer-Ceramic-Capacitors-MLCC-SMD-SMT_YAGEO-CC0603KRX7R8BB104_C92490.html" H 3000 6050 50  0001 C CNN "URL"
+F 12 "DNP" H 7200 2000 50  0000 C CNN "DNP"
 	1    7200 2000
 	1    0    0    -1  
 $EndComp
@@ -155,6 +159,7 @@ F 4 "SN65220DBVT" V 4250 2850 50  0001 C CNN "MPN"
 F 5 "https://www2.mouser.com/ProductDetail/Texas-Instruments/SN65220DBVR?qs=5nGYs9Do7G0gEpYxbYqyeA%3D%3D" V 4250 2850 50  0001 C CNN "URL-ALT"
 F 6 "https://www.lcsc.com/product-detail/Others_Texas-Instruments-TI-SN65220DBVT_C350555.html" V 4250 2850 50  0001 C CNN "URL"
 F 7 "SN65220DBVT or SN65220DBVR (Tape or Reel...)" V 4250 2850 50  0001 C CNN "Notes"
+F 8 "DNP" V 4250 2850 50  0000 C CNN "DNP"
 	1    4250 2850
 	0    1    -1   0   
 $EndComp
@@ -192,6 +197,7 @@ F 2 "Resistor_SMD:R_0603_1608Metric" V 3880 2500 50  0001 C CNN
 F 3 "" H 3950 2500 50  0000 C CNN
 F 4 "0603WAF1502T5E" V 3950 1900 50  0001 C CNN "MPN"
 F 5 "https://lcsc.com/product-detail/Chip-Resistor-Surface-Mount_UNI-ROYAL-Uniroyal-Elec-0603WAF1502T5E_C22809.html" V 3950 2500 50  0001 C CNN "URL"
+F 6 "DNP" V 3950 2500 50  0000 C CNN "DNP"
 	1    3950 2500
 	-1   0    0    1   
 $EndComp
@@ -211,6 +217,7 @@ F 2 "Resistor_SMD:R_0603_1608Metric" V 3880 3200 50  0001 C CNN
 F 3 "" H 3950 3200 50  0000 C CNN
 F 4 "0603WAF1502T5E" V 3950 2600 50  0001 C CNN "MPN"
 F 5 "https://lcsc.com/product-detail/Chip-Resistor-Surface-Mount_UNI-ROYAL-Uniroyal-Elec-0603WAF1502T5E_C22809.html" V 3950 3200 50  0001 C CNN "URL"
+F 6 "DNP" V 3950 3200 50  0000 C CNN "DNP"
 	1    3950 3200
 	-1   0    0    1   
 $EndComp
@@ -255,6 +262,7 @@ F 3 "" H 3700 2250 50  0000 C CNN
 F 4 "0603WAF270JT5E" V 3700 2250 50  0001 C CNN "MPN"
 F 5 "ERJ-3EKF27R0V" V 3700 1650 50  0001 C CNN "MPN-ALT"
 F 6 "https://lcsc.com/product-detail/Chip-Resistor-Surface-Mount_UNI-ROYAL-Uniroyal-Elec-0603WAF270JT5E_C25190.html" V 3700 2250 50  0001 C CNN "URL"
+F 7 "DNP" V 3700 2250 50  0000 C CNN "DNP"
 	1    3700 2250
 	0    1    1    0   
 $EndComp
@@ -275,6 +283,7 @@ F 3 "" H 3700 3450 50  0000 C CNN
 F 4 "0603WAF270JT5E" V 3700 3450 50  0001 C CNN "MPN"
 F 5 "ERJ-3EKF27R0V" V 3700 2850 50  0001 C CNN "MPN-ALT"
 F 6 "https://lcsc.com/product-detail/Chip-Resistor-Surface-Mount_UNI-ROYAL-Uniroyal-Elec-0603WAF270JT5E_C25190.html" V 3700 3450 50  0001 C CNN "URL"
+F 7 "DNP" V 3700 3450 50  0000 C CNN "DNP"
 	1    3700 3450
 	0    1    1    0   
 $EndComp
@@ -312,6 +321,7 @@ F 5 "https://lcsc.com/product-detail/Multilayer-Ceramic-Capacitors-MLCC-SMD-SMT_
 F 6 "https://www.mouser.fr/ProductDetail/Murata-Electronics/GRM31CR60J157ME11L?qs=qSv5qXjCIG3a12X8fU8miQ%3D%3D" H 5150 2000 50  0001 C CNN "URL-ALT (mouser)"
 F 7 "JMK316ABJ107ML-T" H 5150 2000 50  0001 C CNN "MPN"
 F 8 "https://www.lcsc.com/product-detail/Multilayer-Ceramic-Capacitors-MLCC-SMD-SMT_Taiyo-Yuden-JMK316ABJ107ML-T_C268006.html" H 5150 2000 50  0001 C CNN "URL"
+F 9 "DNP" H 5150 2000 50  0000 C CNN "DNP"
 	1    5150 2000
 	1    0    0    -1  
 $EndComp
@@ -326,6 +336,7 @@ F 3 "~" H 5150 1750 50  0001 C CNN
 F 4 "742792022" H 5150 1750 50  0001 C CNN "MPN-ALT"
 F 5 "PZ2012U221-2R0TF" H 5150 1750 50  0001 C CNN "MPN"
 F 6 "https://lcsc.com/product-detail/Ferrite-Beads_Sunlord-PZ2012U221-2R0TF_C44361.html" H 5150 1750 50  0001 C CNN "URL"
+F 7 "DNP" H 5150 1750 50  0000 C CNN "DNP"
 	1    5150 1750
 	1    0    0    -1  
 $EndComp
@@ -383,6 +394,7 @@ F 8 "?" H 7850 2000 50  0001 C CNN "LCSC"
 F 9 "?" H 7850 2000 50  0001 C CNN "Koncar"
 F 10 "TB" H 7850 2000 50  0001 C CNN "Side"
 F 11 "https://lcsc.com/product-detail/Multilayer-Ceramic-Capacitors-MLCC-SMD-SMT_YAGEO-CC0603KRX7R8BB104_C92490.html" H 3000 6050 50  0001 C CNN "URL"
+F 12 "DNP" H 7850 2000 50  0000 C CNN "DNP"
 	1    7850 2000
 	1    0    0    -1  
 $EndComp
@@ -411,6 +423,7 @@ F 4 "TPS2051CDBVR" H 6700 2800 50  0001 C CNN "MPN"
 F 5 "595-TPS2051CDBVR" H 6700 2800 50  0001 C CNN "Mouser No"
 F 6 "https://www.mouser.fr/ProductDetail/Texas-Instruments/TPS2051CDBVR?qs=PF3AD18CSE5vi2HeWLJCmw%3D%3D" H 6700 2800 50  0001 C CNN "URL (Mouser)"
 F 7 "https://lcsc.com/product-detail/Power-Distribution-Switches_Texas-Instruments-TPS2051CDBVR_C129581.html" H 6700 2800 50  0001 C CNN "URL"
+F 8 "DNP" H 6700 2800 50  0000 C CNN "DNP"
 	1    6700 2800
 	1    0    0    -1  
 $EndComp

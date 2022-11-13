@@ -1,4 +1,4 @@
-## Footprint report - date Sat Nov 12 12:43:20 2022
+## Footprint report - date Sun Nov 13 14:05:32 2022
 ## Created by Pcbnew version kicad 5.1.9+dfsg1-1~bpo10+1
 ## Unit = mm, Angle = deg.
 
@@ -8,6 +8,93 @@ $BOARD
 upper_left_corner -50.005001 -35.064286
 lower_right_corner 400.005001 148.435001
 $EndBOARD
+
+$MODULE "R9"
+reference "R9"
+value "1M 500V 2512"
+footprint "Resistor_SMD:R_2512_6332Metric"
+attribut smd
+position 268.837500 46.930000  orientation 180.00
+layer front
+$PAD "2"
+Shape Roundrect Layer front
+position  2.962500  0.000000  size  1.225000  3.350000  orientation 0.00
+drill  0.000000
+shape_offset  0.000000  0.000000
+$EndPAD
+$PAD "1"
+Shape Roundrect Layer front
+position -2.962500  0.000000  size  1.225000  3.350000  orientation 0.00
+drill  0.000000
+shape_offset  0.000000  0.000000
+$EndPAD
+$EndMODULE  R9
+
+$MODULE "C7"
+reference "C7"
+value "10nF 1kV 0805"
+footprint "Capacitor_SMD:C_0805_2012Metric"
+attribut smd
+position 270.850000 51.000000  orientation 180.00
+layer front
+$PAD "2"
+Shape Roundrect Layer front
+position  0.950000  0.000000  size  1.000000  1.450000  orientation 0.00
+drill  0.000000
+shape_offset  0.000000  0.000000
+$EndPAD
+$PAD "1"
+Shape Roundrect Layer front
+position -0.950000  0.000000  size  1.000000  1.450000  orientation 0.00
+drill  0.000000
+shape_offset  0.000000  0.000000
+$EndPAD
+$EndMODULE  C7
+
+$MODULE "J3"
+reference "J3"
+value "Conn_01x06_Male"
+footprint "For_SeeedStudio:SAMTEC_TSM-106-01-L-SH"
+attribut none
+position 117.856000 27.178000  orientation 90.00
+layer front
+$PAD "6"
+Shape Rect Layer front
+position  6.350000  5.280000  size  1.270000  3.180000  orientation 0.00
+drill  0.000000
+shape_offset  0.000000  0.000000
+$EndPAD
+$PAD "5"
+Shape Rect Layer front
+position  3.810000  5.280000  size  1.270000  3.180000  orientation 0.00
+drill  0.000000
+shape_offset  0.000000  0.000000
+$EndPAD
+$PAD "4"
+Shape Rect Layer front
+position  1.270000  5.280000  size  1.270000  3.180000  orientation 0.00
+drill  0.000000
+shape_offset  0.000000  0.000000
+$EndPAD
+$PAD "3"
+Shape Rect Layer front
+position -1.270000  5.280000  size  1.270000  3.180000  orientation 0.00
+drill  0.000000
+shape_offset  0.000000  0.000000
+$EndPAD
+$PAD "2"
+Shape Rect Layer front
+position -3.810000  5.280000  size  1.270000  3.180000  orientation 0.00
+drill  0.000000
+shape_offset  0.000000  0.000000
+$EndPAD
+$PAD "1"
+Shape Rect Layer front
+position -6.350000  5.280000  size  1.270000  3.180000  orientation 0.00
+drill  0.000000
+shape_offset  0.000000  0.000000
+$EndPAD
+$EndMODULE  J3
 
 $MODULE "GRAPHIC1"
 reference "GRAPHIC1"
@@ -533,7 +620,7 @@ reference "H1"
 value "MountingHole_Pad"
 footprint "MountingHole:MountingHole_2.2mm_M2_Pad"
 attribut virtual
-position 257.350000 47.090000  orientation 0.00
+position 269.197500 89.500000  orientation 0.00
 layer front
 $PAD "1"
 Shape Circle Layer both
@@ -3846,51 +3933,9 @@ shape_offset  0.000000  0.000000
 $EndPAD
 $EndMODULE  J5
 
-$MODULE "C39"
-reference "C39"
-value "1uF 250V Radial 6.3x2.5"
-footprint "Capacitor_THT:CP_Radial_D6.3mm_P2.50mm"
-attribut none
-position 266.850000 44.280000  orientation 180.00
-layer front
-$PAD "1"
-Shape Rect Layer both
-position  0.000000  0.000000  size  1.600000  1.600000  orientation 0.00
-drill  0.800000
-shape_offset  0.000000  0.000000
-$EndPAD
-$PAD "2"
-Shape Circle Layer both
-position  2.500000  0.000000  size  1.600000  1.600000  orientation 0.00
-drill  0.800000
-shape_offset  0.000000  0.000000
-$EndPAD
-$EndMODULE  C39
-
-$MODULE "R33"
-reference "R33"
-value "1M 1210"
-footprint "Resistor_SMD:R_1210_3225Metric"
-attribut smd
-position 265.450000 50.320000  orientation 180.00
-layer front
-$PAD "1"
-Shape Roundrect Layer front
-position -1.400000  0.000000  size  1.250000  2.650000  orientation 0.00
-drill  0.000000
-shape_offset  0.000000  0.000000
-$EndPAD
-$PAD "2"
-Shape Roundrect Layer front
-position  1.400000  0.000000  size  1.250000  2.650000  orientation 0.00
-drill  0.000000
-shape_offset  0.000000  0.000000
-$EndPAD
-$EndMODULE  R33
-
 $MODULE "J4"
 reference "J4"
-value "0850030567 (DIN 41612C 3x32 pins)"
+value "09031966921 (DIN 41612C 3x32 pins)"
 footprint "For_SeeedStudio:DIN41612_C_3x32_Male_Horizontal_THT"
 attribut none
 position 200.000000 100.000000  orientation 180.00
@@ -4526,51 +4571,6 @@ drill  0.000000
 shape_offset  0.000000  0.000000
 $EndPAD
 $EndMODULE  R4
-
-$MODULE "J3"
-reference "J3"
-value "Conn_01x06_Male"
-footprint "For_SeeedStudio:PinHeader_1x06_P2.54mm_Horizontal_For_SeeedStudio"
-attribut none
-position 121.900000 33.500000  orientation 180.00
-layer front
-$PAD "6"
-Shape Oval Layer both
-position  0.000000 12.700000  size  1.700000  1.700000  orientation 0.00
-drill  1.020000
-shape_offset  0.000000  0.000000
-$EndPAD
-$PAD "5"
-Shape Oval Layer both
-position  0.000000 10.160000  size  1.700000  1.700000  orientation 0.00
-drill  1.020000
-shape_offset  0.000000  0.000000
-$EndPAD
-$PAD "4"
-Shape Oval Layer both
-position  0.000000  7.620000  size  1.700000  1.700000  orientation 0.00
-drill  1.020000
-shape_offset  0.000000  0.000000
-$EndPAD
-$PAD "3"
-Shape Oval Layer both
-position  0.000000  5.080000  size  1.700000  1.700000  orientation 0.00
-drill  1.020000
-shape_offset  0.000000  0.000000
-$EndPAD
-$PAD "2"
-Shape Oval Layer both
-position  0.000000  2.540000  size  1.700000  1.700000  orientation 0.00
-drill  1.020000
-shape_offset  0.000000  0.000000
-$EndPAD
-$PAD "1"
-Shape Rect Layer both
-position  0.000000  0.000000  size  1.700000  1.700000  orientation 0.00
-drill  1.020000
-shape_offset  0.000000  0.000000
-$EndPAD
-$EndMODULE  J3
 
 $MODULE "JAB1"
 reference "JAB1"

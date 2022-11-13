@@ -27,6 +27,7 @@ F 6 "https://www.mouser.fr/ProductDetail/Molex/22-27-2031?qs=%2Fha2pyFadugXOaGYK
 F 7 "640456-3" H 4400 4750 50  0001 C CNN "MPN"
 F 8 "TE Connectivity" H 4400 4750 50  0001 C CNN "Manufacturer"
 F 9 "https://www.lcsc.com/product-detail/Wire-To-Board-Wire-To-Wire-Connector_TE-Connectivity-640456-3_C86503.html" H 4400 4750 50  0001 C CNN "URL"
+F 10 "DNP" H 4400 4750 50  0000 C CNN "DNP"
 	1    4400 4750
 	1    0    0    -1  
 $EndComp
@@ -78,6 +79,7 @@ F 4 "C2012X5R1A476MTJ00E" H 5150 4800 50  0001 C CNN "MPN-ALT"
 F 5 "https://lcsc.com/product-detail/Multilayer-Ceramic-Capacitors-MLCC-SMD-SMT_TDK-C2012X5R1A476MTJ00E_C76636.html" H 5150 4800 50  0001 C CNN "URL-ALT"
 F 6 "GRM21BR61A476ME15K" H 5150 4800 50  0001 C CNN "MPN"
 F 7 "https://www.lcsc.com/product-detail/Multilayer-Ceramic-Capacitors-MLCC-SMD-SMT_Murata-Electronics-GRM21BR61A476ME15K_C2292827.html" H 5150 4800 50  0001 C CNN "URL"
+F 8 "DNP" H 5150 4800 50  0000 C CNN "DNP"
 	1    5150 4800
 	1    0    0    -1  
 $EndComp
