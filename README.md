@@ -22,6 +22,9 @@ Directory 'nubus-to-ztex'
 
 The V1.0 custom board is a NuBus-compliant (I hope...) board, designed to receive a [ZTex USB-FPGA Module 2.13](https://www.ztex.de/usb-fpga-2/usb-fpga-2.13.e.html) as a daughterboard. The ZTex module contains the actual FPGA (Artix-7), some RAM, programming hardware, etc. The NuBus board contains level-shifters & drivers ICs to interface between the NuBus signals and the FPGA, a CPLD handling some level-shifting & the bus mastering arbitration, a serial header, two user Leds, 14 debug Leds tied to specific NuBus or CPLD/FPGA signals, a JTAG header, a USB micro-B connector, a VGA chip & connector, and a HDMI chip & connector. It supports every NuBus feature except the optional parity (i.e. it can do both slave and master modes).
 
+
+The V1.0 board is in commit 3f3371a. The CPLD solution works but is annoying as it requires older Xilinx software (ISE 14.7) and dedicated JTAG programmer to use. A revision V1.2 board is in the work but not yet made, which will remove the VGA connector and CPLD (and require more dedicated level-shifters/drivers) and replace them by a micro-sd card slot and an expansion connector (Pmod-like).
+
 The PCB was designed with Kicad 5.0
 
 
