@@ -2,7 +2,7 @@
 <export version="D">
   <design>
     <source>/home/dolbeau/MAC/NuBusFPGA.V1_2/nubus-to-ztex/nubus-to-ztex.sch</source>
-    <date>Sun Nov 13 14:04:50 2022</date>
+    <date>Fri Nov 18 19:30:42 2022</date>
     <tool>Eeschema 5.1.9+dfsg1-1~bpo10+1</tool>
     <sheet number="1" name="/" tstamps="/">
       <title_block>
@@ -186,7 +186,7 @@
       <tstamp>61B5DFBC</tstamp>
     </comp>
     <comp ref="D1">
-      <value>RED Led</value>
+      <value>RED Led 0805</value>
       <footprint>LED_SMD:LED_0805_2012Metric</footprint>
       <datasheet>https://optoelectronics.liteon.com/upload/download/DS-22-99-0150/LTST-C170KRKT.pdf</datasheet>
       <fields>
@@ -210,7 +210,7 @@
       <tstamp>61B5F3F5</tstamp>
     </comp>
     <comp ref="D2">
-      <value>RED Led</value>
+      <value>RED Led 0805</value>
       <footprint>LED_SMD:LED_0805_2012Metric</footprint>
       <datasheet>https://optoelectronics.liteon.com/upload/download/DS-22-99-0150/LTST-C170KRKT.pdf</datasheet>
       <fields>
@@ -228,7 +228,6 @@
       <fields>
         <field name="Digikey">?</field>
         <field name="Koncar">?</field>
-        <field name="LCSC">?</field>
         <field name="MNF1_URL">www.yageo.com</field>
         <field name="MPN">CC0603KRX7R8BB104</field>
         <field name="Mouser">603-CC603KRX7R8BB104</field>
@@ -245,7 +244,6 @@
       <fields>
         <field name="Digikey">?</field>
         <field name="Koncar">?</field>
-        <field name="LCSC">?</field>
         <field name="MNF1_URL">www.yageo.com</field>
         <field name="MPN">CC0603KRX7R8BB104</field>
         <field name="Mouser">603-CC603KRX7R8BB104</field>
@@ -268,7 +266,7 @@
       <tstamp>621E3C4D</tstamp>
     </comp>
     <comp ref="D3">
-      <value>BLUE Led</value>
+      <value>BLUE Led 0805</value>
       <footprint>LED_SMD:LED_0805_2012Metric</footprint>
       <datasheet>https://eu.mouser.com/datasheet/2/239/Lite-On-LTST-C170TBKT-1175372.pdf</datasheet>
       <fields>
@@ -299,7 +297,6 @@
       <fields>
         <field name="Digikey">?</field>
         <field name="Koncar">?</field>
-        <field name="LCSC">?</field>
         <field name="MNF1_URL">www.yageo.com</field>
         <field name="MPN">CC0603KRX7R8BB104</field>
         <field name="Mouser">603-CC603KRX7R8BB104</field>
@@ -389,7 +386,6 @@
       <fields>
         <field name="Digikey">?</field>
         <field name="Koncar">?</field>
-        <field name="LCSC">?</field>
         <field name="MNF1_URL">www.yageo.com</field>
         <field name="MPN">CC0603KRX7R8BB104</field>
         <field name="Mouser">603-CC603KRX7R8BB104</field>
@@ -421,7 +417,6 @@
       <fields>
         <field name="Digikey">?</field>
         <field name="Koncar">?</field>
-        <field name="LCSC">?</field>
         <field name="MNF1_URL">www.yageo.com</field>
         <field name="MPN">CC0603KRX7R8BB104</field>
         <field name="Mouser">603-CC603KRX7R8BB104</field>
@@ -453,7 +448,6 @@
       <fields>
         <field name="Digikey">?</field>
         <field name="Koncar">?</field>
-        <field name="LCSC">?</field>
         <field name="MNF1_URL">www.yageo.com</field>
         <field name="MPN">CC0603KRX7R8BB104</field>
         <field name="Mouser">603-CC603KRX7R8BB104</field>
@@ -494,7 +488,7 @@
       <tstamp>61D85DF0</tstamp>
     </comp>
     <comp ref="D11">
-      <value>GREEN Led</value>
+      <value>GREEN Led 0805</value>
       <footprint>LED_SMD:LED_0805_2012Metric</footprint>
       <datasheet>https://www.lcsc.com/product-detail/Light-Emitting-Diodes-LED_Lite-On-LTST-C170KGKT_C98221.html</datasheet>
       <fields>
@@ -518,7 +512,7 @@
       <tstamp>61D85E0D</tstamp>
     </comp>
     <comp ref="D12">
-      <value>GREEN Led</value>
+      <value>GREEN Led 0805</value>
       <footprint>LED_SMD:LED_0805_2012Metric</footprint>
       <datasheet>https://www.lcsc.com/product-detail/Light-Emitting-Diodes-LED_Lite-On-LTST-C170KGKT_C98221.html</datasheet>
       <fields>
@@ -542,7 +536,7 @@
       <tstamp>61D85E2A</tstamp>
     </comp>
     <comp ref="D13">
-      <value>GREEN Led</value>
+      <value>GREEN Led 0805</value>
       <footprint>LED_SMD:LED_0805_2012Metric</footprint>
       <datasheet>https://www.lcsc.com/product-detail/Light-Emitting-Diodes-LED_Lite-On-LTST-C170KGKT_C98221.html</datasheet>
       <fields>
@@ -566,7 +560,7 @@
       <tstamp>61D85E47</tstamp>
     </comp>
     <comp ref="D14">
-      <value>GREEN Led</value>
+      <value>GREEN Led 0805</value>
       <footprint>LED_SMD:LED_0805_2012Metric</footprint>
       <datasheet>https://www.lcsc.com/product-detail/Light-Emitting-Diodes-LED_Lite-On-LTST-C170KGKT_C98221.html</datasheet>
       <fields>
@@ -607,7 +601,6 @@
       <fields>
         <field name="Digikey">?</field>
         <field name="Koncar">?</field>
-        <field name="LCSC">?</field>
         <field name="MNF1_URL">www.yageo.com</field>
         <field name="MPN">CC0603KRX7R8BB104</field>
         <field name="Mouser">603-CC603KRX7R8BB104</field>
@@ -636,7 +629,6 @@
       <fields>
         <field name="Digikey">?</field>
         <field name="Koncar">?</field>
-        <field name="LCSC">?</field>
         <field name="MNF1_URL">www.yageo.com</field>
         <field name="MPN">CC0603KRX7R8BB104</field>
         <field name="Mouser">603-CC603KRX7R8BB104</field>
@@ -665,7 +657,6 @@
       <fields>
         <field name="Digikey">?</field>
         <field name="Koncar">?</field>
-        <field name="LCSC">?</field>
         <field name="MNF1_URL">www.yageo.com</field>
         <field name="MPN">CC0603KRX7R8BB104</field>
         <field name="Mouser">603-CC603KRX7R8BB104</field>
@@ -782,7 +773,6 @@
       <fields>
         <field name="Digikey">?</field>
         <field name="Koncar">?</field>
-        <field name="LCSC">?</field>
         <field name="MNF1_URL">www.yageo.com</field>
         <field name="MPN">CC0603KRX7R8BB104</field>
         <field name="Mouser">603-CC603KRX7R8BB104</field>
@@ -816,7 +806,7 @@
       <tstamp>6332F9A9</tstamp>
     </comp>
     <comp ref="D6">
-      <value>YELLOW Led</value>
+      <value>YELLOW Led 0805</value>
       <footprint>LED_SMD:LED_0805_2012Metric</footprint>
       <datasheet>https://lcsc.com/product-detail/Light-Emitting-Diodes-LED_Lite-On-LTST-C170KSKT_C125091.html</datasheet>
       <fields>
@@ -840,7 +830,7 @@
       <tstamp>6334203F</tstamp>
     </comp>
     <comp ref="D9">
-      <value>YELLOW Led</value>
+      <value>YELLOW Led 0805</value>
       <footprint>LED_SMD:LED_0805_2012Metric</footprint>
       <datasheet>https://lcsc.com/product-detail/Light-Emitting-Diodes-LED_Lite-On-LTST-C170KSKT_C125091.html</datasheet>
       <fields>
@@ -864,7 +854,7 @@
       <tstamp>6334334C</tstamp>
     </comp>
     <comp ref="D10">
-      <value>YELLOW Led</value>
+      <value>YELLOW Led 0805</value>
       <footprint>LED_SMD:LED_0805_2012Metric</footprint>
       <datasheet>https://lcsc.com/product-detail/Light-Emitting-Diodes-LED_Lite-On-LTST-C170KSKT_C125091.html</datasheet>
       <fields>
@@ -888,7 +878,7 @@
       <tstamp>6334A052</tstamp>
     </comp>
     <comp ref="D7">
-      <value>YELLOW Led</value>
+      <value>YELLOW Led 0805</value>
       <footprint>LED_SMD:LED_0805_2012Metric</footprint>
       <datasheet>https://lcsc.com/product-detail/Light-Emitting-Diodes-LED_Lite-On-LTST-C170KSKT_C125091.html</datasheet>
       <fields>
@@ -912,7 +902,7 @@
       <tstamp>63352DBD</tstamp>
     </comp>
     <comp ref="D8">
-      <value>YELLOW Led</value>
+      <value>YELLOW Led 0805</value>
       <footprint>LED_SMD:LED_0805_2012Metric</footprint>
       <datasheet>https://lcsc.com/product-detail/Light-Emitting-Diodes-LED_Lite-On-LTST-C170KSKT_C125091.html</datasheet>
       <fields>
@@ -930,7 +920,6 @@
       <fields>
         <field name="Digikey">?</field>
         <field name="Koncar">?</field>
-        <field name="LCSC">?</field>
         <field name="MNF1_URL">www.yageo.com</field>
         <field name="MPN">CC0603KRX7R8BB104</field>
         <field name="Mouser">603-CC603KRX7R8BB104</field>
@@ -947,7 +936,6 @@
       <fields>
         <field name="Digikey">?</field>
         <field name="Koncar">?</field>
-        <field name="LCSC">?</field>
         <field name="MNF1_URL">www.yageo.com</field>
         <field name="MPN">CC0603KRX7R8BB104</field>
         <field name="Mouser">603-CC603KRX7R8BB104</field>
@@ -1001,7 +989,6 @@
       <fields>
         <field name="Digikey">?</field>
         <field name="Koncar">?</field>
-        <field name="LCSC">?</field>
         <field name="MNF1_URL">www.yageo.com</field>
         <field name="MPN">CC0603KRX7R8BB104</field>
         <field name="Mouser">603-CC603KRX7R8BB104</field>
@@ -1018,7 +1005,6 @@
       <fields>
         <field name="Digikey">?</field>
         <field name="Koncar">?</field>
-        <field name="LCSC">?</field>
         <field name="MNF1_URL">www.yageo.com</field>
         <field name="MPN">CC0603KRX7R8BB104</field>
         <field name="Mouser">603-CC603KRX7R8BB104</field>
@@ -1035,7 +1021,6 @@
       <fields>
         <field name="Digikey">?</field>
         <field name="Koncar">?</field>
-        <field name="LCSC">?</field>
         <field name="MNF1_URL">www.yageo.com</field>
         <field name="MPN">CC0603KRX7R8BB104</field>
         <field name="Mouser">603-CC603KRX7R8BB104</field>
@@ -1168,7 +1153,6 @@
         <field name="DNP">DNP</field>
         <field name="Digikey">?</field>
         <field name="Koncar">?</field>
-        <field name="LCSC">?</field>
         <field name="MNF1_URL">www.yageo.com</field>
         <field name="MPN">CC0603KRX7R8BB104</field>
         <field name="Mouser">603-CC603KRX7R8BB104</field>
@@ -1281,7 +1265,6 @@
         <field name="DNP">DNP</field>
         <field name="Digikey">?</field>
         <field name="Koncar">?</field>
-        <field name="LCSC">?</field>
         <field name="MNF1_URL">www.yageo.com</field>
         <field name="MPN">CC0603KRX7R8BB104</field>
         <field name="Mouser">603-CC603KRX7R8BB104</field>
@@ -1368,7 +1351,6 @@
       <fields>
         <field name="Digikey">?</field>
         <field name="Koncar">?</field>
-        <field name="LCSC">?</field>
         <field name="MNF1_URL">www.yageo.com</field>
         <field name="MPN">CC0603KRX7R8BB104</field>
         <field name="Mouser">603-CC603KRX7R8BB104</field>
@@ -1397,7 +1379,6 @@
       <fields>
         <field name="Digikey">?</field>
         <field name="Koncar">?</field>
-        <field name="LCSC">?</field>
         <field name="MNF1_URL">www.yageo.com</field>
         <field name="MPN">CC0603KRX7R8BB104</field>
         <field name="Mouser">603-CC603KRX7R8BB104</field>

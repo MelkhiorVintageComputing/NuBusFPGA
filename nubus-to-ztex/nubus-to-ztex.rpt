@@ -1,4 +1,4 @@
-## Footprint report - date Sun Nov 13 14:05:32 2022
+## Footprint report - date Fri Nov 18 19:31:24 2022
 ## Created by Pcbnew version kicad 5.1.9+dfsg1-1~bpo10+1
 ## Unit = mm, Angle = deg.
 
@@ -653,7 +653,7 @@ $EndMODULE  C15
 
 $MODULE "D7"
 reference "D7"
-value "YELLOW Led"
+value "YELLOW Led 0805"
 footprint "LED_SMD:LED_0805_2012Metric"
 attribut smd
 position 137.410000 20.060293  orientation 90.00
@@ -674,7 +674,7 @@ $EndMODULE  D7
 
 $MODULE "D6"
 reference "D6"
-value "YELLOW Led"
+value "YELLOW Led 0805"
 footprint "LED_SMD:LED_0805_2012Metric"
 attribut smd
 position 134.880000 20.060293  orientation 90.00
@@ -695,7 +695,7 @@ $EndMODULE  D6
 
 $MODULE "D8"
 reference "D8"
-value "YELLOW Led"
+value "YELLOW Led 0805"
 footprint "LED_SMD:LED_0805_2012Metric"
 attribut smd
 position 122.610000 69.150000  orientation 180.00
@@ -716,7 +716,7 @@ $EndMODULE  D8
 
 $MODULE "D9"
 reference "D9"
-value "YELLOW Led"
+value "YELLOW Led 0805"
 footprint "LED_SMD:LED_0805_2012Metric"
 attribut smd
 position 178.144189 17.011035  orientation 270.00
@@ -737,7 +737,7 @@ $EndMODULE  D9
 
 $MODULE "D10"
 reference "D10"
-value "YELLOW Led"
+value "YELLOW Led 0805"
 footprint "LED_SMD:LED_0805_2012Metric"
 attribut smd
 position 175.604189 17.011035  orientation 270.00
@@ -1367,7 +1367,7 @@ $EndMODULE  C3
 
 $MODULE "D3"
 reference "D3"
-value "BLUE Led"
+value "BLUE Led 0805"
 footprint "LED_SMD:LED_0805_2012Metric"
 attribut smd
 position 114.800000 15.500000  orientation 90.00
@@ -2420,7 +2420,7 @@ $EndMODULE  U9
 
 $MODULE "D11"
 reference "D11"
-value "GREEN Led"
+value "GREEN Led 0805"
 footprint "LED_SMD:LED_0805_2012Metric"
 attribut smd
 position 122.902634 52.877042  orientation 180.00
@@ -2441,7 +2441,7 @@ $EndMODULE  D11
 
 $MODULE "D14"
 reference "D14"
-value "GREEN Led"
+value "GREEN Led 0805"
 footprint "LED_SMD:LED_0805_2012Metric"
 attribut smd
 position 122.902634 43.977042  orientation 180.00
@@ -2462,7 +2462,7 @@ $EndMODULE  D14
 
 $MODULE "D13"
 reference "D13"
-value "GREEN Led"
+value "GREEN Led 0805"
 footprint "LED_SMD:LED_0805_2012Metric"
 attribut smd
 position 122.902634 46.943708  orientation 180.00
@@ -2483,7 +2483,7 @@ $EndMODULE  D13
 
 $MODULE "D12"
 reference "D12"
-value "GREEN Led"
+value "GREEN Led 0805"
 footprint "LED_SMD:LED_0805_2012Metric"
 attribut smd
 position 122.902634 49.910374  orientation 180.00
@@ -3620,7 +3620,7 @@ $EndMODULE  R27
 
 $MODULE "D2"
 reference "D2"
-value "RED Led"
+value "RED Led 0805"
 footprint "LED_SMD:LED_0805_2012Metric"
 attribut smd
 position 117.930000 38.158334  orientation 0.00
@@ -3641,7 +3641,7 @@ $EndMODULE  D2
 
 $MODULE "D1"
 reference "D1"
-value "RED Led"
+value "RED Led 0805"
 footprint "LED_SMD:LED_0805_2012Metric"
 attribut smd
 position 117.930000 40.410000  orientation 0.00

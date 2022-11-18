@@ -1,4 +1,4 @@
-### Module positions - created on Sun Nov 13 14:05:24 2022 ###
+### Module positions - created on Fri Nov 18 19:31:16 2022 ###
 ### Printed by Pcbnew version kicad 5.1.9+dfsg1-1~bpo10+1
 ## Unit = mm, Angle = deg.
 ## Side : top
@@ -29,18 +29,18 @@ C26       100nF                                                                 
 C27       100nF                                                                       C_0603_1608Metric                           253.0500   -81.4600  180.0000  top
 C28       47uF_10V_0805                                                               C_0805_2012Metric                           221.7800   -96.0000    0.0000  top
 C30       100nF                                                                       C_0603_1608Metric                           137.7000   -46.8000  270.0000  top
-D1        RED_Led                                                                     LED_0805_2012Metric                         117.9300   -40.4100    0.0000  top
-D2        RED_Led                                                                     LED_0805_2012Metric                         117.9300   -38.1583    0.0000  top
-D3        BLUE_Led                                                                    LED_0805_2012Metric                         114.8000   -15.5000   90.0000  top
-D6        YELLOW_Led                                                                  LED_0805_2012Metric                         134.8800   -20.0603   90.0000  top
-D7        YELLOW_Led                                                                  LED_0805_2012Metric                         137.4100   -20.0603   90.0000  top
-D8        YELLOW_Led                                                                  LED_0805_2012Metric                         122.6100   -69.1500  180.0000  top
-D9        YELLOW_Led                                                                  LED_0805_2012Metric                         178.1442   -17.0110  270.0000  top
-D10       YELLOW_Led                                                                  LED_0805_2012Metric                         175.6042   -17.0110  270.0000  top
-D11       GREEN_Led                                                                   LED_0805_2012Metric                         122.9026   -52.8770  180.0000  top
-D12       GREEN_Led                                                                   LED_0805_2012Metric                         122.9026   -49.9104  180.0000  top
-D13       GREEN_Led                                                                   LED_0805_2012Metric                         122.9026   -46.9437  180.0000  top
-D14       GREEN_Led                                                                   LED_0805_2012Metric                         122.9026   -43.9770  180.0000  top
+D1        RED_Led_0805                                                                LED_0805_2012Metric                         117.9300   -40.4100    0.0000  top
+D2        RED_Led_0805                                                                LED_0805_2012Metric                         117.9300   -38.1583    0.0000  top
+D3        BLUE_Led_0805                                                               LED_0805_2012Metric                         114.8000   -15.5000   90.0000  top
+D6        YELLOW_Led_0805                                                             LED_0805_2012Metric                         134.8800   -20.0603   90.0000  top
+D7        YELLOW_Led_0805                                                             LED_0805_2012Metric                         137.4100   -20.0603   90.0000  top
+D8        YELLOW_Led_0805                                                             LED_0805_2012Metric                         122.6100   -69.1500  180.0000  top
+D9        YELLOW_Led_0805                                                             LED_0805_2012Metric                         178.1442   -17.0110  270.0000  top
+D10       YELLOW_Led_0805                                                             LED_0805_2012Metric                         175.6042   -17.0110  270.0000  top
+D11       GREEN_Led_0805                                                              LED_0805_2012Metric                         122.9026   -52.8770  180.0000  top
+D12       GREEN_Led_0805                                                              LED_0805_2012Metric                         122.9026   -49.9104  180.0000  top
+D13       GREEN_Led_0805                                                              LED_0805_2012Metric                         122.9026   -46.9437  180.0000  top
+D14       GREEN_Led_0805                                                              LED_0805_2012Metric                         122.9026   -43.9770  180.0000  top
 FB1       Ferrite_Bead_Small                                                          L_0805_2012Metric                           257.8700   -84.0700    0.0000  top
 J5        10029449-111RLF_(HDMI_A)                                                    HDMI_A_Amphenol_10029449-111                268.9000   -62.3000   90.0000  top
 J6        105017-0001_(USB_micro-B)                                                   USB_Micro-B_Molex-105017-0001               270.6600   -79.0700   90.0000  top
