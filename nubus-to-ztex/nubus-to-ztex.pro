@@ -1,4 +1,4 @@
-update=Fri Nov 11 10:30:44 2022
+update=Fri Dec  2 09:49:30 2022
 version=1
 last_client=kicad
 [general]
@@ -39,8 +39,12 @@ MinMicroViaDiameter=0.2
 MinMicroViaDrill=0.09999999999999999
 MinHoleToHole=0.25
 TrackWidth1=0.1524
-ViaDiameter1=0.8
-ViaDrill1=0.4
+ViaDiameter1=0.45
+ViaDrill1=0.3
+ViaDiameter2=0.45
+ViaDrill2=0.3
+ViaDiameter3=0.8
+ViaDrill3=0.4
 dPairWidth1=0.1524
 dPairGap1=0.1524
 dPairViaGap1=0.25
@@ -239,6 +243,17 @@ Enabled=0
 Name=Default
 Clearance=0.1524
 TrackWidth=0.1524
+ViaDiameter=0.45
+ViaDrill=0.3
+uViaDiameter=0.3
+uViaDrill=0.1
+dPairWidth=0.1524
+dPairGap=0.1524
+dPairViaGap=0.25
+[pcbnew/Netclasses/1]
+Name=GND
+Clearance=0.2
+TrackWidth=0.2
 ViaDiameter=0.8
 ViaDrill=0.4
 uViaDiameter=0.3
@@ -246,10 +261,21 @@ uViaDrill=0.1
 dPairWidth=0.1524
 dPairGap=0.1524
 dPairViaGap=0.25
-[pcbnew/Netclasses/1]
-Name=Shielding
+[pcbnew/Netclasses/2]
+Name=Power
 Clearance=0.2
-TrackWidth=0.1524
+TrackWidth=0.2
+ViaDiameter=0.8
+ViaDrill=0.4
+uViaDiameter=0.3
+uViaDrill=0.1
+dPairWidth=0.1524
+dPairGap=0.1524
+dPairViaGap=0.25
+[pcbnew/Netclasses/3]
+Name=Shielding
+Clearance=0.25
+TrackWidth=0.25
 ViaDiameter=0.8
 ViaDrill=0.4
 uViaDiameter=0.3
