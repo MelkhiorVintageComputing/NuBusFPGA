@@ -63,6 +63,7 @@ F 0 "GRAPHIC1" H 4028 1646 50  0000 L CNN
 F 1 "LogoLitex" H 4028 1555 50  0000 L CNN
 F 2 "For_SeeedStudio:litex_logo" H 3800 1650 50  0001 C CNN
 F 3 "" H 3800 1650 50  0001 C CNN
+F 4 "DNP" H 3800 1650 50  0001 C CNN "DNP"
 	1    3800 1650
 	1    0    0    -1  
 $EndComp

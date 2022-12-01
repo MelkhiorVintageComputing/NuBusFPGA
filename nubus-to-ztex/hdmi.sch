@@ -129,7 +129,7 @@ F 7 "?" H 7300 1700 50  0001 C CNN "Digikey"
 F 8 "" H 7300 1700 50  0001 C CNN "LCSC"
 F 9 "?" H 7300 1700 50  0001 C CNN "Koncar"
 F 10 "TB" H 7300 1700 50  0001 C CNN "Side"
-F 11 "https://lcsc.com/product-detail/Multilayer-Ceramic-Capacitors-MLCC-SMD-SMT_YAGEO-CC0603KRX7R8BB104_C92490.html" H 3000 6050 50  0001 C CNN "URL"
+F 11 "https://www.lcsc.com/product-detail/Multilayer-Ceramic-Capacitors-MLCC-SMD-SMT_YAGEO-CC0603KRX7R8BB104_C92490.html" H 3000 6050 50  0001 C CNN "URL"
 	1    7300 1700
 	1    0    0    -1  
 $EndComp
@@ -197,7 +197,7 @@ F 7 "?" H 2250 1600 50  0001 C CNN "Digikey"
 F 8 "" H 2250 1600 50  0001 C CNN "LCSC"
 F 9 "?" H 2250 1600 50  0001 C CNN "Koncar"
 F 10 "TB" H 2250 1600 50  0001 C CNN "Side"
-F 11 "https://lcsc.com/product-detail/Multilayer-Ceramic-Capacitors-MLCC-SMD-SMT_YAGEO-CC0603KRX7R8BB104_C92490.html" H 2250 1600 50  0001 C CNN "URL"
+F 11 "https://www.lcsc.com/product-detail/Multilayer-Ceramic-Capacitors-MLCC-SMD-SMT_YAGEO-CC0603KRX7R8BB104_C92490.html" H 2250 1600 50  0001 C CNN "URL"
 	1    2250 1600
 	0    1    1    0   
 $EndComp
@@ -231,7 +231,7 @@ F 7 "?" H 2450 1900 50  0001 C CNN "Digikey"
 F 8 "" H 2450 1900 50  0001 C CNN "LCSC"
 F 9 "?" H 2450 1900 50  0001 C CNN "Koncar"
 F 10 "TB" H 2450 1900 50  0001 C CNN "Side"
-F 11 "https://lcsc.com/product-detail/Multilayer-Ceramic-Capacitors-MLCC-SMD-SMT_YAGEO-CC0603KRX7R8BB104_C92490.html" H 3000 6050 50  0001 C CNN "URL"
+F 11 "https://www.lcsc.com/product-detail/Multilayer-Ceramic-Capacitors-MLCC-SMD-SMT_YAGEO-CC0603KRX7R8BB104_C92490.html" H 3000 6050 50  0001 C CNN "URL"
 	1    2450 1900
 	0    1    1    0   
 $EndComp
@@ -258,7 +258,7 @@ F 2 "For_SeeedStudio:HDMI_A_Amphenol_10029449-111" H 6675 2550 50  0001 C CNN
 F 3 "https://en.wikipedia.org/wiki/HDMI" H 6675 2550 50  0001 C CNN
 F 4 "10029449-111RLF" H 6650 2550 50  0001 C CNN "MPN"
 F 5 "https://www2.mouser.com/ProductDetail/Amphenol-FCI/10029449-111RLF?qs=fmpTyLOWOey0HPdD9%2F%2FaXA%3D%3D" H 6650 2550 50  0001 C CNN "URL-ALT"
-F 6 "https://lcsc.com/product-detail/D-Sub-DVI-HDMI-Connectors_Amphenol-ICC-10029449-111RLF_C427307.html" H 6650 2550 50  0001 C CNN "URL"
+F 6 "https://www.lcsc.com/product-detail/D-Sub-DVI-HDMI-Connectors_Amphenol-ICC-10029449-111RLF_C427307.html" H 6650 2550 50  0001 C CNN "URL"
 	1    6650 2550
 	1    0    0    -1  
 $EndComp
@@ -301,8 +301,8 @@ F 7 "GRM21BR60J476ME01L" H 2250 1350 50  0001 C CNN "MPN-PREV"
 F 8 "https://www2.mouser.com/ProductDetail/Murata/GRM21BR60J476ME15L?qs=Tw3AuTVwGeLlkNhaDtjM1w%3D%3D" H 2250 1350 50  0001 C CNN "URL-ALT2"
 F 9 "https://www2.mouser.com/ProductDetail/?qs=u16ybLDytRYYQtTToF3RWA%3D%3D" H 2250 1350 50  0001 C CNN "URL-PREV"
 F 10 "https://lcsc.com/product-detail/Multilayer-Ceramic-Capacitors-MLCC-SMD-SMT_TDK-C2012X5R1A476MTJ00E_C76636.html" H 2250 1350 50  0001 C CNN "URL-ALT"
-F 11 "GRM21BR61A476ME15K" H 2250 1350 50  0001 C CNN "MPN"
-F 12 "https://www.lcsc.com/product-detail/Multilayer-Ceramic-Capacitors-MLCC-SMD-SMT_Murata-Electronics-GRM21BR61A476ME15K_C2292827.html" H 2250 1350 50  0001 C CNN "URL"
+F 11 "C2012X5R1A476MTJ00E" H 2250 1350 50  0001 C CNN "MPN"
+F 12 "https://www.lcsc.com/product-detail/Multilayer-Ceramic-Capacitors-MLCC-SMD-SMT_TDK-C2012X5R1A476MTJ00E_C76636.html" H 2250 1350 50  0001 C CNN "URL"
 	1    2250 1350
 	0    1    1    0   
 $EndComp
@@ -337,7 +337,7 @@ F 3 "" H 2250 1100 50  0000 C CNN
 F 4 "www.yageo.com" H 2250 1100 50  0001 C CNN "MNF1_URL"
 F 5 "CC0603KRX7R8BB103" H 2250 1100 50  0001 C CNN "MPN"
 F 6 "603-CC603KRX7R8BB103" H 2250 1100 50  0001 C CNN "Mouser"
-F 7 "https://lcsc.com/product-detail/Multilayer-Ceramic-Capacitors-MLCC-SMD-SMT_YAGEO-CC0603KRX7R8BB103_C327204.html" H 2250 1100 50  0001 C CNN "URL"
+F 7 "https://www.lcsc.com/product-detail/Multilayer-Ceramic-Capacitors-MLCC-SMD-SMT_YAGEO-CC0603KRX7R8BB103_C327204.html" H 2250 1100 50  0001 C CNN "URL"
 	1    2250 1100
 	0    1    1    0   
 $EndComp
@@ -372,6 +372,7 @@ F 0 "H1" H 8600 4451 50  0000 L CNN
 F 1 "MountingHole_Pad" H 8600 4360 50  0000 L CNN
 F 2 "MountingHole:MountingHole_2.2mm_M2_Pad" H 8500 4400 50  0001 C CNN
 F 3 "~" H 8500 4400 50  0001 C CNN
+F 4 "DNP" H 8500 4400 50  0001 C CNN "DNP"
 	1    8500 4400
 	1    0    0    -1  
 $EndComp

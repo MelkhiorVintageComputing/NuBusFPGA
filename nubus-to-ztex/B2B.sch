@@ -28,8 +28,10 @@ F 4 "10-89-7642" H 1800 2650 50  0001 C CNN "MPN (Molex)"
 F 5 "https://www2.mouser.com/ProductDetail/Molex/10-89-7642?qs=%2Fha2pyFadugCxzQFZUdvioDcljDVidgd4vXrOFuSRYM%3D" H 1800 2650 50  0001 C CNN "URL (Molex)"
 F 6 "X6521WV-2x32H-C30D60" H 1800 2650 50  0001 C CNN "MPN (XKB)"
 F 7 "https://www.lcsc.com/product-detail/Pin-Headers_XKB-Connectivity-X6521WV-2x32H-C30D60_C2883966.html" H 1800 2650 50  0001 C CNN "URL (XKB)"
-F 8 "77313-101-64LF" H 1800 2650 50  0001 C CNN "MPN"
-F 9 "https://eu.mouser.com/ProductDetail/Amphenol-FCI/77313-101-64LF?qs=xJiur%252Bgubk1MSan%2F7C0v%252BA%3D%3D" H 1800 2650 50  0001 C CNN "URL"
+F 8 "77313-101-64LF" H 1800 2650 50  0001 C CNN "MPN (Amphenol)"
+F 9 "https://eu.mouser.com/ProductDetail/Amphenol-FCI/77313-101-64LF?qs=xJiur%252Bgubk1MSan%2F7C0v%252BA%3D%3D" H 1800 2650 50  0001 C CNN "URL (Amphenol)"
+F 10 "10-89-7642" H 1800 2650 50  0001 C CNN "MPN"
+F 11 "https://www.mouser.fr/ProductDetail/Molex/10-89-7642?qs=oWQp3ZoCHH1BnT8RSmq80A%3D%3D" H 1800 2650 50  0001 C CNN "URL"
 	1    1800 2650
 	1    0    0    -1  
 $EndComp
@@ -53,40 +55,21 @@ Wire Wire Line
 Wire Wire Line
 	7150 2850 6700 2850
 $Comp
-L Connector:Conn_01x06_Male J3
-U 1 1 5F69129B
-P 9250 850
-F 0 "J3" H 9356 1228 50  0000 C CNN
-F 1 "Conn_01x06_Male" H 9356 1137 50  0000 C CNN
-F 2 "For_SeeedStudio:SAMTEC_TSM-106-01-L-SH" H 9250 850 50  0001 C CNN
-F 3 "https://www.mouser.com/datasheet/2/527/tsm-2854655.pdf" H 9250 850 50  0001 C CNN
-F 4 "TSM-106-01-T-SH" H 9250 850 50  0001 C CNN "MPN"
-F 5 "https://www.mouser.fr/ProductDetail/Samtec/TSM-106-01-T-SH?qs=0lQeLiL1qybjt4R2%252BGOpsA%3D%3D" H 9250 850 50  0001 C CNN "URL"
-F 6 "'T' is tin 'L' is gold ; with extra -A (and footprint change) to get alignment pin ; -01 is post length (-02 would be fine)" H 9250 850 50  0001 C CNN "MPN comments"
-F 7 "DNP" H 9250 850 50  0000 C CNN "DNP"
-	1    9250 850 
-	1    0    0    -1  
-$EndComp
-$Comp
 L power:GND #PWR018
 U 1 1 5F6913A1
-P 9950 650
-F 0 "#PWR018" H 9950 400 50  0001 C CNN
-F 1 "GND" H 9955 477 50  0000 C CNN
-F 2 "" H 9950 650 50  0001 C CNN
-F 3 "" H 9950 650 50  0001 C CNN
-	1    9950 650 
+P 11075 700
+F 0 "#PWR018" H 11075 450 50  0001 C CNN
+F 1 "GND" H 11080 527 50  0000 C CNN
+F 2 "" H 11075 700 50  0001 C CNN
+F 3 "" H 11075 700 50  0001 C CNN
+	1    11075 700 
 	1    0    0    -1  
 $EndComp
 Wire Wire Line
-	9450 650  9950 650 
-Wire Wire Line
-	9450 950  7150 950 
-Wire Wire Line
-	7150 950  7150 1350
-Text Label 9450 1050 0    50   ~ 0
+	10575 700  11075 700 
+Text Label 10575 1100 0    50   ~ 0
 TX
-Text Label 9450 950  0    50   ~ 0
+Text Label 10575 1000 0    50   ~ 0
 RX
 $Comp
 L ztex_CD:ZTEX_CD JCD?
@@ -103,8 +86,10 @@ F 4 "10-89-7642" H 1800 2650 50  0001 C CNN "MPN (Molex)"
 F 5 "https://www2.mouser.com/ProductDetail/Molex/10-89-7642?qs=%2Fha2pyFadugCxzQFZUdvioDcljDVidgd4vXrOFuSRYM%3D" H 1800 2650 50  0001 C CNN "URL (Molex)"
 F 6 "X6521WV-2x32H-C30D60" H 1800 2650 50  0001 C CNN "MPN (XKB)"
 F 7 "https://www.lcsc.com/product-detail/Pin-Headers_XKB-Connectivity-X6521WV-2x32H-C30D60_C2883966.html" H 1800 2650 50  0001 C CNN "URL (XKB)"
-F 8 "77313-101-64LF" H 1800 2650 50  0001 C CNN "MPN"
-F 9 "https://eu.mouser.com/ProductDetail/Amphenol-FCI/77313-101-64LF?qs=xJiur%252Bgubk1MSan%2F7C0v%252BA%3D%3D" H 1800 2650 50  0001 C CNN "URL"
+F 8 "77313-101-64LF" H 1800 2650 50  0001 C CNN "MPN (Amphenol)"
+F 9 "https://eu.mouser.com/ProductDetail/Amphenol-FCI/77313-101-64LF?qs=xJiur%252Bgubk1MSan%2F7C0v%252BA%3D%3D" H 1800 2650 50  0001 C CNN "URL (Amphenol)"
+F 10 "10-89-7642" H 7600 2650 50  0001 C CNN "MPN"
+F 11 "https://www.mouser.fr/ProductDetail/Molex/10-89-7642?qs=oWQp3ZoCHH1BnT8RSmq80A%3D%3D" H 7600 2650 50  0001 C CNN "URL"
 	1    7600 2650
 	1    0    0    -1  
 $EndComp
@@ -166,8 +151,6 @@ Wire Wire Line
 	2950 7550 2950 7450
 Wire Wire Line
 	7150 2650 7400 2650
-Wire Wire Line
-	7150 1350 7400 1350
 Wire Wire Line
 	1450 2550 1600 2550
 Wire Wire Line
@@ -323,10 +306,6 @@ F 3 "" H 500 4450 50  0001 C CNN
 	1    0    0    -1  
 $EndComp
 Connection ~ 500  4450
-Wire Wire Line
-	10200 1050 10200 1350
-Wire Wire Line
-	10200 1350 9900 1350
 Text GLabel 4100 2050 2    50   Input Italic 0
 ~CLK_3V3
 Text GLabel 4100 1350 2    50   Input ~ 0
@@ -544,9 +523,9 @@ F 3 "" H 700 6600 50  0001 C CNN
 $EndComp
 Text GLabel 1850 6400 2    60   Input ~ 12
 LED1
-Text GLabel 9650 1050 2    60   Input ~ 12
+Text GLabel 9900 1350 2    60   Input ~ 12
 LED0
-Text GLabel 9650 950  2    60   Input ~ 12
+Text GLabel 10775 1000 2    60   Input ~ 12
 LED1
 Text GLabel 1600 4050 0    50   Input ~ 0
 USBH0_D+
@@ -569,7 +548,7 @@ F 7 "?" H 3000 6050 50  0001 C CNN "Digikey"
 F 8 "" H 3000 6050 50  0001 C CNN "LCSC"
 F 9 "?" H 3000 6050 50  0001 C CNN "Koncar"
 F 10 "TB" H 3000 6050 50  0001 C CNN "Side"
-F 11 "https://lcsc.com/product-detail/Multilayer-Ceramic-Capacitors-MLCC-SMD-SMT_YAGEO-CC0603KRX7R8BB104_C92490.html" H 3000 6050 50  0001 C CNN "URL"
+F 11 "https://www.lcsc.com/product-detail/Multilayer-Ceramic-Capacitors-MLCC-SMD-SMT_YAGEO-CC0603KRX7R8BB104_C92490.html" H 3000 6050 50  0001 C CNN "URL"
 	1    3000 6050
 	1    0    0    -1  
 $EndComp
@@ -634,7 +613,7 @@ F 7 "?" H 3400 6050 50  0001 C CNN "Digikey"
 F 8 "" H 3400 6050 50  0001 C CNN "LCSC"
 F 9 "?" H 3400 6050 50  0001 C CNN "Koncar"
 F 10 "TB" H 3400 6050 50  0001 C CNN "Side"
-F 11 "https://lcsc.com/product-detail/Multilayer-Ceramic-Capacitors-MLCC-SMD-SMT_YAGEO-CC0603KRX7R8BB104_C92490.html" H 3400 6050 50  0001 C CNN "URL"
+F 11 "https://www.lcsc.com/product-detail/Multilayer-Ceramic-Capacitors-MLCC-SMD-SMT_YAGEO-CC0603KRX7R8BB104_C92490.html" H 3400 6050 50  0001 C CNN "URL"
 	1    3400 6050
 	1    0    0    -1  
 $EndComp
@@ -738,8 +717,8 @@ F 2 "Capacitor_SMD:C_0805_2012Metric" H 4038 5900 50  0001 C CNN
 F 3 "" H 4000 6050 50  0000 C CNN
 F 4 "C2012X5R1A476MTJ00E" H 4000 6050 50  0001 C CNN "MPN-ALT"
 F 5 "https://lcsc.com/product-detail/Multilayer-Ceramic-Capacitors-MLCC-SMD-SMT_TDK-C2012X5R1A476MTJ00E_C76636.html" H 4000 6050 50  0001 C CNN "URL-ALT"
-F 6 "GRM21BR61A476ME15K" H 4000 6050 50  0001 C CNN "MPN"
-F 7 "https://www.lcsc.com/product-detail/Multilayer-Ceramic-Capacitors-MLCC-SMD-SMT_Murata-Electronics-GRM21BR61A476ME15K_C2292827.html" H 4000 6050 50  0001 C CNN "URL"
+F 6 "C2012X5R1A476MTJ00E" H 4000 6050 50  0001 C CNN "MPN"
+F 7 "https://www.lcsc.com/product-detail/Multilayer-Ceramic-Capacitors-MLCC-SMD-SMT_TDK-C2012X5R1A476MTJ00E_C76636.html" H 4000 6050 50  0001 C CNN "URL"
 	1    4000 6050
 	1    0    0    -1  
 $EndComp
@@ -856,8 +835,25 @@ F 3 "" H 3400 5900 50  0001 C CNN
 	1    0    0    -1  
 $EndComp
 Wire Wire Line
-	9450 950  9650 950 
-Connection ~ 9450 950 
+	10575 1000 10775 1000
+$Comp
+L Connector:Conn_01x06_Male J3
+U 1 1 5F69129B
+P 10375 900
+F 0 "J3" H 10481 1278 50  0000 C CNN
+F 1 "Conn_01x06_Male" H 10481 1187 50  0000 C CNN
+F 2 "For_SeeedStudio:PinHeader_1x06_P2.54mm_Horizontal_For_SeeedStudio" H 10375 900 50  0001 C CNN
+F 3 "" H 10375 900 50  0001 C CNN
+F 4 "" H 10375 900 50  0001 C CNN "MPN"
+F 5 "" H 10375 900 50  0001 C CNN "URL"
+F 6 "DNP" H 10375 900 50  0000 C CNN "DNP"
+	1    10375 900 
+	1    0    0    -1  
+$EndComp
+Text GLabel 7400 1350 0    60   Input ~ 12
+LED1
+Text GLabel 10775 1100 2    60   Input ~ 12
+LED0
 Wire Wire Line
-	9450 1050 10200 1050
+	10575 1100 10775 1100
 $EndSCHEMATC

@@ -1,4 +1,4 @@
-### Module positions - created on Fri Nov 18 19:31:16 2022 ###
+### Module positions - created on Thu Dec  1 16:37:14 2022 ###
 ### Printed by Pcbnew version kicad 5.1.9+dfsg1-1~bpo10+1
 ## Unit = mm, Angle = deg.
 ## Side : top
@@ -27,7 +27,7 @@ C24       100nF                                                                 
 C25       100uF_1206_(officially_150_uF_?_could_be_>=_100_uF_or_even_less,_probably)  C_1206_3216Metric                           257.4100   -86.3600  180.0000  top
 C26       100nF                                                                       C_0603_1608Metric                           254.6300   -89.0600    0.0000  top
 C27       100nF                                                                       C_0603_1608Metric                           253.0500   -81.4600  180.0000  top
-C28       47uF_10V_0805                                                               C_0805_2012Metric                           221.7800   -96.0000    0.0000  top
+C28       47uF_10V_0805                                                               C_0805_2012Metric                           221.7375   -95.5000    0.0000  top
 C30       100nF                                                                       C_0603_1608Metric                           137.7000   -46.8000  270.0000  top
 D1        RED_Led_0805                                                                LED_0805_2012Metric                         117.9300   -40.4100    0.0000  top
 D2        RED_Led_0805                                                                LED_0805_2012Metric                         117.9300   -38.1583    0.0000  top
@@ -42,8 +42,12 @@ D12       GREEN_Led_0805                                                        
 D13       GREEN_Led_0805                                                              LED_0805_2012Metric                         122.9026   -46.9437  180.0000  top
 D14       GREEN_Led_0805                                                              LED_0805_2012Metric                         122.9026   -43.9770  180.0000  top
 FB1       Ferrite_Bead_Small                                                          L_0805_2012Metric                           257.8700   -84.0700    0.0000  top
+GRAPHIC1  LogoLitex                                                                   litex_logo                                  230.7300   -77.0000    0.0000  top
+J2        47219-2001_(micro-sd)                                                       MOLEX_47219-2001                            156.4300   -12.7800  180.0000  top
+J3        Conn_01x06_Male                                                             SAMTEC_TSM-106-01-L-SH                      117.8560   -27.1780   90.0000  top
 J5        10029449-111RLF_(HDMI_A)                                                    HDMI_A_Amphenol_10029449-111                268.9000   -62.3000   90.0000  top
 J6        105017-0001_(USB_micro-B)                                                   USB_Micro-B_Molex-105017-0001               270.6600   -79.0700   90.0000  top
+J8        SMH-108-02-L-D_(Pmod_2x8_F)                                                 SAMTEC-SMH-108-02-X-D                       270.1380   -28.0000  270.0000  top
 R1        590                                                                         R_0603_1608Metric                           121.5200   -40.4100  180.0000  top
 R2        590                                                                         R_0603_1608Metric                           121.5200   -38.1583  180.0000  top
 R3        590                                                                         R_0603_1608Metric                           114.8000   -12.0000  270.0000  top
@@ -85,6 +89,7 @@ U5        74LVT245BPW,118                                                       
 U6        74LVT245BPW,118                                                             TSSOP-20_4.4x6.5mm_P0.65mm_ForSeeedStudio   165.5000   -78.5000   90.0000  top
 U7        74LVT245BPW,118                                                             TSSOP-20_4.4x6.5mm_P0.65mm_ForSeeedStudio   177.0000   -78.5000   90.0000  top
 U8        74LVT245BPW,118                                                             TSSOP-20_4.4x6.5mm_P0.65mm_ForSeeedStudio   192.0000   -78.5000   90.0000  top
+U9        TPD12S016PWR                                                                SOP65P640X120-24N                           250.9500   -58.9500    0.0000  top
 U10       SN65220DBV                                                                  SOT-23-6                                    265.4000   -79.3550  180.0000  top
 U11       TPS2051CDBV                                                                 SOT-23-5                                    252.9000   -85.2100  270.0000  top
 U13       SN74CB3T3245PWR                                                             TSSOP-20_4.4x6.5mm_P0.65mm_ForSeeedStudio   132.4500   -74.9400  180.0000  top

@@ -85,7 +85,7 @@ F 7 "?" H 8150 3250 50  0001 C CNN "Digikey"
 F 8 "" H 8150 3250 50  0001 C CNN "LCSC"
 F 9 "?" H 8150 3250 50  0001 C CNN "Koncar"
 F 10 "TB" H 8150 3250 50  0001 C CNN "Side"
-F 11 "https://lcsc.com/product-detail/Multilayer-Ceramic-Capacitors-MLCC-SMD-SMT_YAGEO-CC0603KRX7R8BB104_C92490.html" H 3000 6050 50  0001 C CNN "URL"
+F 11 "https://www.lcsc.com/product-detail/Multilayer-Ceramic-Capacitors-MLCC-SMD-SMT_YAGEO-CC0603KRX7R8BB104_C92490.html" H 3000 6050 50  0001 C CNN "URL"
 	1    8150 3250
 	1    0    0    -1  
 $EndComp

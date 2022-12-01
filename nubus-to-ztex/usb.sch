@@ -23,7 +23,7 @@ F 2 "Connector_USB:USB_Micro-B_Molex-105017-0001" H 5150 2750 50  0001 C CNN
 F 3 "https://www.molex.com/pdm_docs/sd/1050170001_sd.pdf" H 5150 2750 50  0001 C CNN
 F 4 "105017-0001" H 5000 2800 50  0001 C CNN "MPN"
 F 5 "Molex" H 5000 2800 50  0001 C CNN "Manufacturer"
-F 6 "https://lcsc.com/product-detail/USB-Connectors_MOLEX-1050170001_C136000.html" H 5000 2800 50  0001 C CNN "URL"
+F 6 "https://www.lcsc.com/product-detail/USB-Connectors_MOLEX-1050170001_C136000.html" H 5000 2800 50  0001 C CNN "URL"
 F 7 "https://www.mouser.fr/ProductDetail/Molex/105017-0001?qs=hlXxxvYE36k7QcsR97GUKA%3D%3D" H 5000 2800 50  0001 C CNN "URL-ALT"
 F 8 "DNP" H 5000 2800 50  0000 C CNN "DNP"
 	1    5000 2800
@@ -127,7 +127,7 @@ F 7 "?" H 7200 2000 50  0001 C CNN "Digikey"
 F 8 "" H 7200 2000 50  0001 C CNN "LCSC"
 F 9 "?" H 7200 2000 50  0001 C CNN "Koncar"
 F 10 "TB" H 7200 2000 50  0001 C CNN "Side"
-F 11 "https://lcsc.com/product-detail/Multilayer-Ceramic-Capacitors-MLCC-SMD-SMT_YAGEO-CC0603KRX7R8BB104_C92490.html" H 3000 6050 50  0001 C CNN "URL"
+F 11 "https://www.lcsc.com/product-detail/Multilayer-Ceramic-Capacitors-MLCC-SMD-SMT_YAGEO-CC0603KRX7R8BB104_C92490.html" H 3000 6050 50  0001 C CNN "URL"
 F 12 "DNP" H 7200 2000 50  0000 C CNN "DNP"
 	1    7200 2000
 	1    0    0    -1  
@@ -335,7 +335,7 @@ F 2 "Inductor_SMD:L_0805_2012Metric" V 5080 1750 50  0001 C CNN
 F 3 "~" H 5150 1750 50  0001 C CNN
 F 4 "742792022" H 5150 1750 50  0001 C CNN "MPN-ALT"
 F 5 "PZ2012U221-2R0TF" H 5150 1750 50  0001 C CNN "MPN"
-F 6 "https://lcsc.com/product-detail/Ferrite-Beads_Sunlord-PZ2012U221-2R0TF_C44361.html" H 5150 1750 50  0001 C CNN "URL"
+F 6 "https://www.lcsc.com/product-detail/Ferrite-Beads_Sunlord-PZ2012U221-2R0TF_C44361.html" H 5150 1750 50  0001 C CNN "URL"
 F 7 "DNP" H 5150 1750 50  0000 C CNN "DNP"
 	1    5150 1750
 	1    0    0    -1  
@@ -393,7 +393,7 @@ F 7 "?" H 7850 2000 50  0001 C CNN "Digikey"
 F 8 "" H 7850 2000 50  0001 C CNN "LCSC"
 F 9 "?" H 7850 2000 50  0001 C CNN "Koncar"
 F 10 "TB" H 7850 2000 50  0001 C CNN "Side"
-F 11 "https://lcsc.com/product-detail/Multilayer-Ceramic-Capacitors-MLCC-SMD-SMT_YAGEO-CC0603KRX7R8BB104_C92490.html" H 3000 6050 50  0001 C CNN "URL"
+F 11 "https://www.lcsc.com/product-detail/Multilayer-Ceramic-Capacitors-MLCC-SMD-SMT_YAGEO-CC0603KRX7R8BB104_C92490.html" H 3000 6050 50  0001 C CNN "URL"
 F 12 "DNP" H 7850 2000 50  0000 C CNN "DNP"
 	1    7850 2000
 	1    0    0    -1  

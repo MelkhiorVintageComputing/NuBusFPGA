@@ -57,8 +57,8 @@ F 2 "Capacitor_SMD:C_0805_2012Metric" H 5488 5000 50  0001 C CNN
 F 3 "" H 5450 5150 50  0000 C CNN
 F 4 "GRM21BR60J476ME15L" H 5450 5150 50  0001 C CNN "MPN-ALT"
 F 5 "https://www.lcsc.com/product-detail/Multilayer-Ceramic-Capacitors-MLCC-SMD-SMT_Murata-Electronics-GRM21BR60J476ME15L_C77072.html" H 5450 5150 50  0001 C CNN "URL-ALT"
-F 6 "GRM21BR61A476ME15K" H 5450 5150 50  0001 C CNN "MPN"
-F 7 "https://www.lcsc.com/product-detail/Multilayer-Ceramic-Capacitors-MLCC-SMD-SMT_Murata-Electronics-GRM21BR61A476ME15K_C2292827.html" H 5450 5150 50  0001 C CNN "URL"
+F 6 "C2012X5R1A476MTJ00E" H 5450 5150 50  0001 C CNN "MPN"
+F 7 "https://www.lcsc.com/product-detail/Multilayer-Ceramic-Capacitors-MLCC-SMD-SMT_TDK-C2012X5R1A476MTJ00E_C76636.html" H 5450 5150 50  0001 C CNN "URL"
 	1    5450 5150
 	1    0    0    -1  
 $EndComp
@@ -71,7 +71,7 @@ F 1 "47219-2001 (micro-sd)" H 4300 5726 50  0000 C CNN
 F 2 "MOLEX_47219-2001:MOLEX_47219-2001" H 4300 5250 50  0001 L BNN
 F 3 "https://www.molex.com/webdocs/datasheets/pdf/en-us/0472192001_MEMORY_CARD_SOCKET.pdf" H 4300 5250 50  0001 L BNN
 F 4 "47219-2001" H 4300 5250 50  0001 C CNN "MPN"
-F 5 "https://eu.mouser.com/ProductDetail/Molex/47219-2001?qs=6kT3pPPHxnVaoXw6Dd7beQ%3D%3D" H 4300 5250 50  0001 C CNN "URL"
+F 5 "https://www.lcsc.com/product-detail/SD-Card-Connectors_MOLEX-472192001_C164170.html" H 4300 5250 50  0001 C CNN "URL"
 	1    4300 5250
 	1    0    0    -1  
 $EndComp
@@ -115,7 +115,7 @@ F 7 "?" H 5200 5150 50  0001 C CNN "Digikey"
 F 8 "" H 5200 5150 50  0001 C CNN "LCSC"
 F 9 "?" H 5200 5150 50  0001 C CNN "Koncar"
 F 10 "TB" H 5200 5150 50  0001 C CNN "Side"
-F 11 "https://lcsc.com/product-detail/Multilayer-Ceramic-Capacitors-MLCC-SMD-SMT_YAGEO-CC0603KRX7R8BB104_C92490.html" H 3000 6050 50  0001 C CNN "URL"
+F 11 "https://www.lcsc.com/product-detail/Multilayer-Ceramic-Capacitors-MLCC-SMD-SMT_YAGEO-CC0603KRX7R8BB104_C92490.html" H 3000 6050 50  0001 C CNN "URL"
 	1    5200 5150
 	1    0    0    -1  
 $EndComp

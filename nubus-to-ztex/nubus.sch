@@ -28,7 +28,7 @@ F 7 "?" H 17550 2500 50  0001 C CNN "Digikey"
 F 8 "" H 17550 2500 50  0001 C CNN "LCSC"
 F 9 "?" H 17550 2500 50  0001 C CNN "Koncar"
 F 10 "TB" H 17550 2500 50  0001 C CNN "Side"
-F 11 "https://lcsc.com/product-detail/Multilayer-Ceramic-Capacitors-MLCC-SMD-SMT_YAGEO-CC0603KRX7R8BB104_C92490.html" H 3000 6050 50  0001 C CNN "URL"
+F 11 "https://www.lcsc.com/product-detail/Multilayer-Ceramic-Capacitors-MLCC-SMD-SMT_YAGEO-CC0603KRX7R8BB104_C92490.html" H 3000 6050 50  0001 C CNN "URL"
 	1    17550 2500
 	1    0    0    -1  
 $EndComp
@@ -68,6 +68,7 @@ F 1 "10k" V 7450 6150 50  0000 C CNN
 F 2 "Resistor_SMD:R_0603_1608Metric" V 7380 6150 50  0001 C CNN
 F 3 "" H 7450 6150 50  0000 C CNN
 F 4 "0603WAF1002T5E" V 7450 5550 50  0001 C CNN "MPN"
+F 5 "https://www.lcsc.com/product-detail/Chip-Resistor-Surface-Mount_UNI-ROYAL-Uniroyal-Elec-0603WAF1002T5E_C25804.html" H 7450 6150 50  0001 C CNN "URL"
 	1    7450 6150
 	0    1    1    0   
 $EndComp
@@ -78,17 +79,19 @@ L C96ABC:C96ABC_NUBUS J4
 U 1 1 61912527
 P 22250 5750
 F 0 "J4" H 22429 5846 50  0000 L CNN
-F 1 "09031966921 (DIN 41612C 3x32 pins)" H 22429 5755 50  0000 L CNN
+F 1 "85003-0567 (DIN 41612C 3x32 pins)" H 22429 5755 50  0000 L CNN
 F 2 "For_SeeedStudio:DIN41612_C_3x32_Male_Horizontal_THT" H 22250 5800 50  0001 C CNN
 F 3 " ~" H 22250 5800 50  0001 C CNN
 F 4 "85003-0567" H 22250 5750 50  0001 C CNN "MPN (Molex)"
-F 5 "https://www.mouser.fr/ProductDetail/HARTING/09031966921?qs=gIpPgrDBK%2Fho4yEpoERymA%3D%3D" H 22250 5750 50  0001 C CNN "URL"
+F 5 "https://www.lcsc.com/product-detail/Mezzanine-Connectors-Board-to-Board_MOLEX-0850030567_C3654485.html" H 22250 5750 50  0001 C CNN "URL (Molex)"
 F 6 "DIN-096CPC-RR1-HM" H 22250 5750 50  0001 C CNN "MPN (3M)"
 F 7 "RR1L would also work (for .062 PCBs)" H 22250 5750 50  0001 C CNN "Notes (3M)"
 F 8 "09033967921" H 22250 5750 50  0001 C CNN "MPN (Harting)"
 F 9 "09033966921" H 22250 5750 50  0001 C CNN "MPN (Harting 2)"
-F 10 "09033966921" H 22250 5750 50  0001 C CNN "MPN"
+F 10 "https://www.mouser.fr/ProductDetail/HARTING/09031966921?qs=gIpPgrDBK%2Fho4yEpoERymA%3D%3D" H 22250 5750 50  0001 C CNN "URL (Harting 2)"
 F 11 "Loads of variants..." H 22250 5750 50  0001 C CNN "Notes (Harting)"
+F 12 "85003-0567" H 22250 5750 50  0001 C CNN "MPN"
+F 13 "https://www.lcsc.com/product-detail/Mezzanine-Connectors-Board-to-Board_MOLEX-0850030567_C3654485.html" H 22250 5750 50  0001 C CNN "URL"
 	1    22250 5750
 	1    0    0    -1  
 $EndComp
@@ -808,6 +811,7 @@ F 1 "10k" V 2450 14100 50  0000 C CNN
 F 2 "Resistor_SMD:R_0603_1608Metric" V 2380 14100 50  0001 C CNN
 F 3 "" H 2450 14100 50  0000 C CNN
 F 4 "0603WAF1002T5E" V 2450 13500 50  0001 C CNN "MPN"
+F 5 "https://www.lcsc.com/product-detail/Chip-Resistor-Surface-Mount_UNI-ROYAL-Uniroyal-Elec-0603WAF1002T5E_C25804.html" H 2450 14100 50  0001 C CNN "URL"
 	1    2450 14100
 	-1   0    0    1   
 $EndComp
@@ -823,6 +827,7 @@ F 1 "10k" V 2250 14100 50  0000 C CNN
 F 2 "Resistor_SMD:R_0603_1608Metric" V 2180 14100 50  0001 C CNN
 F 3 "" H 2250 14100 50  0000 C CNN
 F 4 "0603WAF1002T5E" V 2250 13500 50  0001 C CNN "MPN"
+F 5 "https://www.lcsc.com/product-detail/Chip-Resistor-Surface-Mount_UNI-ROYAL-Uniroyal-Elec-0603WAF1002T5E_C25804.html" H 2250 14100 50  0001 C CNN "URL"
 	1    2250 14100
 	-1   0    0    1   
 $EndComp
@@ -838,6 +843,7 @@ F 1 "10k" V 2350 14100 50  0000 C CNN
 F 2 "Resistor_SMD:R_0603_1608Metric" V 2280 14100 50  0001 C CNN
 F 3 "" H 2350 14100 50  0000 C CNN
 F 4 "0603WAF1002T5E" V 2350 13500 50  0001 C CNN "MPN"
+F 5 "https://www.lcsc.com/product-detail/Chip-Resistor-Surface-Mount_UNI-ROYAL-Uniroyal-Elec-0603WAF1002T5E_C25804.html" H 2350 14100 50  0001 C CNN "URL"
 	1    2350 14100
 	-1   0    0    1   
 $EndComp
@@ -921,7 +927,7 @@ F 7 "?" H 15550 2500 50  0001 C CNN "Digikey"
 F 8 "" H 15550 2500 50  0001 C CNN "LCSC"
 F 9 "?" H 15550 2500 50  0001 C CNN "Koncar"
 F 10 "TB" H 15550 2500 50  0001 C CNN "Side"
-F 11 "https://lcsc.com/product-detail/Multilayer-Ceramic-Capacitors-MLCC-SMD-SMT_YAGEO-CC0603KRX7R8BB104_C92490.html" H 3000 6050 50  0001 C CNN "URL"
+F 11 "https://www.lcsc.com/product-detail/Multilayer-Ceramic-Capacitors-MLCC-SMD-SMT_YAGEO-CC0603KRX7R8BB104_C92490.html" H 3000 6050 50  0001 C CNN "URL"
 	1    15550 2500
 	1    0    0    -1  
 $EndComp
@@ -984,7 +990,7 @@ F 7 "?" H 13500 2500 50  0001 C CNN "Digikey"
 F 8 "" H 13500 2500 50  0001 C CNN "LCSC"
 F 9 "?" H 13500 2500 50  0001 C CNN "Koncar"
 F 10 "TB" H 13500 2500 50  0001 C CNN "Side"
-F 11 "https://lcsc.com/product-detail/Multilayer-Ceramic-Capacitors-MLCC-SMD-SMT_YAGEO-CC0603KRX7R8BB104_C92490.html" H 3000 6050 50  0001 C CNN "URL"
+F 11 "https://www.lcsc.com/product-detail/Multilayer-Ceramic-Capacitors-MLCC-SMD-SMT_YAGEO-CC0603KRX7R8BB104_C92490.html" H 3000 6050 50  0001 C CNN "URL"
 	1    13500 2500
 	1    0    0    -1  
 $EndComp
@@ -1047,7 +1053,7 @@ F 7 "?" H 11450 2500 50  0001 C CNN "Digikey"
 F 8 "" H 11450 2500 50  0001 C CNN "LCSC"
 F 9 "?" H 11450 2500 50  0001 C CNN "Koncar"
 F 10 "TB" H 11450 2500 50  0001 C CNN "Side"
-F 11 "https://lcsc.com/product-detail/Multilayer-Ceramic-Capacitors-MLCC-SMD-SMT_YAGEO-CC0603KRX7R8BB104_C92490.html" H 3000 6050 50  0001 C CNN "URL"
+F 11 "https://www.lcsc.com/product-detail/Multilayer-Ceramic-Capacitors-MLCC-SMD-SMT_YAGEO-CC0603KRX7R8BB104_C92490.html" H 3000 6050 50  0001 C CNN "URL"
 	1    11450 2500
 	1    0    0    -1  
 $EndComp
@@ -1338,6 +1344,7 @@ F 1 "10k" V 2550 14100 50  0000 C CNN
 F 2 "Resistor_SMD:R_0603_1608Metric" V 2480 14100 50  0001 C CNN
 F 3 "" H 2550 14100 50  0000 C CNN
 F 4 "0603WAF1002T5E" V 2550 13500 50  0001 C CNN "MPN"
+F 5 "https://www.lcsc.com/product-detail/Chip-Resistor-Surface-Mount_UNI-ROYAL-Uniroyal-Elec-0603WAF1002T5E_C25804.html" H 2550 14100 50  0001 C CNN "URL"
 	1    2550 14100
 	-1   0    0    -1  
 $EndComp
@@ -1383,7 +1390,7 @@ F 2 "Package_SO:TSSOP-14_4.4x5mm_P0.65mm" H 4050 5900 50  0001 C CNN
 F 3 "http://www.ti.com/lit/gpn/sn74LVT125" H 4050 5900 50  0001 C CNN
 F 4 "https://assets.nexperia.com/documents/package-information/SOT402-1.pdf" H 4050 5900 50  0001 C CNN "Package Drawings"
 F 5 "74LVT125PW,118" H 4050 5900 50  0001 C CNN "MPN"
-F 6 "https://eu.mouser.com/ProductDetail/Nexperia/74LVT125PW118?qs=me8TqzrmIYWdhdg6%252BsGGHw%3D%3D" H 4050 5900 50  0001 C CNN "URL"
+F 6 "https://www.lcsc.com/product-detail/Buffer-Driver-Transceiver_Nexperia-74LVT125PW-118_C6108.html" H 4050 5900 50  0001 C CNN "URL"
 	1    4050 5900
 	1    0    0    -1  
 $EndComp
@@ -1396,6 +1403,7 @@ F 1 "74LVT125PW,118" H 4050 6576 50  0000 C CNN
 F 2 "Package_SO:TSSOP-14_4.4x5mm_P0.65mm" H 4050 6350 50  0001 C CNN
 F 3 "http://www.ti.com/lit/gpn/sn74LVT125" H 4050 6350 50  0001 C CNN
 F 4 "74LVT125PW,118" H 4050 6350 50  0001 C CNN "MPN"
+F 5 "https://www.lcsc.com/product-detail/Buffer-Driver-Transceiver_Nexperia-74LVT125PW-118_C6108.html" H 4050 6350 50  0001 C CNN "URL"
 	2    4050 6350
 	1    0    0    -1  
 $EndComp
@@ -1408,6 +1416,7 @@ F 1 "74LVT125PW,118" H 4050 7076 50  0000 C CNN
 F 2 "Package_SO:TSSOP-14_4.4x5mm_P0.65mm" H 4050 6850 50  0001 C CNN
 F 3 "http://www.ti.com/lit/gpn/sn74LVT125" H 4050 6850 50  0001 C CNN
 F 4 "74LVT125PW,118" H 4050 6850 50  0001 C CNN "MPN"
+F 5 "https://www.lcsc.com/product-detail/Buffer-Driver-Transceiver_Nexperia-74LVT125PW-118_C6108.html" H 4050 6850 50  0001 C CNN "URL"
 	3    4050 6850
 	1    0    0    -1  
 $EndComp
@@ -1420,6 +1429,7 @@ F 1 "74LVT125PW,118" H 4050 7576 50  0000 C CNN
 F 2 "Package_SO:TSSOP-14_4.4x5mm_P0.65mm" H 4050 7350 50  0001 C CNN
 F 3 "http://www.ti.com/lit/gpn/sn74LVT125" H 4050 7350 50  0001 C CNN
 F 4 "74LVT125PW,118" H 4050 7350 50  0001 C CNN "MPN"
+F 5 "https://www.lcsc.com/product-detail/Buffer-Driver-Transceiver_Nexperia-74LVT125PW-118_C6108.html" H 4050 7350 50  0001 C CNN "URL"
 	4    4050 7350
 	1    0    0    -1  
 $EndComp
@@ -1432,6 +1442,7 @@ F 1 "74LVT125PW,118" H 5730 6505 50  0000 L CNN
 F 2 "Package_SO:TSSOP-14_4.4x5mm_P0.65mm" H 5500 6550 50  0001 C CNN
 F 3 "http://www.ti.com/lit/gpn/sn74LVT125" H 5500 6550 50  0001 C CNN
 F 4 "74LVT125PW,118" H 5500 6550 50  0001 C CNN "MPN"
+F 5 "https://www.lcsc.com/product-detail/Buffer-Driver-Transceiver_Nexperia-74LVT125PW-118_C6108.html" H 5500 6550 50  0001 C CNN "URL"
 	5    5500 6550
 	1    0    0    -1  
 $EndComp
@@ -1494,7 +1505,7 @@ F 7 "?" H 5100 6200 50  0001 C CNN "Digikey"
 F 8 "" H 5100 6200 50  0001 C CNN "LCSC"
 F 9 "?" H 5100 6200 50  0001 C CNN "Koncar"
 F 10 "TB" H 5100 6200 50  0001 C CNN "Side"
-F 11 "https://lcsc.com/product-detail/Multilayer-Ceramic-Capacitors-MLCC-SMD-SMT_YAGEO-CC0603KRX7R8BB104_C92490.html" H 3000 6050 50  0001 C CNN "URL"
+F 11 "https://www.lcsc.com/product-detail/Multilayer-Ceramic-Capacitors-MLCC-SMD-SMT_YAGEO-CC0603KRX7R8BB104_C92490.html" H 3000 6050 50  0001 C CNN "URL"
 	1    5100 6200
 	1    0    0    -1  
 $EndComp
@@ -1521,7 +1532,7 @@ F 1 "74LVT125PW,118" H 3450 2726 50  0000 C CNN
 F 2 "Package_SO:TSSOP-14_4.4x5mm_P0.65mm" H 3450 2500 50  0001 C CNN
 F 3 "http://www.ti.com/lit/gpn/sn74LVT125" H 3450 2500 50  0001 C CNN
 F 4 "74LVT125PW,118" H 3450 2500 50  0001 C CNN "MPN"
-F 5 "https://eu.mouser.com/ProductDetail/Nexperia/74LVT125PW118?qs=me8TqzrmIYWdhdg6%252BsGGHw%3D%3D" H 3450 2500 50  0001 C CNN "URL"
+F 5 "https://www.lcsc.com/product-detail/Buffer-Driver-Transceiver_Nexperia-74LVT125PW-118_C6108.html" H 3450 2500 50  0001 C CNN "URL"
 	1    3450 2500
 	1    0    0    -1  
 $EndComp
@@ -1534,6 +1545,7 @@ F 1 "74LVT125PW,118" H 3450 3176 50  0000 C CNN
 F 2 "Package_SO:TSSOP-14_4.4x5mm_P0.65mm" H 3450 2950 50  0001 C CNN
 F 3 "http://www.ti.com/lit/gpn/sn74LVT125" H 3450 2950 50  0001 C CNN
 F 4 "74LVT125PW,118" H 3450 2950 50  0001 C CNN "MPN"
+F 5 "https://www.lcsc.com/product-detail/Buffer-Driver-Transceiver_Nexperia-74LVT125PW-118_C6108.html" H 3450 2950 50  0001 C CNN "URL"
 	2    3450 2950
 	1    0    0    -1  
 $EndComp
@@ -1546,6 +1558,7 @@ F 1 "74LVT125PW,118" H 3450 3626 50  0000 C CNN
 F 2 "Package_SO:TSSOP-14_4.4x5mm_P0.65mm" H 3450 3400 50  0001 C CNN
 F 3 "http://www.ti.com/lit/gpn/sn74LVT125" H 3450 3400 50  0001 C CNN
 F 4 "74LVT125PW,118" H 3450 3400 50  0001 C CNN "MPN"
+F 5 "https://www.lcsc.com/product-detail/Buffer-Driver-Transceiver_Nexperia-74LVT125PW-118_C6108.html" H 3450 3400 50  0001 C CNN "URL"
 	3    3450 3400
 	1    0    0    -1  
 $EndComp
@@ -1558,6 +1571,7 @@ F 1 "74LVT125PW,118" H 3450 4076 50  0000 C CNN
 F 2 "Package_SO:TSSOP-14_4.4x5mm_P0.65mm" H 3450 3850 50  0001 C CNN
 F 3 "http://www.ti.com/lit/gpn/sn74LVT125" H 3450 3850 50  0001 C CNN
 F 4 "74LVT125PW,118" H 3450 3850 50  0001 C CNN "MPN"
+F 5 "https://www.lcsc.com/product-detail/Buffer-Driver-Transceiver_Nexperia-74LVT125PW-118_C6108.html" H 3450 3850 50  0001 C CNN "URL"
 	4    3450 3850
 	1    0    0    -1  
 $EndComp
@@ -1570,6 +1584,7 @@ F 1 "74LVT125PW,118" H 5280 3155 50  0000 L CNN
 F 2 "Package_SO:TSSOP-14_4.4x5mm_P0.65mm" H 5050 3200 50  0001 C CNN
 F 3 "http://www.ti.com/lit/gpn/sn74LVT125" H 5050 3200 50  0001 C CNN
 F 4 "74LVT125PW,118" H 5050 3200 50  0001 C CNN "MPN"
+F 5 "https://www.lcsc.com/product-detail/Buffer-Driver-Transceiver_Nexperia-74LVT125PW-118_C6108.html" H 5050 3200 50  0001 C CNN "URL"
 	5    5050 3200
 	1    0    0    -1  
 $EndComp
@@ -1599,7 +1614,7 @@ F 7 "?" H 4650 2850 50  0001 C CNN "Digikey"
 F 8 "" H 4650 2850 50  0001 C CNN "LCSC"
 F 9 "?" H 4650 2850 50  0001 C CNN "Koncar"
 F 10 "TB" H 4650 2850 50  0001 C CNN "Side"
-F 11 "https://lcsc.com/product-detail/Multilayer-Ceramic-Capacitors-MLCC-SMD-SMT_YAGEO-CC0603KRX7R8BB104_C92490.html" H 3000 6050 50  0001 C CNN "URL"
+F 11 "https://www.lcsc.com/product-detail/Multilayer-Ceramic-Capacitors-MLCC-SMD-SMT_YAGEO-CC0603KRX7R8BB104_C92490.html" H 3000 6050 50  0001 C CNN "URL"
 	1    4650 2850
 	1    0    0    -1  
 $EndComp
@@ -1700,7 +1715,7 @@ F 1 "74LVT125PW,118" H 3650 10376 50  0000 C CNN
 F 2 "Package_SO:TSSOP-14_4.4x5mm_P0.65mm" H 3650 10150 50  0001 C CNN
 F 3 "http://www.ti.com/lit/gpn/sn74LVT125" H 3650 10150 50  0001 C CNN
 F 4 "74LVT125PW,118" H 3650 10150 50  0001 C CNN "MPN"
-F 5 "https://eu.mouser.com/ProductDetail/Nexperia/74LVT125PW118?qs=me8TqzrmIYWdhdg6%252BsGGHw%3D%3D" H 3650 10150 50  0001 C CNN "URL"
+F 5 "https://www.lcsc.com/product-detail/Buffer-Driver-Transceiver_Nexperia-74LVT125PW-118_C6108.html" H 3650 10150 50  0001 C CNN "URL"
 	1    3650 10150
 	1    0    0    -1  
 $EndComp
@@ -1713,6 +1728,7 @@ F 1 "74LVT125PW,118" H 3650 11276 50  0000 C CNN
 F 2 "Package_SO:TSSOP-14_4.4x5mm_P0.65mm" H 3650 11050 50  0001 C CNN
 F 3 "http://www.ti.com/lit/gpn/sn74LVT125" H 3650 11050 50  0001 C CNN
 F 4 "74LVT125PW,118" H 3650 11050 50  0001 C CNN "MPN"
+F 5 "https://www.lcsc.com/product-detail/Buffer-Driver-Transceiver_Nexperia-74LVT125PW-118_C6108.html" H 3650 11050 50  0001 C CNN "URL"
 	3    3650 11050
 	1    0    0    -1  
 $EndComp
@@ -1725,6 +1741,7 @@ F 1 "74LVT125PW,118" H 3650 11726 50  0000 C CNN
 F 2 "Package_SO:TSSOP-14_4.4x5mm_P0.65mm" H 3650 11500 50  0001 C CNN
 F 3 "http://www.ti.com/lit/gpn/sn74LVT125" H 3650 11500 50  0001 C CNN
 F 4 "74LVT125PW,118" H 3650 11500 50  0001 C CNN "MPN"
+F 5 "https://www.lcsc.com/product-detail/Buffer-Driver-Transceiver_Nexperia-74LVT125PW-118_C6108.html" H 3650 11500 50  0001 C CNN "URL"
 	4    3650 11500
 	1    0    0    -1  
 $EndComp
@@ -1737,6 +1754,7 @@ F 1 "74LVT125PW,118" H 5330 10605 50  0000 L CNN
 F 2 "Package_SO:TSSOP-14_4.4x5mm_P0.65mm" H 5100 10650 50  0001 C CNN
 F 3 "http://www.ti.com/lit/gpn/sn74LVT125" H 5100 10650 50  0001 C CNN
 F 4 "74LVT125PW,118" H 5100 10650 50  0001 C CNN "MPN"
+F 5 "https://www.lcsc.com/product-detail/Buffer-Driver-Transceiver_Nexperia-74LVT125PW-118_C6108.html" H 5100 10650 50  0001 C CNN "URL"
 	5    5100 10650
 	1    0    0    -1  
 $EndComp
@@ -1766,7 +1784,7 @@ F 7 "?" H 4700 10300 50  0001 C CNN "Digikey"
 F 8 "" H 4700 10300 50  0001 C CNN "LCSC"
 F 9 "?" H 4700 10300 50  0001 C CNN "Koncar"
 F 10 "TB" H 4700 10300 50  0001 C CNN "Side"
-F 11 "https://lcsc.com/product-detail/Multilayer-Ceramic-Capacitors-MLCC-SMD-SMT_YAGEO-CC0603KRX7R8BB104_C92490.html" H 3000 6050 50  0001 C CNN "URL"
+F 11 "https://www.lcsc.com/product-detail/Multilayer-Ceramic-Capacitors-MLCC-SMD-SMT_YAGEO-CC0603KRX7R8BB104_C92490.html" H 3000 6050 50  0001 C CNN "URL"
 	1    4700 10300
 	1    0    0    -1  
 $EndComp
@@ -1804,6 +1822,7 @@ F 1 "74LVT125PW,118" H 3650 10826 50  0000 C CNN
 F 2 "Package_SO:TSSOP-14_4.4x5mm_P0.65mm" H 3650 10600 50  0001 C CNN
 F 3 "http://www.ti.com/lit/gpn/sn74LVT125" H 3650 10600 50  0001 C CNN
 F 4 "74LVT125PW,118" H 3650 10600 50  0001 C CNN "MPN"
+F 5 "https://www.lcsc.com/product-detail/Buffer-Driver-Transceiver_Nexperia-74LVT125PW-118_C6108.html" H 3650 10600 50  0001 C CNN "URL"
 	2    3650 10600
 	1    0    0    -1  
 $EndComp
@@ -1908,6 +1927,7 @@ F 1 "10k" V 7450 4650 50  0000 C CNN
 F 2 "Resistor_SMD:R_0603_1608Metric" V 7380 4650 50  0001 C CNN
 F 3 "" H 7450 4650 50  0000 C CNN
 F 4 "0603WAF1002T5E" V 7450 4050 50  0001 C CNN "MPN"
+F 5 "https://www.lcsc.com/product-detail/Chip-Resistor-Surface-Mount_UNI-ROYAL-Uniroyal-Elec-0603WAF1002T5E_C25804.html" H 7450 4650 50  0001 C CNN "URL"
 	1    7450 4650
 	0    1    1    0   
 $EndComp
@@ -1923,6 +1943,7 @@ F 1 "10k" V 7450 4800 50  0000 C CNN
 F 2 "Resistor_SMD:R_0603_1608Metric" V 7380 4800 50  0001 C CNN
 F 3 "" H 7450 4800 50  0000 C CNN
 F 4 "0603WAF1002T5E" V 7450 4200 50  0001 C CNN "MPN"
+F 5 "https://www.lcsc.com/product-detail/Chip-Resistor-Surface-Mount_UNI-ROYAL-Uniroyal-Elec-0603WAF1002T5E_C25804.html" H 7450 4800 50  0001 C CNN "URL"
 	1    7450 4800
 	0    1    1    0   
 $EndComp
@@ -1938,6 +1959,7 @@ F 1 "10k" V 7450 4950 50  0000 C CNN
 F 2 "Resistor_SMD:R_0603_1608Metric" V 7380 4950 50  0001 C CNN
 F 3 "" H 7450 4950 50  0000 C CNN
 F 4 "0603WAF1002T5E" V 7450 4350 50  0001 C CNN "MPN"
+F 5 "https://www.lcsc.com/product-detail/Chip-Resistor-Surface-Mount_UNI-ROYAL-Uniroyal-Elec-0603WAF1002T5E_C25804.html" H 7450 4950 50  0001 C CNN "URL"
 	1    7450 4950
 	0    1    1    0   
 $EndComp
@@ -1953,6 +1975,7 @@ F 1 "10k" V 7450 5100 50  0000 C CNN
 F 2 "Resistor_SMD:R_0603_1608Metric" V 7380 5100 50  0001 C CNN
 F 3 "" H 7450 5100 50  0000 C CNN
 F 4 "0603WAF1002T5E" V 7450 4500 50  0001 C CNN "MPN"
+F 5 "https://www.lcsc.com/product-detail/Chip-Resistor-Surface-Mount_UNI-ROYAL-Uniroyal-Elec-0603WAF1002T5E_C25804.html" H 7450 5100 50  0001 C CNN "URL"
 	1    7450 5100
 	0    1    1    0   
 $EndComp
@@ -1968,6 +1991,7 @@ F 1 "10k" V 7450 5250 50  0000 C CNN
 F 2 "Resistor_SMD:R_0603_1608Metric" V 7380 5250 50  0001 C CNN
 F 3 "" H 7450 5250 50  0000 C CNN
 F 4 "0603WAF1002T5E" V 7450 4650 50  0001 C CNN "MPN"
+F 5 "https://www.lcsc.com/product-detail/Chip-Resistor-Surface-Mount_UNI-ROYAL-Uniroyal-Elec-0603WAF1002T5E_C25804.html" H 7450 5250 50  0001 C CNN "URL"
 	1    7450 5250
 	0    1    1    0   
 $EndComp
@@ -1983,6 +2007,7 @@ F 1 "10k" V 7450 5400 50  0000 C CNN
 F 2 "Resistor_SMD:R_0603_1608Metric" V 7380 5400 50  0001 C CNN
 F 3 "" H 7450 5400 50  0000 C CNN
 F 4 "0603WAF1002T5E" V 7450 4800 50  0001 C CNN "MPN"
+F 5 "https://www.lcsc.com/product-detail/Chip-Resistor-Surface-Mount_UNI-ROYAL-Uniroyal-Elec-0603WAF1002T5E_C25804.html" H 7450 5400 50  0001 C CNN "URL"
 	1    7450 5400
 	0    1    1    0   
 $EndComp
@@ -1998,6 +2023,7 @@ F 1 "10k" V 7450 5550 50  0000 C CNN
 F 2 "Resistor_SMD:R_0603_1608Metric" V 7380 5550 50  0001 C CNN
 F 3 "" H 7450 5550 50  0000 C CNN
 F 4 "0603WAF1002T5E" V 7450 4950 50  0001 C CNN "MPN"
+F 5 "https://www.lcsc.com/product-detail/Chip-Resistor-Surface-Mount_UNI-ROYAL-Uniroyal-Elec-0603WAF1002T5E_C25804.html" H 7450 5550 50  0001 C CNN "URL"
 	1    7450 5550
 	0    1    1    0   
 $EndComp
@@ -2013,6 +2039,7 @@ F 1 "10k" V 7450 5700 50  0000 C CNN
 F 2 "Resistor_SMD:R_0603_1608Metric" V 7380 5700 50  0001 C CNN
 F 3 "" H 7450 5700 50  0000 C CNN
 F 4 "0603WAF1002T5E" V 7450 5100 50  0001 C CNN "MPN"
+F 5 "https://www.lcsc.com/product-detail/Chip-Resistor-Surface-Mount_UNI-ROYAL-Uniroyal-Elec-0603WAF1002T5E_C25804.html" H 7450 5700 50  0001 C CNN "URL"
 	1    7450 5700
 	0    1    1    0   
 $EndComp
@@ -2028,6 +2055,7 @@ F 1 "10k" V 7450 5850 50  0000 C CNN
 F 2 "Resistor_SMD:R_0603_1608Metric" V 7380 5850 50  0001 C CNN
 F 3 "" H 7450 5850 50  0000 C CNN
 F 4 "0603WAF1002T5E" V 7450 5250 50  0001 C CNN "MPN"
+F 5 "https://www.lcsc.com/product-detail/Chip-Resistor-Surface-Mount_UNI-ROYAL-Uniroyal-Elec-0603WAF1002T5E_C25804.html" H 7450 5850 50  0001 C CNN "URL"
 	1    7450 5850
 	0    1    1    0   
 $EndComp
@@ -2043,6 +2071,7 @@ F 1 "10k" V 7450 6000 50  0000 C CNN
 F 2 "Resistor_SMD:R_0603_1608Metric" V 7380 6000 50  0001 C CNN
 F 3 "" H 7450 6000 50  0000 C CNN
 F 4 "0603WAF1002T5E" V 7450 5400 50  0001 C CNN "MPN"
+F 5 "https://www.lcsc.com/product-detail/Chip-Resistor-Surface-Mount_UNI-ROYAL-Uniroyal-Elec-0603WAF1002T5E_C25804.html" H 7450 6000 50  0001 C CNN "URL"
 	1    7450 6000
 	0    1    1    0   
 $EndComp
@@ -2079,7 +2108,7 @@ F 7 "?" H 5150 13300 50  0001 C CNN "Digikey"
 F 8 "" H 5150 13300 50  0001 C CNN "LCSC"
 F 9 "?" H 5150 13300 50  0001 C CNN "Koncar"
 F 10 "TB" H 5150 13300 50  0001 C CNN "Side"
-F 11 "https://lcsc.com/product-detail/Multilayer-Ceramic-Capacitors-MLCC-SMD-SMT_YAGEO-CC0603KRX7R8BB104_C92490.html" H 5150 13300 50  0001 C CNN "URL"
+F 11 "https://www.lcsc.com/product-detail/Multilayer-Ceramic-Capacitors-MLCC-SMD-SMT_YAGEO-CC0603KRX7R8BB104_C92490.html" H 5150 13300 50  0001 C CNN "URL"
 	1    5150 13300
 	-1   0    0    -1  
 $EndComp
@@ -2206,7 +2235,7 @@ F 2 "LED_SMD:LED_0805_2012Metric" H 13000 7750 50  0001 C CNN
 F 3 "https://lcsc.com/product-detail/Light-Emitting-Diodes-LED_Lite-On-LTST-C170KSKT_C125091.html" H 13000 7750 50  0001 C CNN
 F 4 "www.liteon.com" H 13000 7750 60  0001 C CNN "MNF1_URL"
 F 5 "LTST-C170KSKT" H 13000 7750 60  0001 C CNN "MPN"
-F 6 "https://lcsc.com/product-detail/Light-Emitting-Diodes-LED_Lite-On-LTST-C170KSKT_C125091.html" H 13000 7750 50  0001 C CNN "URL"
+F 6 "https://www.lcsc.com/product-detail/Light-Emitting-Diodes-LED_Lite-On-LTST-C170KSKT_C125091.html" H 13000 7750 50  0001 C CNN "URL"
 	1    13000 7750
 	1    0    0    -1  
 $EndComp
@@ -2262,7 +2291,7 @@ F 2 "LED_SMD:LED_0805_2012Metric" H 13000 9000 50  0001 C CNN
 F 3 "https://lcsc.com/product-detail/Light-Emitting-Diodes-LED_Lite-On-LTST-C170KSKT_C125091.html" H 13000 9000 50  0001 C CNN
 F 4 "www.liteon.com" H 13000 9000 60  0001 C CNN "MNF1_URL"
 F 5 "LTST-C170KSKT" H 13000 9000 60  0001 C CNN "MPN"
-F 6 "https://lcsc.com/product-detail/Light-Emitting-Diodes-LED_Lite-On-LTST-C170KSKT_C125091.html" H 13000 9000 50  0001 C CNN "URL"
+F 6 "https://www.lcsc.com/product-detail/Light-Emitting-Diodes-LED_Lite-On-LTST-C170KSKT_C125091.html" H 13000 9000 50  0001 C CNN "URL"
 	1    13000 9000
 	1    0    0    -1  
 $EndComp
@@ -2316,7 +2345,7 @@ F 2 "LED_SMD:LED_0805_2012Metric" H 13000 9450 50  0001 C CNN
 F 3 "https://lcsc.com/product-detail/Light-Emitting-Diodes-LED_Lite-On-LTST-C170KSKT_C125091.html" H 13000 9450 50  0001 C CNN
 F 4 "www.liteon.com" H 13000 9450 60  0001 C CNN "MNF1_URL"
 F 5 "LTST-C170KSKT" H 13000 9450 60  0001 C CNN "MPN"
-F 6 "https://lcsc.com/product-detail/Light-Emitting-Diodes-LED_Lite-On-LTST-C170KSKT_C125091.html" H 13000 9450 50  0001 C CNN "URL"
+F 6 "https://www.lcsc.com/product-detail/Light-Emitting-Diodes-LED_Lite-On-LTST-C170KSKT_C125091.html" H 13000 9450 50  0001 C CNN "URL"
 	1    13000 9450
 	1    0    0    -1  
 $EndComp
@@ -2374,7 +2403,7 @@ F 2 "LED_SMD:LED_0805_2012Metric" H 13000 8150 50  0001 C CNN
 F 3 "https://lcsc.com/product-detail/Light-Emitting-Diodes-LED_Lite-On-LTST-C170KSKT_C125091.html" H 13000 8150 50  0001 C CNN
 F 4 "www.liteon.com" H 13000 8150 60  0001 C CNN "MNF1_URL"
 F 5 "LTST-C170KSKT" H 13000 8150 60  0001 C CNN "MPN"
-F 6 "https://lcsc.com/product-detail/Light-Emitting-Diodes-LED_Lite-On-LTST-C170KSKT_C125091.html" H 13000 8150 50  0001 C CNN "URL"
+F 6 "https://www.lcsc.com/product-detail/Light-Emitting-Diodes-LED_Lite-On-LTST-C170KSKT_C125091.html" H 13000 8150 50  0001 C CNN "URL"
 	1    13000 8150
 	1    0    0    -1  
 $EndComp
@@ -2430,7 +2459,7 @@ F 2 "LED_SMD:LED_0805_2012Metric" H 13000 8550 50  0001 C CNN
 F 3 "https://lcsc.com/product-detail/Light-Emitting-Diodes-LED_Lite-On-LTST-C170KSKT_C125091.html" H 13000 8550 50  0001 C CNN
 F 4 "www.liteon.com" H 13000 8550 60  0001 C CNN "MNF1_URL"
 F 5 "LTST-C170KSKT" H 13000 8550 60  0001 C CNN "MPN"
-F 6 "https://lcsc.com/product-detail/Light-Emitting-Diodes-LED_Lite-On-LTST-C170KSKT_C125091.html" H 13000 8550 50  0001 C CNN "URL"
+F 6 "https://www.lcsc.com/product-detail/Light-Emitting-Diodes-LED_Lite-On-LTST-C170KSKT_C125091.html" H 13000 8550 50  0001 C CNN "URL"
 	1    13000 8550
 	1    0    0    -1  
 $EndComp
@@ -2464,7 +2493,7 @@ F 7 "?" H 16150 13350 50  0001 C CNN "Digikey"
 F 8 "" H 16150 13350 50  0001 C CNN "LCSC"
 F 9 "?" H 16150 13350 50  0001 C CNN "Koncar"
 F 10 "TB" H 16150 13350 50  0001 C CNN "Side"
-F 11 "https://lcsc.com/product-detail/Multilayer-Ceramic-Capacitors-MLCC-SMD-SMT_YAGEO-CC0603KRX7R8BB104_C92490.html" H 16150 13350 50  0001 C CNN "URL"
+F 11 "https://www.lcsc.com/product-detail/Multilayer-Ceramic-Capacitors-MLCC-SMD-SMT_YAGEO-CC0603KRX7R8BB104_C92490.html" H 16150 13350 50  0001 C CNN "URL"
 	1    16150 13350
 	-1   0    0    -1  
 $EndComp
@@ -2532,7 +2561,7 @@ F 7 "?" H 12850 13350 50  0001 C CNN "Digikey"
 F 8 "" H 12850 13350 50  0001 C CNN "LCSC"
 F 9 "?" H 12850 13350 50  0001 C CNN "Koncar"
 F 10 "TB" H 12850 13350 50  0001 C CNN "Side"
-F 11 "https://lcsc.com/product-detail/Multilayer-Ceramic-Capacitors-MLCC-SMD-SMT_YAGEO-CC0603KRX7R8BB104_C92490.html" H 12850 13350 50  0001 C CNN "URL"
+F 11 "https://www.lcsc.com/product-detail/Multilayer-Ceramic-Capacitors-MLCC-SMD-SMT_YAGEO-CC0603KRX7R8BB104_C92490.html" H 12850 13350 50  0001 C CNN "URL"
 	1    12850 13350
 	-1   0    0    -1  
 $EndComp

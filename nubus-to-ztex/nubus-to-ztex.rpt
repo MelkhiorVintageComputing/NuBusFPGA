@@ -1,4 +1,4 @@
-## Footprint report - date Fri Nov 18 19:31:24 2022
+## Footprint report - date Thu Dec  1 16:37:25 2022
 ## Created by Pcbnew version kicad 5.1.9+dfsg1-1~bpo10+1
 ## Unit = mm, Angle = deg.
 
@@ -55,7 +55,7 @@ $MODULE "J3"
 reference "J3"
 value "Conn_01x06_Male"
 footprint "For_SeeedStudio:SAMTEC_TSM-106-01-L-SH"
-attribut none
+attribut smd
 position 117.856000 27.178000  orientation 90.00
 layer front
 $PAD "6"
@@ -100,7 +100,7 @@ $MODULE "GRAPHIC1"
 reference "GRAPHIC1"
 value "LogoLitex"
 footprint "For_SeeedStudio:litex_logo"
-attribut none
+attribut smd
 position 230.730000 77.000000  orientation 0.00
 layer front
 $EndMODULE  GRAPHIC1
@@ -109,7 +109,7 @@ $MODULE "J8"
 reference "J8"
 value "SMH-108-02-L-D (Pmod 2x8 F)"
 footprint "For_SeeedStudio:SAMTEC-SMH-108-02-X-D"
-attribut none
+attribut smd
 position 270.138000 28.000000  orientation 270.00
 layer front
 $PAD "16"
@@ -1036,7 +1036,7 @@ $MODULE "J2"
 reference "J2"
 value "47219-2001 (micro-sd)"
 footprint "MOLEX_47219-2001:MOLEX_47219-2001"
-attribut none
+attribut smd
 position 156.430000 12.780000  orientation 180.00
 layer front
 $PAD "1"
@@ -2269,7 +2269,7 @@ $MODULE "U9"
 reference "U9"
 value "TPD12S016PWR"
 footprint "For_SeeedStudio:SOP65P640X120-24N"
-attribut none
+attribut smd
 position 250.950000 58.950000  orientation 0.00
 layer front
 $PAD "1"
@@ -2762,7 +2762,7 @@ reference "C28"
 value "47uF 10V 0805"
 footprint "Capacitor_SMD:C_0805_2012Metric"
 attribut smd
-position 221.780000 96.000000  orientation 0.00
+position 221.737500 95.500000  orientation 0.00
 layer front
 $PAD "1"
 Shape Roundrect Layer front
@@ -2783,7 +2783,7 @@ reference "J7"
 value "640456-3 (Fan)"
 footprint "Connector_Molex:Molex_KK-254_AE-6410-03A_1x03_P2.54mm_Vertical"
 attribut none
-position 218.240000 91.270000  orientation 0.00
+position 218.260000 101.000000  orientation 0.00
 layer front
 $PAD "1"
 Shape Roundrect Layer both
@@ -3935,7 +3935,7 @@ $EndMODULE  J5
 
 $MODULE "J4"
 reference "J4"
-value "09031966921 (DIN 41612C 3x32 pins)"
+value "85003-0567 (DIN 41612C 3x32 pins)"
 footprint "For_SeeedStudio:DIN41612_C_3x32_Male_Horizontal_THT"
 attribut none
 position 200.000000 100.000000  orientation 180.00
