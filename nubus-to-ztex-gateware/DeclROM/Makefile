@@ -9,7 +9,7 @@ HOSTCFLAGS=-O2
 ARCHFLAGS=-march=68020 -mcpu=68020
 CFLAGS=-O2 -mpcrel
 
-NS816DECLROMDIR=/home/dolbeau/ns816-declrom
+NS816DECLROMDIR=./ns816-declrom
 NUBUS_CHECKSUM=${NS816DECLROMDIR}/nubus_checksum
 PROCESS_ROM=${NS816DECLROMDIR}/process_rom
 
@@ -25,13 +25,16 @@ CSRC_ASM=${CSRC:.c=.s}
 
 GEN_ASM=VidRomDef.s VidRomDir.s VidRomName.s VidRomRes.s VidRomRsrcDir.s
 
+all: vid_decl_rom.bin
+
 gen_mode: gen_mode.c
 	$(HOSTCC) -Wall ${HOSTCFLAGS} $^ -o $@
 
 ${GEN_ASM}: gen_mode
 	./gen_mode ${HRES} ${VRES}
 
-all: vid_decl_rom.bin
+$(NUBUS_CHECKSUM): ${NS816DECLROMDIR}/nubus_checksum.cc ${NS816DECLROMDIR}/nubus_crc.cc
+	g++ -std=c++11 $^ -lglog -lgflags -labsl_strings -o $@
 
 vid_decl_rom.o: vid_decl_rom.s NuBusFPGADrvr.s NuBusFPGARAMDskDrvr.s ${APPLEINCS} DepVideo.inc ${GEN_ASM}
 	rm -f res.inc
@@ -55,7 +58,7 @@ vid_decl_rom.elf: linker.ld vid_decl_rom.o ${CSRC:.c=.o} # linker script must be
 vid_decl_rom.raw: vid_decl_rom.elf
 	${OBJCOPY} $^ $@ --input-target=elf32-m68k --output-target=binary
 
-vid_decl_rom.bin: vid_decl_rom.raw
+vid_decl_rom.bin: vid_decl_rom.raw $(NUBUS_CHECKSUM)
 	${NUBUS_CHECKSUM} --input_file $< --output_file $@ --output_size 32768
 	dd if=dump.cpr of=vid_decl_rom.bin bs=1 conv=notrunc
 
