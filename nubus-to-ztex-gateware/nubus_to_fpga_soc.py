@@ -30,7 +30,6 @@ from migen.genlib.resetsync import AsyncResetSynchronizer
 from litex.soc.cores.video import VideoS7HDMIPHY
 from litex.soc.cores.video import VideoVGAPHY
 from litex.soc.cores.video import video_timings
-from VintageBusFPGA_Common.goblin_fb import *
 from VintageBusFPGA_Common.goblin_accel import *
 
 # Wishbone stuff
@@ -163,6 +162,12 @@ class NuBusFPGA(SoCCore):
         self.sys_clk_freq = sys_clk_freq
     
         self.platform = platform = ztex213_nubus.Platform(variant = variant, version = version)
+
+        use_goblin_alt = True
+        if ((not use_goblin_alt) or (not hdmi)):
+            from VintageBusFPGA_Common.goblin_fb import goblin_rounded_size, Goblin
+        else:
+            from VintageBusFPGA_Common.goblin_alt_fb import goblin_rounded_size, GoblinAlt
 
         if (goblin):
             hres = int(goblin_res.split("@")[0].split("x")[0])
@@ -418,8 +423,12 @@ class NuBusFPGA(SoCCore):
                 self.submodules.videophy = VideoVGAPHY(platform.request("vga"), clock_domain="vga")
                 self.submodules.goblin = Goblin(soc=self, phy=self.videophy, timings=goblin_res, clock_domain="vga", irq_line=fb_irq, endian="little", hwcursor=False, truecolor=True) # clock_domain for the VGA side, goblin is running in cd_sys
             else:
-                self.submodules.videophy = VideoS7HDMIPHY(platform.request("hdmi"), clock_domain="hdmi")
-                self.submodules.goblin = Goblin(soc=self, phy=self.videophy, timings=goblin_res, clock_domain="hdmi", irq_line=fb_irq, endian="little", hwcursor=False, truecolor=True) # clock_domain for the HDMI side, goblin is running in cd_sys
+                if (not use_goblin_alt):
+                    self.submodules.videophy = VideoS7HDMIPHY(platform.request("hdmi"), clock_domain="hdmi")
+                    self.submodules.goblin = Goblin(soc=self, phy=self.videophy, timings=goblin_res, clock_domain="hdmi", irq_line=fb_irq, endian="little", hwcursor=False, truecolor=True) # clock_domain for the HDMI side, goblin is running in cd_sys
+                else:
+                    # GoblinAlt contains its own PHY
+                    self.submodules.goblin = GoblinAlt(soc=self, timings=goblin_res, clock_domain="hdmi", irq_line=fb_irq, endian="little", hwcursor=False, truecolor=True)
             self.bus.add_slave("goblin_bt", self.goblin.bus, SoCRegion(origin=self.mem_map.get("goblin_bt", None), size=0x1000, cached=False))
             #pad_user_led_0 = platform.request("user_led", 0)
             #pad_user_led_1 = platform.request("user_led", 1)
