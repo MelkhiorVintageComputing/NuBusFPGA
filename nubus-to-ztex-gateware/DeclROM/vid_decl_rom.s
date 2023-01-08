@@ -9,6 +9,7 @@
 sRsrc_Board = 1 /*  board sResource (>0 & <128) */
 	.include "VidRomDef.s"
 sRsrc_RAMDsk = 0x90 /*  functional sResources */
+sRsrc_HDMIAudio = 0xA0 /*  functional sResources */
 	
     .global DeclROMDir
 
@@ -157,6 +158,20 @@ _RAMDskDrvrDir:
     .include     "NuBusFPGARAMDskDrvr.s"             /*   driver code */
 /* _RAMDskEnd020Drvr: */ /* supplied by linker script */
 
+	
+	.section .text.begin
+	ALIGN 2
+_sRsrc_HDMIAudio:	
+	OSLstEntry  sRsrcType,_HDMIAudioType      /*  video type descriptor */
+    .long EndOfList               /*  end of list */
+
+	ALIGN 2
+_HDMIAudioType:	
+    .short        catProto               /*      <Category> */
+    .short        typeAudio /* custom */                 /*      <Type> */
+    .short        drSwApple                /*      <DrvrSw> */
+    .short        DrHwNuBusFPGAAudio             /*      <DrvrHw> */
+	
 	
     /* Declaration ROM directory at end */
        .section .romblock

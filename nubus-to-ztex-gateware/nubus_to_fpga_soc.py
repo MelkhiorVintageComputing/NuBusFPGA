@@ -142,6 +142,7 @@ class _CRG(Module):
                 num_clk = num_clk + 1
                 platform.add_platform_command("create_generated_clock -name hdmi5x_clk [get_pins {{{{MMCME2_ADV_{}/CLKOUT{}}}}}]".format(num_adv, num_clk))
                 num_clk = num_clk + 1
+                
             self.comb += video_pll.reset.eq(~rst_nubus_n)
             #platform.add_false_path_constraints(self.cd_sys.clk, self.cd_vga.clk)
             platform.add_false_path_constraints(self.cd_sys.clk, video_pll.clkin)
@@ -215,6 +216,7 @@ class NuBusFPGA(SoCCore):
             "goblin_accel_ram" : 0xF0902000, # accel for goblin (scratch ram)
             "stat"             : 0xF0903000, # stat
             "goblin_accel_rom" : 0xF0910000, # accel for goblin (rom)
+            "goblin_audio_ram" : 0xF0920000, # audio for goblin (RAM buffers)
             "csr" :              0xF0A00000, # CSR
             "pingmaster":        0xF0B00000,
             "rom":               0xF0FF8000, # ROM at the end (32 KiB of it ATM)
@@ -375,16 +377,17 @@ class NuBusFPGA(SoCCore):
             self.submodules.fromsbus_fifo = ClockDomainsRenamer({"write": "nubus", "read": "sys"})(AsyncFIFOBuffered(width=layout_len(self.fromsbus_layout), depth=512//data_width))
             self.submodules.fromsbus_req_fifo = ClockDomainsRenamer({"read": "nubus", "write": "sys"})(AsyncFIFOBuffered(width=layout_len(self.fromsbus_req_layout), depth=512//data_width))
             irq_line = self.platform.request("nmrq_3v3_n") # active low
-            fb_irq = Signal() # active low
-            dma_irq = Signal() # active low
-            led0 = platform.request("user_led", 0)
-            led1 = platform.request("user_led", 1)
-            self.comb += [
-                led0.eq(~fb_irq),
-                led1.eq(~dma_irq),
-            ]
+            fb_irq = Signal(reset = 1) # active low
+            dma_irq = Signal(reset = 1) # active low
+            audio_irq = Signal(reset = 1) # active low
+            #led0 = platform.request("user_led", 0)
+            #led1 = platform.request("user_led", 1)
+            #self.comb += [
+            #    led0.eq(~fb_irq),
+            #    led1.eq(~dma_irq),
+            #]
 
-            self.comb += irq_line.eq(fb_irq & dma_irq) # active low, enable if one is low
+            self.comb += irq_line.eq(fb_irq & dma_irq & audio_irq) # active low, enable if one is low
             
             self.submodules.exchange_with_mem = ExchangeWithMem(soc=self,
                                                                 platform=platform,
@@ -429,6 +432,11 @@ class NuBusFPGA(SoCCore):
                 else:
                     # GoblinAlt contains its own PHY
                     self.submodules.goblin = GoblinAlt(soc=self, timings=goblin_res, clock_domain="hdmi", irq_line=fb_irq, endian="little", hwcursor=False, truecolor=True)
+                    # it also has a bus master so that the audio bit can fetch data from Wishbone
+                    self.bus.add_master(name="GoblinAudio", master=self.goblin.goblin_audio.busmaster)
+                    self.add_ram("goblin_audio_ram", origin=self.mem_map["goblin_audio_ram"], size=2**13, mode="rw") # 8 KiB buffer, planned as 2*4KiB
+                    self.comb += [ audio_irq.eq(self.goblin.goblin_audio.irq), ]
+                    
             self.bus.add_slave("goblin_bt", self.goblin.bus, SoCRegion(origin=self.mem_map.get("goblin_bt", None), size=0x1000, cached=False))
             #pad_user_led_0 = platform.request("user_led", 0)
             #pad_user_led_1 = platform.request("user_led", 1)

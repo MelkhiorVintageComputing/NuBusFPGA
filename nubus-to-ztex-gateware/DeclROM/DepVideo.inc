@@ -28,9 +28,11 @@ RB15s = HRES*2
 RB24s = HRES*4
 
 DrHwNuBusFPGA = 0xBEEF /*  placeholder for GoboFB */
-DrHwNuBusFPGADsk = 0xBEEE /*  placeholder for RAM Dsk*/
+DrHwNuBusFPGADsk = 0xBEEE /*  placeholder for RAM Dsk */
+DrHwNuBusFPGAAudio = 0xBEED /*  placeholder for Audio */
 
 typeDrive = 0x1000 /* placeholder for RAM Dsk*/
+typeAudio = 0x1001 /* placeholder for Audio*/
 
 defmBaseOffset = 0 /*  beginning, placeholder */
 
