@@ -8,3 +8,6 @@
 [submodule "nubus-to-ztex-gateware/DeclROM/ns816-declrom"]
 	path = nubus-to-ztex-gateware/DeclROM/ns816-declrom
 	url = https://github.com/jaoswald/ns816-declrom
+[submodule "nubus-to-ztex-gateware/hdl-util_hdmi"]
+	path = nubus-to-ztex-gateware/hdl-util_hdmi
+	url = https://github.com/hdl-util/hdmi
