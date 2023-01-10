@@ -1,11 +1,14 @@
 /*
-	File:		NoiseMaker.c
-
-	Contains:	Sample sound output component
-
-	Written by:	Kip Olson
-
-	Copyright:	© 1994 by Apple Computer, Inc.
+  File:		NuBusFPGAHDMIAudio.c
+  Contains:	NuBusFGPA HDMI sound output component
+  Written by:	Romain Dolbeau
+  Copyright:	© 2023 by Romain Dolbeau
+ 
+  Based upon the following reference code from 'Develop Magazine, issue 20':
+  File:		NoiseMaker.c
+  Contains:	Sample sound output component
+  Written by:	Kip Olson
+  Copyright:	© 1994 by Apple Computer, Inc.
 */
 
 #include <Memory.h>
@@ -18,7 +21,7 @@
 #include "SoundComponents.h"
 
 #include "Slots.h"
-#include "RomDefs.h"
+#include "ROMDefs.h"
  
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 // Hardware
@@ -28,16 +31,17 @@
 
 #define u_int32_t volatile unsigned long
 
+//#define BT_DEBUG 1
 // this is the DAC registers, not needed for audio except 'debug' is handy
 struct goblin_bt_regs {
-	u_int32_t mode;
-	u_int32_t vblmask;
-	u_int32_t videoctrl;
-	u_int32_t intrclear;
-	u_int32_t reset;
-	u_int32_t lutaddr;
-	u_int32_t lut;
-	u_int32_t debug;
+  u_int32_t mode;
+  u_int32_t vblmask;
+  u_int32_t videoctrl;
+  u_int32_t intrclear;
+  u_int32_t reset;
+  u_int32_t lutaddr;
+  u_int32_t lut;
+  u_int32_t debug;
 };
 
 #define GOBLIN_CSR_OFFSET 0x00a01000
@@ -60,6 +64,7 @@ struct goblin_csr {
   u_int32_t goblin_goblin_audio_buf0_size;
   u_int32_t goblin_goblin_audio_buf1_addr;
   u_int32_t goblin_goblin_audio_buf1_size;
+  u_int32_t goblin_goblin_audio_buf_desc;
 };
 
 #define GOBLIN_AUDIOBUFFER_OFFSET 0x00920000
@@ -67,7 +72,7 @@ struct goblin_csr {
 // we currently have 8 KiB (0x2000) of SRAM there, but perhaps we could move that to the SDRAM?
 
 static inline unsigned long brev(const unsigned long r) {
-	return (((r&0xFF000000)>>24) | ((r&0xFF0000)>>8) | ((r&0xFF00)<<8) | ((r&0xFF)<<24));
+  return (((r&0xFF000000)>>24) | ((r&0xFF0000)>>8) | ((r&0xFF00)<<8) | ((r&0xFF)<<24));
 }
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -81,7 +86,7 @@ static inline unsigned long brev(const unsigned long r) {
 
 // hardware settings
 
-#define kSampleSizesCount				1 // 2
+#define kSampleSizesCount				2
 #define 	k8BitSamples				8				// 8-bit samples
 #define 	k16BitSamples				16				// 16-bit samples
 
@@ -107,53 +112,53 @@ static inline unsigned long brev(const unsigned long r) {
 /* Data structure passed to some GetInfo calls */
 
 typedef struct {
-	short	count;
-	Handle	handle;
+  short	count;
+  Handle	handle;
 } HandleList, *HandleListPtr;
 
 /* Preferences data structure. A handle containing this data structure is stored in the
    Sound Preferences file and is loaded into the sound component refcon when it is opened. */
 
 typedef struct {
-	UnsignedFixed		sampleRate;
-	short				sampleSize;
-	short				numChannels;
-	unsigned long		volume;
+  UnsignedFixed		sampleRate;
+  short				sampleSize;
+  short				numChannels;
+  unsigned long		volume;
 } PreferencesRecord, *PreferencesPtr, **PreferencesHandle;
 
 /* Sound component globals */
 
 typedef struct {
 
-// these are general purpose variables that every sound component will need
-	ComponentInstance		self;					// ourselves
-	ComponentInstance		sourceComponent;		// component to call when hardware needs more data
-	SoundComponentDataPtr	sourceDataPtr;			// pointer to source data structure
-	Handle					globalsHandle;			// handle to component globals
-	Boolean					inSystemHeap;			// true if component loaded in system heap, false if in app heap
-	Boolean					prefsChanged;			// true if preferences have changed
-	PreferencesHandle		prefsHandle;			// global preferences
+  // these are general purpose variables that every sound component will need
+  ComponentInstance		self;					// ourselves
+  ComponentInstance		sourceComponent;		// component to call when hardware needs more data
+  SoundComponentDataPtr	sourceDataPtr;			// pointer to source data structure
+  Handle					globalsHandle;			// handle to component globals
+  Boolean					inSystemHeap;			// true if component loaded in system heap, false if in app heap
+  Boolean					prefsChanged;			// true if preferences have changed
+  PreferencesHandle		prefsHandle;			// global preferences
 
-// these are variables specific to this implementation
-	SoundComponentData		hwSettings;				// current hardware settings
-	unsigned long			hwVolume;				// current hardware volume
-	Boolean					hwInterruptsOn;			// true if sound is playing
-	Boolean					hwInitialized;			// true if hardware was initialized by __InitOutputDevice 
-	SlotIntQElement         *siqel;
-	struct goblin_bt_regs*  bt; // for debug
-	struct goblin_csr*      csr; // CSR, including audio control
-	u_int32_t*              buf0; // primary address for first buffer (host view)
-	u_int32_t*              buf1; // primary address for second buffer (host view)
-	unsigned char           lastbuf;
-	unsigned char           slot;
+  // these are variables specific to this implementation
+  SoundComponentData		hwSettings;				// current hardware settings
+  unsigned long			hwVolume;				// current hardware volume
+  Boolean					hwInterruptsOn;			// true if sound is playing
+  Boolean					hwInitialized;			// true if hardware was initialized by __InitOutputDevice 
+  SlotIntQElement         *siqel;
+  struct goblin_bt_regs*  bt; // for debug
+  struct goblin_csr*      csr; // CSR, including audio control
+  u_int32_t*              buf0; // primary address for first buffer (host view)
+  u_int32_t*              buf1; // primary address for second buffer (host view)
+  unsigned char           lastbuf;
+  unsigned char           slot;
 }
- GlobalsRecord, *GlobalsPtr;
+  GlobalsRecord, *GlobalsPtr;
  
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 // Compatibility with old names (?)
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
  
- typedef ComponentFunctionUPP ComponentRoutine;
+typedef ComponentFunctionUPP ComponentRoutine;
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 // Prototypes
@@ -205,32 +210,34 @@ asm pascal void irqTrampoline(void);
 
 pascal ComponentResult main(ComponentParameters *params, GlobalsPtr globals)
 {
-	ComponentRoutine	theRtn;
-	ComponentResult		result;
-	
-	if (globals) {
-		if ((*globals).bt) {
-			(*(*globals).bt).debug = 'MAIN';
-			(*(*globals).bt).debug = params->what;
-		} else {
-			(*(struct goblin_bt_regs*)0xfc900000).debug = 'MaIn';
-			(*(struct goblin_bt_regs*)0xfc900000).debug = params->what;
-		}
-	} else {
-		(*(struct goblin_bt_regs*)0xfc900000).debug = 'main';
-		(*(struct goblin_bt_regs*)0xfc900000).debug = params->what;
-	}
+  ComponentRoutine	theRtn;
+  ComponentResult		result;
 
-	theRtn = GetComponentRoutine(params->what);				// get address of component routine
+#ifdef BT_DEBUG
+  if (globals) {
+    if ((*globals).bt) {
+      (*(*globals).bt).debug = 'MAIN';
+      (*(*globals).bt).debug = params->what;
+    } else {
+      (*(struct goblin_bt_regs*)0xfc900000).debug = 'MaIn';
+      (*(struct goblin_bt_regs*)0xfc900000).debug = params->what;
+    }
+  } else {
+    (*(struct goblin_bt_regs*)0xfc900000).debug = 'main';
+    (*(struct goblin_bt_regs*)0xfc900000).debug = params->what;
+  }
+#endif
 
-	if (theRtn == nil)										// selector not implemented
-		result = badComponentSelector;
-	else if (theRtn == kDelegateComponentCall)				// selector should be delegated
-		result = DelegateComponentCall(params, globals->sourceComponent);
-	else
-		result = CallComponentFunctionWithStorage((Handle) globals, params, (ComponentFunctionUPP) theRtn);
+  theRtn = GetComponentRoutine(params->what);				// get address of component routine
 
-	return (result);
+  if (theRtn == nil)										// selector not implemented
+    result = badComponentSelector;
+  else if (theRtn == kDelegateComponentCall)				// selector should be delegated
+    result = DelegateComponentCall(params, globals->sourceComponent);
+  else
+    result = CallComponentFunctionWithStorage((Handle) globals, params, (ComponentFunctionUPP) theRtn);
+
+  return (result);
 }
 
 /*	=======================================================================================
@@ -240,84 +247,84 @@ pascal ComponentResult main(ComponentParameters *params, GlobalsPtr globals)
 	To do this, the routine must deal with 3 selector ranges:
 
 	-5 to -1	These are the standard Component Manager selectors that all components
-				must share. Refer to the Component Manager documentation for more info.
+	must share. Refer to the Component Manager documentation for more info.
 
 	0 to 255	These selectors cannot be delegated. If the sound component does not implement
-				one of these selectors, it should return the badComponentSelector error.
+	one of these selectors, it should return the badComponentSelector error.
 
 	256 to °	These selectors should be delegated. If the sound component does not implement
-				one of these selectors, it should use DelegateComponentCall() to pass
-				this selector on up the chain. If the sound component does implement this
-				selector, it should first delegate the selector, then perform the function.
+	one of these selectors, it should use DelegateComponentCall() to pass
+	this selector on up the chain. If the sound component does implement this
+	selector, it should first delegate the selector, then perform the function.
 	======================================================================================= */
 
 ComponentRoutine GetComponentRoutine(short selector)
 {
-	void 	*theRtn;
+  void 	*theRtn;
 
-	if (selector < 0)
-		switch (selector)									// standard component selectors
-		{
-			case kComponentRegisterSelect:
-				theRtn = __ComponentRegister;
-				break;
+  if (selector < 0)
+    switch (selector)									// standard component selectors
+      {
+      case kComponentRegisterSelect:
+	theRtn = __ComponentRegister;
+	break;
 
-			case kComponentVersionSelect:
-				theRtn = __ComponentVersion;
-				break;
+      case kComponentVersionSelect:
+	theRtn = __ComponentVersion;
+	break;
 
-			case kComponentCanDoSelect:
-				theRtn = __ComponentCanDo;
-				break;
+      case kComponentCanDoSelect:
+	theRtn = __ComponentCanDo;
+	break;
 
-			case kComponentCloseSelect:
-				theRtn = __ComponentClose;
-				break;
+      case kComponentCloseSelect:
+	theRtn = __ComponentClose;
+	break;
 
-			case kComponentOpenSelect:
-				theRtn = __ComponentOpen;
-				break;
+      case kComponentOpenSelect:
+	theRtn = __ComponentOpen;
+	break;
 
-			default:
-				theRtn = nil;								// unknown selector, so fail
-				break;
-		}
-	else if (selector < kDelegatedSoundComponentSelectors)	// selectors that cannot be delegated
-		switch (selector)
-		{
-			case kSoundComponentInitOutputDeviceSelect:
-				theRtn = __InitOutputDevice;
-				break;
+      default:
+	theRtn = nil;								// unknown selector, so fail
+	break;
+      }
+  else if (selector < kDelegatedSoundComponentSelectors)	// selectors that cannot be delegated
+    switch (selector)
+      {
+      case kSoundComponentInitOutputDeviceSelect:
+	theRtn = __InitOutputDevice;
+	break;
 
-			default:
-				theRtn = nil;								// unknown selector, so fail
-				break;
-		}
-	else													// selectors that can be delegated
-		switch (selector)
-		{
-			case kSoundComponentGetInfoSelect:
-				theRtn = __GetInfo;
-				break;
+      default:
+	theRtn = nil;								// unknown selector, so fail
+	break;
+      }
+  else													// selectors that can be delegated
+    switch (selector)
+      {
+      case kSoundComponentGetInfoSelect:
+	theRtn = __GetInfo;
+	break;
 
-			case kSoundComponentSetInfoSelect:
-				theRtn = __SetInfo;
-				break;
+      case kSoundComponentSetInfoSelect:
+	theRtn = __SetInfo;
+	break;
 
-			case kSoundComponentStartSourceSelect:
-				theRtn = __StartSource;
-				break;
+      case kSoundComponentStartSourceSelect:
+	theRtn = __StartSource;
+	break;
 
-			case kSoundComponentPlaySourceBufferSelect:
-				theRtn = __PlaySourceBuffer;
-				break;
+      case kSoundComponentPlaySourceBufferSelect:
+	theRtn = __PlaySourceBuffer;
+	break;
 
-			default:
-				theRtn = kDelegateComponentCall;			// unknown selector, so delegate it
-				break;
-		}
+      default:
+	theRtn = kDelegateComponentCall;			// unknown selector, so delegate it
+	break;
+      }
 
-	return (theRtn);
+  return (theRtn);
 }
 
 
@@ -344,57 +351,60 @@ ComponentRoutine GetComponentRoutine(short selector)
 
 pascal ComponentResult __ComponentRegister(GlobalsPtr globals)
 {
-	long		result;
-	NumVersion	version;
+  long		result;
+  NumVersion	version;
 
-	if ((Gestalt(gestaltSoundAttr, &result) == noErr) &&		// snd gestalt is available
-		(result & (1L << gestaltSoundIOMgrPresent)))			// snd dispatcher is available
+  if ((Gestalt(gestaltSoundAttr, &result) == noErr) &&		// snd gestalt is available
+      (result & (1L << gestaltSoundIOMgrPresent)))			// snd dispatcher is available
+    {
+      version = SndSoundManagerVersion();						// get the Sound Manager version
+      if (version.majorRev >= kRequiredSndMgrMajorRev)		// it's what we need
 	{
-		version = SndSoundManagerVersion();						// get the Sound Manager version
-		if (version.majorRev >= kRequiredSndMgrMajorRev)		// it's what we need
-		{
-			//	Check for hardware here. We are always installed, so we return 0
-			OSErr ret = noErr;
-			SpBlock mySpBlock;
-			SInfoRecord mySInfoRecord;
+	  //	Check for hardware here. We are always installed, so we return 0
+	  OSErr ret = noErr;
+	  SpBlock mySpBlock;
+	  SInfoRecord mySInfoRecord;
 				
-			mySpBlock.spResult = (long)&mySInfoRecord;
-			mySpBlock.spSlot = 0x9;
-			mySpBlock.spID = 0;
-			mySpBlock.spExtDev = 0;
-			mySpBlock.spCategory = catProto;
-			mySpBlock.spCType = 0x1001;
-			mySpBlock.spDrvrSW = drSwApple;
-			mySpBlock.spDrvrHW = 0xbeed;
-			mySpBlock.spTBMask = 0;
+	  mySpBlock.spResult = (long)&mySInfoRecord;
+	  mySpBlock.spSlot = 0x9;
+	  mySpBlock.spID = 0;
+	  mySpBlock.spExtDev = 0;
+	  mySpBlock.spCategory = catProto;
+	  mySpBlock.spCType = 0x1001;
+	  mySpBlock.spDrvrSW = drSwApple;
+	  mySpBlock.spDrvrHW = 0xbeed;
+	  mySpBlock.spTBMask = 0;
 			
-			ret = SNextTypeSRsrc(&mySpBlock);
-			if (ret)
-				return 1; // oups
+	  ret = SNextTypeSRsrc(&mySpBlock);
+	  if (ret)
+	    return 1; // oups
 				
-			(*globals).slot = mySpBlock.spSlot;
-			(*globals).bt = (struct goblin_bt_regs*)(0xF0000000 |
-													 ((unsigned long)mySpBlock.spSlot)<<24 |
-													 GOBLIN_BT_OFFSET);
+	  (*globals).slot = mySpBlock.spSlot;
+	  (*globals).bt = (struct goblin_bt_regs*)(0xF0000000 |
+						   ((unsigned long)mySpBlock.spSlot)<<24 |
+						   GOBLIN_BT_OFFSET);
+	  
+#ifdef BT_DEBUG
+	  (*(*globals).bt).debug = 'REGI';
 			
-			
-			(*(*globals).bt).debug = 'REGI';
-			
-			(*(*globals).bt).debug = 'slot';
-			(*(*globals).bt).debug = mySpBlock.spSlot;
+	  (*(*globals).bt).debug = 'slot';
+	  (*(*globals).bt).debug = mySpBlock.spSlot;
+#endif
 													 
-			(*globals).csr = (struct goblin_csr*)(0xF0000000 |
-												  ((unsigned long)mySpBlock.spSlot)<<24 |
-												  GOBLIN_CSR_OFFSET);
-												  
-			(*(*globals).bt).debug = 'csr ';
-			(*(*globals).bt).debug = (unsigned long)(*globals).csr;
+	  (*globals).csr = (struct goblin_csr*)(0xF0000000 |
+						((unsigned long)mySpBlock.spSlot)<<24 |
+						GOBLIN_CSR_OFFSET);
+	  
+#ifdef BT_DEBUG							  
+	  (*(*globals).bt).debug = 'csr ';
+	  (*(*globals).bt).debug = (unsigned long)(*globals).csr;
+#endif
 
-			return (0);											// install this sound component
-		}
+	  return (0);											// install this sound component
 	}
+    }
 	
-	return (1);													// do not install component
+  return (1);													// do not install component
 }
 
 /*	==============================================================================
@@ -412,7 +422,7 @@ pascal ComponentResult __ComponentVersion(void *unused1)
 {
 #pragma unused (unused1)
 
-	return (kNoiseMakerVersion);								// return sound component version
+  return (kNoiseMakerVersion);								// return sound component version
 }
 
 /*	==============================================================================
@@ -429,15 +439,15 @@ pascal ComponentResult __ComponentCanDo(void *unused1, short selector)
 {
 #pragma unused (unused1)
 
-	ComponentRoutine	theRtn;
+  ComponentRoutine	theRtn;
 
-	theRtn = GetComponentRoutine(selector);						// see if this selector is implemented
+  theRtn = GetComponentRoutine(selector);						// see if this selector is implemented
 
-	if ((theRtn == nil) ||										// selector is not implemented
-		(theRtn == kDelegateComponentCall))						// or selector is always delegated
-		return (0);												// no can do
-	else
-		return (1);												// selector is implemented
+  if ((theRtn == nil) ||										// selector is not implemented
+      (theRtn == kDelegateComponentCall))						// or selector is always delegated
+    return (0);												// no can do
+  else
+    return (1);												// selector is implemented
 }
 
 /*	==============================================================================
@@ -477,34 +487,34 @@ pascal ComponentResult __ComponentOpen(void *unused1, ComponentInstance self)
 {
 #pragma unused (unused1)
 
-	Handle			h;
-	GlobalsPtr		globals;
-	Boolean			inSystemHeap;
+  Handle			h;
+  GlobalsPtr		globals;
+  Boolean			inSystemHeap;
 
-	inSystemHeap = GetComponentInstanceA5(self) == 0;		// find out if we were loaded in app heap or system heap
+  inSystemHeap = GetComponentInstanceA5(self) == 0;		// find out if we were loaded in app heap or system heap
 
-	h = NewHandleLockClear(sizeof(GlobalsRecord), inSystemHeap);	// get space for globals in appropriate heap
-	if (h == nil)
-		return(MemError());
+  h = NewHandleLockClear(sizeof(GlobalsRecord), inSystemHeap);	// get space for globals in appropriate heap
+  if (h == nil)
+    return(MemError());
 		
-	globals = (GlobalsPtr) *h;
+  globals = (GlobalsPtr) *h;
 		
-	(*globals).siqel = (SlotIntQElement*)NewPtrSysClear(sizeof(SlotIntQElement));
-	if ((*globals).siqel == nil) {
-		DisposeHandle(h);
-		return(MemError());
-	}
+  (*globals).siqel = (SlotIntQElement*)NewPtrSysClear(sizeof(SlotIntQElement));
+  if ((*globals).siqel == nil) {
+    DisposeHandle(h);
+    return(MemError());
+  }
 
-	SetComponentInstanceStorage (self, (Handle) globals); 	// save pointer to our globals
+  SetComponentInstanceStorage (self, (Handle) globals); 	// save pointer to our globals
 
-	globals->self = self;									// remember ourselves
-	globals->globalsHandle = h;								// remember the handle
-	globals->inSystemHeap = inSystemHeap;					// remember which heap we are in
-	globals->prefsHandle = GetPreferences(self, inSystemHeap);	// retrieve or create preferences
-	if (globals->prefsHandle == nil)						// could create preferences
-		return (memFullErr);								// we can't run
+  globals->self = self;									// remember ourselves
+  globals->globalsHandle = h;								// remember the handle
+  globals->inSystemHeap = inSystemHeap;					// remember which heap we are in
+  globals->prefsHandle = GetPreferences(self, inSystemHeap);	// retrieve or create preferences
+  if (globals->prefsHandle == nil)						// could create preferences
+    return (memFullErr);								// we can't run
 
-	return (noErr);
+  return (noErr);
 }
 
 /*	==============================================================================
@@ -524,28 +534,28 @@ pascal ComponentResult __ComponentOpen(void *unused1, ComponentInstance self)
 
 pascal ComponentResult __ComponentClose(GlobalsPtr globals, ComponentInstance self)
 {
-	if (globals)											// we have some globals
+  if (globals)											// we have some globals
+    {
+      if (globals->hwInitialized)							// hardware was initialized
 	{
-		if (globals->hwInitialized)							// hardware was initialized
-		{
-			ReleaseHardware(globals);						// make sure the hardware is off and release it
-			HUnlock((Handle) globals->prefsHandle);			// let prefs handle roam now
-		}
-
-		if (globals->sourceComponent)						// we opened a mixer
-			CloseMixerSoundComponent(globals->sourceComponent);	// close it
-
-		if (globals->prefsChanged)							// preferences changed
-			SavePreferences(self, globals->prefsHandle);	// save them
-
-		if (!globals->inSystemHeap)							// prefs are in app heap
-			DisposeHandle((Handle) globals->prefsHandle);	// dispose of them
-	
-		DisposePtr((char*)globals->siqel);
-		DisposeHandle(globals->globalsHandle);				// dispose our storage
+	  ReleaseHardware(globals);						// make sure the hardware is off and release it
+	  HUnlock((Handle) globals->prefsHandle);			// let prefs handle roam now
 	}
 
-	return (noErr);
+      if (globals->sourceComponent)						// we opened a mixer
+	CloseMixerSoundComponent(globals->sourceComponent);	// close it
+
+      if (globals->prefsChanged)							// preferences changed
+	SavePreferences(self, globals->prefsHandle);	// save them
+
+      if (!globals->inSystemHeap)							// prefs are in app heap
+	DisposeHandle((Handle) globals->prefsHandle);	// dispose of them
+	
+      DisposePtr((char*)globals->siqel);
+      DisposeHandle(globals->globalsHandle);				// dispose our storage
+    }
+
+  return (noErr);
 }
 
 
@@ -568,74 +578,78 @@ pascal ComponentResult __InitOutputDevice(GlobalsPtr globals, long actions)
 {
 #pragma unused (actions)
 
-	ComponentResult		result;
-	PreferencesPtr		prefsPtr;
-	OSErr ret = noErr;
-	SpBlock mySpBlock;
-	SInfoRecord mySInfoRecord;
+  ComponentResult		result;
+  PreferencesPtr		prefsPtr;
+  OSErr ret = noErr;
+  SpBlock mySpBlock;
+  SInfoRecord mySInfoRecord;
 				
-	mySpBlock.spResult = (long)&mySInfoRecord;
-	mySpBlock.spSlot = 0x9;
-	mySpBlock.spID = 0;
-	mySpBlock.spExtDev = 0;
-	mySpBlock.spCategory = catProto;
-	mySpBlock.spCType = 0x1001;
-	mySpBlock.spDrvrSW = drSwApple;
-	mySpBlock.spDrvrHW = 0xbeed;
-	mySpBlock.spTBMask = 0;
+  mySpBlock.spResult = (long)&mySInfoRecord;
+  mySpBlock.spSlot = 0x9;
+  mySpBlock.spID = 0;
+  mySpBlock.spExtDev = 0;
+  mySpBlock.spCategory = catProto;
+  mySpBlock.spCType = 0x1001;
+  mySpBlock.spDrvrSW = drSwApple;
+  mySpBlock.spDrvrHW = 0xbeed;
+  mySpBlock.spTBMask = 0;
 			
-	ret = SNextTypeSRsrc(&mySpBlock);
-	if (ret)
-		return notEnoughHardware; // oups
+  ret = SNextTypeSRsrc(&mySpBlock);
+  if (ret)
+    return notEnoughHardware; // oups
 				
-	(*globals).slot = mySpBlock.spSlot;
-	(*globals).bt = (struct goblin_bt_regs*)(0xF0000000 |
-											 ((unsigned long)mySpBlock.spSlot)<<24 |
-											 GOBLIN_BT_OFFSET);
+  (*globals).slot = mySpBlock.spSlot;
+  (*globals).bt = (struct goblin_bt_regs*)(0xF0000000 |
+					   ((unsigned long)mySpBlock.spSlot)<<24 |
+					   GOBLIN_BT_OFFSET);
+
+#ifdef BT_DEBUG
+  (*(*globals).bt).debug = 'INIT'; 
+
+  (*(*globals).bt).debug = 'SLOT';
+  (*(*globals).bt).debug = mySpBlock.spSlot;
+#endif
+
+  (*globals).csr = (struct goblin_csr*)(0xF0000000 |
+					((unsigned long)mySpBlock.spSlot)<<24 |
+					GOBLIN_CSR_OFFSET);
+
+#ifdef BT_DEBUG
+  (*(*globals).bt).debug = 'CSR ';
+  (*(*globals).bt).debug = (unsigned long)(*globals).csr;
+#endif
+
+  // Open the mixer and tell it the type of data it should output. The
+  // description includes sample format, sample rate, sample size, number of channels
+  // and the size of your optimal interrupt buffer. If a mixer cannot be found that
+  // will output this type of data, an error will be returned.
+
+  prefsPtr = *globals->prefsHandle;						// get settings from preferences
+
+  // set to hardware defaults
+
+  globals->hwSettings.flags = 0;
+  globals->hwSettings.format = (prefsPtr->sampleSize == k8BitSamples) ? kOffsetBinary : kTwosComplement;
+  globals->hwSettings.sampleRate = prefsPtr->sampleRate;
+  globals->hwSettings.sampleSize = prefsPtr->sampleSize;
+  globals->hwSettings.numChannels = prefsPtr->numChannels;
+  globals->hwSettings.sampleCount = kInterruptBufferSamples * 2;
+
+  // open mixer that will output this format
 	
-	(*(*globals).bt).debug = 'INIT'; 
+  result = OpenMixerSoundComponent(&globals->hwSettings, 0, &globals->sourceComponent);
+  if (result != noErr)
+    return (result);
 
-	(*(*globals).bt).debug = 'SLOT';
-	(*(*globals).bt).debug = mySpBlock.spSlot;
+  result = SetupHardware(globals);						// setup the hardware to these settings
 
-	(*globals).csr = (struct goblin_csr*)(0xF0000000 |
-										  ((unsigned long)mySpBlock.spSlot)<<24 |
-										  GOBLIN_CSR_OFFSET);
+  if (result == noErr)
+    {
+      globals->hwInitialized = true;						// hardware is ready to go
+      HLock((Handle) globals->prefsHandle);				// lock prefs so we can use them at interrupt time
+    }
 
-	(*(*globals).bt).debug = 'CSR ';
-	(*(*globals).bt).debug = (unsigned long)(*globals).csr;
-
-	// Open the mixer and tell it the type of data it should output. The
-	// description includes sample format, sample rate, sample size, number of channels
-	// and the size of your optimal interrupt buffer. If a mixer cannot be found that
-	// will output this type of data, an error will be returned.
-
-	prefsPtr = *globals->prefsHandle;						// get settings from preferences
-
-	// set to hardware defaults
-
-	globals->hwSettings.flags = 0;
-	globals->hwSettings.format = (prefsPtr->sampleSize == 8) ? kOffsetBinary : kTwosComplement;
-	globals->hwSettings.sampleRate = prefsPtr->sampleRate;
-	globals->hwSettings.sampleSize = prefsPtr->sampleSize;
-	globals->hwSettings.numChannels = prefsPtr->numChannels;
-	globals->hwSettings.sampleCount = kInterruptBufferSamples * 2;
-
-	// open mixer that will output this format
-	
-	result = OpenMixerSoundComponent(&globals->hwSettings, 0, &globals->sourceComponent);
-	if (result != noErr)
-		return (result);
-
-	result = SetupHardware(globals);						// setup the hardware to these settings
-
-	if (result == noErr)
-	{
-		globals->hwInitialized = true;						// hardware is ready to go
-		HLock((Handle) globals->prefsHandle);				// lock prefs so we can use them at interrupt time
-	}
-
-	return (result);
+  return (result);
 }
 
 /*	==============================================================================
@@ -651,105 +665,105 @@ pascal ComponentResult __InitOutputDevice(GlobalsPtr globals, long actions)
 	============================================================================== */
 
 pascal ComponentResult __GetInfo(GlobalsPtr globals, SoundSource sourceID,
-								 OSType selector, void *infoPtr)
+				 OSType selector, void *infoPtr)
 {
-	HandleListPtr		listPtr;
-	short				*sp;
-	UnsignedFixed		*lp;
-	Handle				h;
-	PreferencesPtr		prefsPtr;
-	ComponentResult		result = noErr;
+  HandleListPtr		listPtr;
+  short				*sp;
+  UnsignedFixed		*lp;
+  Handle				h;
+  PreferencesPtr		prefsPtr;
+  ComponentResult		result = noErr;
 
-	prefsPtr = *globals->prefsHandle;					// get settings from preferences
+  prefsPtr = *globals->prefsHandle;					// get settings from preferences
 
-	switch (selector)
-	{
-		case siSampleSize:								// return current sample size
-			*((short *) infoPtr) = prefsPtr->sampleSize;
-			break;
+  switch (selector)
+    {
+    case siSampleSize:								// return current sample size
+      *((short *) infoPtr) = prefsPtr->sampleSize;
+      break;
 
-		case siSampleSizeAvailable:						// return samples sizes available
-			h = NewHandle(sizeof(short) * kSampleSizesCount);	// space for sample sizes
-			if (h == nil)
-				return (MemError());
+    case siSampleSizeAvailable:						// return samples sizes available
+      h = NewHandle(sizeof(short) * kSampleSizesCount);	// space for sample sizes
+      if (h == nil)
+	return (MemError());
 
-			listPtr = (HandleListPtr) infoPtr;
-			listPtr->count = kSampleSizesCount;			// no. sample sizes in handle
-			listPtr->handle = h;						// handle to be returned
+      listPtr = (HandleListPtr) infoPtr;
+      listPtr->count = kSampleSizesCount;			// no. sample sizes in handle
+      listPtr->handle = h;						// handle to be returned
 
-			sp = (short *) *h;							// store sample sizes in handle
-			//*sp++ = k8BitSamples;
-			*sp++ = k16BitSamples;
-			break;
+      sp = (short *) *h;							// store sample sizes in handle
+      *sp++ = k8BitSamples;
+      *sp++ = k16BitSamples;
+      break;
 
-		case siSampleRate:								// return current sample rate
-			*((Fixed *) infoPtr) = prefsPtr->sampleRate;
-			break;
+    case siSampleRate:								// return current sample rate
+      *((Fixed *) infoPtr) = prefsPtr->sampleRate;
+      break;
 
-		case siSampleRateAvailable:						// return sample rates available
-			h = NewHandle(sizeof(UnsignedFixed) * kSampleRatesCount);	// space for sample rates
-			if (h == nil)
-				return (MemError());
+    case siSampleRateAvailable:						// return sample rates available
+      h = NewHandle(sizeof(UnsignedFixed) * kSampleRatesCount);	// space for sample rates
+      if (h == nil)
+	return (MemError());
 
-			listPtr = (HandleListPtr) infoPtr;
-			listPtr->count = kSampleRatesCount;			// no. sample rates in handle
-			listPtr->handle = h;						// handle to be returned
+      listPtr = (HandleListPtr) infoPtr;
+      listPtr->count = kSampleRatesCount;			// no. sample rates in handle
+      listPtr->handle = h;						// handle to be returned
 
-			lp = (UnsignedFixed *) *h;
+      lp = (UnsignedFixed *) *h;
 
-			// If the hardware can support a range of sample rate values, then the
-			// list count should be set to zero and the min and max sample rate values
-			// should be stored in the handle.
+      // If the hardware can support a range of sample rate values, then the
+      // list count should be set to zero and the min and max sample rate values
+      // should be stored in the handle.
 			
-			if (kSupportsSampleRateRange)
-			{
-				listPtr->count = 0;
-				*lp++ = kSampleRateMin;					// min
-				*lp++ = kSampleRateMax;					// max
-			}
-		
-			// If the hardware supports a limited set of sample rates, then the list count
-			// should be set to the number of sample rates and this list of rates should be
-			// stored in the handle.
-
-			else
-			{
-				//*lp++ = kSampleRate11;					// store sample rates in handle
-				//*lp++ = kSampleRate22;
-				*lp++ = kSampleRate44;
-			}
-			break;
-
-		case siNumberChannels:							// return current no. channels
-			*((short *) infoPtr) = prefsPtr->numChannels;
-			break;
-
-		case siChannelAvailable:						// return channels available
-			h = NewHandle(sizeof(short) * kChannelsCount);	// space for channels
-			if (h == nil)
-				return (MemError());
-
-			listPtr = (HandleListPtr) infoPtr;
-			listPtr->count = kChannelsCount;			// no. channels in handle
-			listPtr->handle = h;						// handle to be returned
-
-			sp = (short *) *h;							// store channels in handle
-			//*sp++ = kNumChannelsMono;
-			*sp++ = kNumChannelsStereo;
-			break;
-
-		case siHardwareVolume:
-			*((long *)infoPtr) = prefsPtr->volume;
-			break;
-
-		// if you do not handle this selector, then delegate it up the chain
-		default:
-			result = SoundComponentGetInfo(globals->sourceComponent, sourceID, selector, infoPtr);
-			break;
-
+      if (kSupportsSampleRateRange)
+	{
+	  listPtr->count = 0;
+	  *lp++ = kSampleRateMin;					// min
+	  *lp++ = kSampleRateMax;					// max
 	}
+		
+      // If the hardware supports a limited set of sample rates, then the list count
+      // should be set to the number of sample rates and this list of rates should be
+      // stored in the handle.
 
-	return (result);
+      else
+	{
+	  //*lp++ = kSampleRate11;					// store sample rates in handle
+	  //*lp++ = kSampleRate22;
+	  *lp++ = kSampleRate44;
+	}
+      break;
+
+    case siNumberChannels:							// return current no. channels
+      *((short *) infoPtr) = prefsPtr->numChannels;
+      break;
+
+    case siChannelAvailable:						// return channels available
+      h = NewHandle(sizeof(short) * kChannelsCount);	// space for channels
+      if (h == nil)
+	return (MemError());
+
+      listPtr = (HandleListPtr) infoPtr;
+      listPtr->count = kChannelsCount;			// no. channels in handle
+      listPtr->handle = h;						// handle to be returned
+
+      sp = (short *) *h;							// store channels in handle
+      //*sp++ = kNumChannelsMono;
+      *sp++ = kNumChannelsStereo;
+      break;
+
+    case siHardwareVolume:
+      *((long *)infoPtr) = prefsPtr->volume;
+      break;
+
+      // if you do not handle this selector, then delegate it up the chain
+    default:
+      result = SoundComponentGetInfo(globals->sourceComponent, sourceID, selector, infoPtr);
+      break;
+
+    }
+
+  return (result);
 }
 
 /*	==============================================================================
@@ -763,87 +777,87 @@ pascal ComponentResult __GetInfo(GlobalsPtr globals, SoundSource sourceID,
 	============================================================================== */
 
 pascal ComponentResult __SetInfo(GlobalsPtr globals, SoundSource sourceID,
-								 OSType selector, void *infoPtr)
+				 OSType selector, void *infoPtr)
 {
-	PreferencesPtr		prefsPtr;
-	ComponentResult		result = noErr;
+  PreferencesPtr		prefsPtr;
+  ComponentResult		result = noErr;
 
-	prefsPtr = *globals->prefsHandle;					// get settings from preferences
+  prefsPtr = *globals->prefsHandle;					// get settings from preferences
 
-	switch (selector)
-	{
-		case siSampleSize:								// set sample size
-		{
-			short	sampleSize = (short) infoPtr;
+  switch (selector)
+    {
+    case siSampleSize:								// set sample size
+      {
+	short	sampleSize = (short) infoPtr;
 			
-			if (/*(sampleSize == k8BitSamples) ||*/			// make sure it is a valid sample size
-				(sampleSize == k16BitSamples))
-			{
-				prefsPtr->sampleSize = sampleSize;		// save new size in prefs
-				globals->prefsChanged = true;			// save prefs on close
-			}
-			else
-				result = siInvalidSampleSize;
-			break;
-		}
+	if ((sampleSize == k8BitSamples) ||			// make sure it is a valid sample size
+	    (sampleSize == k16BitSamples))
+	  {
+	    prefsPtr->sampleSize = sampleSize;		// save new size in prefs
+	    globals->prefsChanged = true;			// save prefs on close
+	  }
+	else
+	  result = siInvalidSampleSize;
+	break;
+      }
 
-		case siSampleRate:								// set sample rate
-		{
-			UnsignedFixed	sampleRate = (UnsignedFixed) infoPtr;
+    case siSampleRate:								// set sample rate
+      {
+	UnsignedFixed	sampleRate = (UnsignedFixed) infoPtr;
 
-			if (kSupportsSampleRateRange)				// sample rate range
-			{
-				if ((kSampleRateMin <= sampleRate) && (sampleRate <= kSampleRateMax))	// make sure it is a valid sample rate
-				{
-					prefsPtr->sampleRate = sampleRate;	// save new rate in prefs
-					globals->prefsChanged = true;		// save prefs on close
-				}
-				else
-					result = siInvalidSampleRate;
-			}
-			else
-			{
-				if (/*(sampleRate == kSampleRate11) ||	// make sure it is a valid sample rate
-					(sampleRate == kSampleRate22) ||*/
-					(sampleRate == kSampleRate44))
-				{
-					prefsPtr->sampleRate = sampleRate;	// save new rate in prefs
-					globals->prefsChanged = true;		// save prefs on close
-				}
-				else
-					result = siInvalidSampleSize;
-			}
-			break;
-		}
+	if (kSupportsSampleRateRange)				// sample rate range
+	  {
+	    if ((kSampleRateMin <= sampleRate) && (sampleRate <= kSampleRateMax))	// make sure it is a valid sample rate
+	      {
+		prefsPtr->sampleRate = sampleRate;	// save new rate in prefs
+		globals->prefsChanged = true;		// save prefs on close
+	      }
+	    else
+	      result = siInvalidSampleRate;
+	  }
+	else
+	  {
+	    if (/*(sampleRate == kSampleRate11) ||	// make sure it is a valid sample rate
+		  (sampleRate == kSampleRate22) ||*/
+		(sampleRate == kSampleRate44))
+	      {
+		prefsPtr->sampleRate = sampleRate;	// save new rate in prefs
+		globals->prefsChanged = true;		// save prefs on close
+	      }
+	    else
+	      result = siInvalidSampleSize;
+	  }
+	break;
+      }
 
-		case siNumberChannels:							// set no. channels
-		{
-			short	numChannels = (short) infoPtr;
+    case siNumberChannels:							// set no. channels
+      {
+	short	numChannels = (short) infoPtr;
 
-			if (/*(numChannels == kNumChannelsMono) ||*/	// make sure it is a valid no. channels
-				(numChannels == kNumChannelsStereo))
-			{
-				prefsPtr->numChannels = numChannels;	// save new num channels in prefs
-				globals->prefsChanged = true;			// save prefs on close
-			}
-			else
-				result = notEnoughHardware;
-			break;
-		}
+	if (/*(numChannels == kNumChannelsMono) ||*/	// make sure it is a valid no. channels
+	    (numChannels == kNumChannelsStereo))
+	  {
+	    prefsPtr->numChannels = numChannels;	// save new num channels in prefs
+	    globals->prefsChanged = true;			// save prefs on close
+	  }
+	else
+	  result = notEnoughHardware;
+	break;
+      }
 
-		case siHardwareVolume:
-			prefsPtr->volume = (long) infoPtr;			// save volume in prefs
-			globals->prefsChanged = true;				// save prefs on close
-			result = SetHardwareVolume(globals, prefsPtr->volume);
-			break;
+    case siHardwareVolume:
+      prefsPtr->volume = (long) infoPtr;			// save volume in prefs
+      globals->prefsChanged = true;				// save prefs on close
+      result = SetHardwareVolume(globals, prefsPtr->volume);
+      break;
 
-		// if you do not handle this selector, then call up the chain
-		default:
-			result = SoundComponentSetInfo(globals->sourceComponent, sourceID, selector, infoPtr);
-			break;
-	}
+      // if you do not handle this selector, then call up the chain
+    default:
+      result = SoundComponentSetInfo(globals->sourceComponent, sourceID, selector, infoPtr);
+      break;
+    }
 
-	return (result);
+  return (result);
 }
 
 /*	==============================================================================
@@ -859,17 +873,17 @@ pascal ComponentResult __SetInfo(GlobalsPtr globals, SoundSource sourceID,
 
 pascal ComponentResult __StartSource(GlobalsPtr globals, short count, SoundSource *sources)
 {
-	ComponentResult		result;
+  ComponentResult		result;
 
-	// tell the mixer to start these sources
-	result = SoundComponentStartSource(globals->sourceComponent, count, sources);
-	if (result != noErr)
-		return (result);
+  // tell the mixer to start these sources
+  result = SoundComponentStartSource(globals->sourceComponent, count, sources);
+  if (result != noErr)
+    return (result);
 
-	// make sure hardware interrupts are running
-	result = StartHardware(globals);
+  // make sure hardware interrupts are running
+  result = StartHardware(globals);
 
-	return (result);
+  return (result);
 }
 
 /*	==============================================================================
@@ -885,27 +899,30 @@ pascal ComponentResult __StartSource(GlobalsPtr globals, short count, SoundSourc
 
 pascal ComponentResult __PlaySourceBuffer(GlobalsPtr globals, SoundSource sourceID, SoundParamBlockPtr pb, long actions)
 {
-	ComponentResult		result;
+  ComponentResult		result;
 	
-	(*(*globals).bt).debug = 'PLAY';
+#ifdef BT_DEBUG
+  (*(*globals).bt).debug = 'PLAY';
+#endif
 
-	// tell mixer to start playing this new buffer
-	result = SoundComponentPlaySourceBuffer(globals->sourceComponent, sourceID, pb, actions);
-	if (result != noErr)
-		return (result);
+  // tell mixer to start playing this new buffer
+  result = SoundComponentPlaySourceBuffer(globals->sourceComponent, sourceID, pb, actions);
+  if (result != noErr)
+    return (result);
 
-	// if the kSourcePaused bit is set, then do not turn on your hardware just yet
-	// (the assumption is that StartSource() will later be used to start this sound playing).
-	// If this bit is not set, turn your hardware interrupts on.
+  // if the kSourcePaused bit is set, then do not turn on your hardware just yet
+  // (the assumption is that StartSource() will later be used to start this sound playing).
+  // If this bit is not set, turn your hardware interrupts on.
 
-	if (!(actions & kSourcePaused))
-		result = StartHardware(globals);
-		
-		
-	(*(*globals).bt).debug = 'YALP';
-	(*(*globals).bt).debug = result;
-
-	return (result);
+  if (!(actions & kSourcePaused))
+    result = StartHardware(globals);
+  
+#ifdef BT_DEBUG
+  (*(*globals).bt).debug = 'YALP';
+  (*(*globals).bt).debug = result;
+#endif
+  
+  return (result);
 }
 
 
@@ -914,21 +931,21 @@ pascal ComponentResult __PlaySourceBuffer(GlobalsPtr globals, SoundSource source
 
 Handle NewHandleLockClear(long len, Boolean inSystemHeap)	// allocate a new handle, lock it down and clear it
 {
-	Handle		h;
+  Handle		h;
 
-	if (inSystemHeap)										// we are loaded into the system heap
-	{
-		ReserveMemSys(len);									// create it low down in system heap
-		h = NewHandleSysClear(len);
-	}
-	else													// we are loaded into the app heap
-	{
-		h = NewHandleClear(len);							// create our memory there and move it out of the way
-		if (h) MoveHHi(h);
-	}
+  if (inSystemHeap)										// we are loaded into the system heap
+    {
+      ReserveMemSys(len);									// create it low down in system heap
+      h = NewHandleSysClear(len);
+    }
+  else													// we are loaded into the app heap
+    {
+      h = NewHandleClear(len);							// create our memory there and move it out of the way
+      if (h) MoveHHi(h);
+    }
 
-	if (h) HLock(h);										// lock it down
-	return (h);
+  if (h) HLock(h);										// lock it down
+  return (h);
 }
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -937,68 +954,68 @@ Handle NewHandleLockClear(long len, Boolean inSystemHeap)	// allocate a new hand
 
 PreferencesHandle GetPreferences(ComponentInstance self, Boolean inSystemHeap)
 {
-	Handle					prefsHandle, componentName;
-	PreferencesPtr			prefsPtr;
-	ComponentDescription	componentDesc;
-	OSErr					err;
+  Handle					prefsHandle, componentName;
+  PreferencesPtr			prefsPtr;
+  ComponentDescription	componentDesc;
+  OSErr					err;
 
-	prefsHandle = (Handle) GetComponentRefcon((Component) self);	// get prefs from component refcon
-	if (prefsHandle)
-		return ((PreferencesHandle) prefsHandle);			// valid prefs in refcon, so we are done
+  prefsHandle = (Handle) GetComponentRefcon((Component) self);	// get prefs from component refcon
+  if (prefsHandle)
+    return ((PreferencesHandle) prefsHandle);			// valid prefs in refcon, so we are done
 
-	componentName = NewHandle(0);							// make space for name
-	if (componentName == nil)
-		goto NewNameHandleFailed;
+  componentName = NewHandle(0);							// make space for name
+  if (componentName == nil)
+    goto NewNameHandleFailed;
 
-	err = GetComponentInfo((Component) self, &componentDesc, componentName, nil, nil);	// get component name and subtype
-	if (err != noErr)
-		goto InfoFailed;
+  err = GetComponentInfo((Component) self, &componentDesc, componentName, nil, nil);	// get component name and subtype
+  if (err != noErr)
+    goto InfoFailed;
 
-	prefsHandle = NewHandleLockClear(sizeof(PreferencesRecord), inSystemHeap);	// create space for prefs handle
-	if (prefsHandle == nil)
-		goto NewPrefsHandleFailed;
+  prefsHandle = NewHandleLockClear(sizeof(PreferencesRecord), inSystemHeap);	// create space for prefs handle
+  if (prefsHandle == nil)
+    goto NewPrefsHandleFailed;
 
-	HUnlock(prefsHandle);									// don't leave prefs handle locked down forever
-	HLock(componentName);
+  HUnlock(prefsHandle);									// don't leave prefs handle locked down forever
+  HLock(componentName);
 
-	err = GetSoundPreference(componentDesc.componentSubType, (StringPtr) *componentName, prefsHandle);	// get prefs handle from file
-	if (err != noErr)										// no file or prefs not in file
-		goto GetPrefsFailed;
+  err = GetSoundPreference(componentDesc.componentSubType, (StringPtr) *componentName, prefsHandle);	// get prefs handle from file
+  if (err != noErr)										// no file or prefs not in file
+    goto GetPrefsFailed;
 
-	if (GetHandleSize(prefsHandle) != sizeof(PreferencesRecord))	// older version of preferences
-		goto GetPrefsFailed;								// start with all new preferences
+  if (GetHandleSize(prefsHandle) != sizeof(PreferencesRecord))	// older version of preferences
+    goto GetPrefsFailed;								// start with all new preferences
 
-	DisposeHandle(componentName);
-	SetComponentRefcon((Component) self, (long) prefsHandle);	// save prefs in refcon
+  DisposeHandle(componentName);
+  SetComponentRefcon((Component) self, (long) prefsHandle);	// save prefs in refcon
 
-	return ((PreferencesHandle) prefsHandle);				// we are done
+  return ((PreferencesHandle) prefsHandle);				// we are done
 
 
-	/*	If we end up here, it means that the preferences could not be loaded out of the
-		sound preferences file for some reason, so we need to generate some default preferences. */
+  /*	If we end up here, it means that the preferences could not be loaded out of the
+	sound preferences file for some reason, so we need to generate some default preferences. */
 
-GetPrefsFailed:
-	DisposeHandle(prefsHandle);
-NewPrefsHandleFailed:
-InfoFailed:
-	DisposeHandle(componentName);
-NewNameHandleFailed:
+ GetPrefsFailed:
+  DisposeHandle(prefsHandle);
+ NewPrefsHandleFailed:
+ InfoFailed:
+  DisposeHandle(componentName);
+ NewNameHandleFailed:
 
-	prefsHandle = NewHandleLockClear(sizeof(PreferencesRecord), inSystemHeap);	// create space for prefs handle
-	if (prefsHandle == nil)
-		return (nil);
+  prefsHandle = NewHandleLockClear(sizeof(PreferencesRecord), inSystemHeap);	// create space for prefs handle
+  if (prefsHandle == nil)
+    return (nil);
 
-	HUnlock(prefsHandle);									// don't leave prefs handle locked down forever
-	prefsPtr = (PreferencesPtr) *prefsHandle;
+  HUnlock(prefsHandle);									// don't leave prefs handle locked down forever
+  prefsPtr = (PreferencesPtr) *prefsHandle;
 
-	prefsPtr->sampleSize = k16BitSamples;//k8BitSamples;					// initialize prefs to defaults
-	prefsPtr->sampleRate = kSampleRate44;//kSampleRate22;
-	prefsPtr->numChannels = kNumChannelsStereo;
-	prefsPtr->volume = (kFullVolume << 16) | kFullVolume;
+  prefsPtr->sampleSize = k16BitSamples;//k8BitSamples;					// initialize prefs to defaults
+  prefsPtr->sampleRate = kSampleRate44;//kSampleRate22;
+  prefsPtr->numChannels = kNumChannelsStereo;
+  prefsPtr->volume = (kFullVolume << 16) | kFullVolume;
 
-	SetComponentRefcon((Component) self, (long) prefsHandle);	// save prefs in refcon
+  SetComponentRefcon((Component) self, (long) prefsHandle);	// save prefs in refcon
 
-	return ((PreferencesHandle) prefsHandle);				// we are done
+  return ((PreferencesHandle) prefsHandle);				// we are done
 }
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -1006,26 +1023,26 @@ NewNameHandleFailed:
 
 void SavePreferences(ComponentInstance self, PreferencesHandle prefsHandle)
 {
-	Handle					componentName;
-	ComponentDescription	componentDesc;
-	OSErr					err;
+  Handle					componentName;
+  ComponentDescription	componentDesc;
+  OSErr					err;
 
-	componentName = NewHandle(0);							// make space for name
-	if (componentName == nil)
-		goto NewNameHandleFailed;
+  componentName = NewHandle(0);							// make space for name
+  if (componentName == nil)
+    goto NewNameHandleFailed;
 
-	err = GetComponentInfo((Component) self, &componentDesc, componentName, nil, nil);	// get component name and subtype
-	if (err != noErr)
-		goto InfoFailed;
+  err = GetComponentInfo((Component) self, &componentDesc, componentName, nil, nil);	// get component name and subtype
+  if (err != noErr)
+    goto InfoFailed;
 
-	HLock(componentName);
-	err = SetSoundPreference(componentDesc.componentSubType, (StringPtr) *componentName, (Handle) prefsHandle);
+  HLock(componentName);
+  err = SetSoundPreference(componentDesc.componentSubType, (StringPtr) *componentName, (Handle) prefsHandle);
 
-InfoFailed:
-	DisposeHandle(componentName);
-NewNameHandleFailed:
+ InfoFailed:
+  DisposeHandle(componentName);
+ NewNameHandleFailed:
 
-	return;
+  return;
 }
 
 
@@ -1046,42 +1063,43 @@ NewNameHandleFailed:
 
 OSErr SetupHardware(GlobalsPtr globals)
 {
-	OSErr					err = noErr;
+  OSErr					err = noErr;
 			
-	// host view ; currently mapped to the SRAM, could be anywhere
-	// in fact, I'm not sure how MacOS would handle it, but it could be in host memory
-	// using the wishbone DMA word-by-word
-	// (or using a more sophisticated approach and using block request for 8/16/32/64 bytes)
-	(*globals).buf0 = (u_int32_t*)(0xF0000000 |
-								   ((unsigned long)(*globals).slot)<<24 |
-								   GOBLIN_AUDIOBUFFER_OFFSET);
-	(*globals).buf1 = (u_int32_t*)(0xF0000000 |
-								   ((unsigned long)(*globals).slot)<<24 |
-								   GOBLIN_AUDIOBUFFER_OFFSET |
-								   (GOBLIN_AUDIOBUFFER_SIZE >> 1)); // offset by 4 KiB
+  // host view ; currently mapped to the SRAM, could be anywhere
+  // in fact, I'm not sure how MacOS would handle it, but it could be in host memory
+  // using the wishbone DMA word-by-word
+  // (or using a more sophisticated approach and using block request for 8/16/32/64 bytes)
+  (*globals).buf0 = (u_int32_t*)(0xF0000000 |
+				 ((unsigned long)(*globals).slot)<<24 |
+				 GOBLIN_AUDIOBUFFER_OFFSET);
+  (*globals).buf1 = (u_int32_t*)(0xF0000000 |
+				 ((unsigned long)(*globals).slot)<<24 |
+				 GOBLIN_AUDIOBUFFER_OFFSET |
+				 (GOBLIN_AUDIOBUFFER_SIZE >> 1)); // offset by 4 KiB
 
-	(*(*globals).bt).debug = 'bufX';
-	(*(*globals).bt).debug = (unsigned long)(*globals).buf0;
-	(*(*globals).bt).debug = (unsigned long)(*globals).buf1;
-	(*(*globals).bt).debug = brev((unsigned long)&(*(*globals).csr).goblin_goblin_audio_buf0_addr);
-	(*(*globals).bt).debug = brev((unsigned long)&(*(*globals).csr).goblin_goblin_audio_buf1_addr);
+#ifdef BT_DEBUG
+  (*(*globals).bt).debug = 'bufX';
+  (*(*globals).bt).debug = (unsigned long)(*globals).buf0;
+  (*(*globals).bt).debug = (unsigned long)(*globals).buf1;
+  (*(*globals).bt).debug = brev((unsigned long)&(*(*globals).csr).goblin_goblin_audio_buf0_addr);
+  (*(*globals).bt).debug = brev((unsigned long)&(*(*globals).csr).goblin_goblin_audio_buf1_addr);
+#endif
 
-	// HW view (internal Wishbone addresses, so w/o the slot number)
-	(*(*globals).csr).goblin_goblin_audio_buf0_addr = brev((unsigned long)(0xF0000000 |
-									  							      GOBLIN_AUDIOBUFFER_OFFSET));
-	(*(*globals).csr).goblin_goblin_audio_buf1_addr = brev((unsigned long)(0xF0000000 |
-							  										  GOBLIN_AUDIOBUFFER_OFFSET |
-							  										  (GOBLIN_AUDIOBUFFER_SIZE >> 1)));
-							  										   
-	// FIXME TODO: irq
-	(*(*globals).siqel).sqType = sIQType;
-	(*(*globals).siqel).sqPrio = 6;
-	(*(*globals).siqel).sqAddr = irqTrampoline;
-	(*(*globals).siqel).sqParm = (long)globals;
+  // HW view (internal Wishbone addresses, so w/o the slot number)
+  (*(*globals).csr).goblin_goblin_audio_buf0_addr = brev((unsigned long)(0xF0000000 |
+									 GOBLIN_AUDIOBUFFER_OFFSET));
+  (*(*globals).csr).goblin_goblin_audio_buf1_addr = brev((unsigned long)(0xF0000000 |
+									 GOBLIN_AUDIOBUFFER_OFFSET |
+									 (GOBLIN_AUDIOBUFFER_SIZE >> 1)));
+
+  (*(*globals).siqel).sqType = sIQType;
+  (*(*globals).siqel).sqPrio = 6;
+  (*(*globals).siqel).sqAddr = irqTrampoline;
+  (*(*globals).siqel).sqParm = (long)globals;
 	
-	SIntInstall((*globals).siqel, (*globals).slot);
+  SIntInstall((*globals).siqel, (*globals).slot);
 
-	return (err);
+  return (err);
 }
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -1089,10 +1107,10 @@ OSErr SetupHardware(GlobalsPtr globals)
 
 void ReleaseHardware(GlobalsPtr globals)
 {
-	StopHardware(globals);										// make sure hardware is off
+  StopHardware(globals);										// make sure hardware is off
 	
-	// remove interrupt
-	SIntRemove((*globals).siqel, (*globals).slot);
+  // remove interrupt
+  SIntRemove((*globals).siqel, (*globals).slot);
 }
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -1100,25 +1118,25 @@ void ReleaseHardware(GlobalsPtr globals)
 
 OSErr StartHardware(GlobalsPtr globals)
 {
-	OSErr	err = noErr;
+  OSErr	err = noErr;
 
-	if (!globals->hwInterruptsOn)
-	{
-		globals->hwInterruptsOn = true;							// the hardware will soon be on
+  if (!globals->hwInterruptsOn)
+    {
+      globals->hwInterruptsOn = true;							// the hardware will soon be on
 		
-		(*(*globals).csr).goblin_goblin_audio_irqctrl = brev(0x3); // enable interrup, clear previous
+      (*(*globals).csr).goblin_goblin_audio_irqctrl = brev(0x3); // enable interrup, clear previous
 		
-		(*(*globals).csr).goblin_goblin_audio_buf1_size = brev(1); // make pretend
-		(*globals).buf1[0] = 0; // silence
+      (*(*globals).csr).goblin_goblin_audio_buf1_size = brev(1); // make pretend
+      (*globals).buf1[0] = 0; // silence
 		
-		(*globals).lastbuf = 1;
+      (*globals).lastbuf = 1;
 		
-		(*(*globals).csr).goblin_goblin_audio_ctrl = brev(0x00010101); // auto-stop play buf1, this will just force an interrupt
+      (*(*globals).csr).goblin_goblin_audio_ctrl = brev(0x00010101); // auto-stop play buf1, this will just force an interrupt
 		
 		
-	}
+    }
 
-	return (err);
+  return (err);
 }
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -1127,16 +1145,16 @@ OSErr StartHardware(GlobalsPtr globals)
 void StopHardware(GlobalsPtr globals)
 {
 	
-	// stop playing
-	// race condition ?
-	(*(*globals).csr).goblin_goblin_audio_ctrl = (*(*globals).csr).goblin_goblin_audio_ctrl | brev(0x00010000); // add auto-stop
+  // stop playing
+  // race condition ?
+  (*(*globals).csr).goblin_goblin_audio_ctrl = (*(*globals).csr).goblin_goblin_audio_ctrl | brev(0x00010000); // add auto-stop
 	
-	if (globals->hwInterruptsOn)
-	{	
-		(*(*globals).csr).goblin_goblin_audio_irqctrl = brev(0x2); // clear low-order bit (enable) & clear irq (second bit)
+  if (globals->hwInterruptsOn)
+    {	
+      (*(*globals).csr).goblin_goblin_audio_irqctrl = brev(0x2); // clear low-order bit (enable) & clear irq (second bit)
 
-		globals->hwInterruptsOn = false;						// the hardware is now off
-	}
+      globals->hwInterruptsOn = false;						// the hardware is now off
+    }
 }
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -1144,11 +1162,11 @@ void StopHardware(GlobalsPtr globals)
 
 void SuspendHardware(GlobalsPtr globals)
 {
-	if (globals->hwInterruptsOn)
-	{
-		// Suspend hardware interrupts here
-		(*(*globals).csr).goblin_goblin_audio_irqctrl = 0; // clear low-order bit (enable)
-	}
+  if (globals->hwInterruptsOn)
+    {
+      // Suspend hardware interrupts here
+      (*(*globals).csr).goblin_goblin_audio_irqctrl = 0; // clear low-order bit (enable)
+    }
 }
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -1156,10 +1174,10 @@ void SuspendHardware(GlobalsPtr globals)
 
 void ResumeHardware(GlobalsPtr globals)
 {
-	if (globals->hwInterruptsOn)
-	{
-		(*(*globals).csr).goblin_goblin_audio_irqctrl = brev(0x1); // set low-order bit (enable)
-	}
+  if (globals->hwInterruptsOn)
+    {
+      (*(*globals).csr).goblin_goblin_audio_irqctrl = brev(0x1); // set low-order bit (enable)
+    }
 }
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -1167,11 +1185,11 @@ void ResumeHardware(GlobalsPtr globals)
 
 OSErr SetHardwareVolume(GlobalsPtr globals, unsigned long volume)
 {
-	OSErr		err = noErr;
+  OSErr		err = noErr;
 	
-	// fixme TODO
+  // fixme TODO
 	
-	return (err);
+  return (err);
 }
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -1181,37 +1199,37 @@ OSErr SetHardwareVolume(GlobalsPtr globals, unsigned long volume)
 // and copy the data to the hardware. On the way out, if all data was copied,
 // try to get some more so it will be available immediately next interrupt.
 /*
-pascal void InterruptRoutine(SndChannelPtr chan, SndCommand *cmd)
-{
-#pragma unused (chan)
+  pascal void InterruptRoutine(SndChannelPtr chan, SndCommand *cmd)
+  {
+  #pragma unused (chan)
 
-	GlobalsPtr				globals;
-	SoundComponentDataPtr	sourceDataPtr;
+  GlobalsPtr				globals;
+  SoundComponentDataPtr	sourceDataPtr;
 
-	globals = (GlobalsPtr) cmd->param2;						// get globals from command
+  globals = (GlobalsPtr) cmd->param2;						// get globals from command
 
-	SuspendHardware(globals);								// suspend interrupts while we are processing
+  SuspendHardware(globals);								// suspend interrupts while we are processing
 
-	sourceDataPtr = GetMoreSource(globals);					// get source from mixer
-	if (sourceDataPtr == nil)								// no more source
-	{
-		StopHardware(globals);								// turn hardware off
-		return;
-	}
+  sourceDataPtr = GetMoreSource(globals);					// get source from mixer
+  if (sourceDataPtr == nil)								// no more source
+  {
+  StopHardware(globals);								// turn hardware off
+  return;
+  }
 
-	CopySamplesToHardware(globals, sourceDataPtr);			// fulfill hardware request
+  CopySamplesToHardware(globals, sourceDataPtr);			// fulfill hardware request
 
-//	Normally, you will want to check to see if you have run out
-// 	of data here and get more right away so you will be ready for
-//	the next interrupt. This example does not have any hardware
-//	to copy the data to, so it leaves the data in the mixer buffer and
-//	thus cannot call for more until it has been played.
+  //	Normally, you will want to check to see if you have run out
+  // 	of data here and get more right away so you will be ready for
+  //	the next interrupt. This example does not have any hardware
+  //	to copy the data to, so it leaves the data in the mixer buffer and
+  //	thus cannot call for more until it has been played.
 
-//	if (sourceDataPtr->sampleCount == 0)					// exhausted the source
-//		sourceDataPtr = GetMoreSource(globals);				// get more for next time
+  //	if (sourceDataPtr->sampleCount == 0)					// exhausted the source
+  //		sourceDataPtr = GetMoreSource(globals);				// get more for next time
 
-	ResumeHardware(globals);								// resume interrupts
-}
+  ResumeHardware(globals);								// resume interrupts
+  }
 */
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 // This routine returns the data pointer to your mixer source. If there
@@ -1219,31 +1237,31 @@ pascal void InterruptRoutine(SndChannelPtr chan, SndCommand *cmd)
 
 SoundComponentDataPtr GetMoreSource(GlobalsPtr globals)
 {
-	ComponentResult			result;
-	SoundComponentDataPtr	sourceDataPtr = globals->sourceDataPtr;
+  ComponentResult			result;
+  SoundComponentDataPtr	sourceDataPtr = globals->sourceDataPtr;
 
-	if ((sourceDataPtr == nil) || (sourceDataPtr->sampleCount == 0))	// no data - better get some
+  if ((sourceDataPtr == nil) || (sourceDataPtr->sampleCount == 0))	// no data - better get some
+    {
+      result = SoundComponentGetSourceData(globals->sourceComponent, &globals->sourceDataPtr);
+      sourceDataPtr = globals->sourceDataPtr;
+
+      if ((result != noErr) ||							// error getting data
+	  (sourceDataPtr == nil) ||						// source has no data pointer to return
+	  (sourceDataPtr->sampleCount == 0))				// source has no more data
 	{
-		result = SoundComponentGetSourceData(globals->sourceComponent, &globals->sourceDataPtr);
-		sourceDataPtr = globals->sourceDataPtr;
-
-		if ((result != noErr) ||							// error getting data
-			(sourceDataPtr == nil) ||						// source has no data pointer to return
-			(sourceDataPtr->sampleCount == 0))				// source has no more data
-		{
-			return (nil);									// stop the presses
-		}
+	  return (nil);									// stop the presses
 	}
+    }
+
+#ifdef BT_DEBUG
+  (*(*globals).bt).debug = 'srcd';
+  (*(*globals).bt).debug = sourceDataPtr->numChannels;
+  (*(*globals).bt).debug = sourceDataPtr->sampleSize;
+  (*(*globals).bt).debug = sourceDataPtr->sampleRate;
+  (*(*globals).bt).debug = sourceDataPtr->sampleCount;
+#endif
 	
-	
-		
-	(*(*globals).bt).debug = 'srcd';
-	(*(*globals).bt).debug = sourceDataPtr->numChannels;
-	(*(*globals).bt).debug = sourceDataPtr->sampleSize;
-	(*(*globals).bt).debug = sourceDataPtr->sampleRate;
-	(*(*globals).bt).debug = sourceDataPtr->sampleCount;
-	
-	return (sourceDataPtr);									// return pointer to source
+  return (sourceDataPtr);									// return pointer to source
 }
 
 
@@ -1254,52 +1272,100 @@ SoundComponentDataPtr GetMoreSource(GlobalsPtr globals)
 // used in your sound component.
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+static void StereoBlockMove(const void *in, void* out, const int sampleBytes, const int sampleCount) {
+  int i;
+  unsigned long data;
+  
+  switch(sampleBytes) {
+  case 1: {
+    for (i = 0 ; i < sampleCount/2; i++) {
+      data = ((unsigned short*)in)[i];
+      data = ((data & 0x0000FF00) << 8) | (data & 0x000000FF);
+      data |= (data << 8);
+      ((unsigned long*)out)[i] = data;
+    }
+    if (sampleCount & 1) {
+      ((unsigned char*)out)[2 * sampleCount - 2] = ((unsigned char*)in)[sampleCount - 1]; 
+      ((unsigned char*)out)[2 * sampleCount - 1] = ((unsigned char*)in)[sampleCount - 1];
+    }
+  } break;
+
+  case 2: {
+    for (i = 0 ; i < sampleCount; i++) {
+      data = ((unsigned short*)in)[i];
+      data |= (data << 16);
+      ((unsigned long*)out)[i] = data;
+    }
+  } break;
+  }
+}
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 // This routine copies the data returned by the mixer to the hardware.
 
-void CopySamplesToHardware(GlobalsPtr globals, SoundComponentDataPtr sourceDataPtr)
+static void CopySamplesToHardware(GlobalsPtr globals, SoundComponentDataPtr sourceDataPtr)
 {
-	OSErr			err = noErr;
-	unsigned long status = brev((*(*globals).csr).goblin_goblin_audio_ctrl);
+  OSErr			err = noErr;
+  const unsigned long status = brev((*(*globals).csr).goblin_goblin_audio_ctrl);
+  const int sampleBytes = sourceDataPtr->sampleSize >> 3;
+  const int sampleChannel = sourceDataPtr->numChannels;
 	
-	if (status & 0x0100) {
-		(*(*globals).bt).debug = 'cont';
-		// already playing, so the 'lastbuf' is empty
-		// and we are playing lastbuf xor 1
-		switch ((*globals).lastbuf) {
-			case 0:
-				BlockMove(sourceDataPtr->buffer, (void*)((*globals).buf0), 4 * sourceDataPtr->sampleCount);
-				(*(*globals).csr).goblin_goblin_audio_buf0_size = brev(sourceDataPtr->sampleCount);
-				(*globals).lastbuf = 1;
-				//(*(*globals).csr).goblin_goblin_audio_ctrl = brev(0x0100); // play buf0 // redundant ?
-			break;
-			case 1:
-			default:
-				BlockMove(sourceDataPtr->buffer, (void*)((*globals).buf1), 4 * sourceDataPtr->sampleCount);
-				(*(*globals).csr).goblin_goblin_audio_buf1_size = brev(sourceDataPtr->sampleCount);
-				(*globals).lastbuf = 0;
-				//(*(*globals).csr).goblin_goblin_audio_ctrl = brev(0x0101); // play buf1 // redundant ?
-			break;
-		}
-		sourceDataPtr->sampleCount = 0;							// sound has been played
-	} else {
-		// not yet playing, put half of the samples in each buffer
-		// so that when the first buffer is empty, we'll be playing the second while reloading
-		long buf0count = sourceDataPtr->sampleCount / 2;
-		long buf1count = sourceDataPtr->sampleCount - buf0count;
-		(*(*globals).bt).debug = 'new ';
-		(*(*globals).bt).debug = buf0count;
-		(*(*globals).bt).debug = buf1count;
-		BlockMove(sourceDataPtr->buffer,               (void*)((*globals).buf0), 4 * buf0count);
-		BlockMove(sourceDataPtr->buffer + 4*buf0count, (void*)((*globals).buf1), 4 * buf1count);
-		(*(*globals).csr).goblin_goblin_audio_buf0_size = brev(buf0count);
-		(*(*globals).csr).goblin_goblin_audio_buf1_size = brev(buf1count);
-		(*globals).lastbuf = 0;
-		sourceDataPtr->sampleCount = 0;							// sound has been played
-		// now play for real
-		(*(*globals).csr).goblin_goblin_audio_ctrl = brev(0x0100); // play buf0
-	}
+  if (status & 0x0100) {
+#ifdef BT_DEBUG
+    (*(*globals).bt).debug = 'cont';
+#endif
+    // already playing, so the 'lastbuf' is empty
+    // and we are playing lastbuf xor 1
+    switch ((*globals).lastbuf) {
+    case 0:
+      if (sampleChannel == 2) {
+	BlockMove(sourceDataPtr->buffer, (void*)((*globals).buf0), sampleBytes * 2 * sourceDataPtr->sampleCount);
+      } else if (sampleChannel == 1) {
+	StereoBlockMove(sourceDataPtr->buffer, (void*)((*globals).buf0), sampleBytes, sourceDataPtr->sampleCount);
+      }
+      (*(*globals).csr).goblin_goblin_audio_buf0_size = brev(sourceDataPtr->sampleCount);
+      (*globals).lastbuf = 1;
+      //(*(*globals).csr).goblin_goblin_audio_ctrl = brev(0x0100); // play buf0 // redundant ?
+      break;
+    case 1:
+    default:
+      if (sampleChannel == 2) {
+	BlockMove(sourceDataPtr->buffer, (void*)((*globals).buf1), sampleBytes * 2 * sourceDataPtr->sampleCount);
+      } else if (sampleChannel == 1) {
+	StereoBlockMove(sourceDataPtr->buffer, (void*)((*globals).buf1), sampleBytes, sourceDataPtr->sampleCount);
+      }
+      (*(*globals).csr).goblin_goblin_audio_buf1_size = brev(sourceDataPtr->sampleCount);
+      (*globals).lastbuf = 0;
+      //(*(*globals).csr).goblin_goblin_audio_ctrl = brev(0x0101); // play buf1 // redundant ?
+      break;
+    }
+    sourceDataPtr->sampleCount = 0;							// sound has been played
+  } else {
+    // not yet playing, put half of the samples in each buffer
+    // so that when the first buffer is empty, we'll be playing the second while reloading
+    const long buf0count = sourceDataPtr->sampleCount / 2;
+    const long buf1count = sourceDataPtr->sampleCount - buf0count;
+#ifdef BT_DEBUG
+    (*(*globals).bt).debug = 'new ';
+    (*(*globals).bt).debug = buf0count;
+    (*(*globals).bt).debug = buf1count;
+#endif
+    if (sampleChannel == 2) {
+      BlockMove(sourceDataPtr->buffer,                               (void*)((*globals).buf0), sampleBytes * 2 * buf0count);
+      BlockMove(sourceDataPtr->buffer + sampleBytes * 2 * buf0count, (void*)((*globals).buf1), sampleBytes * 2 * buf1count);
+    } else if (sampleChannel == 1) {
+	StereoBlockMove(sourceDataPtr->buffer,                           (void*)((*globals).buf0), sampleBytes, buf0count);
+	StereoBlockMove(sourceDataPtr->buffer + sampleBytes * buf0count, (void*)((*globals).buf1), sampleBytes, buf1count);
+    }
+    (*(*globals).csr).goblin_goblin_audio_buf0_size = brev(buf0count);
+    (*(*globals).csr).goblin_goblin_audio_buf1_size = brev(buf1count);
+    (*globals).lastbuf = 0;
+    sourceDataPtr->sampleCount = 0;							// sound has been played
+    // now play for real
+    (*(*globals).csr).goblin_goblin_audio_buf_desc = brev((sourceDataPtr->sampleSize == k8BitSamples ? 0x1 : 0x0) |
+							  (sourceDataPtr->format == kOffsetBinary ? 0x0080 : 0x0000)); // otherwise assume kTwosComplement
+    (*(*globals).csr).goblin_goblin_audio_ctrl = brev(0x0100); // play buf0
+  }
 }
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -1309,42 +1375,46 @@ short irqFct(GlobalsPtr globals);
 #pragma parameter __D0 irqFct(__A1)
 short irqFct(GlobalsPtr globals)
 {
-	SoundComponentDataPtr	sourceDataPtr;
-	long irqstatus;
+  SoundComponentDataPtr	sourceDataPtr;
+  long irqstatus;
 	
-	(*(*globals).bt).debug = 'irq ';
+#ifdef BT_DEBUG
+  (*(*globals).bt).debug = 'irq ';
+#endif
 	
-	// first, is that one of ours ?
-	irqstatus = brev((*(*globals).csr).goblin_goblin_audio_irqstatus);
-	if ((irqstatus & 1) == 0) {
-		// nope
-		return 0;
-	}
+  // first, is that one of ours ?
+  irqstatus = brev((*(*globals).csr).goblin_goblin_audio_irqstatus);
+  if ((irqstatus & 1) == 0) {
+    // nope
+    return 0;
+  }
 
-	(*(*globals).bt).debug = 'irqA';
+#ifdef BT_DEBUG
+  (*(*globals).bt).debug = 'irqA';
+#endif
 	
-	// yes, ours, clear & suspend it before dealing with it
-	(*(*globals).csr).goblin_goblin_audio_irqctrl = brev(0x2);
+  // yes, ours, clear & suspend it before dealing with it
+  (*(*globals).csr).goblin_goblin_audio_irqctrl = brev(0x2);
 
-	sourceDataPtr = GetMoreSource(globals);					// get source from mixer
-	if (sourceDataPtr == nil)								// no more source
-	{
-		StopHardware(globals);								// turn hardware off
-	}
-	else 
-	{
-		CopySamplesToHardware(globals, sourceDataPtr);			// fulfill hardware request
+  sourceDataPtr = GetMoreSource(globals);					// get source from mixer
+  if (sourceDataPtr == nil)								// no more source
+    {
+      StopHardware(globals);								// turn hardware off
+    }
+  else 
+    {
+      CopySamplesToHardware(globals, sourceDataPtr);			// fulfill hardware request
 
-		(*(*globals).csr).goblin_goblin_audio_irqctrl = brev(0x1); // restart interrupt
-	}
+      (*(*globals).csr).goblin_goblin_audio_irqctrl = brev(0x1); // restart interrupt
+    }
 	
-	return 1;
+  return 1;
 }
 // only save what needs to preserve, then call the 'real' function
 asm pascal void irqTrampoline(void)
 {
-					MOVEM.L   D1-D6/A0/A2-A5,-(A7)
-					BSR irqFct
-					MOVEM.L   (A7)+,D1-D6/A0/A2-A5
-					RTS
-}
+  MOVEM.L   D1-D6/A0/A2-A5,-(A7)
+    BSR irqFct
+    MOVEM.L   (A7)+,D1-D6/A0/A2-A5
+    RTS
+    }
