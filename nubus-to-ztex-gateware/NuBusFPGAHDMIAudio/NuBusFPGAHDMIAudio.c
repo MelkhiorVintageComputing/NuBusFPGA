@@ -99,7 +99,7 @@ static inline unsigned long brev(const unsigned long r) {
 #define 	kSampleRate22				0x56220000		// 22.050 kHz rate
 #define 	kSampleRate11				0x2B110000		// 11.025 kHz rate
 
-#define kChannelsCount					1 // 2
+#define kChannelsCount					2
 #define 	kNumChannelsMono			1				// mono
 #define 	kNumChannelsStereo			2				// stereo
 
@@ -748,7 +748,7 @@ pascal ComponentResult __GetInfo(GlobalsPtr globals, SoundSource sourceID,
       listPtr->handle = h;						// handle to be returned
 
       sp = (short *) *h;							// store channels in handle
-      //*sp++ = kNumChannelsMono;
+      *sp++ = kNumChannelsMono;
       *sp++ = kNumChannelsStereo;
       break;
 
@@ -834,7 +834,7 @@ pascal ComponentResult __SetInfo(GlobalsPtr globals, SoundSource sourceID,
       {
 	short	numChannels = (short) infoPtr;
 
-	if (/*(numChannels == kNumChannelsMono) ||*/	// make sure it is a valid no. channels
+	if ((numChannels == kNumChannelsMono) ||	// make sure it is a valid no. channels
 	    (numChannels == kNumChannelsStereo))
 	  {
 	    prefsPtr->numChannels = numChannels;	// save new num channels in prefs
@@ -1272,33 +1272,6 @@ SoundComponentDataPtr GetMoreSource(GlobalsPtr globals)
 // used in your sound component.
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-static void StereoBlockMove(const void *in, void* out, const int sampleBytes, const int sampleCount) {
-  int i;
-  unsigned long data;
-  
-  switch(sampleBytes) {
-  case 1: {
-    for (i = 0 ; i < sampleCount/2; i++) {
-      data = ((unsigned short*)in)[i];
-      data = ((data & 0x0000FF00) << 8) | (data & 0x000000FF);
-      data |= (data << 8);
-      ((unsigned long*)out)[i] = data;
-    }
-    if (sampleCount & 1) {
-      ((unsigned char*)out)[2 * sampleCount - 2] = ((unsigned char*)in)[sampleCount - 1]; 
-      ((unsigned char*)out)[2 * sampleCount - 1] = ((unsigned char*)in)[sampleCount - 1];
-    }
-  } break;
-
-  case 2: {
-    for (i = 0 ; i < sampleCount; i++) {
-      data = ((unsigned short*)in)[i];
-      data |= (data << 16);
-      ((unsigned long*)out)[i] = data;
-    }
-  } break;
-  }
-}
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 // This routine copies the data returned by the mixer to the hardware.
@@ -1318,22 +1291,14 @@ static void CopySamplesToHardware(GlobalsPtr globals, SoundComponentDataPtr sour
     // and we are playing lastbuf xor 1
     switch ((*globals).lastbuf) {
     case 0:
-      if (sampleChannel == 2) {
-	BlockMove(sourceDataPtr->buffer, (void*)((*globals).buf0), sampleBytes * 2 * sourceDataPtr->sampleCount);
-      } else if (sampleChannel == 1) {
-	StereoBlockMove(sourceDataPtr->buffer, (void*)((*globals).buf0), sampleBytes, sourceDataPtr->sampleCount);
-      }
+      BlockMove(sourceDataPtr->buffer, (void*)((*globals).buf0), sampleBytes * sampleChannel * sourceDataPtr->sampleCount);
       (*(*globals).csr).goblin_goblin_audio_buf0_size = brev(sourceDataPtr->sampleCount);
       (*globals).lastbuf = 1;
       //(*(*globals).csr).goblin_goblin_audio_ctrl = brev(0x0100); // play buf0 // redundant ?
       break;
     case 1:
     default:
-      if (sampleChannel == 2) {
-	BlockMove(sourceDataPtr->buffer, (void*)((*globals).buf1), sampleBytes * 2 * sourceDataPtr->sampleCount);
-      } else if (sampleChannel == 1) {
-	StereoBlockMove(sourceDataPtr->buffer, (void*)((*globals).buf1), sampleBytes, sourceDataPtr->sampleCount);
-      }
+      BlockMove(sourceDataPtr->buffer, (void*)((*globals).buf1), sampleBytes * sampleChannel * sourceDataPtr->sampleCount);
       (*(*globals).csr).goblin_goblin_audio_buf1_size = brev(sourceDataPtr->sampleCount);
       (*globals).lastbuf = 0;
       //(*(*globals).csr).goblin_goblin_audio_ctrl = brev(0x0101); // play buf1 // redundant ?
@@ -1350,19 +1315,15 @@ static void CopySamplesToHardware(GlobalsPtr globals, SoundComponentDataPtr sour
     (*(*globals).bt).debug = buf0count;
     (*(*globals).bt).debug = buf1count;
 #endif
-    if (sampleChannel == 2) {
-      BlockMove(sourceDataPtr->buffer,                               (void*)((*globals).buf0), sampleBytes * 2 * buf0count);
-      BlockMove(sourceDataPtr->buffer + sampleBytes * 2 * buf0count, (void*)((*globals).buf1), sampleBytes * 2 * buf1count);
-    } else if (sampleChannel == 1) {
-	StereoBlockMove(sourceDataPtr->buffer,                           (void*)((*globals).buf0), sampleBytes, buf0count);
-	StereoBlockMove(sourceDataPtr->buffer + sampleBytes * buf0count, (void*)((*globals).buf1), sampleBytes, buf1count);
-    }
+    BlockMove(sourceDataPtr->buffer,                                           (void*)((*globals).buf0), sampleBytes * sampleChannel * buf0count);
+    BlockMove(sourceDataPtr->buffer + sampleBytes * sampleChannel * buf0count, (void*)((*globals).buf1), sampleBytes * sampleChannel * buf1count);
     (*(*globals).csr).goblin_goblin_audio_buf0_size = brev(buf0count);
     (*(*globals).csr).goblin_goblin_audio_buf1_size = brev(buf1count);
     (*globals).lastbuf = 0;
     sourceDataPtr->sampleCount = 0;							// sound has been played
     // now play for real
-    (*(*globals).csr).goblin_goblin_audio_buf_desc = brev((sourceDataPtr->sampleSize == k8BitSamples ? 0x1 : 0x0) |
+    (*(*globals).csr).goblin_goblin_audio_buf_desc = brev((sourceDataPtr->sampleSize == k8BitSamples ? 0x1 : 0x0) | // default 16-bits
+							  (sampleChannel == 1 ? 0x40 : 0) | // default stereo
 							  (sourceDataPtr->format == kOffsetBinary ? 0x0080 : 0x0000)); // otherwise assume kTwosComplement
     (*(*globals).csr).goblin_goblin_audio_ctrl = brev(0x0100); // play buf0
   }
