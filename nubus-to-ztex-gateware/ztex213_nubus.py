@@ -101,6 +101,8 @@ _nubus_io_v1_0 = [
     ]
 
 _nubus_io_v1_2 = [
+    ## extra 54 MHz clock reference for bank 34
+    ("clk54", 0, Pins("R3"), IOStandard("LVCMOS33")),
     ## leds on the NuBus board
     ("user_led", 0, Pins("U9"),  IOStandard("lvcmos33")), #LED0
     ("user_led", 1, Pins("V9"),  IOStandard("lvcmos33")), #LED1; both are overlapping with serial TX/RX
@@ -179,7 +181,7 @@ _nubus_nubus_v1_2 = [
     ("ack_o_n",            0, Pins("H14"), IOStandard("lvttl")),
     ("ack_oe_n",           0, Pins("J13"), IOStandard("lvttl")),
     ("nmrq_3v3_n",         0, Pins("K16"), IOStandard("lvttl")), # 'irq' line, Output only direct to 74LVT125
-    ("reset_3v3_n",        0, Pins("R3"),  IOStandard("lvttl")), # Input only
+    ("reset_3v3_n",        0, Pins("U8"),  IOStandard("lvttl")), # Input only
     ("rqst_3v3_n"  ,       0, Pins("J18"), IOStandard("lvttl")), # Open Collector
     ("rqst_o_n"  ,         0, Pins("K13"), IOStandard("lvttl")),
     ("start_3v3_n",        0, Pins("K15"), IOStandard("lvttl")),
@@ -191,7 +193,7 @@ _nubus_nubus_v1_2 = [
                                    "D17 D18 E17 E18 F15 F18 F16 G18 "), IOStandard("lvttl")),
     ("arb_3v3_n",          0, Pins("T8 V4 V5 U6"), IOStandard("lvttl")), # Open Collector
     ("arb_o_n",            0, Pins("J14 G16 G14 H17"), IOStandard("lvttl")),
-    ("id_3v3_n",           0, Pins("U7 V6 V7 U8"), IOStandard("lvttl")),
+    ("id_3v3_n",           0, Pins("U7 V6 V7"), IOStandard("lvttl")),
     ("tm0_3v3_n",          0, Pins("U2"), IOStandard("lvttl")),
     ("tm0_o_n",            0, Pins("T6"), IOStandard("lvttl")),
     ("tm1_3v3_n",          0, Pins("V2"), IOStandard("lvttl")),

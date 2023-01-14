@@ -7,14 +7,14 @@ import litex
 from litex.soc.interconnect import wishbone
 
 class NuBus(Module):
-    def __init__(self, soc,
+    def __init__(self, soc, version,
                  burst_size, tosbus_fifo, fromsbus_fifo, fromsbus_req_fifo,
                  wb_read, wb_write, wb_dma,
                  usesampling=False,
                  cd_nubus="nubus", cd_nubus90="nubus90"):
         
         platform = soc.platform
-        self.add_sources(platform)
+        self.add_sources(platform, version)
 
         #led0 = platform.request("user_led", 0)
         #led1 = platform.request("user_led", 1)
@@ -714,54 +714,91 @@ class NuBus(Module):
         # stuff at this end so we don't use the signals inadvertantly
 
         # real NuBus signals
-        nub_tm0n = platform.request("tm0_3v3_n")
-        nub_tm1n = platform.request("tm1_3v3_n")
-        nub_startn = platform.request("start_3v3_n")
-        nub_ackn = platform.request("ack_3v3_n")
-        nub_adn = platform.request("ad_3v3_n")
-        nub_idn = platform.request("id_3v3_n")
+        nub_tm0n = platform.request("tm0_3v3_n") # V1.0: from CPLD ; V1.2: from shifters
+        nub_tm1n = platform.request("tm1_3v3_n") # V1.0: from CPLD ; V1.2: from shifters
+        nub_startn = platform.request("start_3v3_n") # V1.0: from CPLD ; V1.2: from shifters
+        nub_ackn = platform.request("ack_3v3_n") # V1.0: from CPLD ; V1.2: from shifters
+        nub_adn = platform.request("ad_3v3_n") # V1.0: from CPLD ; V1.2: from shifters
+        nub_idn = platform.request("id_3v3_n") # V1.0: from CPLD (4 bits) ; V1.2: from shifters (3 bits, /ID3 is always 0)
 
         # Tri-state
-        self.specials += Tristate(nub_tm0n,   tm0_o_n,   tmo_oe,    tm0_i_n)
-        self.specials += Tristate(nub_tm1n,   tm1_o_n,   tmo_oe,    tm1_i_n)
-        self.specials += Tristate(nub_ackn,   ack_o_n,   tmo_oe,    ack_i_n)
-        self.specials += Tristate(nub_adn,    ad_o_n,    ad_oe,     ad_i_n)
-        self.specials += Tristate(nub_startn, start_o_n, master_oe, start_i_n)
-        self.comb += [
-            id_i_n.eq(nub_idn),
-        ] 
+        if (version == "V1.0"):
+            # tri-state communication with CPLD
+            self.specials += Tristate(nub_tm0n,   tm0_o_n,   tmo_oe,    tm0_i_n)
+            self.specials += Tristate(nub_tm1n,   tm1_o_n,   tmo_oe,    tm1_i_n)
+            self.specials += Tristate(nub_ackn,   ack_o_n,   tmo_oe,    ack_i_n)
+            self.specials += Tristate(nub_adn,    ad_o_n,    ad_oe,     ad_i_n)
+            self.specials += Tristate(nub_startn, start_o_n, master_oe, start_i_n)
+        elif (version == "V1.2"):
+            # input only
+            self.comb += [
+                tm0_i_n.eq(nub_tm0n),
+                tm1_i_n.eq(nub_tm1n),
+                ack_i_n.eq(nub_ackn),
+                ad_i_n.eq(nub_adn),
+                start_i_n.eq(nub_startn),
+            ]
+        else:
+            raise ValueError(f"Unsupported version {version}")
+
+        # input only
+        if (version == "V1.0"):
+            self.comb += [
+                id_i_n.eq(nub_idn),
+            ]
+        elif (version == "V1.2"):
+            self.comb += [
+                id_i_n.eq(Cat(nub_idn, Signal(1, reset = 0))),
+            ]
+        else:
+            raise ValueError(f"Unsupported version {version}")
+        
         
         # NubusFPGA-only signals
-        nf_tmoen = platform.request("tmoen")
-        nf_nubus_ad_dir = platform.request("nubus_ad_dir")
-
+        nf_nubus_ad_dir = platform.request("nubus_ad_dir") # to drivers
         self.comb += [
-            nf_tmoen.eq(~tmo_oe),
             nf_nubus_ad_dir.eq(~ad_oe),
         ]
         
+        if (version == "V1.0"):
+            nf_tmoen = platform.request("tmoen") # to cpld
+            self.comb += [
+                nf_tmoen.eq(~tmo_oe),
+            ]
+        
         # real Nubus signal, for master
-        nub_rqstn = platform.request("rqst_3v3_n")
+        nub_rqstn = platform.request("rqst_3v3_n") # V1.0: from CPLD ; V1.2: from shifters
         
         # Tri-state
-        self.specials += Tristate(nub_rqstn, rqst_o_n, rqst_oe, rqst_i_n)
+        if (version == "V1.0"):
+            # tri-state communication with CPLD
+            self.specials += Tristate(nub_rqstn, rqst_o_n, rqst_oe, rqst_i_n)
+        elif (version == "V1.2"):
+            # input only
+            self.comb += [
+                rqst_i_n.eq(nub_rqstn),
+            ]
+        else:
+            raise ValueError(f"Unsupported version {version}")
 
         # NubusFPGA-only signals, for master
-        nub_arbcy_n = platform.request("arbcy_n")
-        nf_grant = platform.request("grant")
-        nf_nubus_master_dir = platform.request("nubus_master_dir")
-        nf_fpga_to_cpld_signal = platform.request("fpga_to_cpld_signal")
+        if (version == "V1.0"):
+            nub_arbcy_n = platform.request("arbcy_n") # V1.0: from cpld
+            nf_grant = platform.request("grant") # V1.0: from cpld
+            nf_nubus_master_dir = platform.request("nubus_master_dir") # V1.0: to cpld
+            nf_fpga_to_cpld_signal = platform.request("fpga_to_cpld_signal") # V1.0: to cpld, 'rqstoen'
 
         # NuBus90 signals, , for completeness
         nub_clk2xn = ClockSignal(cd_nubus90)
-        nub_tm2n = platform.request("tm2_3v3_n")
+        nub_tm2n = platform.request("tm2_3v3_n") # V1.0: from CPLD ; V1.2: from shifters
 
-        self.comb += [
-            nf_nubus_master_dir.eq(master_oe),
-            nub_arbcy_n.eq(~start_arbitration),
-            grant.eq(nf_grant),
-            nf_fpga_to_cpld_signal.eq(~rqst_oe),
-        ]
+        if (version == "V1.0"):
+            self.comb += [
+                nf_nubus_master_dir.eq(master_oe),
+                nub_arbcy_n.eq(~start_arbitration),
+                grant.eq(nf_grant),
+                nf_fpga_to_cpld_signal.eq(~rqst_oe),
+            ]
 
         if (usesampling):
             self.sync += [
@@ -771,6 +808,50 @@ class NuBus(Module):
                 )
             ]
 
-    def add_sources(self, platform):
+
+
+        if (version == "V1.2"):
+            self.nubus_oe = nubus_oe = Signal() # improveme
+            self.specials += Instance("nubus_cpldinfpga",
+                                      i_nubus_oe = nubus_oe, # improveme: handled in soc
+                                      i_tmoen = ~tmo_oe,
+                                      i_nubus_master_dir = master_oe,
+                                      i_rqst_oe_n = ~rqst_oe,
+                                      
+                                      i_id_n_3v3 = id_i_n, # input only
+                                      
+                                      i_arbcy_n = ~start_arbitration,
+                                      i_arb_n_3v3 = platform.request("arb_3v3_n"), # arb only seen by cpld
+                                      o_arb_o_n = platform.request("arb_o_n"),
+                                      o_grant = grant,
+                                      
+                                      i_tm0_n_3v3 = tm0_o_n, # tm0 driving controlled by tmoen
+                                      o_tm0_o_n = platform.request("tm0_o_n"),
+                                      
+                                      i_tm1_n_3v3 = tm1_o_n, # tm1 driving controlled by tmoen
+                                      o_tm1_o_n = platform.request("tm1_o_n"),
+                                      o_tmx_oe_n = platform.request("tmx_oe_n"),
+                                      
+                                      i_tm2_n_3v3 = nub_tm2n, # tm2 currently never driven
+                                      o_tm2_o_n = platform.request("tm2_o_n"),
+                                      o_tm2_oe_n = platform.request("tm2_oe_n"),
+                                      
+                                      i_start_n_3v3 = start_o_n, # start driving enabled by nubus_master_dir
+                                      o_start_o_n = platform.request("start_o_n"),
+                                      o_start_oe_n = platform.request("start_oe_n"),
+                                      
+                                      i_ack_n_3v3 = ack_o_n, # ack driving controlled by tmoen
+                                      o_ack_o_n = platform.request("ack_o_n"),
+                                      o_ack_oe_n = platform.request("ack_oe_n"),
+                                      
+                                      i_rqst_n_3v3 = rqst_o_n, # rqst driving controller by rqst_oe_n
+                                      o_rqst_o_n = platform.request("rqst_o_n")
+            )
+        
+    def add_sources(self, platform, version):
         # sampling of data on falling edge of clock, done in verilog
         platform.add_source("nubus_sampling.v", "verilog")
+        if (version == "V1.2"):
+            platform.add_source("nubus_arbiter.v", "verilog") # for CPLDinfpga
+            platform.add_source("nubus_cpldinfpga.v", "verilog") # internal now
+        

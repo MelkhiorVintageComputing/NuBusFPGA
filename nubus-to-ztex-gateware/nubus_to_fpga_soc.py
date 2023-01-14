@@ -42,7 +42,7 @@ from nubus_cpu_wb import Wishbone2NuBus
 
 # CRG ----------------------------------------------------------------------------------------------
 class _CRG(Module):
-    def __init__(self, platform, sys_clk_freq,
+    def __init__(self, platform, version, sys_clk_freq,
                  goblin=False,
                  hdmi=False,
                  pix_clk=0):
@@ -74,6 +74,17 @@ class _CRG(Module):
         self.specials += Instance("BUFG", i_I=clk48, o_O=self.clk48_bufg)
         self.comb += self.cd_native.clk.eq(self.clk48_bufg)                
         #self.cd_native.clk = clk48
+
+        ##### V1.2 extra clock for B34
+        if (version == "V1.2"):
+            self.clock_domains.cd_bank34      = ClockDomain()
+            clk54 = platform.request("clk54")
+            self.clk54_bufg = Signal()
+            self.specials += Instance("BUFG", i_I=clk54, o_O=self.clk54_bufg)
+            self.comb += self.cd_native.clk.eq(self.clk54_bufg)     
+        else:
+            clk54 = None
+            
         
         clk_nubus = platform.request("clk_3v3_n")
         if (clk_nubus is None):
@@ -108,8 +119,8 @@ class _CRG(Module):
         platform.add_platform_command("create_generated_clock -name sys4x90clk [get_pins {{{{MMCME2_ADV/CLKOUT{}}}}}]".format(num_clk))
         num_clk = num_clk + 1
         self.comb += pll.reset.eq(~rst_nubus_n) # | ~por_done 
-        platform.add_false_path_constraints(self.cd_native.clk, self.cd_nubus.clk) # FIXME?
-        platform.add_false_path_constraints(self.cd_nubus.clk, self.cd_native.clk) # FIXME?
+        platform.add_false_path_constraints(clk48, self.cd_nubus.clk) # FIXME?
+        platform.add_false_path_constraints(self.cd_nubus.clk, clk48) # FIXME?
         #platform.add_false_path_constraints(self.cd_sys.clk, self.cd_nubus.clk)
         #platform.add_false_path_constraints(self.cd_nubus.clk, self.cd_sys.clk)
         ##platform.add_false_path_constraints(self.cd_native.clk, self.cd_sys.clk)
@@ -130,7 +141,15 @@ class _CRG(Module):
         
         if (goblin):
             self.submodules.video_pll = video_pll = S7MMCM(speedgrade=platform.speedgrade)
-            video_pll.register_clkin(self.clk48_bufg, 48e6)
+            if (clk54 is None):
+                # no 54 MHz clock, drive hdmi from the main clock
+                video_pll.register_clkin(self.clk48_bufg, 48e6)
+            else:
+                # drive hdmi from the 54 MHz clock, easier to generate e.g. 148.5 MHz
+                video_pll.register_clkin(self.clk54_bufg, 54e6)
+                platform.add_false_path_constraints(self.cd_bank34.clk, self.cd_nubus.clk) # FIXME?
+                platform.add_false_path_constraints(self.cd_bank34.clk, clk48) # FIXME?
+                
             if (not hdmi):
                 video_pll.create_clkout(self.cd_vga, pix_clk, margin = 0.0005)
                 platform.add_platform_command("create_generated_clock -name vga_clk [get_pins {{{{MMCME2_ADV_{}/CLKOUT{}}}}}]".format(num_adv, num_clk))
@@ -223,7 +242,7 @@ class NuBusFPGA(SoCCore):
             #"END OF SLOT SPACE": 0xF0FFFFFF,
         }
         self.mem_map.update(wb_mem_map)
-        self.submodules.crg = _CRG(platform=platform, sys_clk_freq=sys_clk_freq, goblin=goblin, hdmi=hdmi, pix_clk=litex.soc.cores.video.video_timings[goblin_res]["pix_clk"])
+        self.submodules.crg = _CRG(platform=platform, version=version, sys_clk_freq=sys_clk_freq, goblin=goblin, hdmi=hdmi, pix_clk=litex.soc.cores.video.video_timings[goblin_res]["pix_clk"])
 
         ## add our custom timings after the clocks have been defined
         xdc_timings_filename = None;
@@ -404,6 +423,7 @@ class NuBusFPGA(SoCCore):
             self.comb += dma_irq.eq(self.exchange_with_mem.irq)
 
             self.submodules.nubus = nubus_full_unified.NuBus(soc=self,
+                                                             version=version,
                                                              burst_size=burst_size,
                                                              tosbus_fifo=self.tosbus_fifo,
                                                              fromsbus_fifo=self.fromsbus_fifo,

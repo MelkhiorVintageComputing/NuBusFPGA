@@ -60,7 +60,11 @@ class NuBus(Module):
         self.nubus_oe = nubus_oe = Signal() # improveme
         
         # those are needed in both Nubus and cpld integrated part now
-        broadcast_id_3v3_n = platform.request("id_3v3_n")
+        raw_broadcast_id_3v3_n = platform.request("id_3v3_n")
+        broadcast_id_3v3_n = Signal(4)
+        self.comb += [
+            broadcast_id_3v3_n.eq(Cat(raw_broadcast_id_3v3_n, Signal(1, reset = 0))) # add missing ID3 in V1_2
+        ]
         # those are 'return' signals (O part of IO separated in I and O)
         # the 3v3 signals 'see' the 5V signals from the external drivers
         internal_start_3v3_n = Signal()
