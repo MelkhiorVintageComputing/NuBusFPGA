@@ -3,7 +3,7 @@ EELAYER 30 0
 EELAYER END
 $Descr A2 23386 16535
 encoding utf-8
-Sheet 3 8
+Sheet 3 9
 Title "nubus-to-ztex NuBus connection & level shifting"
 Date ""
 Rev ""
@@ -694,8 +694,6 @@ Text GLabel 2200 13750 0    50   Input ~ 0
 ~ID1_5V
 Text GLabel 2200 13850 0    50   Input ~ 0
 ~ID0_5V
-Text GLabel 2200 13550 0    50   Input ~ 0
-~ID3_5V
 Text GLabel 2200 13650 0    50   Input ~ 0
 ~ID2_5V
 Text GLabel 20250 3450 0    50   Input ~ 0
@@ -884,8 +882,6 @@ Text GLabel 3150 14250 0    50   Input ~ 0
 ~ID1_3V3
 Text GLabel 3150 14350 0    50   Input ~ 0
 ~ID0_3V3
-Text GLabel 3150 14050 0    50   Input ~ 0
-~ID3_3V3
 Text GLabel 3150 14150 0    50   Input ~ 0
 ~ID2_3V3
 Text GLabel 7700 9050 0    39   Input ~ 8
@@ -1250,8 +1246,6 @@ F 6 "https://www.lcsc.com/product-detail/Light-Emitting-Diodes-LED_Lite-On-LTST-
 	1    0    0    -1  
 $EndComp
 Wire Wire Line
-	15900 9350 15750 9350
-Wire Wire Line
 	16200 9350 16600 9350
 $Comp
 L Device:R R?
@@ -1332,24 +1326,6 @@ Text GLabel 10850 13900 0    50   Input ~ 0
 ~ACK_3V3
 Wire Wire Line
 	3150 13850 2250 13850
-$Comp
-L Device:R R?
-U 1 1 61AF68A2
-P 2550 14100
-AR Path="/5F6B165A/61AF68A2" Ref="R?"  Part="1" 
-AR Path="/5F679B53/61AF68A2" Ref="R?"  Part="1" 
-AR Path="/618F532C/61AF68A2" Ref="R8"  Part="1" 
-F 0 "R8" V 2630 14100 50  0000 C CNN
-F 1 "10k" V 2550 14100 50  0000 C CNN
-F 2 "Resistor_SMD:R_0603_1608Metric" V 2480 14100 50  0001 C CNN
-F 3 "" H 2550 14100 50  0000 C CNN
-F 4 "0603WAF1002T5E" V 2550 13500 50  0001 C CNN "MPN"
-F 5 "https://www.lcsc.com/product-detail/Chip-Resistor-Surface-Mount_UNI-ROYAL-Uniroyal-Elec-0603WAF1002T5E_C25804.html" H 2550 14100 50  0001 C CNN "URL"
-	1    2550 14100
-	-1   0    0    -1  
-$EndComp
-Wire Wire Line
-	2550 13550 2200 13550
 Wire Wire Line
 	2200 13650 2450 13650
 Wire Wire Line
@@ -1357,9 +1333,6 @@ Wire Wire Line
 Connection ~ 2450 13650
 Wire Wire Line
 	2450 13650 3150 13650
-Wire Wire Line
-	2450 14250 2550 14250
-Connection ~ 2450 14250
 Text GLabel 4350 6850 2    50   Input ~ 0
 ~ARB3_5V
 Text GLabel 4350 7350 2    50   Input ~ 0
@@ -1645,9 +1618,6 @@ $EndComp
 Connection ~ 5050 2700
 Text Notes 2800 2750 2    50   ~ 0
 74LVT125 used for 'open collector'\n'Input' is tied low\n'/OE' is used as input\n'/OE' low -> enable -> output is low\n'/OE' high -> disable -> ouput is Z
-Wire Wire Line
-	2550 13950 2550 13550
-Connection ~ 2550 13550
 Text GLabel 3450 2750 0    50   Input ~ 0
 ~NMRQ_3V3
 $Comp
@@ -2157,8 +2127,6 @@ F 3 "" H 3150 13350 50  0001 C CNN
 	1    3150 13350
 	1    0    0    -1  
 $EndComp
-Wire Wire Line
-	2550 13550 3150 13550
 Text GLabel 4550 14350 2    50   Input ~ 0
 ~ARB1_3V3
 Text GLabel 4550 14250 2    50   Input ~ 0
@@ -2811,4 +2779,39 @@ F 3 "" H 7600 6150 50  0001 C CNN
 	0    1    1    0   
 $EndComp
 Connection ~ 7600 6150
+Text Notes 475  14525 0    50   ~ 0
+Also ID3 is always grounded (slots are $9-$E), so why waste a pin on it ?
+$Comp
+L power:GND #PWR0133
+U 1 1 64F61A19
+P 3150 13550
+F 0 "#PWR0133" H 3150 13300 50  0001 C CNN
+F 1 "GND" H 3155 13377 50  0000 C CNN
+F 2 "" H 3150 13550 50  0001 C CNN
+F 3 "" H 3150 13550 50  0001 C CNN
+	1    3150 13550
+	0    1    1    0   
+$EndComp
+$Comp
+L power:GND #PWR0134
+U 1 1 64F61F6C
+P 3150 14050
+F 0 "#PWR0134" H 3150 13800 50  0001 C CNN
+F 1 "GND" H 3155 13877 50  0000 C CNN
+F 2 "" H 3150 14050 50  0001 C CNN
+F 3 "" H 3150 14050 50  0001 C CNN
+	1    3150 14050
+	0    1    1    0   
+$EndComp
+$Comp
+L power:GND #PWR0135
+U 1 1 64F7A284
+P 15900 9350
+F 0 "#PWR0135" H 15900 9100 50  0001 C CNN
+F 1 "GND" H 15905 9177 50  0000 C CNN
+F 2 "" H 15900 9350 50  0001 C CNN
+F 3 "" H 15900 9350 50  0001 C CNN
+	1    15900 9350
+	1    0    0    -1  
+$EndComp
 $EndSCHEMATC

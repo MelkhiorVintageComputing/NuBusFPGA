@@ -1,4 +1,4 @@
-update=Fri Dec  2 09:49:30 2022
+update=Fri Dec  2 14:59:49 2022
 version=1
 last_client=kicad
 [general]
@@ -262,6 +262,17 @@ dPairWidth=0.1524
 dPairGap=0.1524
 dPairViaGap=0.25
 [pcbnew/Netclasses/2]
+Name=HDMI
+Clearance=0.1524
+TrackWidth=0.1524
+ViaDiameter=0.45
+ViaDrill=0.3
+uViaDiameter=0.3
+uViaDrill=0.1
+dPairWidth=0.1524
+dPairGap=0.1524
+dPairViaGap=0.25
+[pcbnew/Netclasses/3]
 Name=Power
 Clearance=0.2
 TrackWidth=0.2
@@ -272,7 +283,7 @@ uViaDrill=0.1
 dPairWidth=0.1524
 dPairGap=0.1524
 dPairViaGap=0.25
-[pcbnew/Netclasses/3]
+[pcbnew/Netclasses/4]
 Name=Shielding
 Clearance=0.25
 TrackWidth=0.25

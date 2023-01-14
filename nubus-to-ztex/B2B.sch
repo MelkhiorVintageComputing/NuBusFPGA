@@ -3,7 +3,7 @@ EELAYER 30 0
 EELAYER END
 $Descr A4 11693 8268
 encoding utf-8
-Sheet 2 8
+Sheet 2 9
 Title "nubus-to-ztex B2B connector"
 Date ""
 Rev ""
@@ -103,7 +103,6 @@ F 2 "For_SeeedStudio:MOLEX_87832-1420" H 3150 7250 50  0001 C CNN
 F 3 "https://www.molex.com/pdm_docs/sd/878331420_sd.pdf" H 3150 7250 50  0001 C CNN
 F 4 "87832-1420" H 3150 7250 50  0001 C CNN "MPN"
 F 5 "https://www.mouser.fr/ProductDetail/Molex/87832-1420?qs=9Wl4wMk6Njp2JciwISLQUQ%3D%3D" H 3150 7250 50  0001 C CNN "URL"
-F 6 "DNP" H 3150 7250 50  0000 C CNN "DNP"
 	1    3150 7250
 	1    0    0    -1  
 $EndComp
@@ -338,7 +337,7 @@ Text GLabel 1600 2050 0    50   Input ~ 0
 ~AD31_3V3
 Text GLabel 4100 2150 2    50   Input ~ 0
 ~AD30_3V3
-Text GLabel 9900 2550 2    50   Input ~ 0
+Text GLabel 7400 1450 0    50   Input ~ 0
 ~RESET_3V3
 Text GLabel 7400 2350 0    50   Input ~ 0
 ~TM1_3V3
@@ -393,8 +392,6 @@ Text GLabel 9900 1550 2    50   Input ~ 0
 ~ID1_3V3
 Text GLabel 7400 1550 0    50   Input ~ 0
 ~ID0_3V3
-Text GLabel 7400 1450 0    50   Input ~ 0
-~ID3_3V3
 Text GLabel 7400 3450 0    50   Input ~ 0
 HDMI_CLK+
 Text GLabel 7400 3350 0    50   Input ~ 0
@@ -813,7 +810,7 @@ PMOD-10
 Text Notes 3900 5000 0    50   ~ 0
 Molex 10-89-7642 a.k.a. A-70280-0072, with dimension 11.1 (total), 6.1 (mating) & 2.72 (solder), Hole diameter 1.02\nXKB X6521WV-2x32H-C30D60 is 11.5/6/3, H1.02\nAmphenol 77313-824-64LF is 12.2/6.75/2.9, H1.02\nAmphenol 77313-818-64LF is 11.43/5.84/3.05, H1.02\nAmphenol 77313-101-64LF is 10.8/5.84/2.41, H1.02 ('1xx' has thicker gold coating than '8xx')\nWurth 61306421121 is 11.54/6/3, H1.10\n
 Text Notes 2450 6750 1    50   ~ 0
-The four LED signals are also\nconnected to the serial connector\nfor debugging purposes
+The two LED signals are also\nconnected to the serial connector\nfor debugging purposes
 Connection ~ 6250 2550
 Text GLabel 9900 3250 2    50   Input ~ 0
 PMOD-14
@@ -856,4 +853,6 @@ Text GLabel 10775 1100 2    60   Input ~ 12
 LED0
 Wire Wire Line
 	10575 1100 10775 1100
+Text GLabel 9900 2550 2    50   Input Italic 0
+CLK_54_000
 $EndSCHEMATC

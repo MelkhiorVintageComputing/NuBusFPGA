@@ -3,7 +3,7 @@ EELAYER 30 0
 EELAYER END
 $Descr A4 11693 8268
 encoding utf-8
-Sheet 1 8
+Sheet 1 9
 Title ""
 Date ""
 Rev ""
@@ -67,4 +67,10 @@ F 4 "DNP" H 3800 1650 50  0001 C CNN "DNP"
 	1    3800 1650
 	1    0    0    -1  
 $EndComp
+$Sheet
+S 1000 1850 1000 500 
+U 64F8CFB4
+F0 "clock" 50
+F1 "clock.sch" 50
+$EndSheet
 $EndSCHEMATC
