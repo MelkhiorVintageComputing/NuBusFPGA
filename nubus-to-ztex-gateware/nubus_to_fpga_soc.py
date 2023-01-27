@@ -287,9 +287,9 @@ class NuBusFPGA(SoCCore):
                            l2_cache_size = 0,
             )
             avail_sdram = self.bus.regions["main_ram"].size
-            from sdram_init import DDR3FBInit
-            self.submodules.sdram_init = DDR3FBInit(sys_clk_freq=sys_clk_freq, bitslip=1, delay=25)
-            self.bus.add_master(name="DDR3Init", master=self.sdram_init.bus)
+            #from sdram_init import DDR3FBInit
+            #self.submodules.sdram_init = DDR3FBInit(sys_clk_freq=sys_clk_freq, bitslip=1, delay=25)
+            #self.bus.add_master(name="DDR3Init", master=self.sdram_init.bus)
         else:
             avail_sdram = 256 * 1024 * 1024
             self.add_ram("ram", origin=0x8f800000, size=2**16, mode="rw")

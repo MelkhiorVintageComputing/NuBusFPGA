@@ -8,3 +8,4 @@ vid_decl_rom.srec
 VidRom*
 NuBusFPGADrvr*.s
 NuBusFPGARAMDskDrvr*.s
+*.o

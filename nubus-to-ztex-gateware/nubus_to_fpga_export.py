@@ -15,7 +15,7 @@ from litex.soc.doc.module import gather_submodules, ModuleNotDocumented, Documen
 from litex.soc.doc.csr import DocumentedCSRRegion
 from litex.soc.interconnect.csr import _CompoundCSR
 
-from litex.soc.integration.export import _get_rw_functions_c
+#from litex.soc.integration.export import _get_rw_functions_c
 
 # for generating a timestamp in the description field, if none is otherwise given
 import datetime
@@ -23,7 +23,7 @@ import time
 
 
 ### _get_rw_functions_c(          reg_name, reg_base,            nwords, busword, alignment, read_only, with_access_functions):
-def _get_rw_functions_c_DIS(name, csr_name, reg_base, area_base, nwords, busword, alignment, read_only, with_access_functions):
+def _get_rw_functions_c(name,     csr_name, reg_base, area_base, nwords, busword, alignment, read_only, with_access_functions):
     reg_name = name + "_" + csr_name
     r = ""
 
@@ -47,25 +47,25 @@ def _get_rw_functions_c_DIS(name, csr_name, reg_base, area_base, nwords, busword
 
     stride = alignment//8;
     if with_access_functions:
-        r += "static inline {} {}_read(struct nubusfpga_{}_softc *sc) {{\n".format(ctype, reg_name, name)
+        r += "static inline {} {}_read(uint32_t a32) {{\n".format(ctype, reg_name, name)
         if nwords > 1:
-            r += "\t{} r = bus_space_read_4(sc->slotid, {}L);\n".format(ctype, hex(reg_base - area_base))
+            r += "\t{} r = __builtin_bswap32(*((volatile {}*)(a32 + {})));\n".format(ctype, ctype, addr_str)
             for sub in range(1, nwords):
                 r += "\tr <<= {};\n".format(busword)
-                r += "\tr |= bus_space_read_4(sc->slotid, {}L);\n".format(hex(reg_base - area_base + sub*stride))
+                r += "\tr |= __builtin_bswap32(*((volatile {}*)(a32 + {} + {})));\n".format(ctype, addr_str, (sub*stride))
             r += "\treturn r;\n}\n"
         else:
-            r += "\treturn bus_space_read_4(sc->slotid, {}L);\n}}\n".format(hex(reg_base - area_base))
+            r += "\treturn __builtin_bswap32(*((volatile {}*)(a32 + {})));\n}}\n".format(ctype, addr_str)
 
         if not read_only:
-            r += "static inline void {}_write(struct nubusfpga_{}_softc *sc, {} v) {{\n".format(reg_name, name, ctype)
+            r += "static inline void {}_write(uint32_t a32, {} v) {{\n".format(reg_name, ctype)
             for sub in range(nwords):
                 shift = (nwords-sub-1)*busword
                 if shift:
                     v_shift = "v >> {}".format(shift)
                 else:
                     v_shift = "v"
-                r += "\tbus_space_write_4(sc->slotid, {}L, {});\n".format(hex(reg_base - area_base + sub*stride), v_shift)
+                r += "\t*((volatile {}*)(a32 + {} + {})) = __builtin_bswap32({});\n".format(ctype, addr_str, (sub*stride), v_shift)
             r += "}\n"
     return r
 
@@ -81,17 +81,14 @@ def get_csr_header_split(regions, constants, csr_base=None, with_access_function
         origin = region.origin - csr_base
         r += "\n/* "+name+" */\n"
         r += "#ifndef CSR_BASE\n"
-        r += "#define CSR_BASE {}L\n".format(hex(csr_base))
+        r += "#define CSR_BASE {}L\n".format(hex(csr_base & 0x00FFFFFF))
         r += "#endif\n"
         r += "#ifndef CSR_"+name.upper()+"_BASE\n"
         r += "#define CSR_"+name.upper()+"_BASE (CSR_BASE + "+hex(origin)+"L)\n"
         if not isinstance(region.obj, Memory):
             for csr in region.obj:
                 nr = (csr.size + region.busword - 1)//region.busword
-                r += _get_rw_functions_c(reg_name=csr.name, reg_base=origin, nwords=nr, busword=region.busword, alignment=alignment,
-                                         read_only=getattr(csr, "read_only", False),
-                                         csr_base=0, with_csr_base_define=False,
-                                         with_access_functions=with_access_functions)
+                r += _get_rw_functions_c(name = name, csr_name = csr.name, reg_base = origin, area_base = region.origin - csr_base, nwords = nr, busword = region.busword, alignment = alignment, read_only = getattr(csr, "read_only", False), with_access_functions = with_access_functions)
                 origin += alignment//8*nr
                 if hasattr(csr, "fields"):
                     for field in csr.fields.fields:
@@ -102,21 +99,21 @@ def get_csr_header_split(regions, constants, csr_base=None, with_access_function
                         if with_access_functions and csr.size <= 32: # FIXME: Implement extract/read functions for csr.size > 32-bit.
                             reg_name = name + "_" + csr.name.lower()
                             field_name = reg_name + "_" + field.name.lower()
-                            r += "static inline uint32_t " + field_name + "_extract(struct nubusfpga_" + name + "_softc *sc, uint32_t oldword) {\n"
+                            r += "static inline uint32_t " + field_name + "_extract(uint32_t a32, uint32_t oldword) {\n"
                             r += "\tuint32_t mask = ((1 << " + size + ")-1);\n"
                             r += "\treturn ( (oldword >> " + offset + ") & mask );\n}\n"
-                            r += "static inline uint32_t " + field_name + "_read(struct nubusfpga_" + name + "_softc *sc) {\n"
-                            r += "\tuint32_t word = " + reg_name + "_read(sc);\n"
-                            r += "\treturn " + field_name + "_extract(sc, word);\n"
+                            r += "static inline uint32_t " + field_name + "_read(uint32_t a32) {\n"
+                            r += "\tuint32_t word = " + reg_name + "_read(a32);\n"
+                            r += "\treturn " + field_name + "_extract(a32, word);\n"
                             r += "}\n"
                             if not getattr(csr, "read_only", False):
-                                r += "static inline uint32_t " + field_name + "_replace(struct nubusfpga_" + name + "_softc *sc, uint32_t oldword, uint32_t plain_value) {\n"
+                                r += "static inline uint32_t " + field_name + "_replace(uint32_t a32, uint32_t oldword, uint32_t plain_value) {\n"
                                 r += "\tuint32_t mask = ((1 << " + size + ")-1);\n"
                                 r += "\treturn (oldword & (~(mask << " + offset + "))) | (mask & plain_value)<< " + offset + " ;\n}\n"
-                                r += "static inline void " + field_name + "_write(struct nubusfpga_" + name + "_softc *sc, uint32_t plain_value) {\n"
-                                r += "\tuint32_t oldword = " + reg_name + "_read(sc);\n"
-                                r += "\tuint32_t newword = " + field_name + "_replace(sc, oldword, plain_value);\n"
-                                r += "\t" + reg_name + "_write(sc, newword);\n"
+                                r += "static inline void " + field_name + "_write(uint32_t a32, uint32_t plain_value) {\n"
+                                r += "\tuint32_t oldword = " + reg_name + "_read(a32);\n"
+                                r += "\tuint32_t newword = " + field_name + "_replace(a32, oldword, plain_value);\n"
+                                r += "\t" + reg_name + "_write(a32, newword);\n"
                                 r += "}\n"
 
         r += "#endif // CSR_"+name.upper()+"_BASE\n"

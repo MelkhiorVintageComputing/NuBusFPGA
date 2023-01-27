@@ -111,7 +111,7 @@ def ddr3_config_instructions(bitslip, delay):
     r = []
     for module in range(2):
         r += [_WRITE_CMD, ddrphy_dly_sel, 1<<module ]
-        r += [_WRITE_CMD, ddrphy_wdly_dq_bitslip_rst, 1<<module ]
+        r += [_WRITE_CMD, ddrphy_wdly_dq_bitslip_rst, 1<<module ] # checkme ? should be ?
         r += [_WRITE_CMD, ddrphy_dly_sel, 0 ]
     for module in range(2):
         r += [_WRITE_CMD, ddrphy_dly_sel, 1<<module ]

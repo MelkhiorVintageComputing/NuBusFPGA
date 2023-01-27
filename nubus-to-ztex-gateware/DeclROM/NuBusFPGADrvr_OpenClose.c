@@ -64,6 +64,9 @@ OSErr cNuBusFPGAOpen(IOParamPtr pb, /* DCtlPtr */ AuxDCEPtr dce)
 			dStore->irqen = 0;
 			dStore->slot = dce->dCtlSlot;
 
+			/* initialize DRAM controller */
+			//sdram_init(0xF0000000 | (((unsigned long)dStore->slot) << 24));
+
 			/* Get the HW setting for native resolution */
 			dStore->hres[0] = __builtin_bswap32((unsigned int)read_reg(dce, GOBOFB_HRES)); // fixme: endianness
 			dStore->vres[0] = __builtin_bswap32((unsigned int)read_reg(dce, GOBOFB_VRES)); // fixme: endianness

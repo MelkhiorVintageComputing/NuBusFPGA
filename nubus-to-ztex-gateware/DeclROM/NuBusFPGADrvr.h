@@ -139,6 +139,7 @@ OSErr cNuBusFPGAClose(IOParamPtr pb, /* DCtlPtr */ AuxDCEPtr dce) __attribute__ 
 
 /* primary init */
 UInt32 Primary(SEBlock* block) __attribute__ ((section (".text.primary")));
+int sdram_init(uint32_t a32) __attribute__ ((section (".text.primary")));
 /* secondary init */
 UInt32 Secondary(SEBlock* seblock) __attribute__ ((section (".text.secondary")));
 

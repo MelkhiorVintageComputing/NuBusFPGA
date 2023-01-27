@@ -32,6 +32,9 @@ UInt32 Primary(SEBlock* seblock) {
 
 	hres = __builtin_bswap32((UInt32)PRIM_READREG(GOBOFB_HRES)); // fixme: endianness
 	vres = __builtin_bswap32((UInt32)PRIM_READREG(GOBOFB_VRES)); // fixme: endianness
+	
+	/* initialize DRAM controller */
+	sdram_init(a32);
 
 	/* grey the screen */
 	/* should switch to HW ? */
@@ -147,4 +150,6 @@ UInt32 Primary(SEBlock* seblock) {
 
 	return 0;
 }
+
+/* SDRAM INIT */
 
