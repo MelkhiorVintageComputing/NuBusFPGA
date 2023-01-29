@@ -11,4 +11,3 @@ blit.raw
 blit.s
 *.patch
 OLD
-nubusfpga_csr_*.h
