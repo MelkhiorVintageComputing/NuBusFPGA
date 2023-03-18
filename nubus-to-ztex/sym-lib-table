@@ -18,4 +18,5 @@
   (lib (name SN74CB3T3245PWR)(type Legacy)(uri ${KIPRJMOD}/NuBus/SN74CB3T3245PWR.lib)(options "")(descr ""))
   (lib (name RB1-125B8G1A)(type Legacy)(uri ${KIPRJMOD}/RB1-125B8G1A.lib)(options "")(descr ""))
   (lib (name logo)(type Legacy)(uri ${KIPRJMOD}/logo.lib)(options "")(descr ""))
+  (lib (name DM3CS-SF)(type Legacy)(uri ${KIPRJMOD}/DM3CS-SF.lib)(options "")(descr ""))
 )

@@ -1,4 +1,4 @@
-## Footprint report - date Sat Mar 18 11:53:13 2023
+## Footprint report - date Sat Mar 18 13:25:54 2023
 ## Created by Pcbnew version kicad 5.1.9+dfsg1-1~bpo10+1
 ## Unit = mm, Angle = deg.
 
@@ -8,6 +8,75 @@ $BOARD
 upper_left_corner -50.005001 -35.064286
 lower_right_corner 400.005001 148.435001
 $EndBOARD
+
+$MODULE "P1"
+reference "P1"
+value "DM3CS-SF"
+footprint "For_SeeedStudio:HRS_DM3CS-SF"
+attribut smd
+position 156.000000 14.000000  orientation 180.00
+layer front
+$PAD "PAD"
+Shape Rect Layer front
+position  6.750000  5.700000  size  1.500000  2.600000  orientation 0.00
+drill  0.000000
+shape_offset  0.000000  0.000000
+$EndPAD
+$PAD "PAD."
+Shape Rect Layer front
+position -6.600000  5.700000  size  1.000000  2.600000  orientation 0.00
+drill  0.000000
+shape_offset  0.000000  0.000000
+$EndPAD
+$PAD "1"
+Shape Rect Layer front
+position  3.200000  6.200000  size  0.700000  2.000000  orientation 0.00
+drill  0.000000
+shape_offset  0.000000  0.000000
+$EndPAD
+$PAD "2"
+Shape Rect Layer front
+position  2.100000  6.200000  size  0.700000  2.000000  orientation 0.00
+drill  0.000000
+shape_offset  0.000000  0.000000
+$EndPAD
+$PAD "3"
+Shape Rect Layer front
+position  1.000000  6.200000  size  0.700000  2.000000  orientation 0.00
+drill  0.000000
+shape_offset  0.000000  0.000000
+$EndPAD
+$PAD "4"
+Shape Rect Layer front
+position -0.100000  6.200000  size  0.700000  2.000000  orientation 0.00
+drill  0.000000
+shape_offset  0.000000  0.000000
+$EndPAD
+$PAD "5"
+Shape Rect Layer front
+position -1.200000  6.200000  size  0.700000  2.000000  orientation 0.00
+drill  0.000000
+shape_offset  0.000000  0.000000
+$EndPAD
+$PAD "6"
+Shape Rect Layer front
+position -2.300000  6.200000  size  0.700000  2.000000  orientation 0.00
+drill  0.000000
+shape_offset  0.000000  0.000000
+$EndPAD
+$PAD "7"
+Shape Rect Layer front
+position -3.400000  6.200000  size  0.700000  2.000000  orientation 0.00
+drill  0.000000
+shape_offset  0.000000  0.000000
+$EndPAD
+$PAD "8"
+Shape Rect Layer front
+position -4.500000  6.200000  size  0.700000  2.000000  orientation 0.00
+drill  0.000000
+shape_offset  0.000000  0.000000
+$EndPAD
+$EndMODULE  P1
 
 $MODULE "X1"
 reference "X1"
@@ -1226,7 +1295,7 @@ reference "C9"
 value "100nF"
 footprint "Capacitor_SMD:C_0603_1608Metric"
 attribut smd
-position 157.340000 21.800000  orientation 0.00
+position 145.750000 11.500000  orientation 180.00
 layer front
 $PAD "1"
 Shape Roundrect Layer front
@@ -1247,7 +1316,7 @@ reference "C10"
 value "47uF 10V 0805"
 footprint "Capacitor_SMD:C_0805_2012Metric"
 attribut smd
-position 157.340000 24.000000  orientation 0.00
+position 166.100000 11.500000  orientation 0.00
 layer front
 $PAD "1"
 Shape Roundrect Layer front
@@ -1262,87 +1331,6 @@ drill  0.000000
 shape_offset  0.000000  0.000000
 $EndPAD
 $EndMODULE  C10
-
-$MODULE "J2"
-reference "J2"
-value "47219-2001 (micro-sd)"
-footprint "MOLEX_47219-2001:MOLEX_47219-2001"
-attribut smd
-position 156.430000 12.780000  orientation 180.00
-layer front
-$PAD "1"
-Shape Rect Layer front
-position  3.200000  2.100000  size  0.800000  1.500000  orientation 0.00
-drill  0.000000
-shape_offset  0.000000  0.000000
-$EndPAD
-$PAD "2"
-Shape Rect Layer front
-position  2.100000  2.100000  size  0.800000  1.500000  orientation 0.00
-drill  0.000000
-shape_offset  0.000000  0.000000
-$EndPAD
-$PAD "3"
-Shape Rect Layer front
-position  1.000000  2.100000  size  0.800000  1.500000  orientation 0.00
-drill  0.000000
-shape_offset  0.000000  0.000000
-$EndPAD
-$PAD "4"
-Shape Rect Layer front
-position -0.100000  2.100000  size  0.800000  1.500000  orientation 0.00
-drill  0.000000
-shape_offset  0.000000  0.000000
-$EndPAD
-$PAD "5"
-Shape Rect Layer front
-position -1.200000  2.100000  size  0.800000  1.500000  orientation 0.00
-drill  0.000000
-shape_offset  0.000000  0.000000
-$EndPAD
-$PAD "6"
-Shape Rect Layer front
-position -2.300000  2.100000  size  0.800000  1.500000  orientation 0.00
-drill  0.000000
-shape_offset  0.000000  0.000000
-$EndPAD
-$PAD "7"
-Shape Rect Layer front
-position -3.400000  2.100000  size  0.800000  1.500000  orientation 0.00
-drill  0.000000
-shape_offset  0.000000  0.000000
-$EndPAD
-$PAD "8"
-Shape Rect Layer front
-position -4.500000  2.100000  size  0.800000  1.500000  orientation 0.00
-drill  0.000000
-shape_offset  0.000000  0.000000
-$EndPAD
-$PAD "G1"
-Shape Rect Layer front
-position  6.875000  4.700000  size  1.500000  2.050000  orientation 0.00
-drill  0.000000
-shape_offset  0.000000  0.000000
-$EndPAD
-$PAD "G2"
-Shape Rect Layer front
-position  6.875000 -3.600000  size  1.500000  2.050000  orientation 0.00
-drill  0.000000
-shape_offset  0.000000  0.000000
-$EndPAD
-$PAD "G3"
-Shape Rect Layer front
-position -6.875000 -3.600000  size  1.500000  2.050000  orientation 0.00
-drill  0.000000
-shape_offset  0.000000  0.000000
-$EndPAD
-$PAD "G4"
-Shape Rect Layer front
-position -6.875000  4.700000  size  1.500000  2.050000  orientation 0.00
-drill  0.000000
-shape_offset  0.000000  0.000000
-$EndPAD
-$EndMODULE  J2
 
 $MODULE "C30"
 reference "C30"
