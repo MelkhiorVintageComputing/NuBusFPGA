@@ -25,13 +25,13 @@ F 1 "77313-101-64LF (2x32 M 2.54mm)" H 1825 4284 50  0000 C CNN
 F 2 "For_SeeedStudio:PinHeader_2x32_P2.54mm_Vertical_For_SeeedStudio" H 1800 2650 50  0001 C CNN
 F 3 "" H 1800 2650 50  0001 C CNN
 F 4 "10-89-7642" H 1800 2650 50  0001 C CNN "MPN (Molex)"
-F 5 "https://www2.mouser.com/ProductDetail/Molex/10-89-7642?qs=%2Fha2pyFadugCxzQFZUdvioDcljDVidgd4vXrOFuSRYM%3D" H 1800 2650 50  0001 C CNN "URL (Molex)"
+F 5 "https://www.mouser.fr/ProductDetail/Molex/10-89-7642?qs=oWQp3ZoCHH1BnT8RSmq80A%3D%3D" H 1800 2650 50  0001 C CNN "URL (Molex)"
 F 6 "X6521WV-2x32H-C30D60" H 1800 2650 50  0001 C CNN "MPN (XKB)"
 F 7 "https://www.lcsc.com/product-detail/Pin-Headers_XKB-Connectivity-X6521WV-2x32H-C30D60_C2883966.html" H 1800 2650 50  0001 C CNN "URL (XKB)"
 F 8 "77313-101-64LF" H 1800 2650 50  0001 C CNN "MPN (Amphenol)"
 F 9 "https://eu.mouser.com/ProductDetail/Amphenol-FCI/77313-101-64LF?qs=xJiur%252Bgubk1MSan%2F7C0v%252BA%3D%3D" H 1800 2650 50  0001 C CNN "URL (Amphenol)"
-F 10 "10-89-7642" H 1800 2650 50  0001 C CNN "MPN"
-F 11 "https://www.mouser.fr/ProductDetail/Molex/10-89-7642?qs=oWQp3ZoCHH1BnT8RSmq80A%3D%3D" H 1800 2650 50  0001 C CNN "URL"
+F 10 "X6521WV-2x32H-C30D60" H 1800 2650 50  0001 C CNN "MPN"
+F 11 "https://www.lcsc.com/product-detail/Pin-Headers_XKB-Connectivity-X6521WV-2x32H-C30D60_C2883966.html" H 1800 2650 50  0001 C CNN "URL"
 	1    1800 2650
 	1    0    0    -1  
 $EndComp
@@ -83,13 +83,13 @@ F 1 "77313-101-64LF (2x32 M 2.54mm)" H 7650 4284 50  0000 C CNN
 F 2 "For_SeeedStudio:PinHeader_2x32_P2.54mm_Vertical_For_SeeedStudio" H 7600 2650 50  0001 C CNN
 F 3 "" H 7600 2650 50  0001 C CNN
 F 4 "10-89-7642" H 1800 2650 50  0001 C CNN "MPN (Molex)"
-F 5 "https://www2.mouser.com/ProductDetail/Molex/10-89-7642?qs=%2Fha2pyFadugCxzQFZUdvioDcljDVidgd4vXrOFuSRYM%3D" H 1800 2650 50  0001 C CNN "URL (Molex)"
+F 5 "https://www.mouser.fr/ProductDetail/Molex/10-89-7642?qs=oWQp3ZoCHH1BnT8RSmq80A%3D%3D" H 1800 2650 50  0001 C CNN "URL (Molex)"
 F 6 "X6521WV-2x32H-C30D60" H 1800 2650 50  0001 C CNN "MPN (XKB)"
 F 7 "https://www.lcsc.com/product-detail/Pin-Headers_XKB-Connectivity-X6521WV-2x32H-C30D60_C2883966.html" H 1800 2650 50  0001 C CNN "URL (XKB)"
 F 8 "77313-101-64LF" H 1800 2650 50  0001 C CNN "MPN (Amphenol)"
 F 9 "https://eu.mouser.com/ProductDetail/Amphenol-FCI/77313-101-64LF?qs=xJiur%252Bgubk1MSan%2F7C0v%252BA%3D%3D" H 1800 2650 50  0001 C CNN "URL (Amphenol)"
-F 10 "10-89-7642" H 7600 2650 50  0001 C CNN "MPN"
-F 11 "https://www.mouser.fr/ProductDetail/Molex/10-89-7642?qs=oWQp3ZoCHH1BnT8RSmq80A%3D%3D" H 7600 2650 50  0001 C CNN "URL"
+F 10 "X6521WV-2x32H-C30D60" H 7600 2650 50  0001 C CNN "MPN"
+F 11 "https://www.lcsc.com/product-detail/Pin-Headers_XKB-Connectivity-X6521WV-2x32H-C30D60_C2883966.html" H 7600 2650 50  0001 C CNN "URL"
 	1    7600 2650
 	1    0    0    -1  
 $EndComp
@@ -98,11 +98,11 @@ L Connector_Generic:Conn_02x07_Odd_Even J1
 U 1 1 5F749BE1
 P 3150 7250
 F 0 "J1" H 3200 7767 50  0000 C CNN
-F 1 "87832-1420 (2x7 M 2mm)" H 3200 7676 50  0000 C CNN
-F 2 "For_SeeedStudio:MOLEX_87832-1420" H 3150 7250 50  0001 C CNN
+F 1 "87831-1420 (2x7 M 2mm)" H 3200 7676 50  0000 C CNN
+F 2 "For_SeeedStudio:PinHeader_2x07_P2.00mm_Vertical_For_SeeedStudio" H 3150 7250 50  0001 C CNN
 F 3 "https://www.molex.com/pdm_docs/sd/878331420_sd.pdf" H 3150 7250 50  0001 C CNN
-F 4 "87832-1420" H 3150 7250 50  0001 C CNN "MPN"
-F 5 "https://www.mouser.fr/ProductDetail/Molex/87832-1420?qs=9Wl4wMk6Njp2JciwISLQUQ%3D%3D" H 3150 7250 50  0001 C CNN "URL"
+F 4 "87831-1420" H 3150 7250 50  0001 C CNN "MPN"
+F 5 "https://www.mouser.fr/ProductDetail/Molex/87831-1420?qs=QtQX4uD3c2VDCL534TqpVg%3D%3D" H 3150 7250 50  0001 C CNN "URL"
 	1    3150 7250
 	1    0    0    -1  
 $EndComp
@@ -430,11 +430,11 @@ AR Path="/5F6B165A/61B5DFBC" Ref="R?"  Part="1"
 AR Path="/5F67E4B9/61B5DFBC" Ref="R?"  Part="1" 
 AR Path="/618E8C75/61B5DFBC" Ref="R1"  Part="1" 
 F 0 "R1" V 1780 5900 50  0000 C CNN
-F 1 "590" V 1700 5900 50  0000 C CNN
+F 1 "560" V 1700 5900 50  0000 C CNN
 F 2 "Resistor_SMD:R_0603_1608Metric" V 1630 5900 50  0001 C CNN
 F 3 "" H 1700 5900 50  0000 C CNN
-F 4 "0603WAF5900T5E" V 1700 5900 50  0001 C CNN "MPN"
-F 5 "https://www.lcsc.com/product-detail/Chip-Resistor-Surface-Mount_UNI-ROYAL-Uniroyal-Elec-0603WAF5900T5E_C23084.html" V 1700 5900 50  0001 C CNN "URL"
+F 4 "0603WAF5600T5E" V 1700 5900 50  0001 C CNN "MPN"
+F 5 "https://www.lcsc.com/product-detail/Chip-Resistor-Surface-Mount_UNI-ROYAL-Uniroyal-Elec-0603WAF5600T5E_C23204.html" V 1700 5900 50  0001 C CNN "URL"
 	1    1700 5900
 	0    1    1    0   
 $EndComp
@@ -446,12 +446,12 @@ AR Path="/5F6B165A/61B5DFCC" Ref="D?"  Part="1"
 AR Path="/5F67E4B9/61B5DFCC" Ref="D?"  Part="1" 
 AR Path="/618E8C75/61B5DFCC" Ref="D1"  Part="1" 
 F 0 "D1" H 1000 6000 50  0000 C CNN
-F 1 "RED Led 0805" H 1050 5750 50  0000 R CNN
-F 2 "LED_SMD:LED_0805_2012Metric" H 1000 5900 50  0001 C CNN
+F 1 "RED Led 0603" H 1050 5750 50  0000 R CNN
+F 2 "LED_SMD:LED_0603_1608Metric" H 1000 5900 50  0001 C CNN
 F 3 "https://optoelectronics.liteon.com/upload/download/DS-22-99-0150/LTST-C170KRKT.pdf" H 1000 5900 50  0001 C CNN
-F 4 "www.liteon.com" H 1000 5900 60  0001 C CNN "MNF1_URL"
-F 5 "LTST-C170KRKT" H 1000 5900 60  0001 C CNN "MPN"
-F 6 "https://www.lcsc.com/product-detail/Light-Emitting-Diodes-LED_Lite-On-LTST-C170KRKT_C94868.html" H 1000 5900 50  0001 C CNN "URL"
+F 4 "" H 1000 5900 60  0001 C CNN "MNF1_URL"
+F 5 "19-217/R6C-AL1M2VY/3T" H 1000 5900 60  0001 C CNN "MPN"
+F 6 "https://www.lcsc.com/product-detail/Light-Emitting-Diodes-LED_Everlight-Elec-19-217-R6C-AL1M2VY-3T_C72044.html" H 1000 5900 50  0001 C CNN "URL"
 	1    1000 5900
 	1    0    0    -1  
 $EndComp
@@ -482,11 +482,11 @@ AR Path="/5F6B165A/61B5F3F5" Ref="R?"  Part="1"
 AR Path="/5F67E4B9/61B5F3F5" Ref="R?"  Part="1" 
 AR Path="/618E8C75/61B5F3F5" Ref="R2"  Part="1" 
 F 0 "R2" V 1780 6400 50  0000 C CNN
-F 1 "590" V 1700 6400 50  0000 C CNN
+F 1 "560" V 1700 6400 50  0000 C CNN
 F 2 "Resistor_SMD:R_0603_1608Metric" V 1630 6400 50  0001 C CNN
 F 3 "" H 1700 6400 50  0000 C CNN
-F 4 "0603WAF5900T5E" V 1700 6400 50  0001 C CNN "MPN"
-F 5 "https://www.lcsc.com/product-detail/Chip-Resistor-Surface-Mount_UNI-ROYAL-Uniroyal-Elec-0603WAF5900T5E_C23084.html" V 1700 6400 50  0001 C CNN "URL"
+F 4 "0603WAF5600T5E" V 1700 6400 50  0001 C CNN "MPN"
+F 5 "https://www.lcsc.com/product-detail/Chip-Resistor-Surface-Mount_UNI-ROYAL-Uniroyal-Elec-0603WAF5600T5E_C23204.html" V 1700 6400 50  0001 C CNN "URL"
 	1    1700 6400
 	0    1    1    0   
 $EndComp
@@ -498,12 +498,12 @@ AR Path="/5F6B165A/61B5F405" Ref="D?"  Part="1"
 AR Path="/5F67E4B9/61B5F405" Ref="D?"  Part="1" 
 AR Path="/618E8C75/61B5F405" Ref="D2"  Part="1" 
 F 0 "D2" H 1000 6500 50  0000 C CNN
-F 1 "RED Led 0805" H 1050 6250 50  0000 R CNN
-F 2 "LED_SMD:LED_0805_2012Metric" H 1000 6400 50  0001 C CNN
+F 1 "RED Led 0603" H 1050 6250 50  0000 R CNN
+F 2 "LED_SMD:LED_0603_1608Metric" H 1000 6400 50  0001 C CNN
 F 3 "https://optoelectronics.liteon.com/upload/download/DS-22-99-0150/LTST-C170KRKT.pdf" H 1000 6400 50  0001 C CNN
-F 4 "www.liteon.com" H 1000 6400 60  0001 C CNN "MNF1_URL"
-F 5 "LTST-C170KRKT" H 1000 6400 60  0001 C CNN "MPN"
-F 6 "https://www.lcsc.com/product-detail/Light-Emitting-Diodes-LED_Lite-On-LTST-C170KRKT_C94868.html" H 1000 6400 50  0001 C CNN "URL"
+F 4 "" H 1000 6400 60  0001 C CNN "MNF1_URL"
+F 5 "19-217/R6C-AL1M2VY/3T" H 1000 6400 60  0001 C CNN "MPN"
+F 6 "https://www.lcsc.com/product-detail/Light-Emitting-Diodes-LED_Everlight-Elec-19-217-R6C-AL1M2VY-3T_C72044.html" H 1000 6400 50  0001 C CNN "URL"
 	1    1000 6400
 	1    0    0    -1  
 $EndComp
@@ -539,13 +539,13 @@ F 1 "100nF" H 3025 5950 50  0000 L CNN
 F 2 "Capacitor_SMD:C_0603_1608Metric" H 3038 5900 50  0001 C CNN
 F 3 "" H 3000 6050 50  0000 C CNN
 F 4 "www.yageo.com" H 3000 6050 50  0001 C CNN "MNF1_URL"
-F 5 "CC0603KRX7R8BB104" H 3000 6050 50  0001 C CNN "MPN"
+F 5 "CC0603KRX7R9BB104" H 3000 6050 50  0001 C CNN "MPN"
 F 6 "603-CC603KRX7R8BB104" H 3000 6050 50  0001 C CNN "Mouser"
 F 7 "?" H 3000 6050 50  0001 C CNN "Digikey"
 F 8 "" H 3000 6050 50  0001 C CNN "LCSC"
 F 9 "?" H 3000 6050 50  0001 C CNN "Koncar"
 F 10 "TB" H 3000 6050 50  0001 C CNN "Side"
-F 11 "https://www.lcsc.com/product-detail/Multilayer-Ceramic-Capacitors-MLCC-SMD-SMT_YAGEO-CC0603KRX7R8BB104_C92490.html" H 3000 6050 50  0001 C CNN "URL"
+F 11 "https://www.lcsc.com/product-detail/Multilayer-Ceramic-Capacitors-MLCC-SMD-SMT_YAGEO-CC0603KRX7R9BB104_C14663.html" H 3000 6050 50  0001 C CNN "URL"
 	1    3000 6050
 	1    0    0    -1  
 $EndComp
@@ -604,13 +604,13 @@ F 1 "100nF" H 3425 5950 50  0000 L CNN
 F 2 "Capacitor_SMD:C_0603_1608Metric" H 3438 5900 50  0001 C CNN
 F 3 "" H 3400 6050 50  0000 C CNN
 F 4 "www.yageo.com" H 3400 6050 50  0001 C CNN "MNF1_URL"
-F 5 "CC0603KRX7R8BB104" H 3400 6050 50  0001 C CNN "MPN"
+F 5 "CC0603KRX7R9BB104" H 3400 6050 50  0001 C CNN "MPN"
 F 6 "603-CC603KRX7R8BB104" H 3400 6050 50  0001 C CNN "Mouser"
 F 7 "?" H 3400 6050 50  0001 C CNN "Digikey"
 F 8 "" H 3400 6050 50  0001 C CNN "LCSC"
 F 9 "?" H 3400 6050 50  0001 C CNN "Koncar"
 F 10 "TB" H 3400 6050 50  0001 C CNN "Side"
-F 11 "https://www.lcsc.com/product-detail/Multilayer-Ceramic-Capacitors-MLCC-SMD-SMT_YAGEO-CC0603KRX7R8BB104_C92490.html" H 3400 6050 50  0001 C CNN "URL"
+F 11 "https://www.lcsc.com/product-detail/Multilayer-Ceramic-Capacitors-MLCC-SMD-SMT_YAGEO-CC0603KRX7R9BB104_C14663.html" H 3400 6050 50  0001 C CNN "URL"
 	1    3400 6050
 	1    0    0    -1  
 $EndComp
@@ -647,11 +647,11 @@ AR Path="/5F6B165A/621E3C4D" Ref="R?"  Part="1"
 AR Path="/5F67E4B9/621E3C4D" Ref="R?"  Part="1" 
 AR Path="/618E8C75/621E3C4D" Ref="R3"  Part="1" 
 F 0 "R3" V 8680 5250 50  0000 C CNN
-F 1 "590" V 8600 5250 50  0000 C CNN
+F 1 "560" V 8600 5250 50  0000 C CNN
 F 2 "Resistor_SMD:R_0603_1608Metric" V 8530 5250 50  0001 C CNN
 F 3 "" H 8600 5250 50  0000 C CNN
-F 4 "0603WAF5900T5E" V 8600 5250 50  0001 C CNN "MPN"
-F 5 "https://www.lcsc.com/product-detail/Chip-Resistor-Surface-Mount_UNI-ROYAL-Uniroyal-Elec-0603WAF5900T5E_C23084.html" V 8600 5250 50  0001 C CNN "URL"
+F 4 "0603WAF5600T5E" V 8600 5250 50  0001 C CNN "MPN"
+F 5 "https://www.lcsc.com/product-detail/Chip-Resistor-Surface-Mount_UNI-ROYAL-Uniroyal-Elec-0603WAF5600T5E_C23204.html" V 8600 5250 50  0001 C CNN "URL"
 	1    8600 5250
 	0    1    1    0   
 $EndComp
@@ -663,12 +663,12 @@ AR Path="/5F6B165A/621E3C57" Ref="D?"  Part="1"
 AR Path="/5F67E4B9/621E3C57" Ref="D?"  Part="1" 
 AR Path="/618E8C75/621E3C57" Ref="D3"  Part="1" 
 F 0 "D3" H 7900 5350 50  0000 C CNN
-F 1 "BLUE Led 0805" H 7950 5100 50  0000 R CNN
-F 2 "LED_SMD:LED_0805_2012Metric" H 7900 5250 50  0001 C CNN
+F 1 "BLUE Led 0603" H 7950 5100 50  0000 R CNN
+F 2 "LED_SMD:LED_0603_1608Metric" H 7900 5250 50  0001 C CNN
 F 3 "https://eu.mouser.com/datasheet/2/239/Lite-On-LTST-C170TBKT-1175372.pdf" H 7900 5250 50  0001 C CNN
-F 4 "www.liteon.com" H 7900 5250 60  0001 C CNN "MNF1_URL"
-F 5 "LTST-C170TBKT" H 7900 5250 60  0001 C CNN "MPN"
-F 6 "https://www.lcsc.com/product-detail/Light-Emitting-Diodes-LED_LTST-C170TBKT-blue_C98222.html" H 7900 5250 50  0001 C CNN "URL"
+F 4 "" H 7900 5250 60  0001 C CNN "MNF1_URL"
+F 5 "19-217/BHC-ZL1M2RY/3T" H 7900 5250 60  0001 C CNN "MPN"
+F 6 "https://www.lcsc.com/product-detail/Light-Emitting-Diodes-LED_Everlight-Elec-19-217-BHC-ZL1M2RY-3T_C72041.html" H 7900 5250 50  0001 C CNN "URL"
 	1    7900 5250
 	1    0    0    -1  
 $EndComp
@@ -792,34 +792,34 @@ SD_D0
 Text GLabel 9900 2450 2    60   Input ~ 0
 SD_D1
 Text GLabel 9900 3950 2    50   Input ~ 0
-PMOD-5
+PMOD-56-
 Text GLabel 9900 3750 2    50   Input ~ 0
-PMOD-7
+PMOD-78-
 Text GLabel 9900 3550 2    50   Input ~ 0
-PMOD-9
+PMOD-910-
 Text GLabel 9900 3350 2    50   Input ~ 0
-PMOD-11
+PMOD-1112-
 Text GLabel 9900 3450 2    50   Input ~ 0
-PMOD-12
+PMOD-1112+
 Text GLabel 9900 4050 2    50   Input ~ 0
-PMOD-6
+PMOD-56+
 Text GLabel 9900 3850 2    50   Input ~ 0
-PMOD-8
+PMOD-78+
 Text GLabel 9900 3650 2    50   Input ~ 0
-PMOD-10
+PMOD-910+
 Text Notes 3900 5000 0    50   ~ 0
 Molex 10-89-7642 a.k.a. A-70280-0072, with dimension 11.1 (total), 6.1 (mating) & 2.72 (solder), Hole diameter 1.02\nXKB X6521WV-2x32H-C30D60 is 11.5/6/3, H1.02\nAmphenol 77313-824-64LF is 12.2/6.75/2.9, H1.02\nAmphenol 77313-818-64LF is 11.43/5.84/3.05, H1.02\nAmphenol 77313-101-64LF is 10.8/5.84/2.41, H1.02 ('1xx' has thicker gold coating than '8xx')\nWurth 61306421121 is 11.54/6/3, H1.10\n
 Text Notes 2450 6750 1    50   ~ 0
 The two LED signals are also\nconnected to the serial connector\nfor debugging purposes
 Connection ~ 6250 2550
 Text GLabel 9900 3250 2    50   Input ~ 0
-PMOD-14
+PMOD-1314+
 Text GLabel 9900 3150 2    50   Input ~ 0
-PMOD-13
+PMOD-1314-
 Text GLabel 9900 3050 2    50   Input ~ 0
-PMOD-16
+PMOD-1516+
 Text GLabel 9900 2950 2    50   Input ~ 0
-PMOD-15
+PMOD-1516-
 $Comp
 L power:+3V3 #PWR0110
 U 1 1 6343D117

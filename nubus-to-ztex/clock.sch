@@ -37,24 +37,9 @@ F 3 "" H 3950 3350 50  0001 C CNN
 	1    3950 3350
 	1    0    0    -1  
 $EndComp
-Text GLabel 4650 3050 2    50   Input Italic 0
+Text GLabel 4550 3050 2    50   Input Italic 0
 CLK_54_000
-NoConn ~ 3550 3050
-$Comp
-L Oscillator:ECS-2520MV-xxx-xx X1
-U 1 1 64E9BD1C
-P 3950 3050
-F 0 "X1" H 4075 3300 50  0000 L CNN
-F 1 "ECS-2520MV-xxx-xx" H 4050 2750 50  0000 L CNN
-F 2 "Oscillator:Oscillator_SMD_ECS_2520MV-xxx-xx-4Pin_2.5x2.0mm" H 4400 2700 50  0001 C CNN
-F 3 "https://www.ecsxtal.com/store/pdf/ECS-2520MV.pdf" H 3775 3175 50  0001 C CNN
-F 4 "ECS-2520MVLC-540-BN-TR " H 3950 3050 50  0001 C CNN "MPN"
-F 5 "CM4054M00020T8188152" H 3950 3050 50  0001 C CNN "MPN-ALT"
-F 6 "C2599582" H 3950 3050 50  0001 C CNN "LCSC"
-F 7 "https://www.lcsc.com/product-detail/Oscillators_span-style-background-color-ff0-ECS-span-ECS-2520MVLC-540-BN-TR_C2599582.html" H 3950 3050 50  0001 C CNN "URL"
-	1    3950 3050
-	1    0    0    -1  
-$EndComp
+NoConn ~ 3650 3050
 $Comp
 L power:+3V3 #PWR0138
 U 1 1 64EA4B87
@@ -80,9 +65,9 @@ F 1 "10nF" H 3450 2500 50  0000 L CNN
 F 2 "Capacitor_SMD:C_0603_1608Metric" H 3463 2450 50  0001 C CNN
 F 3 "" H 3425 2600 50  0000 C CNN
 F 4 "www.yageo.com" H 3425 2600 50  0001 C CNN "MNF1_URL"
-F 5 "CC0603KRX7R8BB103" H 3425 2600 50  0001 C CNN "MPN"
+F 5 "0603B103K500NT" H 3425 2600 50  0001 C CNN "MPN"
 F 6 "603-CC603KRX7R8BB103" H 3425 2600 50  0001 C CNN "Mouser"
-F 7 "https://www.lcsc.com/product-detail/Multilayer-Ceramic-Capacitors-MLCC-SMD-SMT_YAGEO-CC0603KRX7R8BB103_C327204.html" H 3425 2600 50  0001 C CNN "URL"
+F 7 "https://www.lcsc.com/product-detail/Multilayer-Ceramic-Capacitors-MLCC-SMD-SMT_FH-Guangdong-Fenghua-Advanced-Tech-0603B103K500NT_C57112.html" H 3425 2600 50  0001 C CNN "URL"
 	1    3425 2600
 	1    0    0    -1  
 $EndComp
@@ -100,13 +85,13 @@ F 1 "100nF" H 3200 2500 50  0000 L CNN
 F 2 "Capacitor_SMD:C_0603_1608Metric" H 3213 2450 50  0001 C CNN
 F 3 "" H 3175 2600 50  0000 C CNN
 F 4 "www.yageo.com" H 3175 2600 50  0001 C CNN "MNF1_URL"
-F 5 "CC0603KRX7R8BB104" H 3175 2600 50  0001 C CNN "MPN"
+F 5 "CC0603KRX7R9BB104" H 3175 2600 50  0001 C CNN "MPN"
 F 6 "603-CC603KRX7R8BB104" H 3175 2600 50  0001 C CNN "Mouser"
 F 7 "?" H 3175 2600 50  0001 C CNN "Digikey"
 F 8 "" H 3175 2600 50  0001 C CNN "LCSC"
 F 9 "?" H 3175 2600 50  0001 C CNN "Koncar"
 F 10 "TB" H 3175 2600 50  0001 C CNN "Side"
-F 11 "https://www.lcsc.com/product-detail/Multilayer-Ceramic-Capacitors-MLCC-SMD-SMT_YAGEO-CC0603KRX7R8BB104_C92490.html" H 3175 2600 50  0001 C CNN "URL"
+F 11 "https://www.lcsc.com/product-detail/Multilayer-Ceramic-Capacitors-MLCC-SMD-SMT_YAGEO-CC0603KRX7R9BB104_C14663.html" H 3175 2600 50  0001 C CNN "URL"
 	1    3175 2600
 	1    0    0    -1  
 $EndComp
@@ -120,7 +105,7 @@ Connection ~ 3175 2750
 $Comp
 L Device:R R?
 U 1 1 65008AD6
-P 4500 3050
+P 4400 3050
 AR Path="/5F6B165A/65008AD6" Ref="R?"  Part="1" 
 AR Path="/5F679B53/65008AD6" Ref="R?"  Part="1" 
 AR Path="/5F69F4EF/65008AD6" Ref="R?"  Part="1" 
@@ -128,14 +113,27 @@ AR Path="/60D72F2C/65008AD6" Ref="R?"  Part="1"
 AR Path="/619A5A47/65008AD6" Ref="R?"  Part="1" 
 AR Path="/61B604DE/65008AD6" Ref="R?"  Part="1" 
 AR Path="/64F8CFB4/65008AD6" Ref="R8"  Part="1" 
-F 0 "R8" V 4580 3050 50  0000 C CNN
-F 1 "27" V 4500 3050 50  0000 C CNN
-F 2 "Resistor_SMD:R_0603_1608Metric" V 4430 3050 50  0001 C CNN
-F 3 "" H 4500 3050 50  0000 C CNN
-F 4 "0603WAF270JT5E" V 4500 3050 50  0001 C CNN "MPN"
-F 5 "ERJ-3EKF27R0V" V 4500 2450 50  0001 C CNN "MPN-ALT"
-F 6 "https://lcsc.com/product-detail/Chip-Resistor-Surface-Mount_UNI-ROYAL-Uniroyal-Elec-0603WAF270JT5E_C25190.html" V 4500 3050 50  0001 C CNN "URL"
-	1    4500 3050
+F 0 "R8" V 4480 3050 50  0000 C CNN
+F 1 "27" V 4400 3050 50  0000 C CNN
+F 2 "Resistor_SMD:R_0603_1608Metric" V 4330 3050 50  0001 C CNN
+F 3 "" H 4400 3050 50  0000 C CNN
+F 4 "0603WAF270JT5E" V 4400 3050 50  0001 C CNN "MPN"
+F 5 "ERJ-3EKF27R0V" V 4400 2450 50  0001 C CNN "MPN-ALT"
+F 6 "https://lcsc.com/product-detail/Chip-Resistor-Surface-Mount_UNI-ROYAL-Uniroyal-Elec-0603WAF270JT5E_C25190.html" V 4400 3050 50  0001 C CNN "URL"
+	1    4400 3050
 	0    1    1    0   
+$EndComp
+$Comp
+L Oscillator:ASE-xxxMHz X1
+U 1 1 641BE3FE
+P 3950 3050
+F 0 "X1" H 4200 3225 50  0000 L CNN
+F 1 "ASE-xxxMHz" H 4175 2875 50  0000 L CNN
+F 2 "Oscillator:Oscillator_SMD_Abracon_ASE-4Pin_3.2x2.5mm" H 4650 2700 50  0001 C CNN
+F 3 "http://www.abracon.com/Oscillators/ASV.pdf" H 3850 3050 50  0001 C CNN
+F 4 "SX3M54.000M20F30TNN" H 3950 3050 50  0001 C CNN "MPN"
+F 5 "https://www.lcsc.com/product-detail/Oscillators_Shenzhen-SCTF-Elec-SX3M54-000M20F30TNN_C2901593.html" H 3950 3050 50  0001 C CNN "URL"
+	1    3950 3050
+	1    0    0    -1  
 $EndComp
 $EndSCHEMATC
