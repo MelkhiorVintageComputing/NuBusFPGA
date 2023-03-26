@@ -52,13 +52,13 @@ L Device:C C10
 U 1 1 590C7447
 P 4150 4900
 F 0 "C10" H 4175 5000 50  0000 L CNN
-F 1 "47uF 10V 0805" H 4175 4800 50  0000 L CNN
-F 2 "Capacitor_SMD:C_0805_2012Metric" H 4188 4750 50  0001 C CNN
+F 1 "47uF 10V 1206" H 4175 4800 50  0000 L CNN
+F 2 "Capacitor_SMD:C_1206_3216Metric" H 4188 4750 50  0001 C CNN
 F 3 "" H 4150 4900 50  0000 C CNN
 F 4 "GRM21BR60J476ME15L" H 4150 4900 50  0001 C CNN "MPN-ALT"
 F 5 "https://www.lcsc.com/product-detail/Multilayer-Ceramic-Capacitors-MLCC-SMD-SMT_Murata-Electronics-GRM21BR60J476ME15L_C77072.html" H 4150 4900 50  0001 C CNN "URL-ALT"
-F 6 "C2012X5R1A476MTJ00E" H 4150 4900 50  0001 C CNN "MPN"
-F 7 "https://www.lcsc.com/product-detail/Multilayer-Ceramic-Capacitors-MLCC-SMD-SMT_TDK-C2012X5R1A476MTJ00E_C76636.html" H 4150 4900 50  0001 C CNN "URL"
+F 6 "CL31A476MPHNNNE" H 4150 4900 50  0001 C CNN "MPN"
+F 7 "https://www.lcsc.com/product-detail/Multilayer-Ceramic-Capacitors-MLCC-SMD-SMT_Samsung-Electro-Mechanics-CL31A476MPHNNNE_C96123.html" H 4150 4900 50  0001 C CNN "URL"
 	1    4150 4900
 	-1   0    0    -1  
 $EndComp

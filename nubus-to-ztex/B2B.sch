@@ -30,8 +30,8 @@ F 6 "X6521WV-2x32H-C30D60" H 1800 2650 50  0001 C CNN "MPN (XKB)"
 F 7 "https://www.lcsc.com/product-detail/Pin-Headers_XKB-Connectivity-X6521WV-2x32H-C30D60_C2883966.html" H 1800 2650 50  0001 C CNN "URL (XKB)"
 F 8 "77313-101-64LF" H 1800 2650 50  0001 C CNN "MPN (Amphenol)"
 F 9 "https://eu.mouser.com/ProductDetail/Amphenol-FCI/77313-101-64LF?qs=xJiur%252Bgubk1MSan%2F7C0v%252BA%3D%3D" H 1800 2650 50  0001 C CNN "URL (Amphenol)"
-F 10 "X6521WV-2x32H-C30D60" H 1800 2650 50  0001 C CNN "MPN"
-F 11 "https://www.lcsc.com/product-detail/Pin-Headers_XKB-Connectivity-X6521WV-2x32H-C30D60_C2883966.html" H 1800 2650 50  0001 C CNN "URL"
+F 10 "77313-824-64LF" H 1800 2650 50  0001 C CNN "MPN"
+F 11 "https://eu.mouser.com/ProductDetail/Amphenol-FCI/77313-101-64LF?qs=xJiur%252Bgubk1MSan%2F7C0v%252BA%3D%3D" H 1800 2650 50  0001 C CNN "URL"
 	1    1800 2650
 	1    0    0    -1  
 $EndComp
@@ -88,8 +88,8 @@ F 6 "X6521WV-2x32H-C30D60" H 1800 2650 50  0001 C CNN "MPN (XKB)"
 F 7 "https://www.lcsc.com/product-detail/Pin-Headers_XKB-Connectivity-X6521WV-2x32H-C30D60_C2883966.html" H 1800 2650 50  0001 C CNN "URL (XKB)"
 F 8 "77313-101-64LF" H 1800 2650 50  0001 C CNN "MPN (Amphenol)"
 F 9 "https://eu.mouser.com/ProductDetail/Amphenol-FCI/77313-101-64LF?qs=xJiur%252Bgubk1MSan%2F7C0v%252BA%3D%3D" H 1800 2650 50  0001 C CNN "URL (Amphenol)"
-F 10 "X6521WV-2x32H-C30D60" H 7600 2650 50  0001 C CNN "MPN"
-F 11 "https://www.lcsc.com/product-detail/Pin-Headers_XKB-Connectivity-X6521WV-2x32H-C30D60_C2883966.html" H 7600 2650 50  0001 C CNN "URL"
+F 10 "77313-824-64LF" H 7600 2650 50  0001 C CNN "MPN"
+F 11 "https://eu.mouser.com/ProductDetail/Amphenol-FCI/77313-101-64LF?qs=xJiur%252Bgubk1MSan%2F7C0v%252BA%3D%3D" H 7600 2650 50  0001 C CNN "URL"
 	1    7600 2650
 	1    0    0    -1  
 $EndComp
@@ -103,6 +103,7 @@ F 2 "For_SeeedStudio:PinHeader_2x07_P2.00mm_Vertical_For_SeeedStudio" H 3150 725
 F 3 "https://www.molex.com/pdm_docs/sd/878331420_sd.pdf" H 3150 7250 50  0001 C CNN
 F 4 "87831-1420" H 3150 7250 50  0001 C CNN "MPN"
 F 5 "https://www.mouser.fr/ProductDetail/Molex/87831-1420?qs=QtQX4uD3c2VDCL534TqpVg%3D%3D" H 3150 7250 50  0001 C CNN "URL"
+F 6 "DNP" H 3150 7250 50  0000 C CNN "DNP"
 	1    3150 7250
 	1    0    0    -1  
 $EndComp
@@ -450,8 +451,8 @@ F 1 "RED Led 0603" H 1050 5750 50  0000 R CNN
 F 2 "LED_SMD:LED_0603_1608Metric" H 1000 5900 50  0001 C CNN
 F 3 "https://optoelectronics.liteon.com/upload/download/DS-22-99-0150/LTST-C170KRKT.pdf" H 1000 5900 50  0001 C CNN
 F 4 "" H 1000 5900 60  0001 C CNN "MNF1_URL"
-F 5 "19-217/R6C-AL1M2VY/3T" H 1000 5900 60  0001 C CNN "MPN"
-F 6 "https://www.lcsc.com/product-detail/Light-Emitting-Diodes-LED_Everlight-Elec-19-217-R6C-AL1M2VY-3T_C72044.html" H 1000 5900 50  0001 C CNN "URL"
+F 5 "KT-0603R" H 1000 5900 60  0001 C CNN "MPN"
+F 6 "https://jlcpcb.com/partdetail/Hubei_KentoElec-KT0603R/C2286" H 1000 5900 50  0001 C CNN "URL"
 	1    1000 5900
 	1    0    0    -1  
 $EndComp
@@ -502,8 +503,8 @@ F 1 "RED Led 0603" H 1050 6250 50  0000 R CNN
 F 2 "LED_SMD:LED_0603_1608Metric" H 1000 6400 50  0001 C CNN
 F 3 "https://optoelectronics.liteon.com/upload/download/DS-22-99-0150/LTST-C170KRKT.pdf" H 1000 6400 50  0001 C CNN
 F 4 "" H 1000 6400 60  0001 C CNN "MNF1_URL"
-F 5 "19-217/R6C-AL1M2VY/3T" H 1000 6400 60  0001 C CNN "MPN"
-F 6 "https://www.lcsc.com/product-detail/Light-Emitting-Diodes-LED_Everlight-Elec-19-217-R6C-AL1M2VY-3T_C72044.html" H 1000 6400 50  0001 C CNN "URL"
+F 5 "KT-0603R" H 1000 6400 60  0001 C CNN "MPN"
+F 6 "https://jlcpcb.com/partdetail/Hubei_KentoElec-KT0603R/C2286" H 1000 6400 50  0001 C CNN "URL"
 	1    1000 6400
 	1    0    0    -1  
 $EndComp
@@ -709,13 +710,13 @@ AR Path="/5F6B165A/621FCA7B" Ref="C?"  Part="1"
 AR Path="/61B99D2C/621FCA7B" Ref="C?"  Part="1" 
 AR Path="/618E8C75/621FCA7B" Ref="C3"  Part="1" 
 F 0 "C3" H 4025 6150 50  0000 L CNN
-F 1 "47uF 10V 0805" H 4025 5950 50  0000 L CNN
-F 2 "Capacitor_SMD:C_0805_2012Metric" H 4038 5900 50  0001 C CNN
+F 1 "47uF 10V 1206" H 4025 5950 50  0000 L CNN
+F 2 "Capacitor_SMD:C_1206_3216Metric" H 4038 5900 50  0001 C CNN
 F 3 "" H 4000 6050 50  0000 C CNN
 F 4 "C2012X5R1A476MTJ00E" H 4000 6050 50  0001 C CNN "MPN-ALT"
 F 5 "https://lcsc.com/product-detail/Multilayer-Ceramic-Capacitors-MLCC-SMD-SMT_TDK-C2012X5R1A476MTJ00E_C76636.html" H 4000 6050 50  0001 C CNN "URL-ALT"
-F 6 "C2012X5R1A476MTJ00E" H 4000 6050 50  0001 C CNN "MPN"
-F 7 "https://www.lcsc.com/product-detail/Multilayer-Ceramic-Capacitors-MLCC-SMD-SMT_TDK-C2012X5R1A476MTJ00E_C76636.html" H 4000 6050 50  0001 C CNN "URL"
+F 6 "CL31A476MPHNNNE" H 4000 6050 50  0001 C CNN "MPN"
+F 7 "https://www.lcsc.com/product-detail/Multilayer-Ceramic-Capacitors-MLCC-SMD-SMT_Samsung-Electro-Mechanics-CL31A476MPHNNNE_C96123.html" H 4000 6050 50  0001 C CNN "URL"
 	1    4000 6050
 	1    0    0    -1  
 $EndComp

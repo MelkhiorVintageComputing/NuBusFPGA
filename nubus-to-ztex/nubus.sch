@@ -885,10 +885,6 @@ Text GLabel 3150 14350 0    50   Input ~ 0
 ~ID0_3V3
 Text GLabel 3150 14150 0    50   Input ~ 0
 ~ID2_3V3
-Text GLabel 7700 9050 0    39   Input ~ 8
-GRANT
-Text GLabel 7700 8950 0    39   Input ~ 8
-ARB
 $Comp
 L 74xx:74LS245 U8
 U 1 1 61BC9B90
@@ -1109,8 +1105,6 @@ Text GLabel 13800 3850 2    50   Input ~ 10
 NUBUS_AD_DIR
 Text GLabel 11750 3850 2    50   Input ~ 10
 NUBUS_AD_DIR
-Text GLabel 7700 8750 0    39   Input ~ 8
-NUBUS_MASTER_DIR
 Text Notes 13000 2050 0    50   ~ 0
 input/output\n(ad*)\n74LVT245 with enable (always on except after reset) and direction pin
 Text GLabel 14150 14400 0    50   Input ~ 0
@@ -1125,10 +1119,6 @@ Wire Wire Line
 	2350 13750 3150 13750
 Connection ~ 2350 13750
 Connection ~ 2250 13850
-Text GLabel 7700 8850 0    50   Input ~ 10
-tmoen
-Text GLabel 7700 8650 0    39   Input ~ 8
-fpga_to_cpld_signal
 Wire Wire Line
 	15900 7850 15750 7850
 Wire Wire Line
@@ -1359,12 +1349,12 @@ L 74xx:74LVC125 U3
 U 1 1 61F62FDB
 P 4050 5900
 F 0 "U3" H 4050 6217 50  0000 C CNN
-F 1 "74LVT125PW,118" H 4050 6126 50  0000 C CNN
+F 1 "SN74LVTH125PWR" H 4050 6126 50  0000 C CNN
 F 2 "Package_SO:TSSOP-14_4.4x5mm_P0.65mm" H 4050 5900 50  0001 C CNN
 F 3 "http://www.ti.com/lit/gpn/sn74LVT125" H 4050 5900 50  0001 C CNN
 F 4 "https://assets.nexperia.com/documents/package-information/SOT402-1.pdf" H 4050 5900 50  0001 C CNN "Package Drawings"
-F 5 "74LVT125PW,118" H 4050 5900 50  0001 C CNN "MPN"
-F 6 "https://www.lcsc.com/product-detail/Buffer-Driver-Transceiver_Nexperia-74LVT125PW-118_C6108.html" H 4050 5900 50  0001 C CNN "URL"
+F 5 "SN74LVTH125PWR" H 4050 5900 50  0001 C CNN "MPN"
+F 6 "https://www.lcsc.com/product-detail/Buffer-Driver-Transceiver_Texas-Instruments-SN74LVTH125PWR_C7042.html" H 4050 5900 50  0001 C CNN "URL"
 	1    4050 5900
 	1    0    0    -1  
 $EndComp
@@ -1373,11 +1363,11 @@ L 74xx:74LVC125 U3
 U 2 1 61F630DB
 P 4050 6350
 F 0 "U3" H 4050 6667 50  0000 C CNN
-F 1 "74LVT125PW,118" H 4050 6576 50  0000 C CNN
+F 1 "SN74LVTH125PWR" H 4050 6576 50  0000 C CNN
 F 2 "Package_SO:TSSOP-14_4.4x5mm_P0.65mm" H 4050 6350 50  0001 C CNN
 F 3 "http://www.ti.com/lit/gpn/sn74LVT125" H 4050 6350 50  0001 C CNN
-F 4 "74LVT125PW,118" H 4050 6350 50  0001 C CNN "MPN"
-F 5 "https://www.lcsc.com/product-detail/Buffer-Driver-Transceiver_Nexperia-74LVT125PW-118_C6108.html" H 4050 6350 50  0001 C CNN "URL"
+F 4 "SN74LVTH125PWR" H 4050 6350 50  0001 C CNN "MPN"
+F 5 "https://www.lcsc.com/product-detail/Buffer-Driver-Transceiver_Texas-Instruments-SN74LVTH125PWR_C7042.html" H 4050 6350 50  0001 C CNN "URL"
 	2    4050 6350
 	1    0    0    -1  
 $EndComp
@@ -1386,11 +1376,11 @@ L 74xx:74LVC125 U3
 U 3 1 61F63214
 P 4050 6850
 F 0 "U3" H 4050 7167 50  0000 C CNN
-F 1 "74LVT125PW,118" H 4050 7076 50  0000 C CNN
+F 1 "SN74LVTH125PWR" H 4050 7076 50  0000 C CNN
 F 2 "Package_SO:TSSOP-14_4.4x5mm_P0.65mm" H 4050 6850 50  0001 C CNN
 F 3 "http://www.ti.com/lit/gpn/sn74LVT125" H 4050 6850 50  0001 C CNN
-F 4 "74LVT125PW,118" H 4050 6850 50  0001 C CNN "MPN"
-F 5 "https://www.lcsc.com/product-detail/Buffer-Driver-Transceiver_Nexperia-74LVT125PW-118_C6108.html" H 4050 6850 50  0001 C CNN "URL"
+F 4 "SN74LVTH125PWR" H 4050 6850 50  0001 C CNN "MPN"
+F 5 "https://www.lcsc.com/product-detail/Buffer-Driver-Transceiver_Texas-Instruments-SN74LVTH125PWR_C7042.html" H 4050 6850 50  0001 C CNN "URL"
 	3    4050 6850
 	1    0    0    -1  
 $EndComp
@@ -1399,11 +1389,11 @@ L 74xx:74LVC125 U3
 U 4 1 61F63656
 P 4050 7350
 F 0 "U3" H 4050 7667 50  0000 C CNN
-F 1 "74LVT125PW,118" H 4050 7576 50  0000 C CNN
+F 1 "SN74LVTH125PWR" H 4050 7576 50  0000 C CNN
 F 2 "Package_SO:TSSOP-14_4.4x5mm_P0.65mm" H 4050 7350 50  0001 C CNN
 F 3 "http://www.ti.com/lit/gpn/sn74LVT125" H 4050 7350 50  0001 C CNN
-F 4 "74LVT125PW,118" H 4050 7350 50  0001 C CNN "MPN"
-F 5 "https://www.lcsc.com/product-detail/Buffer-Driver-Transceiver_Nexperia-74LVT125PW-118_C6108.html" H 4050 7350 50  0001 C CNN "URL"
+F 4 "SN74LVTH125PWR" H 4050 7350 50  0001 C CNN "MPN"
+F 5 "https://www.lcsc.com/product-detail/Buffer-Driver-Transceiver_Texas-Instruments-SN74LVTH125PWR_C7042.html" H 4050 7350 50  0001 C CNN "URL"
 	4    4050 7350
 	1    0    0    -1  
 $EndComp
@@ -1412,11 +1402,11 @@ L 74xx:74LVC125 U3
 U 5 1 61F63793
 P 5500 6550
 F 0 "U3" H 5730 6596 50  0000 L CNN
-F 1 "74LVT125PW,118" H 5730 6505 50  0000 L CNN
+F 1 "SN74LVTH125PWR" H 5730 6505 50  0000 L CNN
 F 2 "Package_SO:TSSOP-14_4.4x5mm_P0.65mm" H 5500 6550 50  0001 C CNN
 F 3 "http://www.ti.com/lit/gpn/sn74LVT125" H 5500 6550 50  0001 C CNN
-F 4 "74LVT125PW,118" H 5500 6550 50  0001 C CNN "MPN"
-F 5 "https://www.lcsc.com/product-detail/Buffer-Driver-Transceiver_Nexperia-74LVT125PW-118_C6108.html" H 5500 6550 50  0001 C CNN "URL"
+F 4 "SN74LVTH125PWR" H 5500 6550 50  0001 C CNN "MPN"
+F 5 "https://www.lcsc.com/product-detail/Buffer-Driver-Transceiver_Texas-Instruments-SN74LVTH125PWR_C7042.html" H 5500 6550 50  0001 C CNN "URL"
 	5    5500 6550
 	1    0    0    -1  
 $EndComp
@@ -1502,11 +1492,11 @@ L 74xx:74LVC125 U1
 U 1 1 61F9D997
 P 3450 2500
 F 0 "U1" H 3450 2817 50  0000 C CNN
-F 1 "74LVT125PW,118" H 3450 2726 50  0000 C CNN
+F 1 "SN74LVTH125PWR" H 3450 2726 50  0000 C CNN
 F 2 "Package_SO:TSSOP-14_4.4x5mm_P0.65mm" H 3450 2500 50  0001 C CNN
 F 3 "http://www.ti.com/lit/gpn/sn74LVT125" H 3450 2500 50  0001 C CNN
-F 4 "74LVT125PW,118" H 3450 2500 50  0001 C CNN "MPN"
-F 5 "https://www.lcsc.com/product-detail/Buffer-Driver-Transceiver_Nexperia-74LVT125PW-118_C6108.html" H 3450 2500 50  0001 C CNN "URL"
+F 4 "SN74LVTH125PWR" H 3450 2500 50  0001 C CNN "MPN"
+F 5 "https://www.lcsc.com/product-detail/Buffer-Driver-Transceiver_Texas-Instruments-SN74LVTH125PWR_C7042.html" H 3450 2500 50  0001 C CNN "URL"
 	1    3450 2500
 	1    0    0    -1  
 $EndComp
@@ -1515,11 +1505,11 @@ L 74xx:74LVC125 U1
 U 2 1 61F9DACF
 P 3450 2950
 F 0 "U1" H 3450 3267 50  0000 C CNN
-F 1 "74LVT125PW,118" H 3450 3176 50  0000 C CNN
+F 1 "SN74LVTH125PWR" H 3450 3176 50  0000 C CNN
 F 2 "Package_SO:TSSOP-14_4.4x5mm_P0.65mm" H 3450 2950 50  0001 C CNN
 F 3 "http://www.ti.com/lit/gpn/sn74LVT125" H 3450 2950 50  0001 C CNN
-F 4 "74LVT125PW,118" H 3450 2950 50  0001 C CNN "MPN"
-F 5 "https://www.lcsc.com/product-detail/Buffer-Driver-Transceiver_Nexperia-74LVT125PW-118_C6108.html" H 3450 2950 50  0001 C CNN "URL"
+F 4 "SN74LVTH125PWR" H 3450 2950 50  0001 C CNN "MPN"
+F 5 "https://www.lcsc.com/product-detail/Buffer-Driver-Transceiver_Texas-Instruments-SN74LVTH125PWR_C7042.html" H 3450 2950 50  0001 C CNN "URL"
 	2    3450 2950
 	1    0    0    -1  
 $EndComp
@@ -1528,11 +1518,11 @@ L 74xx:74LVC125 U1
 U 3 1 61F9DC36
 P 3450 3400
 F 0 "U1" H 3450 3717 50  0000 C CNN
-F 1 "74LVT125PW,118" H 3450 3626 50  0000 C CNN
+F 1 "SN74LVTH125PWR" H 3450 3626 50  0000 C CNN
 F 2 "Package_SO:TSSOP-14_4.4x5mm_P0.65mm" H 3450 3400 50  0001 C CNN
 F 3 "http://www.ti.com/lit/gpn/sn74LVT125" H 3450 3400 50  0001 C CNN
-F 4 "74LVT125PW,118" H 3450 3400 50  0001 C CNN "MPN"
-F 5 "https://www.lcsc.com/product-detail/Buffer-Driver-Transceiver_Nexperia-74LVT125PW-118_C6108.html" H 3450 3400 50  0001 C CNN "URL"
+F 4 "SN74LVTH125PWR" H 3450 3400 50  0001 C CNN "MPN"
+F 5 "https://www.lcsc.com/product-detail/Buffer-Driver-Transceiver_Texas-Instruments-SN74LVTH125PWR_C7042.html" H 3450 3400 50  0001 C CNN "URL"
 	3    3450 3400
 	1    0    0    -1  
 $EndComp
@@ -1541,11 +1531,11 @@ L 74xx:74LVC125 U1
 U 4 1 61F9DD6A
 P 3450 3850
 F 0 "U1" H 3450 4167 50  0000 C CNN
-F 1 "74LVT125PW,118" H 3450 4076 50  0000 C CNN
+F 1 "SN74LVTH125PWR" H 3450 4076 50  0000 C CNN
 F 2 "Package_SO:TSSOP-14_4.4x5mm_P0.65mm" H 3450 3850 50  0001 C CNN
 F 3 "http://www.ti.com/lit/gpn/sn74LVT125" H 3450 3850 50  0001 C CNN
-F 4 "74LVT125PW,118" H 3450 3850 50  0001 C CNN "MPN"
-F 5 "https://www.lcsc.com/product-detail/Buffer-Driver-Transceiver_Nexperia-74LVT125PW-118_C6108.html" H 3450 3850 50  0001 C CNN "URL"
+F 4 "SN74LVTH125PWR" H 3450 3850 50  0001 C CNN "MPN"
+F 5 "https://www.lcsc.com/product-detail/Buffer-Driver-Transceiver_Texas-Instruments-SN74LVTH125PWR_C7042.html" H 3450 3850 50  0001 C CNN "URL"
 	4    3450 3850
 	1    0    0    -1  
 $EndComp
@@ -1554,11 +1544,11 @@ L 74xx:74LVC125 U1
 U 5 1 61F9DE9B
 P 5050 3200
 F 0 "U1" H 5280 3246 50  0000 L CNN
-F 1 "74LVT125PW,118" H 5280 3155 50  0000 L CNN
+F 1 "SN74LVTH125PWR" H 5280 3155 50  0000 L CNN
 F 2 "Package_SO:TSSOP-14_4.4x5mm_P0.65mm" H 5050 3200 50  0001 C CNN
 F 3 "http://www.ti.com/lit/gpn/sn74LVT125" H 5050 3200 50  0001 C CNN
-F 4 "74LVT125PW,118" H 5050 3200 50  0001 C CNN "MPN"
-F 5 "https://www.lcsc.com/product-detail/Buffer-Driver-Transceiver_Nexperia-74LVT125PW-118_C6108.html" H 5050 3200 50  0001 C CNN "URL"
+F 4 "SN74LVTH125PWR" H 5050 3200 50  0001 C CNN "MPN"
+F 5 "https://www.lcsc.com/product-detail/Buffer-Driver-Transceiver_Texas-Instruments-SN74LVTH125PWR_C7042.html" H 5050 3200 50  0001 C CNN "URL"
 	5    5050 3200
 	1    0    0    -1  
 $EndComp
@@ -1682,11 +1672,11 @@ L 74xx:74LVC125 U2
 U 1 1 621875DB
 P 3650 10150
 F 0 "U2" H 3650 10467 50  0000 C CNN
-F 1 "74LVT125PW,118" H 3650 10376 50  0000 C CNN
+F 1 "SN74LVTH125PWR" H 3650 10376 50  0000 C CNN
 F 2 "Package_SO:TSSOP-14_4.4x5mm_P0.65mm" H 3650 10150 50  0001 C CNN
 F 3 "http://www.ti.com/lit/gpn/sn74LVT125" H 3650 10150 50  0001 C CNN
-F 4 "74LVT125PW,118" H 3650 10150 50  0001 C CNN "MPN"
-F 5 "https://www.lcsc.com/product-detail/Buffer-Driver-Transceiver_Nexperia-74LVT125PW-118_C6108.html" H 3650 10150 50  0001 C CNN "URL"
+F 4 "SN74LVTH125PWR" H 3650 10150 50  0001 C CNN "MPN"
+F 5 "https://www.lcsc.com/product-detail/Buffer-Driver-Transceiver_Texas-Instruments-SN74LVTH125PWR_C7042.html" H 3650 10150 50  0001 C CNN "URL"
 	1    3650 10150
 	1    0    0    -1  
 $EndComp
@@ -1695,11 +1685,11 @@ L 74xx:74LVC125 U2
 U 3 1 621875E9
 P 3650 11050
 F 0 "U2" H 3650 11367 50  0000 C CNN
-F 1 "74LVT125PW,118" H 3650 11276 50  0000 C CNN
+F 1 "SN74LVTH125PWR" H 3650 11276 50  0000 C CNN
 F 2 "Package_SO:TSSOP-14_4.4x5mm_P0.65mm" H 3650 11050 50  0001 C CNN
 F 3 "http://www.ti.com/lit/gpn/sn74LVT125" H 3650 11050 50  0001 C CNN
-F 4 "74LVT125PW,118" H 3650 11050 50  0001 C CNN "MPN"
-F 5 "https://www.lcsc.com/product-detail/Buffer-Driver-Transceiver_Nexperia-74LVT125PW-118_C6108.html" H 3650 11050 50  0001 C CNN "URL"
+F 4 "SN74LVTH125PWR" H 3650 11050 50  0001 C CNN "MPN"
+F 5 "https://www.lcsc.com/product-detail/Buffer-Driver-Transceiver_Texas-Instruments-SN74LVTH125PWR_C7042.html" H 3650 11050 50  0001 C CNN "URL"
 	3    3650 11050
 	1    0    0    -1  
 $EndComp
@@ -1708,11 +1698,11 @@ L 74xx:74LVC125 U2
 U 4 1 621875F0
 P 3650 11500
 F 0 "U2" H 3650 11817 50  0000 C CNN
-F 1 "74LVT125PW,118" H 3650 11726 50  0000 C CNN
+F 1 "SN74LVTH125PWR" H 3650 11726 50  0000 C CNN
 F 2 "Package_SO:TSSOP-14_4.4x5mm_P0.65mm" H 3650 11500 50  0001 C CNN
 F 3 "http://www.ti.com/lit/gpn/sn74LVT125" H 3650 11500 50  0001 C CNN
-F 4 "74LVT125PW,118" H 3650 11500 50  0001 C CNN "MPN"
-F 5 "https://www.lcsc.com/product-detail/Buffer-Driver-Transceiver_Nexperia-74LVT125PW-118_C6108.html" H 3650 11500 50  0001 C CNN "URL"
+F 4 "SN74LVTH125PWR" H 3650 11500 50  0001 C CNN "MPN"
+F 5 "https://www.lcsc.com/product-detail/Buffer-Driver-Transceiver_Texas-Instruments-SN74LVTH125PWR_C7042.html" H 3650 11500 50  0001 C CNN "URL"
 	4    3650 11500
 	1    0    0    -1  
 $EndComp
@@ -1721,11 +1711,11 @@ L 74xx:74LVC125 U2
 U 5 1 621875F7
 P 5100 10650
 F 0 "U2" H 5330 10696 50  0000 L CNN
-F 1 "74LVT125PW,118" H 5330 10605 50  0000 L CNN
+F 1 "SN74LVTH125PWR" H 5330 10605 50  0000 L CNN
 F 2 "Package_SO:TSSOP-14_4.4x5mm_P0.65mm" H 5100 10650 50  0001 C CNN
 F 3 "http://www.ti.com/lit/gpn/sn74LVT125" H 5100 10650 50  0001 C CNN
-F 4 "74LVT125PW,118" H 5100 10650 50  0001 C CNN "MPN"
-F 5 "https://www.lcsc.com/product-detail/Buffer-Driver-Transceiver_Nexperia-74LVT125PW-118_C6108.html" H 5100 10650 50  0001 C CNN "URL"
+F 4 "SN74LVTH125PWR" H 5100 10650 50  0001 C CNN "MPN"
+F 5 "https://www.lcsc.com/product-detail/Buffer-Driver-Transceiver_Texas-Instruments-SN74LVTH125PWR_C7042.html" H 5100 10650 50  0001 C CNN "URL"
 	5    5100 10650
 	1    0    0    -1  
 $EndComp
@@ -1789,11 +1779,11 @@ L 74xx:74LVC125 U2
 U 2 1 621875E2
 P 3650 10600
 F 0 "U2" H 3650 10917 50  0000 C CNN
-F 1 "74LVT125PW,118" H 3650 10826 50  0000 C CNN
+F 1 "SN74LVTH125PWR" H 3650 10826 50  0000 C CNN
 F 2 "Package_SO:TSSOP-14_4.4x5mm_P0.65mm" H 3650 10600 50  0001 C CNN
 F 3 "http://www.ti.com/lit/gpn/sn74LVT125" H 3650 10600 50  0001 C CNN
-F 4 "74LVT125PW,118" H 3650 10600 50  0001 C CNN "MPN"
-F 5 "https://www.lcsc.com/product-detail/Buffer-Driver-Transceiver_Nexperia-74LVT125PW-118_C6108.html" H 3650 10600 50  0001 C CNN "URL"
+F 4 "SN74LVTH125PWR" H 3650 10600 50  0001 C CNN "MPN"
+F 5 "https://www.lcsc.com/product-detail/Buffer-Driver-Transceiver_Texas-Instruments-SN74LVTH125PWR_C7042.html" H 3650 10600 50  0001 C CNN "URL"
 	2    3650 10600
 	1    0    0    -1  
 $EndComp
@@ -2155,16 +2145,6 @@ Wire Wire Line
 	4550 13150 5150 13150
 Text Notes 350  13400 0    50   ~ 0
 For ID, it's likely all Macs are using open/ground,\nso we could pull-up to +3V3 and avoid the level shifter entirely.
-Wire Notes Line
-	6950 8450 7850 8450
-Wire Notes Line
-	7850 8450 7850 9300
-Wire Notes Line
-	7850 9300 6950 9300
-Wire Notes Line
-	6950 9300 6950 8450
-Text Notes 6750 8450 0    50   ~ 0
-signals formerly from FPGA to CPLD\nTBC they are no longer needed
 Text Notes 12750 7300 0    50   ~ 0
 Signals Tap Leds
 Wire Wire Line
