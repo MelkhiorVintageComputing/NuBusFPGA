@@ -1,4 +1,4 @@
-### Module positions - created on Thu Mar 23 15:40:31 2023 ###
+### Module positions - created on Sun Apr  2 14:24:52 2023 ###
 ### Printed by Pcbnew version kicad 5.1.9+dfsg1-1~bpo10+1
 ## Unit = mm, Angle = deg.
 ## Side : top
@@ -11,8 +11,8 @@ C5        100nF                                                                 
 C6        100nF                                                                      C_0603_1608Metric                                  138.7000   -90.1000   90.0000  top
 C7        10nF_1kV_0805                                                              C_0805_2012Metric                                  270.8500   -51.0000  180.0000  top
 C8        100nF                                                                      C_0603_1608Metric                                  130.4400   -79.6400    0.0000  top
-C9        100nF                                                                      C_0603_1608Metric                                  145.7500   -11.5000  180.0000  top
-C10       47uF_10V_1206                                                              C_1206_3216Metric                                  166.1000   -10.0150   90.0000  top
+C9        100nF                                                                      C_0603_1608Metric                                  145.7500   -10.2500  180.0000  top
+C10       47uF_10V_1206                                                              C_1206_3216Metric                                  166.1000    -8.7650   90.0000  top
 C11       100nF                                                                      C_0603_1608Metric                                  173.6350   -20.5500   90.0000  top
 C12       100nF                                                                      C_0603_1608Metric                                  189.2114   -51.4630   90.0000  top
 C13       10nF                                                                       C_0603_1608Metric                                  171.6350   -20.5500   90.0000  top
@@ -52,7 +52,7 @@ J6        10118194-0001LF_(USB_micro-B)                                         
 J8        A2541HWR-2x8P_(Pmod_2x8_F)                                                 PinSocket_2x08_P2.54mm_Horizontal_ForSeeedStudio   263.0000   -36.8900  180.0000  top
 JAB1      77313-101-64LF_(2x32_M_2.54mm)                                             PinHeader_2x32_P2.54mm_Vertical_For_SeeedStudio    130.0000   -61.7500   90.0000  top
 JCD1      77313-101-64LF_(2x32_M_2.54mm)                                             PinHeader_2x32_P2.54mm_Vertical_For_SeeedStudio    130.0000   -30.0000   90.0000  top
-P1        DM3CS-SF                                                                   HRS_DM3CS-SF                                       156.0000   -14.0000  180.0000  top
+P1        DM3CS-SF                                                                   HRS_DM3CS-SF                                       156.0000   -12.7500  180.0000  top
 R1        560                                                                        R_0603_1608Metric                                  121.5200   -40.4100  180.0000  top
 R2        560                                                                        R_0603_1608Metric                                  121.5200   -38.1583  180.0000  top
 R3        560                                                                        R_0603_1608Metric                                  114.8000   -12.0000  270.0000  top
