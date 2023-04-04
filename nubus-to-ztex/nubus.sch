@@ -890,14 +890,14 @@ L 74xx:74LS245 U8
 U 1 1 61BC9B90
 P 17350 3450
 F 0 "U8" H 17350 4428 50  0000 C CNN
-F 1 "74LVT245BPW,118" H 17350 4337 50  0000 C CNN
+F 1 "SN74LVT245BPWR" H 17350 4337 50  0000 C CNN
 F 2 "For_SeeedStudio:TSSOP-20_4.4x6.5mm_P0.65mm_ForSeeedStudio" H 17350 3450 50  0001 C CNN
 F 3 "http://www.ti.com/lit/gpn/sn74LS245" H 17350 3450 50  0001 C CNN
 F 4 "https://eu.mouser.com/ProductDetail/?qs=me8TqzrmIYVnC5%252BK4SaiTg%3D%3D" H 17350 3450 50  0001 C CNN "URL - ALT - mouser"
 F 5 "74LVT245BPW,118" H 17350 3450 50  0001 C CNN "MPN - ALT"
 F 6 "https://www.digikey.fr/fr/products/detail/nexperia-usa-inc/74LVT245BPW-118/1231957" H 17350 3450 50  0001 C CNN "URL - ALT"
-F 7 "SN74LVT245BPWR" H 17350 3450 50  0001 C CNN "MPN"
-F 8 "https://lcsc.com/product-detail/Receivers-Transceivers_Texas-Instruments-SN74LVT245BPWR_C74214.html" H 17350 3450 50  0001 C CNN "URL"
+F 7 "SN74LVTH245APWR" H 17350 3450 50  0001 C CNN "MPN"
+F 8 "https://www.lcsc.com/product-detail/Buffer-Driver-Transceiver_Texas-Instruments-SN74LVTH245APWR_C2652121.html" H 17350 3450 50  0001 C CNN "URL"
 	1    17350 3450
 	-1   0    0    -1  
 $EndComp
@@ -953,14 +953,14 @@ L 74xx:74LS245 U7
 U 1 1 61BCFF5A
 P 15350 3450
 F 0 "U7" H 15350 4428 50  0000 C CNN
-F 1 "74LVT245BPW,118" H 15350 4337 50  0000 C CNN
+F 1 "SN74LVT245BPWR" H 15350 4337 50  0000 C CNN
 F 2 "For_SeeedStudio:TSSOP-20_4.4x6.5mm_P0.65mm_ForSeeedStudio" H 15350 3450 50  0001 C CNN
 F 3 "http://www.ti.com/lit/gpn/sn74LS245" H 15350 3450 50  0001 C CNN
 F 4 "74LVT245BPW,118" H 15350 3450 50  0001 C CNN "MPN - ALT"
 F 5 "https://eu.mouser.com/ProductDetail/?qs=me8TqzrmIYVnC5%252BK4SaiTg%3D%3D" H 15350 3450 50  0001 C CNN "URL - ALT - mouser"
 F 6 "https://www.digikey.fr/fr/products/detail/nexperia-usa-inc/74LVT245BPW-118/1231957" H 15350 3450 50  0001 C CNN "URL - ALT"
-F 7 "SN74LVT245BPWR" H 15350 3450 50  0001 C CNN "MPN"
-F 8 "https://lcsc.com/product-detail/Receivers-Transceivers_Texas-Instruments-SN74LVT245BPWR_C74214.html" H 15350 3450 50  0001 C CNN "URL"
+F 7 "SN74LVTH245APWR" H 15350 3450 50  0001 C CNN "MPN"
+F 8 "https://www.lcsc.com/product-detail/Buffer-Driver-Transceiver_Texas-Instruments-SN74LVTH245APWR_C2652121.html" H 15350 3450 50  0001 C CNN "URL"
 	1    15350 3450
 	-1   0    0    -1  
 $EndComp
@@ -1016,14 +1016,14 @@ L 74xx:74LS245 U6
 U 1 1 61BD1F0E
 P 13300 3450
 F 0 "U6" H 13300 4428 50  0000 C CNN
-F 1 "74LVT245BPW,118" H 13300 4337 50  0000 C CNN
+F 1 "SN74LVT245BPWR" H 13300 4337 50  0000 C CNN
 F 2 "For_SeeedStudio:TSSOP-20_4.4x6.5mm_P0.65mm_ForSeeedStudio" H 13300 3450 50  0001 C CNN
 F 3 "http://www.ti.com/lit/gpn/sn74LS245" H 13300 3450 50  0001 C CNN
 F 4 "74LVT245BPW,118" H 13300 3450 50  0001 C CNN "MPN - ALT"
 F 5 "https://eu.mouser.com/ProductDetail/?qs=me8TqzrmIYVnC5%252BK4SaiTg%3D%3D" H 13300 3450 50  0001 C CNN "URL - ALT - mouser"
 F 6 "https://www.digikey.fr/fr/products/detail/nexperia-usa-inc/74LVT245BPW-118/1231957" H 13300 3450 50  0001 C CNN "URL - ALT"
-F 7 "SN74LVT245BPWR" H 13300 3450 50  0001 C CNN "MPN"
-F 8 "https://lcsc.com/product-detail/Receivers-Transceivers_Texas-Instruments-SN74LVT245BPWR_C74214.html" H 13300 3450 50  0001 C CNN "URL"
+F 7 "SN74LVTH245APWR" H 13300 3450 50  0001 C CNN "MPN"
+F 8 "https://www.lcsc.com/product-detail/Buffer-Driver-Transceiver_Texas-Instruments-SN74LVTH245APWR_C2652121.html" H 13300 3450 50  0001 C CNN "URL"
 	1    13300 3450
 	-1   0    0    -1  
 $EndComp
@@ -1079,7 +1079,7 @@ L 74xx:74LS245 U5
 U 1 1 61BD1F3B
 P 11250 3450
 F 0 "U5" H 11250 4428 50  0000 C CNN
-F 1 "74LVT245BPW,118" H 11250 4337 50  0000 C CNN
+F 1 "SN74LVT245BPWR" H 11250 4337 50  0000 C CNN
 F 2 "For_SeeedStudio:TSSOP-20_4.4x6.5mm_P0.65mm_ForSeeedStudio" H 11250 3450 50  0001 C CNN
 F 3 "http://www.ti.com/lit/gpn/sn74LS245" H 11250 3450 50  0001 C CNN
 F 4 "74LVT245BPW,118" H 11250 3450 50  0001 C CNN "MPN - ALT"
@@ -1088,8 +1088,8 @@ F 6 "https://www.renesas.com/us/en/package/pcg20" H 11250 3450 50  0001 C CNN "D
 F 7 "https://www.renesas.com/document/psc/pcpcg-package-outline-150-body-width-qsop-025-pitch?language=en" H 11250 3450 50  0001 C CNN "Datasheet - Packaging"
 F 8 "https://assets.nexperia.com/documents/package-information/SOT360-1.pdf" H 11250 3450 50  0001 C CNN "Package Drawings"
 F 9 "https://www.digikey.fr/fr/products/detail/nexperia-usa-inc/74LVT245BPW-118/1231957" H 11250 3450 50  0001 C CNN "URL - ALT"
-F 10 "SN74LVT245BPWR" H 11250 3450 50  0001 C CNN "MPN"
-F 11 "https://lcsc.com/product-detail/Receivers-Transceivers_Texas-Instruments-SN74LVT245BPWR_C74214.html" H 11250 3450 50  0001 C CNN "URL"
+F 10 "SN74LVTH245APWR" H 11250 3450 50  0001 C CNN "MPN"
+F 11 "https://www.lcsc.com/product-detail/Buffer-Driver-Transceiver_Texas-Instruments-SN74LVTH245APWR_C2652121.html" H 11250 3450 50  0001 C CNN "URL"
 	1    11250 3450
 	-1   0    0    -1  
 $EndComp
@@ -2795,4 +2795,146 @@ F 3 "" H 15900 9350 50  0001 C CNN
 	1    15900 9350
 	1    0    0    -1  
 $EndComp
+Text Notes 5200 2000 0    50   Italic 0
+Notes on MPN:\n74LVT and 74LVTH differs by the 'bus hold' feature on the'H' variant\n(see <https://assets.nexperia.com/documents/white-paper/Nexperia_document_whitepaper_FloatingInputs_Logic_BusHold_201909.pdf>)\nBoth should work, 'H' variant seems more available @JLCPCB
+$Comp
+L Device:C C16
+U 1 1 649F6D34
+P 16350 2525
+F 0 "C16" H 16375 2625 50  0000 L CNN
+F 1 "1uF" H 16375 2425 50  0000 L CNN
+F 2 "Capacitor_SMD:C_0603_1608Metric" H 16388 2375 50  0001 C CNN
+F 3 "" H 16350 2525 50  0000 C CNN
+F 4 "CL10A105KB8NNNC" H 16350 2525 50  0001 C CNN "MPN"
+	1    16350 2525
+	1    0    0    -1  
+$EndComp
+$Comp
+L power:GND #PWR0141
+U 1 1 649F924E
+P 16350 2675
+F 0 "#PWR0141" H 16350 2425 50  0001 C CNN
+F 1 "GND" H 16355 2502 50  0000 C CNN
+F 2 "" H 16350 2675 50  0001 C CNN
+F 3 "" H 16350 2675 50  0001 C CNN
+	1    16350 2675
+	1    0    0    -1  
+$EndComp
+$Comp
+L power:+3V3 #PWR0149
+U 1 1 649F97D4
+P 16350 2375
+F 0 "#PWR0149" H 16350 2225 50  0001 C CNN
+F 1 "+3V3" H 16365 2548 50  0000 C CNN
+F 2 "" H 16350 2375 50  0001 C CNN
+F 3 "" H 16350 2375 50  0001 C CNN
+	1    16350 2375
+	1    0    0    -1  
+$EndComp
+$Comp
+L Device:C C29
+U 1 1 649FF55F
+P 12250 2550
+F 0 "C29" H 12275 2650 50  0000 L CNN
+F 1 "1uF" H 12275 2450 50  0000 L CNN
+F 2 "Capacitor_SMD:C_0603_1608Metric" H 12288 2400 50  0001 C CNN
+F 3 "" H 12250 2550 50  0000 C CNN
+F 4 "CL10A105KB8NNNC" H 12250 2550 50  0001 C CNN "MPN"
+	1    12250 2550
+	1    0    0    -1  
+$EndComp
+$Comp
+L power:GND #PWR0150
+U 1 1 649FF565
+P 12250 2700
+F 0 "#PWR0150" H 12250 2450 50  0001 C CNN
+F 1 "GND" H 12255 2527 50  0000 C CNN
+F 2 "" H 12250 2700 50  0001 C CNN
+F 3 "" H 12250 2700 50  0001 C CNN
+	1    12250 2700
+	1    0    0    -1  
+$EndComp
+$Comp
+L power:+3V3 #PWR0153
+U 1 1 649FF56B
+P 12250 2400
+F 0 "#PWR0153" H 12250 2250 50  0001 C CNN
+F 1 "+3V3" H 12265 2573 50  0000 C CNN
+F 2 "" H 12250 2400 50  0001 C CNN
+F 3 "" H 12250 2400 50  0001 C CNN
+	1    12250 2400
+	1    0    0    -1  
+$EndComp
+$Comp
+L Device:C C31
+U 1 1 64A331D7
+P 11775 9275
+F 0 "C31" H 11800 9375 50  0000 L CNN
+F 1 "1uF" H 11800 9175 50  0000 L CNN
+F 2 "Capacitor_SMD:C_0603_1608Metric" H 11813 9125 50  0001 C CNN
+F 3 "" H 11775 9275 50  0000 C CNN
+F 4 "CL10A105KB8NNNC" H 11775 9275 50  0001 C CNN "MPN"
+	1    11775 9275
+	1    0    0    -1  
+$EndComp
+$Comp
+L power:GND #PWR0154
+U 1 1 64A331DD
+P 11775 9425
+F 0 "#PWR0154" H 11775 9175 50  0001 C CNN
+F 1 "GND" H 11780 9252 50  0000 C CNN
+F 2 "" H 11775 9425 50  0001 C CNN
+F 3 "" H 11775 9425 50  0001 C CNN
+	1    11775 9425
+	1    0    0    -1  
+$EndComp
+$Comp
+L power:+3V3 #PWR0155
+U 1 1 64A331E3
+P 11775 9125
+F 0 "#PWR0155" H 11775 8975 50  0001 C CNN
+F 1 "+3V3" H 11790 9298 50  0000 C CNN
+F 2 "" H 11775 9125 50  0001 C CNN
+F 3 "" H 11775 9125 50  0001 C CNN
+	1    11775 9125
+	1    0    0    -1  
+$EndComp
+$Comp
+L Device:C C32
+U 1 1 64A8746F
+P 13200 13350
+F 0 "C32" H 13225 13450 50  0000 L CNN
+F 1 "1uF" H 13225 13250 50  0000 L CNN
+F 2 "Capacitor_SMD:C_0603_1608Metric" H 13238 13200 50  0001 C CNN
+F 3 "" H 13200 13350 50  0000 C CNN
+F 4 "CL10A105KB8NNNC" H 13200 13350 50  0001 C CNN "MPN"
+	1    13200 13350
+	1    0    0    -1  
+$EndComp
+$Comp
+L power:GND #PWR0156
+U 1 1 64A87475
+P 13200 13500
+F 0 "#PWR0156" H 13200 13250 50  0001 C CNN
+F 1 "GND" H 13205 13327 50  0000 C CNN
+F 2 "" H 13200 13500 50  0001 C CNN
+F 3 "" H 13200 13500 50  0001 C CNN
+	1    13200 13500
+	1    0    0    -1  
+$EndComp
+$Comp
+L power:+3V3 #PWR0157
+U 1 1 64A8747B
+P 13200 13200
+F 0 "#PWR0157" H 13200 13050 50  0001 C CNN
+F 1 "+3V3" H 13215 13373 50  0000 C CNN
+F 2 "" H 13200 13200 50  0001 C CNN
+F 3 "" H 13200 13200 50  0001 C CNN
+	1    13200 13200
+	1    0    0    -1  
+$EndComp
+Text Notes 11575 9650 1    50   Italic 0
+close to tm0/1 leds
+Text Notes 13075 13600 1    50   Italic 0
+close to U13
 $EndSCHEMATC
