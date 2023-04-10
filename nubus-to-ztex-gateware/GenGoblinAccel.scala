@@ -1,7 +1,10 @@
 package vexriscv.demo
 
-// CG6 Plugin is:
-// ./gen_plugin -n CG6 -i data_bitmanip.txt -i data_bitmanip_ZbbOnly.txt -I SH2ADD -I MINU -I MAXU -I REV8 -I CMOV -I CMIX -I FSR -I SEXTdotB >| CG6.scala
+// CG6Plugin is:
+// ./gen_plugin -n CG6 -i data_bitmanip.txt -i data_bitmanip_ZbbOnly.txt -I SH2ADD -I MINU -I MAXU -I REV8 -I CMOV -I CMIX -I FSR -I ZEXTdotH -I SEXTdotB >| CG6.scala
+// Goblin Plugins are:
+// ./gen_plugin -n Goblin -i data_Zpn.txt -I UKADD8 -I UKSUB8 >| Goblin.scala
+// ./gen_plugin -n Goblin -i data_Zxrender_2cycles.txt -I UFMA8VxV >| Goblin2c.scala
 
 import vexriscv.plugin._
 import vexriscv.{VexRiscv, VexRiscvConfig, plugin}
@@ -19,7 +22,8 @@ object GenGoblinAccel { // extends App {
     val config = VexRiscvConfig(
       plugins = List(
         new IBusCachedPlugin(
-	  resetVector = 0xF0910000l, // beginning of ROM
+	  resetVector = 0xF0910000l, // beginning of ROM (NuBus)
+          //resetVector = 0x00410000l, // beginning of ROM (SBus)
           relaxedPcCalculation = false,
           prediction = STATIC,
           config = InstructionCacheConfig(
@@ -60,10 +64,16 @@ object GenGoblinAccel { // extends App {
 	),
         new StaticMemoryTranslatorPlugin(
 	  // only cache the sdram memory
+          // NuBus
 	  ioRange = addr => ((addr(31 downto 28) =/= 0x8) & // SDRAM
                              (addr(31 downto 12) =/= 0xF0902) & // SRAM
                              (addr(31 downto 16) =/= 0xF091) // ROM
                             )
+          // SBus
+          //ioRange = addr => ((addr(31 downto 28) =/= 0x8) & // SDRAM
+          //                   (addr(31 downto 16) =/= 0x0042) & // SRAM
+          //                   (addr(31 downto 16) =/= 0x0041) // ROM
+          //                  )
         ),
         new DecoderSimplePlugin(
           catchIllegalInstruction = false
@@ -80,10 +90,9 @@ object GenGoblinAccel { // extends App {
         //new LightShifterPlugin,
         new MulPlugin,
 	new FullBarrelShifterPlugin,
-	//new BitManipZbaPlugin(earlyInjection = false), // sh.add
-	//new BitManipZbbPlugin(earlyInjection = false), // zero-ext, min/max, others
-	//new BitManipZbtPlugin(earlyInjection = false), // cmov, cmix, funnel
 	new CG6Plugin(earlyInjection = false), // full-custom list
+	new GoblinPlugin(earlyInjection = false), // full-custom list
+	new Goblin2cPlugin(earlyInjection = false), // full-custom list
         new HazardSimplePlugin(
           bypassExecute           = true,
           bypassMemory            = true,
