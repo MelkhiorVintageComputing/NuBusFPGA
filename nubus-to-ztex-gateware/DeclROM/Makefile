@@ -17,6 +17,10 @@ APPLEINCS=${NS816DECLROMDIR}/atrap.inc ${NS816DECLROMDIR}/declrom.inc ${NS816DEC
 
 HRES=1920
 VRES=1080
+QEMU=no
+ifeq ($(QEMU),yes)
+	CFLAGS+=-DQEMU
+endif
 
 CSRC_VIDEO=NuBusFPGADrvr_OpenClose.c NuBusFPGADrvr_Ctrl.c NuBusFPGADrvr_Status.c NuBusFPGAPrimaryInit_Primary.c NuBusFPGAPrimaryInit_RamInit.c NuBusFPGASecondaryInit_Secondary.c
 CSRC_RAMDSK=NuBusFPGARAMDskDrvr_OpenClose.c NuBusFPGARAMDskDrvr_Ctrl.c NuBusFPGARAMDskDrvr_Prime.c NuBusFPGARAMDskDrvr_Status.c myrle.c

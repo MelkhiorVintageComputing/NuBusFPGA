@@ -24,6 +24,8 @@ from litedram.phy import s7ddrphy
 
 from litedram.frontend.dma import *
 
+from liteeth.phy.rmii import LiteEthPHYRMII
+
 from migen.genlib.cdc import BusSynchronizer
 from migen.genlib.resetsync import AsyncResetSynchronizer
 
@@ -45,7 +47,8 @@ class _CRG(Module):
     def __init__(self, platform, version, sys_clk_freq,
                  goblin=False,
                  hdmi=False,
-                 pix_clk=0):
+                 pix_clk=0,
+                 ethernet=False):
         self.clock_domains.cd_sys       = ClockDomain() # 100 MHz PLL, reset'ed by NuBus (via pll), SoC/Wishbone main clock
         self.clock_domains.cd_sys4x     = ClockDomain(reset_less=True)
         self.clock_domains.cd_sys4x_dqs = ClockDomain(reset_less=True)
@@ -59,7 +62,9 @@ class _CRG(Module):
             else:
                 self.clock_domains.cd_hdmi      = ClockDomain()
                 self.clock_domains.cd_hdmi5x    = ClockDomain()
-            
+        if (ethernet):
+            self.clock_domains.cd_eth = ClockDomain()
+
 
         # # #
         clk48 = platform.request("clk48")
@@ -118,6 +123,11 @@ class _CRG(Module):
         pll.create_clkout(self.cd_sys4x_dqs, 4*sys_clk_freq, phase=90)
         platform.add_platform_command("create_generated_clock -name sys4x90clk [get_pins {{{{MMCME2_ADV/CLKOUT{}}}}}]".format(num_clk))
         num_clk = num_clk + 1
+        if (ethernet):
+            pll.create_clkout(self.cd_eth, 50e6, phase=90) # fixme: what if sys_clk_feq != 100e6?
+            platform.add_platform_command("create_generated_clock -name ethclk [get_pins {{{{MMCME2_ADV/CLKOUT{}}}}}]".format(num_clk))
+            num_clk = num_clk + 1
+
         self.comb += pll.reset.eq(~rst_nubus_n) # | ~por_done 
         platform.add_false_path_constraints(clk48, self.cd_nubus.clk) # FIXME?
         platform.add_false_path_constraints(self.cd_nubus.clk, clk48) # FIXME?
@@ -171,7 +181,7 @@ class _CRG(Module):
             
         
 class NuBusFPGA(SoCCore):
-    def __init__(self, variant, version, sys_clk_freq, goblin, hdmi, goblin_res, **kwargs):
+    def __init__(self, variant, version, sys_clk_freq, goblin, hdmi, goblin_res, ethernet, **kwargs):
         print(f"Building NuBusFPGA for board version {version}")
         
         kwargs["cpu_type"] = "None"
@@ -182,6 +192,9 @@ class NuBusFPGA(SoCCore):
         self.sys_clk_freq = sys_clk_freq
     
         self.platform = platform = ztex213_nubus.Platform(variant = variant, version = version)
+
+        if (ethernet and (version == "V1.2")):
+            platform.add_extension(ztex213_nubus._rmii_eth_extpmod_io_v1_2)
 
         use_goblin_alt = True
         if ((not use_goblin_alt) or (not hdmi)):
@@ -238,11 +251,12 @@ class NuBusFPGA(SoCCore):
             "goblin_audio_ram" : 0xF0920000, # audio for goblin (RAM buffers)
             "csr" :              0xF0A00000, # CSR
             "pingmaster":        0xF0B00000,
+            "ethmac":            0xF0C00000,
             "rom":               0xF0FF8000, # ROM at the end (32 KiB of it ATM)
             #"END OF SLOT SPACE": 0xF0FFFFFF,
         }
         self.mem_map.update(wb_mem_map)
-        self.submodules.crg = _CRG(platform=platform, version=version, sys_clk_freq=sys_clk_freq, goblin=goblin, hdmi=hdmi, pix_clk=litex.soc.cores.video.video_timings[goblin_res]["pix_clk"])
+        self.submodules.crg = _CRG(platform=platform, version=version, sys_clk_freq=sys_clk_freq, goblin=goblin, hdmi=hdmi, pix_clk=litex.soc.cores.video.video_timings[goblin_res]["pix_clk"], ethernet=ethernet)
 
         ## add our custom timings after the clocks have been defined
         xdc_timings_filename = None;
@@ -476,25 +490,42 @@ class NuBusFPGA(SoCCore):
                 self.add_ram("goblin_accel_rom", origin=self.mem_map["goblin_accel_rom"], size=rounded_goblin_rom_len, contents=goblin_rom_data, mode="r")
                 self.add_ram("goblin_accel_ram", origin=self.mem_map["goblin_accel_ram"], size=2**12, mode="rw")
 
+            if (ethernet):
+                # we need the CRG to provide the cd_eth clock: "use refclk_cd as RMII reference clock (provided by user design) (no external clock).
+                self.ethphy = LiteEthPHYRMII(
+                    clock_pads = self.platform.request("eth_clocks"),
+                    pads       = self.platform.request("eth"))
+                self.add_ethernet(phy=self.ethphy, data_width = 32)
+                print(f"%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% {self.ethmac.interface.sram.ev.irq}") # FIXME HANDLEME
+
         # for testing
-        if (True):
+        if (False):
             from nubus_master_tst import PingMaster
             self.submodules.pingmaster = PingMaster(nubus=self.nubus, platform=self.platform)
             self.bus.add_slave("pingmaster_slv", self.pingmaster.bus_slv, SoCRegion(origin=self.mem_map.get("pingmaster", None), size=0x010, cached=False))
             self.bus.add_master(name="pingmaster_mst", master=self.pingmaster.bus_mst)
         
 def main():
-    parser = argparse.ArgumentParser(description="SbusFPGA")
+    parser = argparse.ArgumentParser(description="NuBusFPGA")
     parser.add_argument("--build", action="store_true", help="Build bitstream")
     parser.add_argument("--variant", default="ztex2.13a", help="ZTex board variant (default ztex2.13a)")
     parser.add_argument("--version", default="V1.0", help="NuBusFPGA board version (default V1.0)")
     parser.add_argument("--sys-clk-freq", default=100e6, help="NuBusFPGA system clock (default 100e6 = 100 MHz)")
     parser.add_argument("--goblin", action="store_true", help="add a goblin framebuffer")
-    parser.add_argument("--hdmi", action="store_true", help="The framebuffer uses HDMI (default to VGA)")
+    parser.add_argument("--hdmi", action="store_true", help="The framebuffer uses HDMI (default to VGA, required for V1.2)")
     parser.add_argument("--goblin-res", default="640x480@60Hz", help="Specify the goblin resolution")
+    parser.add_argument("--ethernet", action="store_true", help="Add Ethernet (V1.2 w/ custom PMod only)")
     builder_args(parser)
     vivado_build_args(parser)
     args = parser.parse_args()
+
+    if (args.ethernet and (args.version == "V1.0")):
+        print(" ***** ERROR ***** : Ethernet not supported on V1.0\n");
+        assert(False)
+            
+    if ((not args.hdmi) and (args.version == "V1.2")):
+        print(" ***** ERROR ***** : VGA not supported on V1.2\n");
+        assert(False)
     
     soc = NuBusFPGA(**soc_core_argdict(args),
                     variant=args.variant,
@@ -502,7 +533,8 @@ def main():
                     sys_clk_freq=int(float(args.sys_clk_freq)),
                     goblin=args.goblin,
                     hdmi=args.hdmi,
-                    goblin_res=args.goblin_res)
+                    goblin_res=args.goblin_res,
+                    ethernet=args.ethernet)
 
     version_for_filename = args.version.replace(".", "_")
 

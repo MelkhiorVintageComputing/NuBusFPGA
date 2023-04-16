@@ -10,7 +10,7 @@ This project was 'spun off' the [SBusFPGA](https://github.com/rdolbeau/SBusFPGA)
 
 ## Current status
 
-First prototype is working in a Quadra 650, running MacOS 8.1. It implements a single-screen-resolution, windowboxed multi-resolution, depth-switchable (1/2/4/8/16/32 bits) framebuffer over DVI-in-HDMI-connector (will work with any HDMI-compliant monitor). The framebuffer can be used as secondary/primary/only framebuffer in the machine running OS8.1. Qemu tests indicate this should work with 7.1 & 7.5/7.6 as well. An alternate HDMI PHY also supports audio, enabled as a 8/16 bits, mono/stereo, 44.1 Hz output compoenent in MacOS.
+First prototype is working in a Quadra 650, running MacOS 8.1. It implements a single-screen-resolution, windowboxed multi-resolution, depth-switchable (1/2/4/8/16/32 bits) framebuffer over DVI-in-HDMI-connector (will work with any HDMI-compliant monitor). The framebuffer can be used as secondary/primary/only framebuffer in the machine running OS8.1. Qemu tests indicate this should work with 7.1 & 7.5/7.6 as well. An alternate HDMI PHY also supports audio, enabled as a 8/16 bits, mono/stereo, 44.1 kHz output component in MacOS.
 
 Some basic acceleration now exists for 8/16/32 bits, doing rectangle screen-to-screen blits and pattern rectangle fills. 1/2/4 bits also has some acceleration, but only for byte-aligned cases.
 

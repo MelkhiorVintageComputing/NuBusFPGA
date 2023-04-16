@@ -34,8 +34,10 @@ UInt32 Primary(SEBlock* seblock) {
 	vres = __builtin_bswap32((UInt32)PRIM_READREG(GOBOFB_VRES)); // fixme: endianness
 	
 	/* initialize DRAM controller */
+#ifndef QEMU
 	sdram_init(a32);
-
+#endif
+	
 	/* grey the screen */
 	/* should switch to HW ? */
 	a32_l0 = a32;
