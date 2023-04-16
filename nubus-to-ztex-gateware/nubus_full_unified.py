@@ -20,12 +20,13 @@ class NuBus(Module):
         #led1 = platform.request("user_led", 1)
 
         if (usesampling):
-            # when using 'sampling', the NuBus signals are sampled at sys_clk frequency instead of synchronously using nubus_clk
+            # when using 'sampling', the NuBus clock is sampled at sys_clk frequency instead of used directly
+            # the other signals are still sampled synchronously, and the buffer used from sysclk afterwards
             # I'm not completely sure about timings, but in practice it seems to work...
             # The major benefit is that when a read is detected, it is sent to the Wishbone synchronously as the signals are already in sys_clk
             # And when Wishbone answers, we just wait for the next detected NuBus edge to answer
             # It significantly improves read latency
-            # Writes don't see the same improvement, are they always are fire-and-forget in a FIFO anyway
+            # Writes don't see the same improvement, as they always are fire-and-forget in a FIFO anyway
             nub_clk = ClockSignal(cd_nubus)
             nub_resetn = ~ResetSignal(cd_nubus)
             nub_clk_prev_bits = 4 # how many cycles after posedge do we still dare set some signals (i.e. still before setup time before negedge)
@@ -39,10 +40,16 @@ class NuBus(Module):
             self.sync += [
                 nub_clk_prev[i].eq(nub_clk_prev[i-1]) for i in range(1, nub_clk_prev_bits)
             ]
-            self.sync += [
-                nub_clk_negedge.eq(~nub_clk &  nub_clk_prev[0]),
-                nub_clk_posedge.eq( nub_clk & ~nub_clk_prev[0]),
-                nub_clk_insetup.eq( nub_clk & (nub_clk_prev != ((2**nub_clk_prev_bits)-1))), # if one of the previous X cycles is zero, we're early enough to set up signals
+            #self.sync += [
+            #    nub_clk_negedge.eq(~nub_clk &  nub_clk_prev[0]),
+            #    nub_clk_posedge.eq( nub_clk & ~nub_clk_prev[0]),
+            #    nub_clk_insetup.eq( nub_clk & (nub_clk_prev != ((2**nub_clk_prev_bits)-1))), # if one of the previous X cycles is zero, we're early enough to set up signals
+            #]
+            # this should use double sampling; however using [1] and [2] break, perhaps the detection is too late?
+            self.comb += [
+                nub_clk_negedge.eq(~nub_clk_prev[0] &  nub_clk_prev[1]),
+                nub_clk_posedge.eq( nub_clk_prev[0] & ~nub_clk_prev[1]),
+                nub_clk_insetup.eq( nub_clk_prev[0] & (nub_clk_prev[1:nub_clk_prev_bits] != ((2**(nub_clk_prev_bits-1))-1))), # if one of the previous X cycles is zero, we're early enough to set up signals
             ]
 
         # Signals for tri-stated nubus access
@@ -148,66 +155,34 @@ class NuBus(Module):
         write_fifo_din = Record(write_fifo_layout)
         self.comb += write_fifo.din.eq(write_fifo_din.raw_bits())
 
-        if (usesampling):
-            # sys_clk sampling of the nubus signals
-            self.sync += [
-                #If((~nub_clk &  nub_clk_prev[0]), # simultaneous with setting negedge
-                If(nub_clk_negedge,
-                   sampled_tm0.eq(~tm0_i_n),
-                   sampled_tm1.eq(~tm1_i_n),
-                   sampled_start.eq(~start_i_n),
-                   sampled_rqst.eq(~rqst_i_n),
-                   sampled_ack.eq(~ack_i_n),
-                   sampled_ad.eq(~ad_i_n),
-                )
-            ]
-            self.comb += [
-                decoded_block.eq(sampled_ad[1] & ~sampled_ad[0] & ~sampled_tm0), # 1x block write or 1x block read
-                decoded_sel[3].eq(sampled_tm1 &  sampled_ad[1] &  sampled_ad[0] &  sampled_tm0 # Byte 3
-                                  | sampled_tm1 &  sampled_ad[1] &  sampled_ad[0] & ~sampled_tm0 # Half 1
-                                  | sampled_tm1 & ~sampled_ad[1] & ~sampled_ad[0] & ~sampled_tm0 # Word
-                ),
-                decoded_sel[2].eq(sampled_tm1 &  sampled_ad[1] & ~sampled_ad[0] &  sampled_tm0 # Byte 2
-                                  | sampled_tm1 &  sampled_ad[1] &  sampled_ad[0] & ~sampled_tm0 # Half 1
-                                  | sampled_tm1 & ~sampled_ad[1] & ~sampled_ad[0] & ~sampled_tm0 # Word
-                ),
-                decoded_sel[1].eq(sampled_tm1 & ~sampled_ad[1] &  sampled_ad[0] &  sampled_tm0 # Byte 1
-                                  | sampled_tm1 & ~sampled_ad[1] &  sampled_ad[0] & ~sampled_tm0 # Half 0
-                                  | sampled_tm1 & ~sampled_ad[1] & ~sampled_ad[0] & ~sampled_tm0 # Word
-                ),
-                decoded_sel[0].eq(sampled_tm1 & ~sampled_ad[1] & ~sampled_ad[0] &  sampled_tm0 # Byte 0
-                                  | sampled_tm1 & ~sampled_ad[1] &  sampled_ad[0] & ~sampled_tm0 # Half 0
-                                  | sampled_tm1 & ~sampled_ad[1] & ~sampled_ad[0] & ~sampled_tm0 # Word
-                ),
-            ]
-        else:
-            # nubus-synchronous sampling (in Verilog for negedge)
-            self.specials += Instance("nubus_sampling",
-                                      i_nub_clkn = ClockSignal(cd_nubus),
-                                      i_nub_resetn = ~ResetSignal(cd_nubus),
-                                      i_nub_tm0n = tm0_i_n,
-                                      i_nub_tm1n = tm1_i_n,
-                                      i_nub_startn = start_i_n,
-                                      i_nub_rqstn = rqst_i_n,
-                                      i_nub_ackn = ack_i_n,
-                                      i_nub_adn = ad_i_n,
-                                      
-                                      o_tm0 = sampled_tm0,
-                                      o_tm1 = sampled_tm1,
-                                      o_start = sampled_start,
-                                      o_rqst = sampled_rqst,
-                                      o_ack = sampled_ack,
-                                      o_ad = sampled_ad,
-                                      
-                                      o_sel = decoded_sel,
-                                      o_block = decoded_block,
-                                      o_busy = decoded_busy,
-            )
+        # nubus-synchronous sampling (in Verilog for negedge)
+        self.specials += Instance("nubus_sampling",
+                                  i_nub_clkn = ClockSignal(cd_nubus),
+                                  i_nub_resetn = ~ResetSignal(cd_nubus),
+                                  i_nub_tm0n = tm0_i_n,
+                                  i_nub_tm1n = tm1_i_n,
+                                  i_nub_startn = start_i_n,
+                                  i_nub_rqstn = rqst_i_n,
+                                  i_nub_ackn = ack_i_n,
+                                  i_nub_adn = ad_i_n,
+                                  
+                                  o_tm0 = sampled_tm0,
+                                  o_tm1 = sampled_tm1,
+                                  o_start = sampled_start,
+                                  o_rqst = sampled_rqst,
+                                  o_ack = sampled_ack,
+                                  o_ad = sampled_ad,
+                                  
+                                  o_sel = decoded_sel,
+                                  o_block = decoded_block,
+                                  o_busy = decoded_busy,
+        )
         
         self.read_ctr = read_ctr = Signal(32)
         self.writ_ctr = writ_ctr = Signal(32)
 
         if (usesampling):
+            # ############# usesampling FSM
             self.submodules.slave_fsm = slave_fsm = FSM(reset_state="Reset")
             slave_fsm.act("Reset",
                           NextState("Idle")
@@ -324,7 +299,9 @@ class NuBus(Module):
                           ack_o_n.eq(0),
                           NextState("Idle"),
             )
+            # ############# end of usesampling FSM
         else:
+            # ############# non-usesampling FSM
             self.submodules.slave_fsm = slave_fsm = ClockDomainsRenamer(cd_nubus)(FSM(reset_state="Reset"))
             slave_fsm.act("Reset",
                           NextState("Idle")
@@ -381,6 +358,7 @@ class NuBus(Module):
                              NextState("Idle"),
                           )
             )
+            # ############# end of non-usesampling FSM
 
         # connect the write FIFO inputs
         self.comb += [ write_fifo_din.adr.eq(current_adr), # recorded
@@ -799,16 +777,6 @@ class NuBus(Module):
                 grant.eq(nf_grant),
                 nf_fpga_to_cpld_signal.eq(~rqst_oe),
             ]
-
-        if (usesampling):
-            self.sync += [
-                If((~nub_clk &  nub_clk_prev[0]), # simultaneous with setting negedge
-                   decoded_busy.eq(~decoded_busy & nub_ackn & ~nub_startn # beginning of transaction
-			           |  decoded_busy & nub_ackn &  nub_resetn), # hold during cycle
-                )
-            ]
-
-
 
         if (version == "V1.2"):
             self.nubus_oe = nubus_oe = Signal() # improveme
