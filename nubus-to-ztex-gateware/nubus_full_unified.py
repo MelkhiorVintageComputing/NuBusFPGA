@@ -699,13 +699,15 @@ class NuBus(Module):
         nub_adn = platform.request("ad_3v3_n") # V1.0: from CPLD ; V1.2: from shifters
         nub_idn = platform.request("id_3v3_n") # V1.0: from CPLD (4 bits) ; V1.2: from shifters (3 bits, /ID3 is always 0)
 
+        # idem between V1.0 and V1.2
+        self.specials += Tristate(nub_adn,    ad_o_n,    ad_oe,     ad_i_n)
+
         # Tri-state
         if (version == "V1.0"):
             # tri-state communication with CPLD
             self.specials += Tristate(nub_tm0n,   tm0_o_n,   tmo_oe,    tm0_i_n)
             self.specials += Tristate(nub_tm1n,   tm1_o_n,   tmo_oe,    tm1_i_n)
             self.specials += Tristate(nub_ackn,   ack_o_n,   tmo_oe,    ack_i_n)
-            self.specials += Tristate(nub_adn,    ad_o_n,    ad_oe,     ad_i_n)
             self.specials += Tristate(nub_startn, start_o_n, master_oe, start_i_n)
         elif (version == "V1.2"):
             # input only
@@ -713,7 +715,6 @@ class NuBus(Module):
                 tm0_i_n.eq(nub_tm0n),
                 tm1_i_n.eq(nub_tm1n),
                 ack_i_n.eq(nub_ackn),
-                ad_i_n.eq(nub_adn),
                 start_i_n.eq(nub_startn),
             ]
         else:
@@ -765,6 +766,7 @@ class NuBus(Module):
             nf_grant = platform.request("grant") # V1.0: from cpld
             nf_nubus_master_dir = platform.request("nubus_master_dir") # V1.0: to cpld
             nf_fpga_to_cpld_signal = platform.request("fpga_to_cpld_signal") # V1.0: to cpld, 'rqstoen'
+            
 
         # NuBus90 signals, , for completeness
         nub_clk2xn = ClockSignal(cd_nubus90)
@@ -779,9 +781,8 @@ class NuBus(Module):
             ]
 
         if (version == "V1.2"):
-            self.nubus_oe = nubus_oe = Signal() # improveme
             self.specials += Instance("nubus_cpldinfpga",
-                                      i_nubus_oe = nubus_oe, # improveme: handled in soc
+                                      i_nubus_oe = soc.hold_reset, # improveme, handled in SoC
                                       i_tmoen = ~tmo_oe,
                                       i_nubus_master_dir = master_oe,
                                       i_rqst_oe_n = ~rqst_oe,

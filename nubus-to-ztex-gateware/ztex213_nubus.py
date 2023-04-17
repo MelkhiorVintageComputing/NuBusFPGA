@@ -104,8 +104,8 @@ _nubus_io_v1_2 = [
     ## extra 54 MHz clock reference for bank 34
     ("clk54", 0, Pins("R3"), IOStandard("LVCMOS33")),
     ## leds on the NuBus board
-    ("user_led", 0, Pins("U9"),  IOStandard("lvcmos33")), #LED0
-    ("user_led", 1, Pins("V9"),  IOStandard("lvcmos33")), #LED1; both are overlapping with serial TX/RX
+    ("user_led", 0, Pins("V9"),  IOStandard("lvcmos33")), #LED0
+    ("user_led", 1, Pins("U9"),  IOStandard("lvcmos33")), #LED1; both are overlapping with serial TX/RX
     ## serial header for console
     ("serial", 0,
      Subsignal("tx", Pins("V9")), # FIXME: might be the other way round

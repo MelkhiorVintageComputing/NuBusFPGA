@@ -84,9 +84,10 @@ class _CRG(Module):
         if (version == "V1.2"):
             self.clock_domains.cd_bank34      = ClockDomain()
             clk54 = platform.request("clk54")
+            platform.add_platform_command("create_clock -name clk54 -period 18.51851851851851851 [get_nets clk54]")
             self.clk54_bufg = Signal()
             self.specials += Instance("BUFG", i_I=clk54, o_O=self.clk54_bufg)
-            self.comb += self.cd_native.clk.eq(self.clk54_bufg)     
+            self.comb += self.cd_bank34.clk.eq(self.clk54_bufg)     
         else:
             clk54 = None
             
@@ -334,7 +335,7 @@ class NuBusFPGA(SoCCore):
         #hold_reset_ctr = Signal(30, reset=960000000)
         hold_reset_ctr = Signal(5, reset=31)
         self.sync.native += If(hold_reset_ctr>0, hold_reset_ctr.eq(hold_reset_ctr - 1))
-        hold_reset = Signal()
+        self.hold_reset = hold_reset = Signal() # in reset if high, out-of-reset if low
         self.comb += hold_reset.eq(~(hold_reset_ctr == 0))
         pad_nubus_oe = platform.request("nubus_oe")
         self.comb += pad_nubus_oe.eq(hold_reset)
