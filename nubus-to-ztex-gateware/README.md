@@ -27,3 +27,9 @@ There's an interesting issue where you need the DeclRom to generate the bitstrea
 ### timings
 
 While the main part of the design should be fine in terms of timings, some of the HDMI part isn't. At FullHD resolution (1920x1080 @ 60Hz)), It is 'normal' to have -0.808ns of WPWS, with 9 endpoints failing, in the hdmi5x_clk domain. It doesn't seem to affect the display. This is using the V1.2 54 MHz clock to Bank 34; using the primary 48 MHz clock instead (as in V1.0), the hdmi_clk is a 148.8 MHz instead of 148.5 and the WPPS is -0.811 instead (the 5x clock is at 744 Mhz instead of 742.5 MHz).
+
+### physical
+
+The HDMI connector is low-riding on the PCB. The Mac case gets in the the HDMI plug from the cable, thus pushing the NuBusFPGA slightly out of verticality.
+
+Also when plugging a PMod in the PMod connector, the soldered through-hole pins are dangerously close of the Mac shielding. An extra layer of insulation is recommended to avoid short-circuit.
