@@ -58,7 +58,7 @@ OSErr cNuBusFPGAStatus(CntrlParamPtr pb, /* DCtlPtr */ AuxDCEPtr dce)
 		   VDPageInfo	*vPInfo = (VDPageInfo *)*(long *)pb->csParam;
 		   vPInfo->csMode = dStore->curDepth; /* checkme: PCI says depth, 7.5+ doesn't call anyway? */ 
 		   vPInfo->csPage = dStore->curPage;
-		   vPInfo->csBaseAddr = dStore->curPage * 1024 * 1024 * 4; /* fixme */
+		   vPInfo->csBaseAddr = (Ptr)(dStore->curPage * 1024 * 1024 * 4); /* fixme */
 		   ret = noErr;
 	   }
 	   break;
@@ -101,7 +101,7 @@ OSErr cNuBusFPGAStatus(CntrlParamPtr pb, /* DCtlPtr */ AuxDCEPtr dce)
 			   ret = paramErr;
 			   goto done;
 		   }
-		   vPInfo->csBaseAddr = vPInfo->csPage * 1024 * 1024 * 4; /* fixme for > 2 pages ? */
+		   vPInfo->csBaseAddr = (Ptr)(vPInfo->csPage * 1024 * 1024 * 4); /* fixme for > 2 pages ? */
 		   ret = noErr;
 	   }
 		 asm volatile(".word 0xfe16\n");
@@ -154,7 +154,7 @@ OSErr cNuBusFPGAStatus(CntrlParamPtr pb, /* DCtlPtr */ AuxDCEPtr dce)
 		  vdswitch->csMode = dStore->curDepth;
 		  vdswitch->csData = dStore->curMode;
 		  vdswitch->csPage = dStore->curPage;
-		  vdswitch->csBaseAddr = dStore->curPage * 1024 * 1024 * 4; /* fixme */
+		  vdswitch->csBaseAddr = (Ptr)(dStore->curPage * 1024 * 1024 * 4); /* fixme */
 		  ret = noErr;
 	   }
 	   break;
