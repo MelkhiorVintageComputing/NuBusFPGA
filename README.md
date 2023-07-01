@@ -45,3 +45,29 @@ The Declaration ROM is in the subdirectory DeclROM and includes the driver neede
 The code for the NuBusFPGAInit (which should be renamed and enables acceleration) is in NuBusFPGAInit/, and will need a CodeWarrior INIT project to build, on a real Macintosh or an emulated one using e.g. Qemu. It enables graphic acceleration.
 
 The code for the Audio component (which enables audio support over HDMI) is in NuBusFPGAHDMIAudio/.
+
+## FAQ
+
+* Can the framebuffer change resolution ?
+ No and yes. No, it cannot change the resolution outputed through the HDMI connector by software. That is currently 'gatewired' into the FPGA configuration, so the board needs a new bitstream to change resolution. Yes, you can change the resolution in System 7 / MacOS 8 by software, but the new resolution is 'windowbowed' in the middle of the screen (e.g. it can display 640x480 surrounded by lots of black pixels in the middle of a Full HD LCD).
+ This is a 'gateware' (configuration of the FPGA) limitation. Changing the output resolution requires changing the pixel clock, which is possible but not easy to do. There is currently no plan to remove that limitation, but the gateware is open-source and contributions are welcome :-)
+
+* Is USB supported ?
+ No. There is a USB connector, but it is currently useless. The gateware could include a USB OHCI host device, and that is supported in the SBusFPGA under NetBSD. However, no Apple OS running on a 68k Mac has any support for USB, so it would require an entire USB stack to be ported, which is a huge undertaking. Also, NuBus is quite a slow bus even by early 2000s standard, and USB OHCI does a lot of DMA all the time, which would use up most if not all (or maybe more than all!) the available bandwidth. There might be some support in NetBSD/mac68k eventually just to test feasibility, but it even there it's unlikely to be useful.
+
+* Is micro-sd supported ?
+ Not yet. Hopefully at some point the micro-sd card will be usable as permanent storage in System 7/MacOS 8, but so far it's not working.
+
+* Where is the ROM stored ?
+ By default the Declaration ROM is stored inside the FPGA bitstream, so the bitstream must be regenerated for every ROM change. It is possible to store it in a (SPI)[https://en.wikipedia.org/wiki/Serial_Peripheral_Interface] Flash NOR chip instead, connected via the expansion connector ((PMod)[https://digilent.com/reference/pmod/start]-like) at the back of the NuBusFPGA. My own PMod featuring a SPI Flash NOR and an I2C temperature monitoris available in the (VintageBusFPGA_Common)[https://github.com/rdolbeau/VintageBusFPGA_Common] repository, along with an adapter board to program the SPI FLash NOR through the SPI interface of a Raspberry Pi and (flashrom)[https://www.flashrom.org/Flashrom].
+
+* Is I2C supported ?
+ No. Like USB, I2C doesn't have support in System 7/MacOS 8. It's a lot simpler than USB though. Reading values from a lm75-compatible temperature monitor from System 7/MacOS 8 might be doable, but isn't currently planned. Support for NetBSD/mac68k should be reasonably easy to add as it's already supported in NetBSD/sparc for the SBusFPGA, and unlike USB there's no issue with bandwidth-hungry DMA.
+
+* How about adding Ethernet ?
+ Software is the issue. Ethernet is supported by the gateware infrastructure, and a prototype design to add Fast Ethernet via RMII through the expansion connector is available. However, there is currently no software support for it. There's some documentation from Apple, and there's (an example driver available)[http://www.mactcp.org.nz/ethernet.html], but the System 7/MacOS 8 driver for LiteEth is still to be written.
+
+* Why slow NuBus, when PDS is so much faster ?
+ NuBus is well documented, and electrically quite isolated from the rest of the machine. Safer to play with than PDS which is directly connected to the CPU. And the connector for it it still in general use and easy to get. And NuBus is available on multiple generations of machines.
+ My primary machine for this is a Quadra 650, with a 68040 and the associated PDS. Unfortunately, the connector for that PDS is near impossible to get nowadadays ((specifications are there)[https://tinkerdifferent.com/resources/specifications-for-the-quadra-pds-connector.124/]). '030 PDS uses 120-pins DIN 41612, similar to bur larger than NuBus' 96-pins. They are also available, but less common. But there is a catch - although sharing a connector board-side, the IIsi, SE/30 and IIfx pinouts are slightly different. And the LCIII is completely different.
+ Also - [IIsiFPGA](https://github.com/rdolbeau/IIsiFPGA) :-)
