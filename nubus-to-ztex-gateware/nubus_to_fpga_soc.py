@@ -37,6 +37,7 @@ from VintageBusFPGA_Common.goblin_accel import *
 # Wishbone stuff
 from VintageBusFPGA_Common.cdc_wb import WishboneDomainCrossingMaster
 from VintageBusFPGA_Common.fpga_blk_dma import *
+from VintageBusFPGA_Common.fpga_sd_dma import *
 
 from nubus_mem_wb import NuBus2Wishbone
 from nubus_memfifo_wb import NuBus2WishboneFIFO
@@ -181,8 +182,26 @@ class _CRG(Module):
                 
             
         
-class NuBusFPGA(SoCCore):
-    def __init__(self, variant, version, sys_clk_freq, goblin, hdmi, goblin_res, ethernet, **kwargs):
+class NuBusFPGA(SoCCore):    # Add SDCard -----------------------------------------------------------------------------------
+    # WiP
+    def add_sdcard_custom(self, name="sdcard", mode="read+write"):
+        # Imports.
+        from litesdcard.phy import SDPHY
+        from litesdcard.core import SDCore
+
+        # Checks.
+        assert mode in ["read", "write", "read+write"]
+
+        # Pads.
+        sdcard_pads = self.platform.request(name)
+
+        # Core.
+        self.check_if_exists("sdphy")
+        self.check_if_exists("sdcore")
+        self.sdphy  = SDPHY(sdcard_pads, self.platform.device, self.clk_freq, cmd_timeout=10e-1, data_timeout=10e-1)
+        self.sdcore = SDCore(self.sdphy)
+            
+    def __init__(self, variant, version, sys_clk_freq, goblin, hdmi, goblin_res, sdcard, flash, ethernet, **kwargs):
         print(f"Building NuBusFPGA for board version {version}")
         
         kwargs["cpu_type"] = "None"
@@ -193,6 +212,9 @@ class NuBusFPGA(SoCCore):
         self.sys_clk_freq = sys_clk_freq
     
         self.platform = platform = ztex213_nubus.Platform(variant = variant, version = version)
+            
+        if (flash and (version == "V1.2")):
+            platform.add_extension(ztex213_nubus._flashtemp_pmod_io_v1_2)
 
         if (ethernet and (version == "V1.2")):
             platform.add_extension(ztex213_nubus._rmii_eth_extpmod_io_v1_2)
@@ -253,7 +275,9 @@ class NuBusFPGA(SoCCore):
             "csr" :              0xF0A00000, # CSR
             "pingmaster":        0xF0B00000,
             "ethmac":            0xF0C00000,
+            #"spiflash":          0xF0D00000, # testing
             "rom":               0xF0FF8000, # ROM at the end (32 KiB of it ATM)
+            "spiflash":          0xF0FF8000, # FIXME currently the flash is in the ROM spot, limited to 32 KiB
             #"END OF SLOT SPACE": 0xF0FFFFFF,
         }
         self.mem_map.update(wb_mem_map)
@@ -263,6 +287,8 @@ class NuBusFPGA(SoCCore):
         xdc_timings_filename = None;
         #if (version == "V1.0"):
         #    xdc_timings_filename = "/home/dolbeau/nubus-to-ztex-gateware/nubus_fpga_V1_0_timings.xdc"
+        if (version == "V1.2"):
+            xdc_timings_filename = "nubus_fpga_V1_2_timings.xdc"
 
         if (xdc_timings_filename != None):
             xdc_timings_file = open(xdc_timings_filename)
@@ -274,14 +300,25 @@ class NuBusFPGA(SoCCore):
                     #print(fix_line)
                     platform.add_platform_command(fix_line)
 
-        rom_file = "rom_{}.bin".format(version.replace(".", "_"))
-        rom_data = soc_core.get_mem_data(filename_or_regions=rom_file, endianness="little") # "big"
-        # rom = Array(rom_data)
-        #print("\n****************************************\n")
-        #for i in range(len(rom)):
-        #    print(hex(rom[i]))
-        #print("\n****************************************\n")
-        self.add_ram("rom", origin=self.mem_map["rom"], size=2**15, contents=rom_data, mode="r") ## 32 KiB, must match mmap
+        if (not flash):
+            rom_file = "rom_{}.bin".format(version.replace(".", "_"))
+            rom_data = soc_core.get_mem_data(filename_or_regions=rom_file, endianness="little") # "big"
+            # rom = Array(rom_data)
+            #print("\n****************************************\n")
+            #for i in range(len(rom)):
+            #    print(hex(rom[i]))
+            #print("\n****************************************\n")
+            self.add_ram("rom", origin=self.mem_map["rom"], size=2**15, contents=rom_data, mode="r") ## 32 KiB, must match mmap
+
+        if (flash):
+            from litespi.modules.generated_modules import W25Q128JV
+            from litespi.opcodes import SpiNorFlashOpCodes as Codes
+            self.add_spi_flash(mode="4x",
+                               clk_freq = sys_clk_freq/4, # Fixme; PHY freq ?
+                               module=W25Q128JV(Codes.READ_1_1_4),
+                               region_size = 0x00008000, # 32 KiB
+                               with_mmap=True, with_master=False)
+            
 
         #from wb_test import WA2D
         #self.submodules.wa2d = WA2D(self.platform)
@@ -379,15 +416,18 @@ class NuBusFPGA(SoCCore):
             self.comb += irq_line.eq(fb_irq) # active low, enable if one is low
         else:
             # details for usesampling in the NuBus python object
-            usesampling = True
+            usesampling = False
             wishbone_master_sys = wishbone.Interface(data_width=self.bus.data_width)
             if (not usesampling): # we need an extra CDC
                 self.submodules.wishbone_master_nubus = WishboneDomainCrossingMaster(platform=self.platform, slave=wishbone_master_sys, cd_master="nubus", cd_slave="sys") # for non-sampling only
             nubus_writemaster_sys = wishbone.Interface(data_width=self.bus.data_width)
             wishbone_slave_nubus = wishbone.Interface(data_width=self.bus.data_width)
-            self.submodules.wishbone_slave_sys = WishboneDomainCrossingMaster(platform=self.platform, slave=wishbone_slave_nubus, cd_master="sys", cd_slave="nubus", force_delay=6) # force delay needed to avoid back-to-back transaction running into issue https://github.com/alexforencich/verilog-wishbone/issues/4
-
-
+            self.submodules.wishbone_slave_sys = WishboneDomainCrossingMaster(platform=self.platform, slave=wishbone_slave_nubus, cd_master="sys", cd_slave="nubus", force_delay=9) # force delay needed to avoid back-to-back transaction running into issue https://github.com/alexforencich/verilog-wishbone/issues/4
+            #led0 = platform.request("user_led", 0)
+            #led1 = platform.request("user_led", 1)
+            #self.comb += [ led0.eq(self.wishbone_slave_sys.stb),
+            #               led1.eq(self.wishbone_slave_sys.cyc), ]
+            
             burst_size=4
             
             data_width = burst_size * 4
@@ -407,9 +447,7 @@ class NuBusFPGA(SoCCore):
                 ("dmaaddress", 32),
             ]
         
-            self.submodules.tosbus_fifo = ClockDomainsRenamer({"read": "nubus", "write": "sys"})(AsyncFIFOBuffered(width=layout_len(self.tosbus_layout), depth=1024//data_width))
-            self.submodules.fromsbus_fifo = ClockDomainsRenamer({"write": "nubus", "read": "sys"})(AsyncFIFOBuffered(width=layout_len(self.fromsbus_layout), depth=512//data_width))
-            self.submodules.fromsbus_req_fifo = ClockDomainsRenamer({"read": "nubus", "write": "sys"})(AsyncFIFOBuffered(width=layout_len(self.fromsbus_req_layout), depth=512//data_width))
+
             irq_line = self.platform.request("nmrq_3v3_n") # active low
             fb_irq = Signal(reset = 1) # active low
             dma_irq = Signal(reset = 1) # active low
@@ -422,7 +460,13 @@ class NuBusFPGA(SoCCore):
             #]
 
             self.comb += irq_line.eq(fb_irq & dma_irq & audio_irq) # active low, enable if one is low
+
             
+            self.submodules.tosbus_fifo = ClockDomainsRenamer({"read": "nubus", "write": "sys"})(AsyncFIFOBuffered(width=layout_len(self.tosbus_layout), depth=1024//data_width))
+            self.submodules.fromsbus_fifo = ClockDomainsRenamer({"write": "nubus", "read": "sys"})(AsyncFIFOBuffered(width=layout_len(self.fromsbus_layout), depth=512//data_width))
+            self.submodules.fromsbus_req_fifo = ClockDomainsRenamer({"read": "nubus", "write": "sys"})(AsyncFIFOBuffered(width=layout_len(self.fromsbus_req_layout), depth=512//data_width))
+
+            #if (not sdcard): # fixme: temporay exclusion
             self.submodules.exchange_with_mem = ExchangeWithMem(soc=self,
                                                                 platform=platform,
                                                                 tosbus_fifo=self.tosbus_fifo,
@@ -434,8 +478,20 @@ class NuBusFPGA(SoCCore):
                                                                 burst_size=burst_size,
                                                                 do_checksum = False,
                                                                 clock_domain="nubus")
-
             self.comb += dma_irq.eq(self.exchange_with_mem.irq)
+            #else:
+            #    self.add_sdcard_custom()
+            #    self.submodules.exchange_with_sd = ExchangeWithSD(soc=self,
+            #                                                    platform=platform,
+            #                                                    tosbus_fifo=self.tosbus_fifo,
+            #                                                    fromsbus_fifo=self.fromsbus_fifo,
+            #                                                    fromsbus_req_fifo=self.fromsbus_req_fifo,
+            #                                                       sd_source=self.sdcore.source,
+            #                                                       sd_sink=self.sdcore.sink,
+            #                                                    burst_size=burst_size,
+            #                                                    clock_domain="nubus")
+            #    self.comb += dma_irq.eq(self.exchange_with_sd.irq)
+                
 
             self.submodules.nubus = nubus_full_unified.NuBus(soc=self,
                                                              version=version,
@@ -491,13 +547,17 @@ class NuBusFPGA(SoCCore):
                 self.add_ram("goblin_accel_rom", origin=self.mem_map["goblin_accel_rom"], size=rounded_goblin_rom_len, contents=goblin_rom_data, mode="r")
                 self.add_ram("goblin_accel_ram", origin=self.mem_map["goblin_accel_ram"], size=2**12, mode="rw")
 
-            if (ethernet):
-                # we need the CRG to provide the cd_eth clock: "use refclk_cd as RMII reference clock (provided by user design) (no external clock).
-                self.ethphy = LiteEthPHYRMII(
-                    clock_pads = self.platform.request("eth_clocks"),
-                    pads       = self.platform.request("eth"))
-                self.add_ethernet(phy=self.ethphy, data_width = 32)
-                print(f"%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% {self.ethmac.interface.sram.ev.irq}") # FIXME HANDLEME
+        if (sdcard):
+            self.add_sdcard()
+            # irq?
+        
+        if (ethernet):
+            # we need the CRG to provide the cd_eth clock: "use refclk_cd as RMII reference clock (provided by user design) (no external clock).
+            self.ethphy = LiteEthPHYRMII(
+                clock_pads = self.platform.request("eth_clocks"),
+                pads       = self.platform.request("eth"))
+            self.add_ethernet(phy=self.ethphy, data_width = 32)
+            print(f"%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% {self.ethmac.interface.sram.ev.irq}") # FIXME HANDLEME
 
         # for testing
         if (False):
@@ -515,13 +575,27 @@ def main():
     parser.add_argument("--goblin", action="store_true", help="add a goblin framebuffer")
     parser.add_argument("--hdmi", action="store_true", help="The framebuffer uses HDMI (default to VGA, required for V1.2)")
     parser.add_argument("--goblin-res", default="640x480@60Hz", help="Specify the goblin resolution")
+    parser.add_argument("--sdcard", action="store_true", help="add a sdcard controller (V1.2 only)")
+    parser.add_argument("--flash", action="store_true", help="add a Flash device [V1.2+FLASHTEMP PMod]")
     parser.add_argument("--ethernet", action="store_true", help="Add Ethernet (V1.2 w/ custom PMod only)")
     builder_args(parser)
     vivado_build_args(parser)
     args = parser.parse_args()
 
+    if (args.sdcard and (args.version == "V1.0")):
+        print(" ***** ERROR ***** : Ethernet not supported on V1.0\n");
+        assert(False)
+        
+    if (args.flash and (args.version == "V1.0")):
+        print(" ***** ERROR ***** : Flash not supported on V1.0\n");
+        assert(False)
+        
     if (args.ethernet and (args.version == "V1.0")):
         print(" ***** ERROR ***** : Ethernet not supported on V1.0\n");
+        assert(False)
+        
+    if (args.ethernet and args.flash):
+        print(" ***** ERROR ***** : Only one PMod usable on V1.2\n");
         assert(False)
             
     if ((not args.hdmi) and (args.version == "V1.2")):
@@ -535,6 +609,8 @@ def main():
                     goblin=args.goblin,
                     hdmi=args.hdmi,
                     goblin_res=args.goblin_res,
+                    sdcard=args.sdcard,
+                    flash=args.flash,
                     ethernet=args.ethernet)
 
     version_for_filename = args.version.replace(".", "_")

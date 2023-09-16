@@ -214,17 +214,30 @@ connectors_v1_2 = [
     ("P1", "M1 L1 N2 N1 R2 P2 T1 R1 P4 P3 P5 N5"), # check sequence! currently in pmod-* order
     ]
 
+# Extension
+def flashtemp_pmod_io(pmod):
+    return [
+        # completely inconsistent with the SBus entry as P1 is in a different order...
+        ("spiflash4x", 0,
+         Subsignal("cs_n", Pins(f"{pmod}:2")),
+         Subsignal("clk",  Pins(f"{pmod}:5")),
+         Subsignal("dq",   Pins(f"{pmod}:7 {pmod}:4 {pmod}:6 {pmod}:3")),
+         IOStandard("LVCMOS33")
+        ),
+]
+_flashtemp_pmod_io_v1_2 = flashtemp_pmod_io("P1")
+
 # Ethernet ----------------------------------------------------------------------------------------------
 # custom not-quite-pmod
 def rmii_eth_extpmod_io(extpmod):
     return [
         ("eth_clocks", 0,
-         Subsignal("ref_clk", Pins(f"{extpmod}:10")),
+         Subsignal("ref_clk", Pins(f"{extpmod}:8")),
          IOStandard("LVCMOS33"),
          ),
         ("eth", 0,
          Subsignal("rst_n",   Pins(f"{extpmod}:3")),
-         Subsignal("rx_data", Pins(f"{extpmod}:8 {extpmod}:11")),
+         Subsignal("rx_data", Pins(f"{extpmod}:11 {extpmod}:10")),
          Subsignal("crs_dv",  Pins(f"{extpmod}:6")),
          Subsignal("tx_en",   Pins(f"{extpmod}:2")),
          Subsignal("tx_data", Pins(f"{extpmod}:0 {extpmod}:1")),

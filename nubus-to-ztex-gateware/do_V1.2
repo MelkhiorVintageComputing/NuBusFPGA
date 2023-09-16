@@ -2,7 +2,7 @@
 source /opt/Xilinx/Vivado/2020.1/settings64.sh
 export LD_LIBRARY_PATH=/opt/Xilinx/Vivado/2020.1/lib/lnx64.o/SuSE
 
-python3 nubus_to_fpga_soc.py --build --csr-csv csr.csv --csr-json csr.json --variant=ztex2.13a --version=V1.2 --sys-clk-freq 100e6 --goblin --goblin-res 1920x1080@60Hz --hdmi # --ethernet
+python3 nubus_to_fpga_soc.py --build --csr-csv csr.csv --csr-json csr.json --variant=ztex2.13a --version=V1.2 --sys-clk-freq 100e6 --goblin --goblin-res 1920x1080@60Hz --hdmi --sdcard --flash # --ethernet
 
 #python3 nubus_to_fpga_soc.py --csr-csv csr.csv --csr-json csr.json --variant=ztex2.13a --version=V1.2 --sys-clk-freq 100e6
 
@@ -11,3 +11,15 @@ python3 nubus_to_fpga_soc.py --build --csr-csv csr.csv --csr-json csr.json --var
 # --hdmi
 
 grep -A10 'Design Timing Summary' build/ztex213_nubus_V1_2/gateware/ztex213_nubus_V1_2_timing.rpt
+
+
+###
+# For 16 MiB Flash NOR (W25Q128.V):
+# truncate -s $((16*1024*1024)) vid_decl_rom.bin
+# flashrom -c W25Q128.V -p linux_spi:dev=/dev/spidev0.0,spispeed=2000 -l nubus_prom.layout -i ROM -w vid_decl_rom.bin
+#
+# where nubus_prom.layout contains:
+###
+# 00000000:00007fff ROM
+# 00008000:00ffffff VDISK
+###
