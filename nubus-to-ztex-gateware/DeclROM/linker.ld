@@ -33,6 +33,12 @@ SECTIONS {
 	*(.text.dskdriver_init)
 	*(.text.dskdriver)
     PROVIDE(_RAMDskEnd020Drvr = .);
+	
+	PROVIDE(_SDCardDrvrMacOS68020 = .);
+	PROVIDE(entry_SDCardDrvrMacOS68020 = (0x02000000 | ((_SDCardDrvrMacOS68020 - _SDCardDrvrDir) & 0xFFFFFF)));
+	*(.text.sddriver_init)
+	*(.text.sddriver)
+    PROVIDE(_SDCardEnd020Drvr = .);
 
     /* and at the end the ROM block, missing only the CRC */
     . = ALIGN(4);

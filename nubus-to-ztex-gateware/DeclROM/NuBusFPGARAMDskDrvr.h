@@ -8,7 +8,7 @@
 #include <MacMemory.h>
 #include <Disks.h>
 
-#define ENABLE_DMA 1
+// #define ENABLE_DMA 1
 
 #include "NuBusFPGADrvr.h"
 

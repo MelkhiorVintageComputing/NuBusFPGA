@@ -9,6 +9,8 @@ __attribute__ ((section (".text.dskdriver"))) static inline void waitSome(unsign
 	}
 }
 
+// CLEANME: use the proper CSR accessor from nubusfpga_csr_exchange_with_mem.h
+
 #ifdef ENABLE_DMA
 __attribute__ ((section (".text.dskdriver"))) static void startOneOp(struct RAMDrvContext *ctx, const AuxDCEPtr dce) {
 	if (ctx->op.blk_todo > 0) {
@@ -17,7 +19,7 @@ __attribute__ ((section (".text.dskdriver"))) static void startOneOp(struct RAMD
 			ctx->op.blk_doing = 32768; // nice Po2
 		}
 		write_reg(dce, DMA_BLK_ADDR, revb(ctx->dma_blk_base + ctx->op.blk_offset));
-		write_reg(dce, DMA_DMA_ADDR, revb(ctx->op.ioBuffer + (ctx->op.blk_done << ctx->dma_blk_size_shift)));
+		write_reg(dce, DMA_DMA_ADDR, revb((uint32_t)(ctx->op.ioBuffer + (ctx->op.blk_done << ctx->dma_blk_size_shift))));
 		ctx->op.blk_done += ctx->op.blk_doing;
 		ctx->op.blk_todo -= ctx->op.blk_doing;
 		ctx->op.blk_offset += ctx->op.blk_doing;

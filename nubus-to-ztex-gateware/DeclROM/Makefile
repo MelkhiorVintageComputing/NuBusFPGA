@@ -24,7 +24,8 @@ endif
 
 CSRC_VIDEO=NuBusFPGADrvr_OpenClose.c NuBusFPGADrvr_Ctrl.c NuBusFPGADrvr_Status.c NuBusFPGAPrimaryInit_Primary.c NuBusFPGAPrimaryInit_RamInit.c NuBusFPGASecondaryInit_Secondary.c
 CSRC_RAMDSK=NuBusFPGARAMDskDrvr_OpenClose.c NuBusFPGARAMDskDrvr_Ctrl.c NuBusFPGARAMDskDrvr_Prime.c NuBusFPGARAMDskDrvr_Status.c myrle.c
-CSRC=${CSRC_VIDEO} ${CSRC_RAMDSK}
+CSRC_SDCARD=NuBusFPGASDCardDrvr_OpenClose.c NuBusFPGASDCardDrvr_Ctrl.c NuBusFPGASDCardDrvr_Prime.c NuBusFPGASDCardDrvr_Status.c
+CSRC=${CSRC_VIDEO} ${CSRC_RAMDSK} ${CSRC_SDCARD}
 CSRC_ASM=${CSRC:.c=.s}
 
 GEN_ASM=VidRomDef.s VidRomDir.s VidRomName.s VidRomRes.s VidRomRsrcDir.s

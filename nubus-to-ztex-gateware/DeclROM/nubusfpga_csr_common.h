@@ -3,6 +3,8 @@
 
 /* from hw/common.h, +a32 */
 
+#define CONFIG_CSR_DATA_WIDTH 32
+
 /* CSR data width (subreg. width) in bytes, for direct comparson to sizeof() */
 #define CSR_DW_BYTES     (CONFIG_CSR_DATA_WIDTH/8)
 #define CSR_OFFSET_BYTES 4
@@ -20,13 +22,13 @@
  *  |  4  | 1 1 1 1 2 2 2 2 |
  *  |  8  | 1 1 1 1 1 1 1 1 |
  *  +-----+-----------------+ */
-__attribute__ ((section (".text.primary"))) static inline int num_subregs(int csr_bytes)
+static inline int num_subregs(int csr_bytes)
 {
 	return (csr_bytes - 1) / CSR_DW_BYTES + 1;
 }
 
 /* Read a CSR of size 'csr_bytes' located at address 'a'. */
-__attribute__ ((section (".text.primary"))) static inline uint64_t _csr_rd(uint32_t a32, unsigned long a, int csr_bytes)
+static inline uint64_t _csr_rd(uint32_t a32, unsigned long a, int csr_bytes)
 {
   uint64_t r = __builtin_bswap32(*((uint32_t*)(a32 + a)));
 	for (int i = 1; i < num_subregs(csr_bytes); i++) {
@@ -38,7 +40,7 @@ __attribute__ ((section (".text.primary"))) static inline uint64_t _csr_rd(uint3
 }
 
 /* Write value 'v' to a CSR of size 'csr_bytes' located at address 'a'. */
-__attribute__ ((section (".text.primary"))) static inline void _csr_wr(uint32_t a32, unsigned long a, uint64_t v, int csr_bytes)
+static inline void _csr_wr(uint32_t a32, unsigned long a, uint64_t v, int csr_bytes)
 {
 	int ns = num_subregs(csr_bytes);
 	for (int i = 0; i < ns; i++) {
@@ -49,42 +51,42 @@ __attribute__ ((section (".text.primary"))) static inline void _csr_wr(uint32_t 
 
 // FIXME: - should we provide 24, 40, 48, and 56 bit csr_[rd|wr] methods?
 
-__attribute__ ((section (".text.primary"))) static inline uint8_t csr_rd_uint8(uint32_t a32, unsigned long a)
+static inline uint8_t csr_rd_uint8(uint32_t a32, unsigned long a)
 {
 	return _csr_rd(a32, a, sizeof(uint8_t));
 }
 
-__attribute__ ((section (".text.primary"))) static inline void csr_wr_uint8(uint32_t a32, uint8_t v, unsigned long a)
+static inline void csr_wr_uint8(uint32_t a32, uint8_t v, unsigned long a)
 {
 	_csr_wr(a32, a, v, sizeof(uint8_t));
 }
 
-__attribute__ ((section (".text.primary"))) static inline uint16_t csr_rd_uint16(uint32_t a32, unsigned long a)
+static inline uint16_t csr_rd_uint16(uint32_t a32, unsigned long a)
 {
 	return _csr_rd(a32, a, sizeof(uint16_t));
 }
 
-__attribute__ ((section (".text.primary"))) static inline void csr_wr_uint16(uint32_t a32, uint16_t v, unsigned long a)
+static inline void csr_wr_uint16(uint32_t a32, uint16_t v, unsigned long a)
 {
 	_csr_wr(a32, a, v, sizeof(uint16_t));
 }
 
-__attribute__ ((section (".text.primary"))) static inline uint32_t csr_rd_uint32(uint32_t a32, unsigned long a)
+static inline uint32_t csr_rd_uint32(uint32_t a32, unsigned long a)
 {
 	return _csr_rd(a32, a, sizeof(uint32_t));
 }
 
-__attribute__ ((section (".text.primary"))) static inline void csr_wr_uint32(uint32_t a32, uint32_t v, unsigned long a)
+static inline void csr_wr_uint32(uint32_t a32, uint32_t v, unsigned long a)
 {
 	_csr_wr(a32, a, v, sizeof(uint32_t));
 }
 
-__attribute__ ((section (".text.primary"))) static inline uint64_t csr_rd_uint64(uint32_t a32, unsigned long a)
+static inline uint64_t csr_rd_uint64(uint32_t a32, unsigned long a)
 {
 	return _csr_rd(a32, a, sizeof(uint64_t));
 }
 
-__attribute__ ((section (".text.primary"))) static inline void csr_wr_uint64(uint32_t a32, uint64_t v, unsigned long a)
+static inline void csr_wr_uint64(uint32_t a32, uint64_t v, unsigned long a)
 {
 	_csr_wr(a32, a, v, sizeof(uint64_t));
 }
@@ -159,34 +161,34 @@ __attribute__ ((section (".text.primary"))) static inline void csr_wr_uint64(uin
 	} \
 }
 
-__attribute__ ((section (".text.primary"))) static inline void csr_rd_buf_uint8(uint32_t a32, unsigned long a, uint8_t *buf, int cnt)
+static inline void csr_rd_buf_uint8(uint32_t a32, unsigned long a, uint8_t *buf, int cnt)
 {
 	_csr_rd_buf(a32, a, buf, cnt);
 }
 
-__attribute__ ((section (".text.primary"))) static inline void csr_wr_buf_uint8(uint32_t a32, unsigned long a,
+static inline void csr_wr_buf_uint8(uint32_t a32, unsigned long a,
 					const uint8_t *buf, int cnt)
 {
 	_csr_wr_buf(a32, a, buf, cnt);
 }
 
-__attribute__ ((section (".text.primary"))) static inline void csr_rd_buf_uint16(uint32_t a32, unsigned long a, uint16_t *buf, int cnt)
+static inline void csr_rd_buf_uint16(uint32_t a32, unsigned long a, uint16_t *buf, int cnt)
 {
 	_csr_rd_buf(a32, a, buf, cnt);
 }
 
-__attribute__ ((section (".text.primary"))) static inline void csr_wr_buf_uint16(uint32_t a32, unsigned long a,
+static inline void csr_wr_buf_uint16(uint32_t a32, unsigned long a,
 					const uint16_t *buf, int cnt)
 {
 	_csr_wr_buf(a32, a, buf, cnt);
 }
 
-__attribute__ ((section (".text.primary"))) static inline void csr_rd_buf_uint32(uint32_t a32, unsigned long a, uint32_t *buf, int cnt)
+static inline void csr_rd_buf_uint32(uint32_t a32, unsigned long a, uint32_t *buf, int cnt)
 {
 	_csr_rd_buf(a32, a, buf, cnt);
 }
 
-__attribute__ ((section (".text.primary"))) static inline void csr_wr_buf_uint32(uint32_t a32, unsigned long a,
+static inline void csr_wr_buf_uint32(uint32_t a32, unsigned long a,
 					const uint32_t *buf, int cnt)
 {
 	_csr_wr_buf(a32, a, buf, cnt);
@@ -196,12 +198,12 @@ __attribute__ ((section (".text.primary"))) static inline void csr_wr_buf_uint32
  * about a >= 64bit left shift! */
 #pragma GCC diagnostic push
 #pragma GCC diagnostic ignored "-Wshift-count-overflow"
-__attribute__ ((section (".text.primary"))) static inline void csr_rd_buf_uint64(uint32_t a32, unsigned long a, uint64_t *buf, int cnt)
+static inline void csr_rd_buf_uint64(uint32_t a32, unsigned long a, uint64_t *buf, int cnt)
 {
 	_csr_rd_buf(a32, a, buf, cnt);
 }
 
-__attribute__ ((section (".text.primary"))) static inline void csr_wr_buf_uint64(uint32_t a32, unsigned long a,
+static inline void csr_wr_buf_uint64(uint32_t a32, unsigned long a,
 					const uint64_t *buf, int cnt)
 {
 	_csr_wr_buf(a32, a, buf, cnt);

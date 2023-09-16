@@ -9,6 +9,7 @@
 sRsrc_Board = 1 /*  board sResource (>0 & <128) */
 	.include "VidRomDef.s"
 sRsrc_RAMDsk = 0x90 /*  functional sResources */
+sRsrc_SDCard = 0x91 /*  functional sResources */
 sRsrc_HDMIAudio = 0xA0 /*  functional sResources */
 	
     .global DeclROMDir
@@ -122,7 +123,7 @@ _GoboFBDrvrDir:
 	
 	.section .text.begin
 	.include "VidRomRes.s"
-	
+/* ////////////////////////////////////////////// RAM DISK */
 	.section .text.begin
 	ALIGN 2
 _sRsrc_RAMDsk:	
@@ -158,7 +159,44 @@ _RAMDskDrvrDir:
     .include     "NuBusFPGARAMDskDrvr.s"             /*   driver code */
 /* _RAMDskEnd020Drvr: */ /* supplied by linker script */
 
+/* ////////////////////////////////////////////// SDCARD */
+	.section .text.begin
+	ALIGN 2
+_sRsrc_SDCard:	
+	OSLstEntry  sRsrcType,_SDCardType      /*  video type descriptor */
+    OSLstEntry  sRsrcName,_SDCardName      /*  offset to driver name string */
+    OSLstEntry  sRsrcDrvrDir,_SDCardDrvrDir /* offset to driver directory */
+	DatLstEntry  sRsrcFlags,6    /* force 32 bits mode & open */
+    DatLstEntry sRsrcHWDevId,2           /*  hardware device ID */
+    .long EndOfList               /*  end of list */
+
+	ALIGN 2
+_SDCardType:	
+    .short        catProto               /*      <Category> */
+    .short        typeDrive /* custom */                 /*      <Type> */
+    .short        drSwApple                /*      <DrvrSw> */
+    .short        DrHwNuBusFPGASDCard             /*      <DrvrHw> */
+			  
+_SDCardName:	
+    .string        "SDCard_NuBusFPGA"        /*  video driver name */
 	
+	ALIGN 2
+	.section .text.begin
+	.global _SDCardDrvrDir
+_SDCardDrvrDir:	
+    /* OSLstEntry  sMacOS68020,_SDCardDrvrMacOS68020 */    /* driver directory for Mac OS */
+	.long entry_SDCardDrvrMacOS68020
+    .long EndOfList 
+
+	ALIGN 2
+	.section .text.sddriver_init
+/* _SDCardDrvrMacOS68020: */ /* supplied by linker script */
+    .long        _SDCardEnd020Drvr-.   /*  physical block size */
+    .include     "NuBusFPGASDCardDrvr.s"             /*   driver code */
+/* _SDCardEnd020Drvr: */ /* supplied by linker script */
+
+	
+/* ////////////////////////////////////////////// HDMI AUDIO */
 	.section .text.begin
 	ALIGN 2
 _sRsrc_HDMIAudio:	
