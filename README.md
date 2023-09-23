@@ -40,7 +40,7 @@ The SDRAM has its own custom DMA controller, using native Litedram interface to 
 
 ## The software
 
-The Declaration ROM is in the subdirectory DeclROM and includes the driver needed for the unaccelerated framebuffer and the RAM Disk. It needs the [Retro68](https://github.com/autc04/Retro68) toolchain to build.
+The Declaration ROM is in the subdirectory VintageBusFPGA_Common/DeclROM and includes the driver needed for the unaccelerated framebuffer and the RAM Disk. It needs the [Retro68](https://github.com/autc04/Retro68) toolchain to build.
 
 The code for the NuBusFPGAInit (which should be renamed and enables acceleration) is in NuBusFPGAInit/, and will need a CodeWarrior INIT project to build, on a real Macintosh or an emulated one using e.g. Qemu. It enables graphic acceleration.
 
