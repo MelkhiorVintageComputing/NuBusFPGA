@@ -67,6 +67,12 @@ struct goblin_csr {
   u_int32_t goblin_goblin_audio_buf_desc;
 };
 
+struct goblin_hdmi_audio_info {
+  u_int32_t csr_goblin_base; /* where to find the CSR */
+  u_int32_t goblin_audiobuffer_offset;
+  u_int32_t goblin_audiobuffer_size;
+};
+
 #define GOBLIN_AUDIOBUFFER_OFFSET 0x00920000
 #define GOBLIN_AUDIOBUFFER_SIZE   0x00002000
 // we currently have 8 KiB (0x2000) of SRAM there, but perhaps we could move that to the SDRAM?
@@ -147,6 +153,8 @@ typedef struct {
   SlotIntQElement         *siqel;
   struct goblin_bt_regs*  bt; // for debug
   struct goblin_csr*      csr; // CSR, including audio control
+  u_int32_t               audiobuffer_offset;
+  u_int32_t               audiobuffer_size;
   u_int32_t*              buf0; // primary address for first buffer (host view)
   u_int32_t*              buf1; // primary address for second buffer (host view)
   unsigned char           lastbuf;
@@ -363,7 +371,9 @@ pascal ComponentResult __ComponentRegister(GlobalsPtr globals)
 	  //	Check for hardware here. We are always installed, so we return 0
 	  OSErr ret = noErr;
 	  SpBlock mySpBlock;
+	  SpBlockPtr mySpBlockPtr = &mySpBlock;
 	  SInfoRecord mySInfoRecord;
+	  struct goblin_hdmi_audio_info ghai;
 				
 	  mySpBlock.spResult = (long)&mySInfoRecord;
 	  mySpBlock.spSlot = 0x9;
@@ -375,7 +385,7 @@ pascal ComponentResult __ComponentRegister(GlobalsPtr globals)
 	  mySpBlock.spDrvrHW = 0xbeed;
 	  mySpBlock.spTBMask = 0;
 			
-	  ret = SNextTypeSRsrc(&mySpBlock);
+	  ret = SNextTypeSRsrc(mySpBlockPtr);
 	  if (ret)
 	    return 1; // oups
 				
@@ -390,10 +400,27 @@ pascal ComponentResult __ComponentRegister(GlobalsPtr globals)
 	  (*(*globals).bt).debug = 'slot';
 	  (*(*globals).bt).debug = mySpBlock.spSlot;
 #endif
-													 
-	  (*globals).csr = (struct goblin_csr*)(0xF0000000 |
-						((unsigned long)mySpBlock.spSlot)<<24 |
-						GOBLIN_CSR_OFFSET);
+	  // now find where the audio hardware really is
+	  // Litex CSR will move around when config changes...
+	  
+	  mySpBlock.spID = 0xd0;
+	  if (SFindStruct(mySpBlockPtr) == noErr) {
+	    mySpBlock.spSize = sizeof(struct goblin_hdmi_audio_info);
+	    mySpBlock.spResult = (long)&ghai;
+	    SReadStruct(mySpBlockPtr);
+	    (*globals).csr = (struct goblin_csr*)(0xF0000000 |
+						  ((unsigned long)mySpBlock.spSlot)<<24 |
+						  ghai.csr_goblin_base);
+	    (*globals).audiobuffer_offset = ghai.goblin_audiobuffer_offset;
+	    (*globals).audiobuffer_size = ghai.goblin_audiobuffer_size;
+	  } else {
+	    // fall back to NuBusFPGA original default
+	    (*globals).csr = (struct goblin_csr*)(0xF0000000 |
+						  ((unsigned long)mySpBlock.spSlot)<<24 |
+						  GOBLIN_CSR_OFFSET);
+	    (*globals).audiobuffer_offset = GOBLIN_AUDIOBUFFER_OFFSET;
+	    (*globals).audiobuffer_size = GOBLIN_AUDIOBUFFER_SIZE;
+	  }
 	  
 #ifdef BT_DEBUG							  
 	  (*(*globals).bt).debug = 'csr ';
@@ -582,7 +609,9 @@ pascal ComponentResult __InitOutputDevice(GlobalsPtr globals, long actions)
   PreferencesPtr		prefsPtr;
   OSErr ret = noErr;
   SpBlock mySpBlock;
+  SpBlockPtr mySpBlockPtr = &mySpBlock;
   SInfoRecord mySInfoRecord;
+  struct goblin_hdmi_audio_info ghai;
 				
   mySpBlock.spResult = (long)&mySInfoRecord;
   mySpBlock.spSlot = 0x9;
@@ -594,7 +623,7 @@ pascal ComponentResult __InitOutputDevice(GlobalsPtr globals, long actions)
   mySpBlock.spDrvrHW = 0xbeed;
   mySpBlock.spTBMask = 0;
 			
-  ret = SNextTypeSRsrc(&mySpBlock);
+  ret = SNextTypeSRsrc(mySpBlockPtr);
   if (ret)
     return notEnoughHardware; // oups
 				
@@ -610,9 +639,27 @@ pascal ComponentResult __InitOutputDevice(GlobalsPtr globals, long actions)
   (*(*globals).bt).debug = mySpBlock.spSlot;
 #endif
 
-  (*globals).csr = (struct goblin_csr*)(0xF0000000 |
-					((unsigned long)mySpBlock.spSlot)<<24 |
-					GOBLIN_CSR_OFFSET);
+  // now find where the audio hardware really is
+  // Litex CSR will move around when config changes...
+
+  mySpBlock.spID = 0xd0;
+  if (SFindStruct(mySpBlockPtr) == noErr) {
+    mySpBlock.spSize = sizeof(struct goblin_hdmi_audio_info);
+    mySpBlock.spResult = (long)&ghai;
+    SReadStruct(mySpBlockPtr);
+    (*globals).csr = (struct goblin_csr*)(0xF0000000 |
+					  ((unsigned long)mySpBlock.spSlot)<<24 |
+					  ghai.csr_goblin_base);
+    (*globals).audiobuffer_offset = ghai.goblin_audiobuffer_offset;
+    (*globals).audiobuffer_size = ghai.goblin_audiobuffer_size;
+  } else {
+    // fall back to NuBusFPGA original default
+    (*globals).csr = (struct goblin_csr*)(0xF0000000 |
+					  ((unsigned long)mySpBlock.spSlot)<<24 |
+					  GOBLIN_CSR_OFFSET);
+    (*globals).audiobuffer_offset = GOBLIN_AUDIOBUFFER_OFFSET;
+    (*globals).audiobuffer_size = GOBLIN_AUDIOBUFFER_SIZE;
+  }
 
 #ifdef BT_DEBUG
   (*(*globals).bt).debug = 'CSR ';
@@ -1069,13 +1116,22 @@ OSErr SetupHardware(GlobalsPtr globals)
   // in fact, I'm not sure how MacOS would handle it, but it could be in host memory
   // using the wishbone DMA word-by-word
   // (or using a more sophisticated approach and using block request for 8/16/32/64 bytes)
+  /*
   (*globals).buf0 = (u_int32_t*)(0xF0000000 |
 				 ((unsigned long)(*globals).slot)<<24 |
 				 GOBLIN_AUDIOBUFFER_OFFSET);
   (*globals).buf1 = (u_int32_t*)(0xF0000000 |
 				 ((unsigned long)(*globals).slot)<<24 |
 				 GOBLIN_AUDIOBUFFER_OFFSET |
-				 (GOBLIN_AUDIOBUFFER_SIZE >> 1)); // offset by 4 KiB
+				 (GOBLIN_AUDIOBUFFER_SIZE >> 1));
+  */
+  (*globals).buf0 = (u_int32_t*)(0xF0000000 |
+				 ((unsigned long)(*globals).slot)<<24 |
+				 (*globals).audiobuffer_offset);
+  (*globals).buf1 = (u_int32_t*)(0xF0000000 |
+				 ((unsigned long)(*globals).slot)<<24 |
+				 (*globals).audiobuffer_offset |
+				 ((*globals).audiobuffer_size >> 1));
 
 #ifdef BT_DEBUG
   (*(*globals).bt).debug = 'bufX';
@@ -1086,11 +1142,18 @@ OSErr SetupHardware(GlobalsPtr globals)
 #endif
 
   // HW view (internal Wishbone addresses, so w/o the slot number)
+  /*
   (*(*globals).csr).goblin_goblin_audio_buf0_addr = brev((unsigned long)(0xF0000000 |
 									 GOBLIN_AUDIOBUFFER_OFFSET));
   (*(*globals).csr).goblin_goblin_audio_buf1_addr = brev((unsigned long)(0xF0000000 |
 									 GOBLIN_AUDIOBUFFER_OFFSET |
 									 (GOBLIN_AUDIOBUFFER_SIZE >> 1)));
+  */
+  (*(*globals).csr).goblin_goblin_audio_buf0_addr = brev((unsigned long)(0xF0000000 |
+									 (*globals).audiobuffer_offset));
+  (*(*globals).csr).goblin_goblin_audio_buf1_addr = brev((unsigned long)(0xF0000000 |
+									 (*globals).audiobuffer_offset |
+									 ((*globals).audiobuffer_size >> 1)));
 
   (*(*globals).siqel).sqType = sIQType;
   (*(*globals).siqel).sqPrio = 6;
