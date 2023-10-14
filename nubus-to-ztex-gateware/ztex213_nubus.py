@@ -52,6 +52,13 @@ _io = [
         Subsignal("reset_n", Pins("J5"), IOStandard("SSTL135")),
         Misc("SLEW=FAST"),
     ),
+    ("config_spiflash", 0,
+        Subsignal("cs_n", Pins("L13")),
+        # Subsignal("clk",  Pins("E9")), # 'E9' isn't a user pin, access clock via STARTUPE2 primitive, disabling the pads should do it in LiteSPIClkGen ?
+        Subsignal("mosi", Pins("K17")),
+        Subsignal("miso", Pins("K18")),
+        IOStandard("LVCMOS33"),
+    ),
 ]
 
 # NuBusFPGA I/O
@@ -258,6 +265,8 @@ class Platform(XilinxPlatform):
 
     def __init__(self, variant="ztex2.13a", version="V1.0"):
         device = {
+            "ztex2.12a":  "xc7a15tcsg324-1", #untested, too small?
+            "ztex2.12b":  "xc7a35tcsg324-1", #untested
             "ztex2.13a":  "xc7a35tcsg324-1",
             "ztex2.13b":  "xc7a50tcsg324-1", #untested
             "ztex2.13b2": "xc7a50tcsg324-1", #untested

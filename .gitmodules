@@ -5,9 +5,6 @@
 [submodule "nubus-to-ztex-gateware/VintageBusFPGA_Common"]
 	path = nubus-to-ztex-gateware/VintageBusFPGA_Common
 	url = git@github.com:rdolbeau/VintageBusFPGA_Common.git
-[submodule "nubus-to-ztex-gateware/DeclROM/ns816-declrom"]
-	path = nubus-to-ztex-gateware/DeclROM/ns816-declrom
-	url = https://github.com/jaoswald/ns816-declrom
 [submodule "nubus-to-ztex-gateware/hdl-util_hdmi"]
 	path = nubus-to-ztex-gateware/hdl-util_hdmi
 	url = https://github.com/hdl-util/hdmi

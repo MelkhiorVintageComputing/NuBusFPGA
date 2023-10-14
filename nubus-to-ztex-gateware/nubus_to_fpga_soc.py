@@ -201,7 +201,7 @@ class NuBusFPGA(SoCCore):    # Add SDCard --------------------------------------
         self.sdphy  = SDPHY(sdcard_pads, self.platform.device, self.clk_freq, cmd_timeout=10e-1, data_timeout=10e-1)
         self.sdcore = SDCore(self.sdphy)
             
-    def __init__(self, variant, version, sys_clk_freq, goblin, hdmi, goblin_res, sdcard, flash, ethernet, **kwargs):
+    def __init__(self, variant, version, sys_clk_freq, goblin, hdmi, goblin_res, sdcard, flash, config_flash, ethernet, **kwargs):
         print(f"Building NuBusFPGA for board version {version}")
         
         kwargs["cpu_type"] = "None"
@@ -275,9 +275,11 @@ class NuBusFPGA(SoCCore):    # Add SDCard --------------------------------------
             "csr" :              0xF0A00000, # CSR
             "pingmaster":        0xF0B00000,
             "ethmac":            0xF0C00000,
-            #"spiflash":          0xF0D00000, # testing
+            #"spiflash":         0xF0D00000, # testing
+            #"config_spiflash":   0xF0D00000, # testing
             "rom":               0xF0FF8000, # ROM at the end (32 KiB of it ATM)
             "spiflash":          0xF0FF8000, # FIXME currently the flash is in the ROM spot, limited to 32 KiB
+            "config_spiflash":   0xF0FF8000, # FIXME currently the flash is in the ROM spot, limited to 32 KiB
             #"END OF SLOT SPACE": 0xF0FFFFFF,
         }
         self.mem_map.update(wb_mem_map)
@@ -300,7 +302,7 @@ class NuBusFPGA(SoCCore):    # Add SDCard --------------------------------------
                     #print(fix_line)
                     platform.add_platform_command(fix_line)
 
-        if (not flash):
+        if ((not flash) and (not config_flash)): # so ROM is builtin
             rom_file = "rom_{}.bin".format(version.replace(".", "_"))
             rom_data = soc_core.get_mem_data(filename_or_regions=rom_file, endianness="little") # "big"
             # rom = Array(rom_data)
@@ -309,6 +311,7 @@ class NuBusFPGA(SoCCore):    # Add SDCard --------------------------------------
             #    print(hex(rom[i]))
             #print("\n****************************************\n")
             self.add_ram("rom", origin=self.mem_map["rom"], size=2**15, contents=rom_data, mode="r") ## 32 KiB, must match mmap
+            print("$$$$$ ROM must be pre-existing for integration in the bitstream, double-check the ROM file is current for this configuration $$$$$\n");
 
         if (flash):
             from litespi.modules.generated_modules import W25Q128JV
@@ -318,8 +321,22 @@ class NuBusFPGA(SoCCore):    # Add SDCard --------------------------------------
                                module=W25Q128JV(Codes.READ_1_1_4),
                                region_size = 0x00008000, # 32 KiB
                                with_mmap=True, with_master=False)
-            
+            print("$$$$$ ROM must be put in the external Flash NOR $$$$$\n");
 
+            
+        if (config_flash):
+            sector = 40
+            from litespi.modules.generated_modules import S25FL128S
+            from litespi.opcodes import SpiNorFlashOpCodes as Codes
+            self.add_spi_flash(name="config_spiflash",
+                               mode="1x",
+                               clk_freq = sys_clk_freq/4, # Fixme; PHY freq ?
+                               module=S25FL128S(Codes.READ_1_1_1),
+                               region_size = 0x00008000, # 32 KiB,
+                               region_offset = (sector * 65536),
+                               with_mmap=True, with_master=False)
+            print(f"$$$$$ ROM must be put in the config Flash at sector {sector} $$$$$\n");
+            
         #from wb_test import WA2D
         #self.submodules.wa2d = WA2D(self.platform)
         #self.bus.add_slave("WA2D", self.wa2d.bus, SoCRegion(origin=0x00C00000, size=0x00400000, cached=False))
@@ -576,7 +593,8 @@ def main():
     parser.add_argument("--hdmi", action="store_true", help="The framebuffer uses HDMI (default to VGA, required for V1.2)")
     parser.add_argument("--goblin-res", default="640x480@60Hz", help="Specify the goblin resolution")
     parser.add_argument("--sdcard", action="store_true", help="add a sdcard controller (V1.2 only)")
-    parser.add_argument("--flash", action="store_true", help="add a Flash device [V1.2+FLASHTEMP PMod]")
+    parser.add_argument("--flash", action="store_true", help="add a Flash device [V1.2+FLASHTEMP PMod] and configure the ROM to it")
+    parser.add_argument("--config-flash", action="store_true", help="Configure the ROM to the internal Flash used for FPGA config")
     parser.add_argument("--ethernet", action="store_true", help="Add Ethernet (V1.2 w/ custom PMod only)")
     builder_args(parser)
     vivado_build_args(parser)
@@ -601,6 +619,10 @@ def main():
     if ((not args.hdmi) and (args.version == "V1.2")):
         print(" ***** ERROR ***** : VGA not supported on V1.2\n");
         assert(False)
+        
+    if (args.config_flash and args.flash):
+        print(" ***** ERROR ***** : ROM-in-Flash can only use config OR PMod, not both\n");
+        assert(False)
     
     soc = NuBusFPGA(**soc_core_argdict(args),
                     variant=args.variant,
@@ -611,6 +633,7 @@ def main():
                     goblin_res=args.goblin_res,
                     sdcard=args.sdcard,
                     flash=args.flash,
+                    config_flash=args.config_flash,
                     ethernet=args.ethernet)
 
     version_for_filename = args.version.replace(".", "_")

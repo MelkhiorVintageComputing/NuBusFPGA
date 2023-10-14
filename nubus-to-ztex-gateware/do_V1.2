@@ -2,7 +2,7 @@
 source /opt/Xilinx/Vivado/2020.1/settings64.sh
 export LD_LIBRARY_PATH=/opt/Xilinx/Vivado/2020.1/lib/lnx64.o/SuSE
 
-python3 nubus_to_fpga_soc.py --build --csr-csv csr.csv --csr-json csr.json --variant=ztex2.13a --version=V1.2 --sys-clk-freq 100e6 --goblin --goblin-res 1920x1080@60Hz --hdmi --sdcard --flash # --ethernet
+python3 nubus_to_fpga_soc.py --build --csr-csv csr.csv --csr-json csr.json --variant=ztex2.13a --version=V1.2 --sys-clk-freq 100e6 --goblin --goblin-res 1920x1080@60Hz --hdmi --sdcard --config-flash # --ethernet # --flash
 
 #python3 nubus_to_fpga_soc.py --csr-csv csr.csv --csr-json csr.json --variant=ztex2.13a --version=V1.2 --sys-clk-freq 100e6
 
@@ -11,6 +11,8 @@ python3 nubus_to_fpga_soc.py --build --csr-csv csr.csv --csr-json csr.json --var
 # --hdmi
 
 grep -A10 'Design Timing Summary' build/ztex213_nubus_V1_2/gateware/ztex213_nubus_V1_2_timing.rpt
+
+grep '^\$\$' build_V1_2.log
 
 
 ###
