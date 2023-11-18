@@ -1,8 +1,10 @@
 (
-source /opt/Xilinx/Vivado/2020.1/settings64.sh
-export LD_LIBRARY_PATH=/opt/Xilinx/Vivado/2020.1/lib/lnx64.o/SuSE
+#source /opt/Xilinx/Vivado/2020.1/settings64.sh
+#export LD_LIBRARY_PATH=/opt/Xilinx/Vivado/2020.1/lib/lnx64.o/SuSE
+source /opt/Xilinx/Vivado/2023.2/settings64.sh
+export LD_LIBRARY_PATH=/opt/Xilinx/Vivado/2023.2/lib/lnx64.o/SuSE
 
-python3 nubus_to_fpga_soc.py --build --csr-csv csr.csv --csr-json csr.json --variant=ztex2.13a --version=V1.2 --sys-clk-freq 100e6 --goblin --goblin-res 1920x1080@60Hz --hdmi --sdcard --config-flash # --ethernet # --flash
+python3 nubus_to_fpga_soc.py --build --csr-csv csr.csv --csr-json csr.json --variant=ztex2.13a --version=V1.2 --sys-clk-freq 100e6 --goblin --goblin-res 1920x1080@60Hz --hdmi --config-flash # --ethernet # --sdcard  # --flash
 
 #python3 nubus_to_fpga_soc.py --csr-csv csr.csv --csr-json csr.json --variant=ztex2.13a --version=V1.2 --sys-clk-freq 100e6
 
@@ -16,6 +18,7 @@ grep '^\$\$' build_V1_2.log
 
 
 ###
+#     --flash
 # For 16 MiB Flash NOR (W25Q128.V):
 # truncate -s $((16*1024*1024)) vid_decl_rom.bin
 # flashrom -c W25Q128.V -p linux_spi:dev=/dev/spidev0.0,spispeed=2000 -l nubus_prom.layout -i ROM -w vid_decl_rom.bin
@@ -24,4 +27,11 @@ grep '^\$\$' build_V1_2.log
 ###
 # 00000000:00007fff ROM
 # 00008000:00ffffff VDISK
+###
+
+###
+#     --config-flash
+# vid_decl_rom.bin goes directly to sector 40 of the internal flash:
+###
+# sudo java -jar FlashSend.jar -n 40 -f rom_V1_2.bin -w
 ###
