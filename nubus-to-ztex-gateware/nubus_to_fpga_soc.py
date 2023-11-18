@@ -19,9 +19,6 @@ import nubus_to_fpga_export
 import nubus_full_unified
 import nubus_stat
 
-from litedram.modules import MT41J128M16
-from litedram.phy import s7ddrphy
-
 from litedram.frontend.dma import *
 
 from liteeth.phy.rmii import LiteEthPHYRMII
@@ -229,45 +226,15 @@ class NuBusFPGA(MacPeriphSoC):
                     #print(fix_line)
                     platform.add_platform_command(fix_line)
 
-        MacPeriphSoC.add_rom(self, version = version, flash = flash, config_flash = config_flash)
-            
-        #from wb_test import WA2D
-        #self.submodules.wa2d = WA2D(self.platform)
-        #self.bus.add_slave("WA2D", self.wa2d.bus, SoCRegion(origin=0x00C00000, size=0x00400000, cached=False))
+        MacPeriphSoC.mac_add_declrom(self, version = version, flash = flash, config_flash = config_flash)
+        
+        MacPeriphSoC.mac_add_sdram(self, hwinit = False)
 
-        # notsimul to signify we're making a real bitstream
-        # notsimul == False only to produce a verilog implementation to simulate the bus side of things
-        notsimul = True
-        if (notsimul):
-            avail_sdram = 0
-            self.submodules.ddrphy = s7ddrphy.A7DDRPHY(platform.request("ddram"),
-                                                       memtype        = "DDR3",
-                                                       nphases        = 4,
-                                                       sys_clk_freq   = sys_clk_freq)
-            self.add_sdram("sdram",
-                           phy           = self.ddrphy,
-                           module        = MT41J128M16(sys_clk_freq, "1:4"),
-                           l2_cache_size = 0,
-            )
-            avail_sdram = self.bus.regions["main_ram"].size
-            #from sdram_init import DDR3FBInit
-            #self.submodules.sdram_init = DDR3FBInit(sys_clk_freq=sys_clk_freq, bitslip=1, delay=25)
-            #self.bus.add_master(name="DDR3Init", master=self.sdram_init.bus)
-        else:
-            avail_sdram = 256 * 1024 * 1024
-            self.add_ram("ram", origin=0x8f800000, size=2**16, mode="rw")
-
-        if (not notsimul): # otherwise we have no CSRs and litex doesn't like that
-            self.submodules.leds = ClockDomainsRenamer("nubus")(LedChaser(
-                pads         = platform.request_all("user_led"),
-                sys_clk_freq = 10e6))
-            self.add_csr("leds")
-
-        base_fb = self.wb_mem_map["main_ram"] + avail_sdram - 1048576 # placeholder
+        base_fb = self.wb_mem_map["main_ram"] + self.avail_sdram - 1048576 # placeholder
         if (goblin):
-            if (avail_sdram >= self.goblin_fb_size):
-                avail_sdram = avail_sdram - self.goblin_fb_size
-                base_fb = self.wb_mem_map["main_ram"] + avail_sdram
+            if (self.avail_sdram >= self.goblin_fb_size):
+                self.avail_sdram = self.avail_sdram - self.goblin_fb_size
+                base_fb = self.wb_mem_map["main_ram"] + self.avail_sdram
                 self.wb_mem_map["video_framebuffer"] = base_fb
                 print(f"FrameBuffer base_fb @ {base_fb:x}")
             else:
@@ -385,7 +352,7 @@ class NuBusFPGA(MacPeriphSoC):
                                                                 fromsbus_req_fifo=self.fromsbus_req_fifo,
                                                                 dram_native_r=self.sdram.crossbar.get_port(mode="read", data_width=data_width_bits),
                                                                 dram_native_w=self.sdram.crossbar.get_port(mode="write", data_width=data_width_bits),
-                                                                mem_size=avail_sdram//1048576,
+                                                                mem_size=self.avail_sdram//1048576,
                                                                 burst_size=burst_size,
                                                                 do_checksum = False,
                                                                 clock_domain="nubus")
