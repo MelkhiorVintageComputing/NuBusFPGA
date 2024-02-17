@@ -11,6 +11,8 @@ class MDIOCtrl(Module, AutoCSR):
         
         div_clk_begin = 39
         div_clk_half = 20
+
+        div_clk_state_change = 2
         
         sig_mdc = platform.request("sep_mdc");
         sig_mdio = platform.request("sep_mdio");
@@ -100,7 +102,7 @@ class MDIOCtrl(Module, AutoCSR):
                      in_preamble.eq(0),
                      mdio_oe.eq(0), # don't drive
                      #mdio_oe.eq(1), # drive 0 at idle ?
-                     If(cmd_recv & (clk_div == 2), # CHECKME
+                     If(cmd_recv & (clk_div == div_clk_state_change), # CHECKME
                         NextValue(cmd_recv, 0),
                         NextValue(write, mdio_command.fields.write),
                         
@@ -125,7 +127,7 @@ class MDIOCtrl(Module, AutoCSR):
         mdio_fsm.act("Preamble",
                      in_preamble.eq(1),
                      mdio_oe.eq(1),
-                     If(clk_div == 2, # CHECKME
+                     If(clk_div == div_clk_state_change, # CHECKME
                         If(int_cnt == 0,
                            NextValue(int_cnt, 31),
                            in_preamble.eq(0), # switch mdio_o to MSb of output_data
@@ -144,12 +146,12 @@ class MDIOCtrl(Module, AutoCSR):
         mdio_fsm.act("WData",
                      in_preamble.eq(0),
                      mdio_oe.eq(1),
-                     If(clk_div == 2,
+                     If(clk_div == div_clk_state_change,
                         shift_od.eq(1), # so during clk_div == 1, output will move to the next bit
                         NextValue(int_cnt, int_cnt - 1),
                         If(int_cnt == 0,
                            mdio_o.eq(1), # help pull-ups
-                           mdio_oe.eq(0), # stop driving
+                           # mdio_oe.eq(0), # stop driving
                            NextValue(output_data, 0), # make sure it's zero
                            NextState("Idle"), ## fixme: delay to idle by one MDC clok cycle?
                         )
@@ -159,11 +161,11 @@ class MDIOCtrl(Module, AutoCSR):
         mdio_fsm.act("RData",
                      in_preamble.eq(0),
                      mdio_oe.eq(1),
-                     If(clk_div == 2,
-                        shift_od.eq(1), # so during clk_div == 2, output will move to the next bit
+                     If(clk_div == div_clk_state_change,
+                        shift_od.eq(1), # so during clk_div == div_clk_state_change, output will move to the next bit
                         NextValue(int_cnt, int_cnt - 1),
                         If(int_cnt == 18,
-                           #mdio_o.eq(1), # help pull-ups
+                           mdio_o.eq(1), # help pull-ups
                            #mdio_oe.eq(0), # stop driving during TA
                            NextState("TA"),
                         )
@@ -172,7 +174,8 @@ class MDIOCtrl(Module, AutoCSR):
                        
         mdio_fsm.act("TA",
                      mdio_oe.eq(0),
-                     If(clk_div == 2,
+                     If(clk_div == div_clk_state_change,
+                           # mdio_oe.eq(0), # stop driving
                         NextValue(rdata[15], mdio_i), # DEBUG, will capture on 17 and 16, will be flushed by shifting
                         shift_rd.eq(1), # DEBUG, shift in 2 cycles to make room
                         NextValue(int_cnt, int_cnt - 1),
@@ -185,10 +188,12 @@ class MDIOCtrl(Module, AutoCSR):
                        
         mdio_fsm.act("Capture",
                      mdio_oe.eq(0),
-                     If(clk_div == 2,
+                     If(clk_div == div_clk_state_change,
                         NextValue(rdata[15], mdio_i),
                         NextValue(int_cnt, int_cnt - 1),
                         If(int_cnt == 0,
+                           mdio_oe.eq(0),
+                           mdio_o.eq(1), # help pull-ups
                            NextState("Idle"),
                         ).Else(
                             shift_rd.eq(1), # shift in 2 cycles to make room
@@ -196,10 +201,10 @@ class MDIOCtrl(Module, AutoCSR):
                      ),
         )
         
-        led0 = platform.request("user_led", 0)
-        led1 = platform.request("user_led", 1)
-
-        self.comb += [
-            led0.eq(~mdio_fsm.ongoing("Idle")),
-            #led1.eq(clk_div != 0),
-        ]
+        #led0 = platform.request("user_led", 0)
+        #led1 = platform.request("user_led", 1)
+        #
+        #self.comb += [
+        #    led0.eq(~mdio_fsm.ongoing("Idle")),
+        #    #led1.eq(clk_div != 0),
+        #]

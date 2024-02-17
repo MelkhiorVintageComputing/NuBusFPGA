@@ -37,7 +37,7 @@ from nubus_memfifo_wb import NuBus2WishboneFIFO
 from nubus_cpu_wb import Wishbone2NuBus
 
 # CRG ----------------------------------------------------------------------------------------------
-class _CRG(Module):
+class _CRG(Module, AutoCSR): # AutoCSR for DRP
     def __init__(self, platform, version, sys_clk_freq,
                  goblin=False,
                  hdmi=False,
@@ -101,7 +101,7 @@ class _CRG(Module):
             assert(false)
         self.cd_nubus90.clk = clk2x_nubus
         self.comb += self.cd_nubus90.rst.eq(~rst_nubus_n)
-        platform.add_platform_command("create_clock -name nubus90_clk -period 50.0  -waveform {{0.0 37.5}} [get_ports clk2x_3v3_n]")
+        platform.add_platform_command("create_clock -name nubus90_clk -period 50.0  -waveform {{0.0 25}} [get_ports clk2x_3v3_n]")
 
         num_adv = 0
         num_clk = 0
@@ -119,7 +119,7 @@ class _CRG(Module):
         platform.add_platform_command("create_generated_clock -name sys4x90clk [get_pins {{{{MMCME2_ADV/CLKOUT{}}}}}]".format(num_clk))
         num_clk = num_clk + 1
         if (ethernet):
-            pll.create_clkout(self.cd_eth, 50e6, phase=90) # fixme: what if sys_clk_feq != 100e6?
+            pll.create_clkout(self.cd_eth, 50e6, phase=90) # fixme: what if sys_clk_feq != 100e6? # why phase ???
             platform.add_platform_command("create_generated_clock -name ethclk [get_pins {{{{MMCME2_ADV/CLKOUT{}}}}}]".format(num_clk))
             num_clk = num_clk + 1
 
@@ -166,6 +166,8 @@ class _CRG(Module):
                 num_clk = num_clk + 1
                 platform.add_platform_command("create_generated_clock -name hdmi5x_clk [get_pins {{{{MMCME2_ADV_{}/CLKOUT{}}}}}]".format(num_adv, num_clk))
                 num_clk = num_clk + 1
+                video_pll.expose_drp()
+                
                 
             self.comb += video_pll.reset.eq(~rst_nubus_n)
             #platform.add_false_path_constraints(self.cd_sys.clk, self.cd_vga.clk)
@@ -176,7 +178,7 @@ class _CRG(Module):
             
         
 class NuBusFPGA(MacPeriphSoC):
-    def __init__(self, variant, version, sys_clk_freq, goblin, hdmi, goblin_res, sdcard, flash, config_flash, ethernet, **kwargs):
+    def __init__(self, variant, version, sys_clk_freq, goblin, hdmi, goblin_res, use_goblin_alt, sdcard, flash, config_flash, ethernet, **kwargs):
         print(f"Building NuBusFPGA for board version {version}")
         
         self.platform = platform = ztex213_nubus.Platform(variant = variant, version = version)
@@ -186,8 +188,6 @@ class NuBusFPGA(MacPeriphSoC):
 
         if (ethernet and (version == "V1.2")):
             platform.add_extension(ztex213_nubus._rmii_eth_extpmod_io_v1_2)
-
-        use_goblin_alt = True
         
         MacPeriphSoC.__init__(self,
                               platform=platform,
@@ -380,7 +380,7 @@ class NuBusFPGA(MacPeriphSoC):
         if (goblin):
             MacPeriphSoC.mac_add_goblin(self, use_goblin_alt = use_goblin_alt, hdmi = hdmi, goblin_res = goblin_res, goblin_irq = fb_irq, audio_irq = audio_irq)
 
-        if (sdcard):
+        if (sdcard): ### WIP WIP WIP WIP
             self.add_sdcard()
             # irq?
         
@@ -388,13 +388,12 @@ class NuBusFPGA(MacPeriphSoC):
             # we need the CRG to provide the cd_eth clock: "use refclk_cd as RMII reference clock (provided by user design) (no external clock).
             self.ethphy = LiteEthPHYRMII(
                 clock_pads = self.platform.request("eth_clocks"),
+                #clock_pads = None,
                 pads       = self.platform.request("eth"))
             self.add_ethernet(phy=self.ethphy, data_width = 32)
             print(f"%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% {self.ethmac.interface.sram.ev.irq}") # FIXME HANDLEME
-
             from mdio import MDIOCtrl
             self.submodules.mdio_ctrl = MDIOCtrl(platform=platform)
-
 
         # for testing
         if (False):
@@ -411,7 +410,8 @@ def main():
     parser.add_argument("--sys-clk-freq", default=100e6, help="NuBusFPGA system clock (default 100e6 = 100 MHz)")
     parser.add_argument("--goblin", action="store_true", help="add a goblin framebuffer")
     parser.add_argument("--hdmi", action="store_true", help="The framebuffer uses HDMI (default to VGA, required for V1.2)")
-    parser.add_argument("--goblin-res", default="640x480@60Hz", help="Specify the goblin resolution")
+    parser.add_argument("--goblin-res", default="1920x1080@60Hz", help="Specify the goblin resolution")
+    parser.add_argument("--goblin-alt", action="store_true", help="Use alternate HDMI Phy with Audio support (requires Full HD resolution)")
     parser.add_argument("--sdcard", action="store_true", help="add a sdcard controller (V1.2 only)")
     parser.add_argument("--flash", action="store_true", help="add a Flash device [V1.2+FLASHTEMP PMod] and configure the ROM to it")
     parser.add_argument("--config-flash", action="store_true", help="Configure the ROM to the internal Flash used for FPGA config")
@@ -439,10 +439,39 @@ def main():
     if ((not args.hdmi) and (args.version == "V1.2")):
         print(" ***** ERROR ***** : VGA not supported on V1.2\n");
         assert(False)
+            
+    if ((not args.hdmi) and args.goblin_alt):
+        print(" ***** ERROR ***** : VGA and Goblin Alt PHY don't make sense\n");
+        assert(False)
         
     if (args.config_flash and args.flash):
         print(" ***** ERROR ***** : ROM-in-Flash can only use config OR PMod, not both\n");
         assert(False)
+
+    if (args.goblin_alt and (args.goblin_res != "1920x1080@60Hz")):
+        print(" ***** ERROR ***** : Goblin Alt PHY currently only supports Full HD\n");
+        assert(False)
+
+    if (True):
+        f = open("decl_rom_config.mak","w+")
+        hres = int(args.goblin_res.split("@")[0].split("x")[0])
+        vres = int(args.goblin_res.split("@")[0].split("x")[1])
+        f.write("TARGET=NUBUSFPGA\n")
+        f.write("FEATURES+= -DNUBUSFPGA")
+        f.write(" -DENABLE_RAMDSK") # only NuBusFPGA for now
+        if (args.goblin_alt):
+            f.write(" -DENABLE_HDMIAUDIO") # no audio in litex-style not-hdmi phy
+        else:
+            f.write(" -DENABLE_HDMI_ALT_CHANGE");
+            if (args.version == "V1.0"):
+                f.write(" -DENABLE_HDMI_ALT_CHANGE_48MHZ");
+            elif (args.version == "V1.2"):
+                f.write(" -DENABLE_HDMI_ALT_CHANGE_54MHZ");
+                
+        f.write("\n");
+        f.write(f"HRES={hres}\n");
+        f.write(f"VRES={vres}\n");
+        f.close()
     
     soc = NuBusFPGA(**soc_core_argdict(args),
                     variant=args.variant,
@@ -451,6 +480,7 @@ def main():
                     goblin=args.goblin,
                     hdmi=args.hdmi,
                     goblin_res=args.goblin_res,
+                    use_goblin_alt=args.goblin_alt,
                     sdcard=args.sdcard,
                     flash=args.flash,
                     config_flash=args.config_flash,
