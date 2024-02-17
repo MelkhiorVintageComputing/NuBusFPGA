@@ -22,9 +22,9 @@ Directory 'nubus-to-ztex'
 
 The (now obsolete) V1.0 custom board is a NuBus-compliant (I hope...) board, designed to receive a [ZTex USB-FPGA Module 2.13](https://www.ztex.de/usb-fpga-2/usb-fpga-2.13.e.html) as a daughterboard. The ZTex module contains the actual FPGA (Artix-7), some RAM, programming hardware, etc. The NuBus board contains level-shifters & drivers ICs to interface between the NuBus signals and the FPGA, a CPLD handling some level-shifting & the bus mastering arbitration, a serial header, two user Leds, 14 debug Leds tied to specific NuBus or CPLD/FPGA signals, a JTAG header, a USB micro-B connector, a VGA chip & connector, and a HDMI chip & connector. It supports every NuBus feature except the optional parity (i.e. it can do both slave and master modes). The V1.0 board is in commit 3f3371a. The CPLD solution works but is annoying as it requires older Xilinx software (ISE 14.7) and dedicated JTAG programmer to use.
 
-The current board is V1.2. It drops the CPLD and VGA port. Bus arbitration is now done inside the FPGA. It gains a micro-sd slot, and a custom expansion connector that is based (and compatible with, with more signals) PMod. It supports the same accelerated HDMI framebuffer and RAM Disk. Optionally, The Declaration Rom can be stored in a Flash NOR chip connected ot the PMOd expansion connector (easier for working on embedded driver in the DeclRom). The ROM can alternately be stored in a sector of the config flash from the ZTex board.
+The current board is V1.2. It drops the CPLD and VGA port. Bus arbitration is now done inside the FPGA. It gains a micro-sd slot, and a custom expansion connector that is based (and compatible with, with more signals) PMod. It supports the same accelerated HDMI framebuffer and RAM Disk. Optionally, The Declaration Rom can be stored in a Flash NOR chip connected ot the PMOd expansion connector (easier for working on embedded driver in the DeclRom). The ROM can alternately be stored in a sector of the config flash from the ZTex board on any *FPGA.
 
-The new (July 2023) [ZTex USB-FPGA Module 2.12](https://www.ztex.de/usb-fpga-2/usb-fpga-2.12.e.html) should be compatible with all *FPGA, but has not yet been tested.
+The new (July 2023) [ZTex USB-FPGA Module 2.12](https://www.ztex.de/usb-fpga-2/usb-fpga-2.12.e.html) is theoretically compatible with all *FPGA, but at this stage there is some issue when using the 2.12b I own. Some further tests are planned.
 
 The PCBs were designed with Kicad 5.1
 
@@ -46,13 +46,15 @@ The Declaration ROM is in the subdirectory VintageBusFPGA_Common/DeclROM and inc
 
 The code for the NuBusFPGAInit (which should be renamed and enables acceleration) is in NuBusFPGAInit/, and will need a CodeWarrior INIT project to build, on a real Macintosh or an emulated one using e.g. Qemu. It enables graphic acceleration.
 
-The code for the Audio component (which enables audio support over HDMI) is in NuBusFPGAHDMIAudio/.
+The code for the Audio component (which enables audio support over HDMI when using the alternate PHY) is in NuBusFPGAHDMIAudio/.
 
 ## FAQ
 
 * Can the framebuffer change resolution ?
- No and yes. No, it cannot change the resolution outputed through the HDMI connector by software. That is currently 'gatewired' into the FPGA configuration, so the board needs a new bitstream to change resolution. Yes, you can change the resolution in System 7 / MacOS 8 by software, but the new resolution is 'windowbowed' in the middle of the screen (e.g. it can display 640x480 surrounded by lots of black pixels in the middle of a Full HD LCD).
- This is a 'gateware' (configuration of the FPGA) limitation. Changing the output resolution requires changing the pixel clock, which is possible but not easy to do. There is currently no plan to remove that limitation, but the gateware is open-source and contributions are welcome :-)
+ Yes and no. The gateware has a default resolution baked into it that the device will use by default, and can use one of two different physical interface (PHY): the Litex-derived one (which uses DVI signalling) or a more HDMI-like one in verilog. "windowboxed" mode is always availeble, where a smaller esolution is displayed in the middle of the larger screen, which you can select in System 7/MacOS 8 with the Monitor control panel. When using the Litex PHY, some resolution are also available as "hardware" resolution, outputing the appropriate signalling - but the Litex PHY doesn't support audio. The alternate PHY does support audio, but doesn't allow to use a different output resolution, only Full HD (1920x1080) and does support audio output.
+
+* Is Audio supported ?
+ Yes and no. a 8 or 16-bits, audio or stereo, 44.1 KHz audio device is available but nly when using the alternate HDMI PHY (see previous question)
 
 * Is USB supported ?
  No. There is a USB connector, but it is currently useless. The gateware could include a USB OHCI host device, and that is supported in the SBusFPGA under NetBSD. However, no Apple OS running on a 68k Mac has any support for USB, so it would require an entire USB stack to be ported, which is a huge undertaking. Also, NuBus is quite a slow bus even by early 2000s standard, and USB OHCI does a lot of DMA all the time, which would use up most if not all (or maybe more than all!) the available bandwidth. There might be some support in NetBSD/mac68k eventually just to test feasibility, but it even there it's unlikely to be useful.
@@ -68,8 +70,9 @@ The code for the Audio component (which enables audio support over HDMI) is in N
 
 * How about adding Ethernet ?
  Software is the issue. Ethernet is supported by the gateware infrastructure, and a prototype design to add Fast Ethernet via RMII through the expansion connector is available. However, there is currently no software support for it. There's some documentation from Apple, and there's [an example driver available](http://www.mactcp.org.nz/ethernet.html), but the System 7/MacOS 8 driver for LiteEth is still to be written.
+ The [SEthernet](https://github.com/rhalkyard/SEthernet) project is a much more likely source of Ethernet for '030-based system.
 
 * Why slow NuBus, when PDS is so much faster ?
  NuBus is well documented, and electrically quite isolated from the rest of the machine. Safer to play with than PDS which is directly connected to the CPU. And the connector for it it still in general use and easy to get. And NuBus is available on multiple generations of machines.
  My primary machine for this is a Quadra 650, with a 68040 and the associated PDS. Unfortunately, the connector for that PDS is near impossible to get nowadadays ([specifications are there](https://tinkerdifferent.com/resources/specifications-for-the-quadra-pds-connector.124/)). '030 PDS uses 120-pins DIN 41612, similar to bur larger than NuBus' 96-pins. They are also available, but less common. But there is a catch - although sharing a connector board-side, the IIsi, SE/30 and IIfx pinouts are slightly different. And the LCIII is completely different.
- Also - [IIsiFPGA](https://github.com/rdolbeau/IIsiFPGA) :-)
+ Also - see [IIsiFPGA](https://github.com/rdolbeau/IIsiFPGA) and [QuadraFPGA](https://github.com/rdolbeau/QuadraFPGA) :-)
