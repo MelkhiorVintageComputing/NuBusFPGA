@@ -29,7 +29,7 @@ from migen.genlib.resetsync import AsyncResetSynchronizer
 # Wishbone stuff
 from VintageBusFPGA_Common.cdc_wb import WishboneDomainCrossingMaster
 from VintageBusFPGA_Common.fpga_blk_dma import *
-from VintageBusFPGA_Common.fpga_sd_dma import *
+#from VintageBusFPGA_Common.fpga_sd_dma import * # file never committed, only used by commented-out ExchangeWithSD
 from VintageBusFPGA_Common.MacPeriphSoC import *
 
 from nubus_mem_wb import NuBus2Wishbone
@@ -210,6 +210,10 @@ class NuBusFPGA(MacPeriphSoC):
         #    xdc_timings_filename = "/home/dolbeau/nubus-to-ztex-gateware/nubus_fpga_V1_0_timings.xdc"
         if (version == "V1.2"):
             xdc_timings_filename = "nubus_fpga_V1_2_timings.xdc"
+
+        if ((xdc_timings_filename != None) and (not os.path.isfile(xdc_timings_filename))):
+            print(f" ***** WARNING ***** : {xdc_timings_filename} not found, building without NuBus I/O timing constraints\n")
+            xdc_timings_filename = None
 
         if (xdc_timings_filename != None):
             xdc_timings_file = open(xdc_timings_filename)
@@ -459,6 +463,8 @@ def main():
         f.write("TARGET=NUBUSFPGA\n")
         f.write("FEATURES+= -DNUBUSFPGA")
         f.write(" -DENABLE_RAMDSK") # only NuBusFPGA for now
+        if (args.sdcard):
+            f.write(" -DENABLE_SDCARD")
         if (args.goblin_alt):
             f.write(" -DENABLE_HDMIAUDIO") # no audio in litex-style not-hdmi phy
         else:
