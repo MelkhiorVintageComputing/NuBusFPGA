@@ -386,6 +386,9 @@ class NuBusFPGA(MacPeriphSoC):
 
         if (sdcard): ### WIP WIP WIP WIP
             self.add_sdcard()
+            # dedicated staging buffer for the SD DMAs, so they don't share DRAM with the RAM disk
+            # (DeclROM: SDCARD_BUF_OFFSET/SDCARD_BUF_DMA_ADDR/SDCARD_BUF_SIZE in NuBusFPGASDCardDrvr.h)
+            self.add_ram("sd_buf", origin=self.mem_map["sd_buf"], size=2**14, mode="rw")
             # irq?
         
         if (ethernet): ### WIP WIP WIP WIP
