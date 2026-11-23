@@ -106,7 +106,10 @@ _nubus_io_v1_2 = [
         Subsignal("cmd",  Pins("U3"), Misc("PULLUP True")),
         Subsignal("clk",  Pins("V1")),
         #Subsignal("cd",   Pins("")),
-        Misc("SLEW=FAST"),
+        # no series/pull-up resistors on the board: slow edges, reduced drive (was SLEW=FAST, default 12 mA)
+        # to limit ringing/crosstalk; plenty for 25 MHz
+        Misc("SLEW=SLOW"),
+        Misc("DRIVE=8"),
         IOStandard("LVCMOS33"),
     ),
     ]
